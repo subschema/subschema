@@ -1,0 +1,1 @@
+module.exports.editor = require('./EditorTemplate.jsx');

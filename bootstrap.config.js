@@ -1,0 +1,51 @@
+module.exports = {
+    postStyleLoaders: [
+        require.resolve('extract-text-webpack-plugin/loader.js') + '?{"omit":1,"extract":true,"remove":true}'
+    ],
+    scripts: false,
+    styles: {
+        // add every bootstrap style you need
+
+        "alerts":true,
+        "badges":true,
+        "bootstrap":true,
+        "breadcrumbs":true,
+        "button-groups":true,
+        "buttons":true,
+        "carousel":true,
+        "close":true,
+        "code":true,
+        "component-animations":true,
+        "dropdowns":true,
+        "forms":true,
+        "glyphicons":true,
+        "grid":true,
+        "input-groups":true,
+        "jumbotron":true,
+        "labels":true,
+        "list-group":true,
+        "media":true,
+        "mixins":true,
+        "modals":true,
+        "navbar":true,
+        "navs":true,
+        "normalize":true,
+        "pager":true,
+        "pagination":true,
+        "panels":true,
+        "popovers":true,
+        "print":true,
+        "progress-bars":true,
+        "responsive-embed":true,
+        "responsive-utilities":true,
+        "scaffolding":true,
+        "tables":true,
+        "theme":true,
+        "thumbnails":true,
+        "tooltip":true,
+        "type":true,
+        "utilities":true,
+        "variables":true,
+        "wells":true
+    }
+};
