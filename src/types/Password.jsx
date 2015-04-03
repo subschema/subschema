@@ -4,7 +4,7 @@ var Password = React.createClass({
     mixins: [FieldMixin],
     render(){
         return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
-                      className="form-control" type="password" value={this.props.value} title={this.props.title}
+                      className="form-control" type="password" value={this.getValue()} title={this.props.title}
                       placeholder={this.props.placeholder}/>
     }
 

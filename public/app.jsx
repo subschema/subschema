@@ -46,7 +46,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Questionaire',
+            file: 'Todos',
             description: ''
         }
     },
@@ -59,21 +59,11 @@ var App = React.createClass({
         var json = this.state.file !== 'none' ? require('./samples/' + this.state.file + '.js') : {schema: {}};
         json.output = null;
         var state = {
-            loadErrors:this.state.loadErrors,
-            loadData:this.state.loadData,
-            file:this.state.file
+            loadErrors: this.state.loadErrors,
+            loadData: this.state.loadData,
+            file: this.state.file,
+            content: json
         };
-        if (this.state.loadErrors) {
-            state.errors = json.errors;
-        } else {
-            state.errors = {};
-        }
-        if (this.state.loadData) {
-            state.data = json.data;
-        } else {
-            state.data = {};
-        }
-        this.state.schema = json.schema;
         this.setState(state);
     },
 
@@ -83,16 +73,15 @@ var App = React.createClass({
     handleValueChange(value){
         this.setState({output: value});
     },
-    handleErrors: function (errors) {
-        console.log('errors', errors);
-    },
+
     handleData(e){
-        this.state.loadData = e.target.checked;
-        this.loadFile();
+        var load = this.state.loadData = e.target.checked;
+        this.refs.form.setValue(load ? this.state.content.data : {});
     },
     handleError(e){
-        this.state.loadErrors = e.target.checked;
-        this.loadFile();
+        var load = this.state.loadData = e.target.checked;
+        this.refs.form.setErrors(load ? this.state.content.errors : {});
+
     },
     handleSubmit(e, errors, value){
         e && e.preventDefault();
@@ -113,8 +102,10 @@ var App = React.createClass({
     },
 
     render() {
-        var {errors, schema, data, description, loadData, loadErrors} = this.state;
-
+        var {content, loadData, loadErrors} = this.state;
+        var {errors, schema, data, description} = (content || {});
+        if (!loadData) data = {};
+        if (!loadErrors) errors = {};
         return <div>
             <div className="navbar">
                 <div className="navbar-inner">
@@ -145,8 +136,8 @@ var App = React.createClass({
                         <div className="container-fluid">
                             <div className="row-fluid">
                                 <div className="span12">
-                                    <Form schema={this.state.schema} value={this.state.data}
-                                          errors={ this.state.errors }
+                                    <Form ref="form" schema={ schema} value={ data}
+                                          errors={ errors }
                                           onValueChange={this.handleValueChange}
                                           onSubmit={this.handleSubmit}
                                           onValidate={this.handleErrors}/>

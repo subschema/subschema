@@ -41,12 +41,35 @@ var Editor = React.createClass({
         }
     },
     getInitialState(){
-        return {}
+        return {
+            errors: this.props.errors
+        }
+    },
+    /*componentWillReceiveProps(props){
+     this.setState({
+     errors: props.errors
+     })
+     },*/
+    setValue(value){
+        this.refs.field.setValue({value});
+    },
+    setErrors(errors){
+        errors = errors || {};
+        var path = this.props.path;
+        this.state.errors = errors;
+        tu.values(this.refs.field.refs).forEach(function (ref) {
+            if (ref.setErrors)
+                ref.setErrors(ref.props.path in errors ? errors : {});
+        });
+        this.setState({errors: errors});
     },
 
     componentWillMount(){
         var validators = this.props.field.validators;
         this.validators = validators ? validators.map(initValidators) : EMPTY_ARR;
+    },
+    componentDidMount(){
+//      this.setState({wrapped:thist.ate})
     },
     handleValidate(newValue, oldValue, path) {
         this.validate(newValue, oldValue, path);
@@ -110,8 +133,9 @@ var Editor = React.createClass({
         });
     },
     render() {
-        var {field, name, value, errors, path, onValueChange,  template,onValidate, ...props} = this.props,
+        var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props,
             {name,type,fieldClass, errorClassName, help} = field,
+            errors = this.state.errors,
             err = errors && errors[path] && errors[path][0] && errors[path],
             errMessage = err && err[0].message,
             Component = require('types/' + type + '.jsx'),
@@ -123,19 +147,19 @@ var Editor = React.createClass({
         } else {
             Template = EditorTemplate;
         }
+        var field = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
+                               error={err}
+                               path={path}
+                               errors={errors}
+
+                               onValueChange={this.handleChange}
+                               onValidate={this.handleValidate}/>;
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ? <Template name={name} fieldClass={fieldClass} title={title} help={help}
                                     errorClassName={errorClassName} message={errMessage}>
-            <Component ref="field" value={value} {...props} field={field} name={name} form={this.props.form}
-                       error={err}
-
-                       onValueChange={this.handleChange}
-                       onValidate={this.handleValidate}/>
+            {field}
         </Template> :
-            <Component ref="field" value={value} {...props} field={field} name={name} form={this.props.form}
-                       error={err}
-                       onValueChange={this.handleChange}
-                       onValidate={this.handleValidate}/>;
+            field;
 
     }
 });

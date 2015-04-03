@@ -9,7 +9,7 @@ var EditorTemplate = React.createClass({
 
             <div className="col-sm-10">
                 {children}
-                <p className="help-block">{message || help}</p>
+                <p className="help-block" ref="help">{message || help}</p>
             </div>
         </div>);
     }

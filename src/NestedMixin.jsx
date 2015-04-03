@@ -8,10 +8,7 @@ var NestedMixin = {
             template: null,
             path: null,
             schema: {},
-            value: {},
-            errors: {},
             onValueChange() {
-
             },
             onValidate(){
             },
@@ -23,6 +20,27 @@ var NestedMixin = {
         return {};
     },
 
+    setValue(newValue, oldValue, property, path){
+        if (property == null) {
+            tu.values(this.refs).forEach((ref)=> {
+                ref.refs.field.setValue(newValue && newValue[ref.props.name]);
+            });
+        } else {
+            var parts = path.split('.', 2);
+            this.refs[parts[0]].refs.field.setValue(newValue, oldValue, parts[0], parts[1]);
+        }
+    },
+    setErrors(errors, newValue, oldValue, property, path){
+        if (property == null) {
+            tu.values(this.refs).forEach((ref)=> {
+                ref.setErrors && ref.setErrors(errors);
+            });
+        } else {
+            var {key, rest} = path.split('.', 2);
+            this.refs[key].editor.setErrors(errors, newValue, oldValue, property, rest);
+        }
+        this.state.errors = errors;
+    },
     makeFieldset(f, i) {
 
         var ret = f.legend ?
@@ -38,29 +56,17 @@ var NestedMixin = {
 
         if (this.props.onValueChange(newValue, oldValue, property, path) !== false) {
             if (this.form === this) {
-                this.setValue(path, newValue, this.props.value);
+                this.setValue(newValue, oldValue, property, path);
             }
         }
     },
-    setValue(path, newValue, value){
-        var parts = path.split('.', 2), key = parts[0], rest = parts[1];
-        if (rest != null) {
-            value = value[key] == null ? (value[key] = {}) : value[key];
-            this.refs[key].refs.field.setValue(rest, newValue, value);
-        } else {
-            value[path] = newValue;
-        }
-    },
 
-    setErrors(errors, newValue, oldValue, property, path, value){
-        var parts = path.split('.', 2), key = parts[0], rest = parts[1];
-        value[path] = errors;
-
-    },
     handleValidate(errors, newValue, oldValue, property, path){
         if (this.props.onValidate(newValue, oldValue, property, path) !== false) {
             if (this.form === this) {
-                this.setErrors(errors, newValue, oldValue, property, path, this.props.errors);
+                var e = {};
+                e[path] = errors;
+                this.form.setErrors(e);
             }
         }
     },
@@ -111,10 +117,12 @@ var NestedMixin = {
     },
     addEditor(field){
         var f = field.name;
-        var {path, value, errors} = this.props;
+        var {path} = this.props;
+        var {value, errors} = this.state;
         return <Editor ref={f} key={'key-' + f} path={tu.path(path, f)} value={value && value[f]}
                        field={field}
                        errors={errors}
+                       name={f}
                        form={this.form}
                        template={field.template}
                        onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>

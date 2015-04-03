@@ -7,12 +7,15 @@ var NestedMixin = require('../NestedMixin.jsx');
 var ObjectInput = React.createClass({
     mixins: [NestedMixin],
     displayName:'ObjectInput',
+
+
     render() {
 
-        var {field, ...props} = this.props;
+        var {field, value, ...props} = this.props;
         this.schema = field.subSchema ? {schema: field.subSchema , fields: field.fields} : null;
-
-        return <div {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</div>
+        var obj = {};
+        obj.value = this.getValue();
+        return <div {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</div>
     }
 
 });

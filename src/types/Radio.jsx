@@ -7,7 +7,7 @@ var RadioItem = React.createClass({
         var {label, labelHTML, id} = this.props;
 
 
-        label = labelHTML ? <span  dangerouslySetInnerHTML={{__html:labelHTML}}/> : label;
+        label = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : label;
 
         return (<div className="radio">
             <label>
@@ -21,7 +21,6 @@ var RadioItem = React.createClass({
 var RadioInput = React.createClass({
     getDefaultProps() {
         return {
-            value: '',
             title: '',
             name: '',
             placeholder: '',
@@ -34,19 +33,27 @@ var RadioInput = React.createClass({
         }
 
     },
-
+    getInitialState(){
+        return {
+            value:this.props.value
+        }
+    },
+    componentWillReceiveProps(props){
+        this.state.value = props.value;
+    },
     getValue(){
-        return this.props.value;
+        return this.state.value;
     },
 
 
     handleCheckChange(e){
-        this.props.onValueChange(e.target.value, this.props.value, this.props.name, this.props.path);
+        this.props.onValueChange(e.target.value, this.state.value, this.props.name, this.props.path);
     },
 
     render()
     {
-        var {name,template,path, dataType, field, value} = this.props;
+        var {name,template,path, dataType, field} = this.props;
+        var value = this.getValue();
         var RadioItemTemplate = template || RadioItem;
         return (<ul>{field.options.map((option, index)=> {
             option = tu.isString(option) ? {label: option, val: option} : option;

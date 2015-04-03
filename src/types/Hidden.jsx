@@ -5,7 +5,7 @@ var TextInput = React.createClass({
     mixins: [FieldMixin],
     render() {
         return <input id={this.props.name}
-                      className="form-control" type="hidden" value={this.props.value}
+                      className="form-control" type="hidden" value={this.getValue()}
                       data-path={this.props.path}/>
     }
 });

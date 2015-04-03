@@ -3,7 +3,6 @@ var PropsStateValueMixin = require('./PropsStateValueMixin.js');
 var FieldMixin = {
     getDefaultProps() {
         return {
-            value: '',
             title: '',
             name: '',
             placeholder: '',
@@ -15,21 +14,35 @@ var FieldMixin = {
         }
 
     },
+    componentWillRecieveProps(props){
+        this.setState({
+            value: props.value
+        });
+    },
+    getInitialState(){
+        return {
+            value: this.props.value
+        }
+    },
     dataType: 'text',
 
     getValue(){
-        return this.props.value;
+        return this.state && this.state.value;
     },
-
+    setValue(value){
+        this.setState({
+            value: value
+        });
+    },
     valueFromEvt(e){
         return e.target.value;
     },
     handleChange(e) {
         var value = this.valueFromEvt(e);
-        this.props.onValueChange(value, this.props.value, this.props.name, this.props.path);
+        this.props.onValueChange(value, this.state.value, this.props.name, this.props.path);
     },
     handleValidate(e){
-        this.props.onValidate(this.valueFromEvt(e), this.props.value, this.props.name, this.props.path);
+        this.props.onValidate(this.valueFromEvt(e), this.state.value, this.props.name, this.props.path);
     }
 
 };

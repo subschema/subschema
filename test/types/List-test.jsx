@@ -5,7 +5,7 @@ describe('List', function () {
     var Form = require('../../src/index').Form;
     var Simulate = React.addons.TestUtils.Simulate;
     var _ = require('lodash');
-
+    this.timeout(50000);
 
     var Todos = require('../../public/samples/Todos'), Schema = Todos.schema;
     it('should render a list', function () {
@@ -126,7 +126,8 @@ describe('List', function () {
             var input = refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
             Simulate.change(input, {target: {value: 'Hello, world ' + c}});
             Simulate.click(refs.createBtn);
-            expect(data.tasks[c]).toEqual('Hello, world ' + c);
+            var value = root.getValue();
+            expect(value.tasks[c]).toEqual('Hello, world ' + c);
             var tasks = root.refs.tasks.refs.field.refs;
             return tasks['tasks_' + c].refs
         }
@@ -146,11 +147,11 @@ describe('List', function () {
         expect(a1.downBtn).toExist();
 
         Simulate.click(a0.deleteBtn);
-        expect(data.tasks.length).toEqual(2);
+        expect(root.getValue().tasks.length).toEqual(2);
         Simulate.click(a1.deleteBtn);
-        expect(data.tasks.length).toEqual(1);
+        expect(root.getValue().tasks.length).toEqual(1);
         Simulate.click(a2.deleteBtn);
-        expect(data.tasks.length).toEqual(0);
+        expect(root.getValue().tasks.length).toEqual(0);
 
 
 

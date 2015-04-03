@@ -7,7 +7,6 @@ var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {
         return {
-            value: {},
             title: '',
             placeholder: '',
             itemType: 'Text',

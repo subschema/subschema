@@ -7,7 +7,7 @@ var SelectInput = React.createClass({
         var {title, placeholder} = field;
         var opts = this.props.field.options || [];
         return <select className="form-control" onBlur={this.handleValidate} onChange={this.handleChange}
-                       name={name} value={value} title={title}
+                       name={name} value={this.getValue()} title={title}
                        placeholder={placeholder}>
             {opts.map((o, i)=> {
                 return <option key={'s' + i}>{o}</option>

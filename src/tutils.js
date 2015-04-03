@@ -1,3 +1,4 @@
+"use strict";
 var api = {
     isString: function (v) {
         return typeof v === 'string' || v instanceof String;
@@ -6,6 +7,11 @@ var api = {
         return array.filter(function (a, b, c) {
             // keeps first occurrence
             return c.indexOf(a) === b;
+        });
+    },
+    values: function (obj) {
+        return obj == null ? [] : Array.isArray(obj) ? obj : Object.keys(obj).map(function (v, i) {
+            return obj[v];
         });
     },
     path: function () {

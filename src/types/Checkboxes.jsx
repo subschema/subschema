@@ -7,7 +7,6 @@ var Checkboxes = React.createClass({
     // mixins: [PropsStateValueMixin],
     getDefaultProps() {
         return {
-            value: [],
             title: '',
             name: '',
             placeholder: '',
@@ -27,14 +26,18 @@ var Checkboxes = React.createClass({
             return this.refs[v].value;
         })
     },
+    setValue(value){
+        this.setState({value});
+    },
+
     handleCheckChange(e){
-        var newValues = this.props.value ? this.props.value.concat() : [];
+        var newValues = this.getValue() ? this.getValue().concat() : [];
         if (e.target.checked) {
             newValues.push(e.target.value);
         } else {
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
-        this.props.onValueChange(newValues, this.props.value, this.props.name, this.props.path);
+        this.props.onValueChange(newValues, this.getValue(), this.props.name, this.props.path);
     },
 
 
@@ -43,7 +46,7 @@ var Checkboxes = React.createClass({
 
         var id = tu.path(this.props.path, index, group);
         var {val, labelHTML} = option;
-        var value = this.props.value || [];
+        var value = this.state.value || [];
         var labelContent = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : val;
 
         return (<div className="checkbox">

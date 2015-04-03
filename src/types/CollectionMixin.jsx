@@ -4,13 +4,16 @@ var Editor = require('../Editor.jsx');
 var CollectionMixin = {
 
     getInitialState() {
-        return this.wrap(this.props);
+        return {};
     },
     getItemEditorValue(){
         return this.refs.itemEditor.getValue();
     },
     getValue(){
         return this.unwrap(this.state.wrapped);
+    },
+    setValue(value){
+       this.setState(this.wrap({value}));
     },
     handleMoveUp(pos, val) {
         var values = this.state.wrapped, oval = values && values.concat();

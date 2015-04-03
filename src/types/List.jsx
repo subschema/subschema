@@ -6,9 +6,10 @@ var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
+
     getDefaultProps() {
         return {
-            value: [],
+
             title: '',
             placeholder: '',
             itemType: 'Text',
