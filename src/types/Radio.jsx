@@ -35,9 +35,13 @@ var RadioInput = React.createClass({
     },
     getInitialState(){
         return {
-            value:this.props.value
+            value: this.props.value
         }
     },
+    setValue(value){
+        this.setState({value});
+    },
+
     componentWillReceiveProps(props){
         this.state.value = props.value;
     },

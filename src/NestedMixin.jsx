@@ -16,8 +16,21 @@ var NestedMixin = {
         }
 
     },
+    componentWillReceiveProps(props){
+        this.setState({
+            value: props.value,
+            errors: props.errors
+        })
+    },
     getInitialState(){
-        return {};
+        return {
+            value: this.props.value,
+            errors: this.props.errors
+        }
+    },
+    componentDidMount(){
+        this.setValue(this.props.value);
+        this.setErrors(this.props.errors);
     },
 
     setValue(newValue, oldValue, property, path){
@@ -25,9 +38,16 @@ var NestedMixin = {
             tu.values(this.refs).forEach((ref)=> {
                 ref.refs.field.setValue(newValue && newValue[ref.props.name]);
             });
-        } else {
+        } else if (path != null){
             var parts = path.split('.', 2);
-            this.refs[parts[0]].refs.field.setValue(newValue, oldValue, parts[0], parts[1]);
+            // if (parts.length > 1) {
+            this.refs[parts[0]].refs.field.setValue(newValue, oldValue, property, parts[1]);
+            // }else{
+            //   this.refs[path].refs.field.refs[property].setValue(newValue, oldValue, property);
+
+            //}
+        }else{
+            this.refs[property].setValue(newValue, oldValue, property);
         }
     },
     setErrors(errors, newValue, oldValue, property, path){

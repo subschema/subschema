@@ -42,7 +42,8 @@ var Editor = React.createClass({
     },
     getInitialState(){
         return {
-            errors: this.props.errors
+            errors: this.props.errors,
+            value:this.props.value
         }
     },
     /*componentWillReceiveProps(props){
@@ -51,7 +52,7 @@ var Editor = React.createClass({
      })
      },*/
     setValue(value){
-        this.refs.field.setValue({value});
+        this.refs.field.setValue(value);
     },
     setErrors(errors){
         errors = errors || {};
@@ -151,7 +152,7 @@ var Editor = React.createClass({
                                error={err}
                                path={path}
                                errors={errors}
-
+                               value={this.state.value}
                                onValueChange={this.handleChange}
                                onValidate={this.handleValidate}/>;
         //errMessage, errorClassName, name, fieldClass, title, help

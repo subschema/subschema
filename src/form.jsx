@@ -9,22 +9,7 @@ var Form = React.createClass({
         var errors = this.validate();
         this.props.onSubmit && this.props.onSubmit(e, errors, this.getValue());
     },
-    componentWillReceiveProps(props){
-        this.setState({
-            value: props.value,
-            errors: props.errors
-        })
-    },
-    getInitialState(){
-        return {
-            value: this.props.value,
-            errors: this.props.errors
-        }
-    },
-    componentDidMount(){
-        this.setValue(this.props.value);
-        this.setErrors(this.props.errors);
-    },
+
     render() {
 
         var {schema, subSchema,  fields, submitButton,  ...props} = this.props;

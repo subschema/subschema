@@ -64,7 +64,7 @@ var CollectionMixin = {
     },
     handleEditValue(e) {
         e && e.preventDefault();
-        var value = this.state.wrapped, oval = values && values.concat(), editPid = this.state.editPid, nv = this.getItemEditorValue();
+        var value = this.state.wrapped, oval = value && value.concat(), editPid = this.state.editPid, nv = this.getItemEditorValue();
         value.some(function (v, i) {
             if (v.id === editPid) {
                 v.value = nv;
