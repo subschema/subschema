@@ -1,5 +1,4 @@
 var React = require('react');
-var PropsStateValueMixin = require('./PropsStateValueMixin.js');
 var FieldMixin = {
     getDefaultProps() {
         return {
@@ -14,11 +13,11 @@ var FieldMixin = {
         }
 
     },
-    componentWillRecieveProps(props){
+/*    componentWillRecieveProps(props){
         this.setState({
             value: props.value
         });
-    },
+    },*/
     getInitialState(){
         return {
             value: this.props.value

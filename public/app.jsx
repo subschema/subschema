@@ -46,7 +46,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Todos',
+            file: 'radio',
             description: ''
         }
     },

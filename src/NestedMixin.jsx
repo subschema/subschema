@@ -1,7 +1,6 @@
 var React = require('react');
 var tu = require('./tutils'), tpath = tu.path;
 var Editor = require('./Editor.jsx');
-
 var NestedMixin = {
     getDefaultProps() {
         return {
@@ -139,12 +138,16 @@ var NestedMixin = {
         var f = field.name;
         var {path} = this.props;
         var {value, errors} = this.state;
+        var tmpl = {};
+        if (field.template){
+            tmpl['template'] = field.template;
+        }
         return <Editor ref={f} key={'key-' + f} path={tu.path(path, f)} value={value && value[f]}
                        field={field}
                        errors={errors}
                        name={f}
                        form={this.form}
-                       template={field.template}
+                       {...tmpl}
                        onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>
     },
     makeFields(fields) {

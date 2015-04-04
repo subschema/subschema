@@ -42,16 +42,24 @@ var RadioInput = React.createClass({
         this.setState({value});
     },
 
-    componentWillReceiveProps(props){
-        this.state.value = props.value;
-    },
     getValue(){
         return this.state.value;
     },
 
-
+    _compare(val, val2){
+        if (val == null && val2 == null) {
+            return true;
+        }
+        if (val == null || val2 == null) return false;
+        return ('' + val === '' + val2);
+    },
     handleCheckChange(e){
-        this.props.onValueChange(e.target.value, this.state.value, this.props.name, this.props.path);
+        //Make a radio behave like a checkbox when there is only 1.
+        if (this.props.field.options.length === 1) {
+            this.props.onValueChange(this._compare(e.target.value, this.state.value) ? null : e.target.value, this.state.value, this.props.name, this.props.path);
+        } else {
+            this.props.onValueChange(e.target.value, this.state.value, this.props.name, this.props.path);
+        }
     },
 
     render()
@@ -65,7 +73,7 @@ var RadioInput = React.createClass({
                 option.val = option.label || index;
             }
             var onChange = this.handleCheckChange;
-            var key = '' + name + option.val, checked = '' + value === '' + option.val;
+            var key = '' + name + option.val, checked = this._compare(value, option.val);
             return <RadioItemTemplate key={key}
                                       id={path}
                                       name={name}

@@ -3,7 +3,8 @@ var tu = require('./tutils');
 var EMPTY_OBJ = {};
 var EMPTY_ARR = [];
 var validators = require('./validators');
-var EditorTemplate = require('./templates/EditorTemplate.jsx');
+var loader = require('./loader.jsx');
+
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
@@ -36,14 +37,14 @@ var Editor = React.createClass({
             },
             onValidate() {
             },
-            template: EditorTemplate
+            template: 'EditorTemplate'
 
         }
     },
     getInitialState(){
         return {
             errors: this.props.errors,
-            value:this.props.value
+            value: this.props.value
         }
     },
     /*componentWillReceiveProps(props){
@@ -134,19 +135,20 @@ var Editor = React.createClass({
         });
     },
     render() {
-        var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props,
-            {name,type,fieldClass, errorClassName, help} = field,
-            errors = this.state.errors,
+        var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props;
+        var {name,type,fieldClass, errorClassName, help} = field;
+
+        var errors = this.state.errors,
             err = errors && errors[path] && errors[path][0] && errors[path],
             errMessage = err && err[0].message,
-            Component = require('types/' + type + '.jsx'),
+            Component = loader.loadType(type),
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
-        var Template = template;
+        var Template;
         if (template === false || field.template === false || type === 'Hidden') {
             Template = null;
         } else {
-            Template = EditorTemplate;
+            Template = loader.loadTemplate(template || 'EditorTemplate');
         }
         var field = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                error={err}

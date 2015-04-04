@@ -18,13 +18,13 @@ var Checkboxes = React.createClass({
         }
 
     },
-
+    getInitialState(){
+        return {
+            value: this.props.value
+        }
+    },
     getValue() {
-        return Object.keys(this.refs).filter((v) => {
-            return this.refs[v].checked;
-        }).map((v)=> {
-            return this.refs[v].value;
-        })
+        return this.state.value
     },
     setValue(value){
         this.setState({value});

@@ -2,7 +2,7 @@ var React = require('react');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var _ = require('lodash');
-
+var loader = require('../loader.jsx');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {
@@ -16,7 +16,7 @@ var MixedInput = React.createClass({
             },
             onValidate() {
             },
-            itemTemplate: require('./ListItemTemplate.jsx')
+            itemTemplate: 'ListItemTemplate'
         }
     },
 
@@ -107,7 +107,7 @@ var MixedInput = React.createClass({
         var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || _.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
-        } : itemType, ListItemTemplate = itemTemplate, values = this.state.wrapped || [], length = values.length;
+        } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;
         item.canReorder = field.canReorder;
         item.canDelete = field.canDelete;
         item.canEdit = field.canEdit;

@@ -1,6 +1,6 @@
 var React = require('react');
 var NestedMixin = require('./NestedMixin.jsx');
-
+var loader = require('./loader.jsx');
 var Form = React.createClass({
     displayName: 'Form',
     mixins: [NestedMixin],
