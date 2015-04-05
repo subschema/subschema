@@ -1,16 +1,17 @@
 var React = require('react');
 var FieldMixin = require('../FieldMixin.jsx');
-var PropsStateValueMixin = require('../PropsStateValueMixin');
 var tu = require('../tutils');
+var loader = require('../loader.jsx');
 
 var Checkboxes = React.createClass({
-    // mixins: [PropsStateValueMixin],
     getDefaultProps() {
         return {
             title: '',
             name: '',
             placeholder: '',
             dataType: this.dataType,
+            template: 'CheckboxesTemplate',
+            groupTemplate: 'CheckboxesGroupTemplate',
             onValueChange() {
             },
             onValidate(){
@@ -41,29 +42,30 @@ var Checkboxes = React.createClass({
     },
 
 
-    _createCheckbox(option, index, group){
+    _createCheckbox(option, index, group, CheckboxTemplate){
 
 
         var id = tu.path(this.props.path, index, group);
         var {val, labelHTML} = option;
-        var value = this.state.value || [];
+        var value = this.state.value;
         var labelContent = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : val;
-
-        return (<div className="checkbox">
-            <label>
-                <input ref={id.replace(/\./g, '_')} checked={!!~value.indexOf(val)} type="checkbox"
-                       name={this.props.field.name} id={id} value={val}
-                       onChange={this.handleCheckChange}/>
-                {labelContent}
-            </label>
-        </div>);
+        var opts = {
+            onChange: this.handleCheckChange,
+            name: this.props.field.name,
+            checked: value ? !!~value.indexOf(val) : false,
+            ref: id.replace(/\./g, '_'),
+            id,
+            value: val
+        }
+        return (<CheckboxTemplate label={labelContent} {...opts}>
+            <input type="checkbox" {...opts}/>
+        </CheckboxTemplate>);
 
     },
-    _createGroup(option, index, group){
-        return <fieldset className="group">
-            <legend>{option.group}</legend>
-            {this.makeOptions(option.options, group == null ? 0 : group)}
-        </fieldset>
+    _createGroup(option, index, group, Template, CheckboxTemplate){
+        return <Template group={option.group}>
+            {this.makeOptions(option.options, group == null ? 0 : group, CheckboxTemplate)}
+        </Template>
 
     },
 
@@ -77,12 +79,14 @@ var Checkboxes = React.createClass({
         makeOptions (array, group) {
 
         var name = this.props.field.name;
+        var CheckboxTemplate = loader.loadTemplate(this.props.template);
+        var CheckboxesGroupTemplate = loader.loadTemplate(this.props.groupTemplate);
         return array.map((option, index)=> {
             option = tu.isString(option) ? {val: option} : option;
             console.log('key', name + '-' + index + '-' + option.val);
             return (
                 <div
-                    key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0) : this._createCheckbox(option, index, group)}</div>)
+                    key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate) : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
 
         });
     },

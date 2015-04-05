@@ -4,7 +4,6 @@ var Editor = require('./Editor.jsx');
 var NestedMixin = {
     getDefaultProps() {
         return {
-            template: null,
             path: null,
             schema: {},
             onValueChange() {
@@ -151,7 +150,7 @@ var NestedMixin = {
                        onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>
     },
     makeFields(fields) {
-        var fieldMap = {}, schema = this.schema.schema, template = this.props.template;
+        var fieldMap = {}, schema = this.schema.schema;
 
         fields = tu.toArray(fields).map((v) => {
             return v.split('.', 2);
@@ -172,8 +171,7 @@ var NestedMixin = {
             if (tu.isString(ref)) {
                 ref = {
                     name: f,
-                    type: ref,
-                    template: template
+                    type: ref
                 }
             } else {
                 if (!ref.type) {
@@ -182,10 +180,6 @@ var NestedMixin = {
                 if (!ref.name) {
                     ref.name = f;
                 }
-                if (!ref.template) {
-                    ref.template = template;
-                }
-
             }
             if (!ref.fields && fieldMap[f]) {
                 ref.fields = fieldMap[f];
