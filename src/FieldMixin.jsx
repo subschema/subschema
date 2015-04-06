@@ -23,7 +23,6 @@ var FieldMixin = {
             value: this.props.value
         }
     },
-    dataType: 'text',
 
     getValue(){
         return this.state && this.state.value;

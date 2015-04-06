@@ -48,7 +48,7 @@ module.exports = {
                 </div>);
             }
         }));
-        var Object = require('types/Object.jsx');
+        var Object = require('subschema').Types.Object;
         loader.addType('ToggleObject', React.createClass({
             displayName: 'ToggleObject',
             getInitialState(){
@@ -60,7 +60,7 @@ module.exports = {
                 this.setState({toggled: !this.state.toggled});
             },
             getValue(){
-                this.refs.val.getValue()
+                return this.refs.val.getValue()
             },
             setValue(val){
                 this.refs.val.setValue(val);
@@ -70,12 +70,12 @@ module.exports = {
                     display: this.state.toggled ? 'none' : 'block'
                 };
 
-                return <div class="form-group row">
-                    <legend onClick={this.handleToggle}>Toggle</legend>
-                    <div style={style}>
-                        <Object ref="val" {...this.props}/>
-                    </div>
-                </div>
+                return <div className="form-group row">
+                        <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
+                        <div style={style}>
+                            <Object ref="val" {...this.props}/>
+                        </div>
+                </div>;
 
             }
         }));

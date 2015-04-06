@@ -119,7 +119,7 @@ var App = React.createClass({
         if (!loadData) data = {};
         if (!loadErrors) errors = {};
         if (setup) {
-            var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/, 'require("subschema")').split('\n').map(function (v) {
+            var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {
                 return v.replace(/^	        /, '');
             });
             tmp.pop();
