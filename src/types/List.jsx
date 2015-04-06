@@ -60,6 +60,21 @@ var ListInput = React.createClass({
             value: _.clone(val)
         }
     },
+    itemToString(){
+        if (this.props.itemToString) return this.props.itemToString;
+        else if (this.props.field.labelKey) {
+            var labelKey = this.props.field.labelKey;
+            return function (v) {
+                if (!(v)) {
+                    return null;
+                }
+                return <span className="brf-value list-group-item-text">{v[labelKey] || ''}</span>;
+            }
+        }
+        return function (v) {
+            return v && v.toString();
+        };
+    },
     /* unwrap:function(value){
      if (value == null) return [];
      return value.map(this.extractValue);
@@ -85,12 +100,15 @@ var ListInput = React.createClass({
         item.canEdit = field.canEdit;
         item.canAdd = field.canAdd;
         this._item = item;
+        var itemToString = this.itemToString();
         return (<div className="list-editor">
             {this.renderAdd()}
             <ul className="edit-list list-group">
                 {values.map((v, i) => {
-                    return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i} path={tu.path(path,v.id)}
+                    return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}
+                                             path={tu.path(path,v.id)}
                                              onMoveUp={this.handleMoveUp}
+                                             itemToString={itemToString}
                                              onMoveDown={this.handleMoveDown} onDelete={this.handleDelete}
                                              onEdit={this.handleEdit}
                                              field={item}

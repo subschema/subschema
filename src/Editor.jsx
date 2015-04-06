@@ -1,27 +1,26 @@
 var React = require('react');
 var tu = require('./tutils');
-var EMPTY_OBJ = {};
 var EMPTY_ARR = [];
-var validators = require('./validators');
 var loader = require('./loader.jsx');
 
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
-        return validators[v.type].call(validators, v);
+        var validator =  loader.loadValidator(v.type);
+        return validator(v);
     }
     //If it is a RegExp than init ReExp
     if (_.isRegExp(v)) {
-        return validators['regexp']({
+        return loader.loadValidator('regexp')({
             regexp: v
-        })
+        });
     }
     //If its a function just return it.
     if (_.isFunction(v)) {
         return v;
     }
     //otherwise lets try initing it.
-    return validators[v]();
+    return loader.loadValidator(v)();
 }
 
 

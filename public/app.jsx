@@ -7,6 +7,8 @@ var ModalTrigger = require('react-bootstrap/lib/ModalTrigger');
 var Button = require('react-bootstrap/lib/Button');
 var _ = require('lodash');
 require('./index.less');
+var setupRe = /^function [^{]*\{([\s\S]*)\}$/;
+
 var MyModal = React.createClass({
     render() {
         return (
@@ -46,7 +48,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'login',
+            file: 'Loader',
             description: ''
         }
     },
@@ -64,24 +66,31 @@ var App = React.createClass({
             file: this.state.file,
             content: json
         };
+        if (json.setup) {
+            state._setup = json.setup();
+        }
         this.setState(state);
     },
 
     componentWillMount() {
         this.loadFile();
     },
+
     handleValueChange(value){
-        this.setState({output: value});
+        this.setState({data: value});
     },
 
     handleData(e){
         var load = this.state.loadData = e.target.checked;
-        this.refs.form.setValue(load ? this.state.content.data : {});
+        var data = load ? this.state.content.data : {};
+        this.refs.form.setValue(data);
+        this.setState({data: data});
     },
     handleError(e){
-        var load = this.state.loadData = e.target.checked;
-        this.refs.form.setErrors(load ? this.state.content.errors : {});
-
+        var load = this.state.loadErrors = e.target.checked;
+        var errors = load ? this.state.content.errors : {}
+        this.refs.form.setErrors(errors);
+        this.setState({errors: errors})
     },
     handleSubmit(e, errors, value){
         e && e.preventDefault();
@@ -103,9 +112,17 @@ var App = React.createClass({
 
     render() {
         var {content, loadData, loadErrors} = this.state;
-        var {errors, schema, data, description} = (content || {});
+        var {errors, schema, data, description, setup, teardown} = (content || {});
         if (!loadData) data = {};
         if (!loadErrors) errors = {};
+        if (setup) {
+            var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/, 'require("subschema")').split('\n').map(function (v) {
+                return v.replace(/^	        /, '');
+            });
+            tmp.pop();
+            tmp.pop();
+            setup = tmp.join('\n')
+        }
         return <div>
             <div className="navbar">
                 <div className="navbar-inner">
@@ -148,11 +165,12 @@ var App = React.createClass({
                             <legend>Example Usage of {this.state.file}</legend>
                             <p>{description}</p>
                         <pre>
-                             <div>var Form = require('subschema').Form;</div>
-                             <div>var React = require('react');</div>
-                             <div>var data = {JSON.stringify(data || {}, null, 2)};</div>
-                             <div>var errors = {JSON.stringify(errors || {}, null, 2)};</div>
-                             <div>var schema = {JSON.stringify(schema || {}, null, 2)};</div>
+                            <div>var Form = require('subschema').Form;</div>
+                            <div>var React = require('react');</div>
+                            { setup ? <div>{setup}</div> : null}
+                            <div>var data = {JSON.stringify(data || {}, null, 2)};</div>
+                            <div>var errors = {JSON.stringify(errors || {}, null, 2)};</div>
+                            <div>var schema = {JSON.stringify(schema || {}, null, 2)};</div>
 
 
                             {'React.render(<Form value={data} schema={schema} errors={errors}/>, document.getElementById("content"))'}

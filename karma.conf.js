@@ -43,9 +43,9 @@ module.exports = function (config) {
 
             resolve: {
                 alias: {
-                    'subschema': '../src/index',
-                    'types': '../src/types',
-                    'styles': '../src/styles'
+                    'subschema': __dirname + '/src/index',
+                    'types': __dirname + '/src/types',
+                    'styles': __dirname + '/src/styles'
                 }
             },
 

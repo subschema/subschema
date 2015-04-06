@@ -1,6 +1,9 @@
 var React = require('react');
 var tu = require('./tutils'), tpath = tu.path;
 var Editor = require('./Editor.jsx');
+var loader = require('./loader.jsx');
+var tu = require('./tutils');
+
 var NestedMixin = {
     getDefaultProps() {
         return {
@@ -36,7 +39,7 @@ var NestedMixin = {
             tu.values(this.refs).forEach((ref)=> {
                 ref.refs.field.setValue(newValue && newValue[ref.props.name]);
             });
-        } else if (path != null){
+        } else if (path != null) {
             var parts = path.split('.', 2);
             // if (parts.length > 1) {
             this.refs[parts[0]].refs.field.setValue(newValue, oldValue, property, parts[1]);
@@ -44,7 +47,7 @@ var NestedMixin = {
             //   this.refs[path].refs.field.refs[property].setValue(newValue, oldValue, property);
 
             //}
-        }else{
+        } else {
             this.refs[property].setValue(newValue, oldValue, property);
         }
     },
@@ -138,7 +141,7 @@ var NestedMixin = {
         var {path} = this.props;
         var {value, errors} = this.state;
         var tmpl = {};
-        if (field.template){
+        if (field.template) {
             tmpl['template'] = field.template;
         }
         return <Editor ref={f} key={'key-' + f} path={tu.path(path, f)} value={value && value[f]}
@@ -146,7 +149,7 @@ var NestedMixin = {
                        errors={errors}
                        name={f}
                        form={this.form}
-                       {...tmpl}
+            {...tmpl}
                        onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>
     },
     makeFields(fields) {
@@ -188,7 +191,24 @@ var NestedMixin = {
         })
     },
 
-
+    normalizeSchema(schema){
+        if (tu.isString(schema)) {
+            var loaded = loader.loadSchema(schema);
+            if (loaded.schema) {
+                schema = loaded;
+            } else {
+                schema = {schema: loaded};
+            }
+        } else if (tu.isString(schema.schema)) {
+            var loaded = loader.loadSchema(schema.schema);
+            if (loaded.schema) {
+                schema = loaded;
+            } else {
+                schema = {schema: loaded};
+            }
+        }
+        return schema;
+    },
     renderSchema(form) {
         if (form) {
             this.form = form;

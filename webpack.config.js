@@ -53,7 +53,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema': '../src/index',
+            'subschema': __dirname+'/src/index',
             'types': '../src/types',
             'styles': '../src/styles'
         }
