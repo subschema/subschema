@@ -51,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Loader.jsx',
+            file: 'Basic.js',
             description: ''
         }
     },

@@ -77,7 +77,7 @@ var Checkboxes = React.createClass({
      * @return {String} HTML
      */
         makeOptions (array, group) {
-
+        array = array || [];
         var name = this.props.field.name;
         var CheckboxTemplate = loader.loadTemplate(this.props.template);
         var CheckboxesGroupTemplate = loader.loadTemplate(this.props.groupTemplate);

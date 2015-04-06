@@ -6,7 +6,7 @@ var loader = require('./loader.jsx');
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
-        var validator =  loader.loadValidator(v.type);
+        var validator = loader.loadValidator(v.type);
         return validator(v);
     }
     //If it is a RegExp than init ReExp
@@ -55,42 +55,37 @@ var Editor = React.createClass({
         this.refs.field.setValue(value);
     },
     setErrors(errors){
-        errors = errors || {};
-        var path = this.props.path;
-        this.state.errors = errors;
-        tu.values(this.refs.field.refs).forEach(function (ref) {
-            if (ref.setErrors)
-                ref.setErrors(ref.props.path in errors ? errors : {});
-        });
-        this.setState({errors: errors});
+
+        this.setState({errors});
     },
 
     componentWillMount(){
         var validators = this.props.field.validators;
         this.validators = validators ? validators.map(initValidators) : EMPTY_ARR;
     },
-    componentDidMount(){
-//      this.setState({wrapped:thist.ate})
-    },
     handleValidate(newValue, oldValue, path) {
-        this.validate(newValue, oldValue, path);
+        this.checkAndMaybeValidate(newValue, oldValue);
     },
-    handleChange(newValue, oldValue, name) {
-        var errors = this.getErrorMessages(newValue), isValid = errors.length === 0;
-        //if (isValid) {
-        this.props.onValueChange(newValue, oldValue, name, this.props.path);
-        var hasValidated = this.state.hasValidated;
-        if (!hasValidated && !isValid) {
-            //don't show errors on change if it has never been validated.
-            errors = null;
-        } else if (!hasValidated && isValid) {
-            hasValidated = true;
+    checkAndMaybeValidate(newValue, oldValue){
+        var hasChanged = newValue !== oldValue;
+        if (!hasChanged) {
+            return;
+        }
+        var hasValidated = this.state.hasValidated || this.state.errors && this.state.errors[this.props.path];
+        if (!hasValidated) {
+            this.validate(newValue);
         }
 
-        this.setState({
-            hasValidated
-        });
+    },
 
+    handleChange(newValue, oldValue, name) {
+        var hasChanged = newValue !== oldValue;
+        if (!hasChanged) {
+            return;
+        }
+        if (this.props.onValueChange(newValue, oldValue, name, this.props.path) !== false) {
+            this.checkAndMaybeValidate(newValue, oldValue);
+        }
 
     },
     getValue(){
@@ -105,8 +100,11 @@ var Editor = React.createClass({
         value = arguments.length === 0 ? this.getValue() : value;
         var errors = this.getErrorMessages(value);
         if (this.props.onValidate(errors, value, this.props.value, this.props.name, this.props.path) !== false) {
+            var eo = this.state.errors || {};
+            eo[this.props.path] = errors && errors.length ? errors : null;
             this.setState({
-                hasValidated: true
+                hasValidated: true,
+                errors: eo
             });
         }
         return errors;

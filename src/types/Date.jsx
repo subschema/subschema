@@ -5,7 +5,7 @@ var DateInput = React.createClass({
     mixins: [FieldMixin],
     render() {
         return <input onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
-                      className="form-control" type={this.props.dataType} value={this.getValue()}
+                      className="form-control" type="date" value={this.getValue()}
                       title={this.props.title} placeholder={this.props.placeholder}/>
     }
 });

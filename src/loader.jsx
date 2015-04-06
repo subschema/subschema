@@ -1,4 +1,4 @@
-var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.concat),
+var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.concat, []),
     loaders = [],
     api = {
         /**
@@ -41,6 +41,7 @@ api.addLoader({
         return require.context("./templates", true, /^\.\/.*\.js(x)?/)('./' + template + '.jsx');
     },
     listTemplates(){
+
         return require.context("./templates", true, /^\.\/.*Template\.js(x)?/).keys().map(function (k) {
             return {
                 name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
@@ -58,7 +59,7 @@ api.addLoader({
                 path: k
             }
         }).filter(function (v) {
-            return /Mixin$/.test(v.name);
+            return !/Mixin$/.test(v.name);
         });
     },
     loadValidator(validator){
@@ -78,11 +79,13 @@ api.addLoader({
 
 function list(method) {
     var type = 'list' + method + 's';
-    return concat(loaders.filter(function (v) {
-        return typeof v[type] === 'function'
-    }).map(function (v) {
-        return v[type]();
-    }));
+    return function loader$list() {
+        return concat(loaders.filter(function (v) {
+            return typeof v[type] === 'function'
+        }).map(function (v) {
+            return v[type]();
+        }));
+    }
 }
 function load(method) {
     return function load$load(load) {

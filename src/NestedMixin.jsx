@@ -188,6 +188,9 @@ var NestedMixin = {
     },
 
     normalizeSchema(schema){
+        if (schema == null) {
+            return {};
+        }
         if (tu.isString(schema)) {
             var loaded = loader.loadSchema(schema);
             if (loaded.schema) {
