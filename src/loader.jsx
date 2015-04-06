@@ -75,6 +75,7 @@ api.addLoader({
         });
     }
 });
+
 function list(method) {
     var type = 'list' + method + 's';
     return concat(loaders.filter(function (v) {

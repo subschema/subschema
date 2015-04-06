@@ -1,13 +1,13 @@
 var React = require('react');
-var tu = require('./tutils'), tpath = tu.path;
+var tu = require('./tutils');
 var Editor = require('./Editor.jsx');
 var loader = require('./loader.jsx');
-var tu = require('./tutils');
 
 var NestedMixin = {
     getDefaultProps() {
         return {
             path: null,
+
             schema: {},
             onValueChange() {
             },
@@ -63,14 +63,10 @@ var NestedMixin = {
         this.state.errors = errors;
     },
     makeFieldset(f, i) {
-
-        var ret = f.legend ?
-            <fieldset key={'f' + i}>
-                <legend>{f.legend}</legend>
-                {this.makeFields(f.fields).map(this.addEditor, this)}
-            </fieldset> :
-            <div key={'f' + i}>{this.makeFields(f.fields).map(this.addEditor, this)}</div>
-        return ret;
+        var Template = loader.loadTemplate(f.template || 'FieldSetTemplate');
+        return <Template key={'f' + i} field={f}>
+            {this.makeFields(f.fields).map(this.addEditor, this)}
+        </Template>
     },
 
     handleValueChange(newValue, oldValue, property, path) {

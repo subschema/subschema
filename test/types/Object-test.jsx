@@ -6,7 +6,7 @@ describe('Object', function () {
     var Form = subschema.Form;
     var loader = subschema.loader;
     var Simulate = React.addons.TestUtils.Simulate;
-    var sample = require('../../public/samples/Loader');
+    var sample = require('../../public/samples/Loader.jsx');
     var _ = require('lodash');
     this.timeout(50000);
     function into(node) {

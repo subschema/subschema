@@ -5,4 +5,4 @@ module.exports.Editor = require('./Editor.jsx');
 module.exports.validators = require('./validators');
 module.exports.util = require('./tutils');
 module.exports.loader = require('./loader.jsx');
-module.exports.Types = require('./types/index.js');
+module.exports.Types = require('./types.jsx');
