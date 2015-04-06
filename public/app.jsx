@@ -38,7 +38,10 @@ var MyModal = React.createClass({
     }
 });
 var samples = require.context('./samples/', true, /\.js(x)?$/).keys().map((v)=> {
-    return v.replace(/\.\/(.*)\.js(x)?/, '$1');
+    return {
+        name: v.replace(/\.\/(.*)\.js(x)?/, '$1'),
+        file: v.replace('./','')
+    };
 });
 
 var App = React.createClass({
@@ -48,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Loader',
+            file: 'Loader.jsx',
             description: ''
         }
     },
@@ -58,7 +61,7 @@ var App = React.createClass({
         this.loadFile();
     },
     loadFile(){
-        var json = this.state.file !== 'none' ? require('./samples/' + this.state.file + '.js') : {schema: {}};
+        var json = this.state.file !== 'none' ? require('./samples/' + this.state.file) : {schema: {}};
         json.output = null;
         var state = {
             loadErrors: this.state.loadErrors,
@@ -131,7 +134,7 @@ var App = React.createClass({
                                 value={this.state.file}>
                             <option value="none">None Selected</option>
                             {samples.map((v)=> {
-                                return <option key={v} value={v}>{v}</option>
+                                return <option key={v.name} value={v.file}>{v.name}</option>
                             })}
 
                         </select>

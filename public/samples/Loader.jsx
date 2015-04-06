@@ -1,8 +1,7 @@
+var React = require('react');
 module.exports = {
     description: 'This shows how to use a loader to load a schema',
-    schema: {
-        schema: 'Contact'
-    },
+    schema: 'Contact',
     data: {
         name: 'Robert Loblaw',
         primary: {
@@ -32,7 +31,54 @@ module.exports = {
     },
     setup: function () {
         var loader = require('subschema').loader;
+        /**
+         * If you are using a jsx compiler you would just
+         * use jsx, but due to things, its not jsx.
+         */
+        loader.addTemplate('SimpleTemplate', React.createClass({
+            displayName: 'SimpleTemplate',
+            render(){
+                var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
+                return (<div
+                    className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' +  fieldClass}>
+                    <div className="">
+                        {children}
+                        <p className="help-block" ref="help">{message || help}</p>
+                    </div>
+                </div>);
+            }
+        }));
+        var Object = require('types/Object.jsx');
+        loader.addType('ToggleObject', React.createClass({
+            displayName: 'ToggleObject',
+            getInitialState(){
+                return {
+                    toggled: false
+                }
+            },
+            handleToggle(){
+                this.setState({toggled: !this.state.toggled});
+            },
+            getValue(){
+                this.refs.val.getValue()
+            },
+            setValue(val){
+                this.refs.val.setValue(val);
+            },
+            render(){
+                var style = {
+                    display: this.state.toggled ? 'none' : 'block'
+                };
 
+                return <div class="form-group row">
+                    <legend onClick={this.handleToggle}>Toggle</legend>
+                    <div style={style}>
+                        <Object ref="val" {...this.props}/>
+                    </div>
+                </div>
+
+            }
+        }));
         var loaded = loader.addSchema({
             Address: {
                 address: 'Text',
@@ -50,8 +96,9 @@ module.exports = {
                 schema: {
                     name: 'Text',
                     primary: {
-                        type: 'Object',
-                        subSchema: 'Address'
+                        type: 'ToggleObject',
+                        subSchema: 'Address',
+                        template: 'SimpleTemplate'
                     },
                     otherAddresses: {
                         canEdit: true,
