@@ -41,9 +41,11 @@ var Editor = React.createClass({
         }
     },
     getInitialState(){
+        var errors = this.props.errors;
         return {
-            errors: this.props.errors,
-            value: this.props.value
+            errors: errors,
+            value: this.props.value,
+            hasValidated: errors != null
         }
     },
     /*componentWillReceiveProps(props){
@@ -55,7 +57,6 @@ var Editor = React.createClass({
         this.refs.field.setValue(value);
     },
     setErrors(errors){
-
         this.setState({errors});
     },
 
@@ -71,8 +72,8 @@ var Editor = React.createClass({
         if (!hasChanged) {
             return;
         }
-        var hasValidated = this.state.hasValidated || this.state.errors && this.state.errors[this.props.path];
-        if (!hasValidated) {
+        var hasValidated = this.state.hasValidated;
+        if (hasValidated) {
             this.validate(newValue);
         }
 
