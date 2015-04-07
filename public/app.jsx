@@ -51,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Basic.js',
+            file: 'Login.js',
             description: ''
         }
     },

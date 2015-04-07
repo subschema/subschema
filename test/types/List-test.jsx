@@ -6,6 +6,10 @@ describe('List', function () {
     var Simulate = React.addons.TestUtils.Simulate;
     var _ = require('lodash');
     this.timeout(50000);
+    function into(node) {
+      //  return React.render(node, document.getElementsByTagName('body')[0]);
+       return TestUtils.renderIntoDocument(node);
+    }
     function add(root, c) {
         var refs = root.refs.tasks.refs.field.refs;
         Simulate.click(refs.addBtn);
@@ -30,7 +34,7 @@ describe('List', function () {
     }
     var Todos = require('../../public/samples/Todos'), Schema = Todos.schema;
     it('should render a list', function () {
-        var root = TestUtils.renderIntoDocument(<Form schema={Schema}/>);
+        var root = into(<Form schema={Schema}/>);
         expect(root).toExist();
         expect(root.refs.tasks).toExist();
         expect(root.refs.tasks.refs.field.refs.tasks_0).toNotExist();
@@ -45,7 +49,7 @@ describe('List', function () {
                 'three'
             ]
         };
-        var root = TestUtils.renderIntoDocument(<Form schema={Schema} value={data}/>);
+        var root = into(<Form schema={Schema} value={data}/>);
         expect(root).toExist();
         expect(root.refs.tasks).toExist();
         expect(root.refs.tasks.refs.field.refs.addBtn).toExist();
@@ -83,7 +87,7 @@ describe('List', function () {
                 'three'
             ]
         }
-        var root = TestUtils.renderIntoDocument(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>);
         var tasks = root.refs.tasks.refs.field.refs
         expect(tasks.addBtn).toNotExist();
         expect(tasks.tasks_0).toExist();
@@ -105,7 +109,7 @@ describe('List', function () {
                 'three'
             ]
         }
-        var root = TestUtils.renderIntoDocument(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>);
 
         expect(root.refs.tasks.refs.field.refs.addBtn).toNotExist();
         var tasks = root.refs.tasks.refs.field.refs;
@@ -139,7 +143,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = TestUtils.renderIntoDocument(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>);
         expect(root).toExist();
         expect(root.refs.tasks).toExist();
 
@@ -183,8 +187,29 @@ describe('List', function () {
         }, data = {
             tasks: ['one']
         }
-        var root = TestUtils.renderIntoDocument(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>);
         edit(root, 0);
     });
+    it('should render edit a value with an error', function () {
+        var schema = {
+            schema: {
+                tasks: {
+                    type: 'List',
+                    itemType: 'Text',
+                    canAdd: true,
+                    canEdit: true,
+                    canReorder: true,
+                    canDelete: true
+                }
+            }
+        }, data = {
+            tasks: ['one', 'two']
+        }, errors = {
+            'tasks.1':[{ message:'Can not be 2' }]
+        }
+        var root = into(<Form schema={schema} value={data} errors={errors}/>);
 
+        expect(root.refs.tasks.refs.field.refs.tasks_1.refs.error).toExist();
+        expect(root.refs.tasks.refs.field.refs.tasks_1.refs.error.getDOMNode().innerHTML).toEqual('Can not be 2');
+    });
 })

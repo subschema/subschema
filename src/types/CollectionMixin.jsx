@@ -15,6 +15,9 @@ var CollectionMixin = {
     setValue(value){
        this.setState(this.wrap({value}));
     },
+    setErrors(errors){
+      this.setState({errors});
+    },
     handleMoveUp(pos, val) {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);

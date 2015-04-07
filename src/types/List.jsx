@@ -100,20 +100,23 @@ var ListInput = React.createClass({
         item.canEdit = field.canEdit;
         item.canAdd = field.canAdd;
         this._item = item;
+        var err = this.state.errors || {};
         var itemToString = this.itemToString();
         return (<div className="list-editor">
             {this.renderAdd()}
             <ul className="edit-list list-group">
                 {values.map((v, i) => {
+                    var lipath = tu.path(path, v.id);
                     return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}
-                                             path={tu.path(path,v.id)}
                                              onMoveUp={this.handleMoveUp}
                                              itemToString={itemToString}
                                              onMoveDown={this.handleMoveDown} onDelete={this.handleDelete}
                                              onEdit={this.handleEdit}
                                              field={item}
+                                             path={lipath}
+                                             errors={err && err[lipath]}
                                              pid={v.id}
-                                             value={v.value.value} errors={errors} last={i + 1 === length}/>
+                                             value={v.value.value} last={i + 1 === length}/>
                 })}
             </ul>
         </div>);

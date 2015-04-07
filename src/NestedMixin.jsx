@@ -29,6 +29,13 @@ var NestedMixin = {
             errors: this.props.errors
         }
     },
+/*
+    componentWillMount(){
+        this.setValue(this.props.value);
+
+    },
+*/
+
     componentDidMount(){
         this.setValue(this.props.value);
         this.setErrors(this.props.errors);
@@ -41,26 +48,22 @@ var NestedMixin = {
             });
         } else if (path != null) {
             var parts = path.split('.', 2);
-            // if (parts.length > 1) {
             this.refs[parts[0]].refs.field.setValue(newValue, oldValue, property, parts[1]);
-            // }else{
-            //   this.refs[path].refs.field.refs[property].setValue(newValue, oldValue, property);
-
-            //}
         } else {
             this.refs[property].setValue(newValue, oldValue, property);
         }
     },
-    setErrors(errors, newValue, oldValue, property, path){
-        if (property == null) {
-            tu.values(this.refs).forEach((ref)=> {
-                ref.setErrors && ref.setErrors(errors);
-            });
-        } else {
-            var {key, rest} = path.split('.', 2);
-            this.refs[key].editor.setErrors(errors, newValue, oldValue, property, rest);
+    setErrors(errors){
+        if (!errors) {
+            this.state.errors = null;
+            return;
         }
-        this.state.errors = errors;
+        Object.keys(errors).forEach(function (key) {
+            key = key.replace(this.props.path + '.', '').split('.', 2)[0]
+            this.refs[key] && this.refs[key].setErrors(errors);
+
+        }, this);
+
     },
     makeFieldset(f, i) {
         var Template = loader.loadTemplate(f.template || 'FieldSetTemplate');
@@ -80,11 +83,11 @@ var NestedMixin = {
 
     handleValidate(errors, newValue, oldValue, property, path){
         if (this.props.onValidate(newValue, oldValue, property, path) !== false) {
-            if (this.form === this) {
+            /*if (this.form === this) {
                 var e = {};
                 e[path] = errors;
                 this.form.setErrors(e);
-            }
+            }*/
         }
     },
     getErrorMessages(){
@@ -136,16 +139,15 @@ var NestedMixin = {
         var f = field.name;
         var {path} = this.props;
         var {value, errors} = this.state;
-        var tmpl = {};
+        var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
             tmpl['template'] = field.template;
         }
-        return <Editor ref={f} key={'key-' + f} path={tu.path(path, f)} value={value && value[f]}
+        return <Editor ref={f} key={'key-' + f} path={path} value={value && value[f]}
                        field={field}
-                       errors={errors}
                        name={f}
                        form={this.form}
-            {...tmpl}
+                        {...tmpl}
                        onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>
     },
     makeFields(fields) {

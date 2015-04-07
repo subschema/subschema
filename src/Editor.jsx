@@ -2,7 +2,7 @@ var React = require('react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
 var loader = require('./loader.jsx');
-
+"use strict";
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
@@ -41,11 +41,9 @@ var Editor = React.createClass({
         }
     },
     getInitialState(){
-        var errors = this.props.errors;
         return {
-            errors: errors,
             value: this.props.value,
-            hasValidated: errors != null
+            hasChanged:false
         }
     },
     /*componentWillReceiveProps(props){
@@ -57,7 +55,19 @@ var Editor = React.createClass({
         this.refs.field.setValue(value);
     },
     setErrors(errors){
-        this.setState({errors});
+        if (this.props.path in errors) {
+            this.setState({errors: errors[this.props.path], hasValidated: true});
+        } else {
+            Object.keys(errors).forEach((key)=> {
+                var rest = key.replace(this.props.path + '.', '').split('.', 2), path = rest[0];
+                if (this.refs.field.refs[path]) {
+                    this.refs.field.refs[path].setErrors(errors);
+                } else {
+                    this.refs.field.setErrors && this.refs.field.setErrors(errors);
+                }
+
+            }, this);
+        }
     },
 
     componentWillMount(){
@@ -65,27 +75,29 @@ var Editor = React.createClass({
         this.validators = validators ? validators.map(initValidators) : EMPTY_ARR;
     },
     handleValidate(newValue, oldValue, path) {
-        this.checkAndMaybeValidate(newValue, oldValue);
-    },
-    checkAndMaybeValidate(newValue, oldValue){
-        var hasChanged = newValue !== oldValue;
-        if (!hasChanged) {
-            return;
-        }
-        var hasValidated = this.state.hasValidated;
-        if (hasValidated) {
-            this.validate(newValue);
-        }
+
+        this.state.hasValidated = true;
+
+        this.validate(newValue);
+
 
     },
 
     handleChange(newValue, oldValue, name) {
-        var hasChanged = newValue !== oldValue;
+        var hasChanged = newValue != oldValue;
         if (!hasChanged) {
             return;
         }
+        this.state.hasChanged = true;
         if (this.props.onValueChange(newValue, oldValue, name, this.props.path) !== false) {
-            this.checkAndMaybeValidate(newValue, oldValue);
+            var errors = this.getErrorMessages(newValue);
+            if (!this.state.hasValidated) {
+                if (!errors || errors.length === 0) {
+                    this.state.hasValidated = true;
+                }
+            } else {
+                this.validate(newValue, errors);
+            }
         }
 
     },
@@ -97,27 +109,30 @@ var Editor = React.createClass({
      * Runs validation and updates empty fields.
      *
      */
-        validate(value){
+        validate(value, errors){
         value = arguments.length === 0 ? this.getValue() : value;
-        var errors = this.getErrorMessages(value);
+        errors = errors || this.getErrorMessages(value);
         if (this.props.onValidate(errors, value, this.props.value, this.props.name, this.props.path) !== false) {
-            var eo = this.state.errors || {};
-            eo[this.props.path] = errors && errors.length ? errors : null;
+
             this.setState({
                 hasValidated: true,
-                errors: eo
+                errors: errors
             });
         }
         return errors;
     },
 
     getErrorMessages(value){
+        if ((!this.state.hasChanged && this.state.errors)) {
+            return this.state.errors;
+        }
         value = arguments.length === 0 ? this.getValue() : value;
         var form = this.props.form ? this.props.form : this.refs.field && this.refs.field.form;
 
         var values = form && form.getValue();
         return this.validators.map((v)=> {
-            return v(value, values);
+            var ret =  v(value, values);
+            return ret;
         }).filter(tu.nullCheck);
     },
 
@@ -136,9 +151,9 @@ var Editor = React.createClass({
         var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props;
         var {name,type,fieldClass, errorClassName, help} = field;
 
-        var errors = this.state.errors,
-            err = errors && errors[path] && errors[path][0] && errors[path],
-            errMessage = err && err[0].message,
+        var err = this.state.errors;
+        //err = errors, //&& errors[path] && errors[path][0] && errors[path],
+        var errMessage = err && err[0] && err[0].message,
             Component = loader.loadType(type),
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
@@ -151,7 +166,6 @@ var Editor = React.createClass({
         var field = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                error={err}
                                path={path}
-                               errors={errors}
                                value={this.state.value}
                                onValueChange={this.handleChange}
                                onValidate={this.handleValidate}/>;

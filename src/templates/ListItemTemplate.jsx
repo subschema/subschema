@@ -53,12 +53,12 @@ var ListItemTemplate = React.createClass({
     render() {
         var {pos, field, value, errors, path, onValidate, last, onValueChange} = this.props;
         var {type, name, canReorder, canDelete} = field;
-        var error = errors && errors[path];
+        var error = errors && errors[0] && errors[0].message;
         var btnCls = 'btn btn-xs btn-default'
         return <li className={'list-group-item '+(error ? 'has-error' : '')}>
             {this.renderField()}
 
-            { error ? <p className="help-block">{error}</p> : null }
+            { error ? <p ref="error" className="help-block">{error}</p> : null }
             <div className="btn-group  pull-right">
                 {canReorder && pos > 0 ? <button onClick={this.handleMoveUp} ref="upBtn" className={btnCls}
                                                  title="Move Up">
