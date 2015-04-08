@@ -1,10 +1,14 @@
-var React = require('react'), FieldMixin = require('../FieldMixin.jsx');
+var React = require('react'), FieldMixin = require('../FieldMixin.jsx'), Constants = require('../Constants');
 
 var Password = React.createClass({
     mixins: [FieldMixin],
+    statics: {
+        inputClassName: Constants.inputClassName
+    },
     render(){
         return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
-                      className="form-control" type="password" value={this.getValue()} title={this.props.title}
+                      className={Constants.clz(Password.inputClassName, this.props.editorClass)} type="password"
+                      value={this.getValue()} title={this.props.title}
                       placeholder={this.props.placeholder}/>
     }
 

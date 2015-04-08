@@ -43,7 +43,7 @@ var Editor = React.createClass({
     getInitialState(){
         return {
             value: this.props.value,
-            hasChanged:false
+            hasChanged: false
         }
     },
     /*componentWillReceiveProps(props){
@@ -131,7 +131,7 @@ var Editor = React.createClass({
 
         var values = form && form.getValue();
         return this.validators.map((v)=> {
-            var ret =  v(value, values);
+            var ret = v(value, values);
             return ret;
         }).filter(tu.nullCheck);
     },
@@ -139,6 +139,9 @@ var Editor = React.createClass({
 
     title: function () {
         var field = this.props.field || {};
+        if (field.title === false) {
+            return null;
+        }
         if (field.title != null) {
             return field.title;
         }
@@ -149,7 +152,7 @@ var Editor = React.createClass({
     },
     render() {
         var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props;
-        var {name,type,fieldClass, errorClassName, help} = field;
+        var {name,type,fieldClass, editorClass, errorClassName, help} = field;
 
         var err = this.state.errors;
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
@@ -163,18 +166,19 @@ var Editor = React.createClass({
         } else {
             Template = loader.loadTemplate(template || 'EditorTemplate');
         }
-        var field = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
+        var child = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                error={err}
                                path={path}
+                               editorClass={editorClass}
                                value={this.state.value}
                                onValueChange={this.handleChange}
                                onValidate={this.handleValidate}/>;
         //errMessage, errorClassName, name, fieldClass, title, help
-        return Template ? <Template name={name} fieldClass={fieldClass} title={title} help={help}
+        return Template ? <Template field={field} name={name} fieldClass={fieldClass} title={title} help={help}
                                     errorClassName={errorClassName} message={errMessage}>
-            {field}
+            {child}
         </Template> :
-            field;
+            child;
 
     }
 });

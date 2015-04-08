@@ -1,7 +1,6 @@
 var path = require('path');
 
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
@@ -65,7 +64,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),
-        new ExtractTextPlugin(".build/[name].css"),
         function () {
             this.plugin("done", function (stats) {
                 stats = stats.toJson();

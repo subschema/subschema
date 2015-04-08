@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react'), Constants = require('../Constants');
 
 
 var _ = require('lodash');
@@ -7,7 +7,6 @@ var CollectionMixin = require('./CollectionMixin.jsx');
 var loader = require('../loader.jsx');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
-
     getDefaultProps() {
         return {
 
@@ -18,7 +17,9 @@ var ListInput = React.createClass({
             },
             onValidate() {
             },
-            itemTemplate: 'ListItemTemplate'
+            itemTemplate: 'ListItemTemplate',
+            collectionCreateTemplate:this.collectionCreateTemplate
+
         }
     },
     /*
@@ -102,9 +103,9 @@ var ListInput = React.createClass({
         this._item = item;
         var err = this.state.errors || {};
         var itemToString = this.itemToString();
-        return (<div className="list-editor">
+        return (<div className={Constants.clz(ListInput.inputClassName, this.props.editorClass, 'list-editor')}>
             {this.renderAdd()}
-            <ul className="edit-list list-group">
+            <ul className={Constants.clz(ListInput.inputListClassName)}>
                 {values.map((v, i) => {
                     var lipath = tu.path(path, v.id);
                     return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}

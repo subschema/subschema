@@ -2,8 +2,12 @@ var React = require('react');
 var FieldMixin = require('../FieldMixin.jsx');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
+var Constants = require('../Constants');
 
 var Checkboxes = React.createClass({
+    statics: {
+        inputClassName: Constants.inputClassName
+    },
     getDefaultProps() {
         return {
             title: '',
@@ -94,7 +98,8 @@ var Checkboxes = React.createClass({
     render()
     {
 
-        return <div>{this.makeOptions(this.props.field.options, 1)}</div>
+        return <div
+            className={Constants.clz(Checkboxes.inputClassName, this.props.editorClass)}>{this.makeOptions(this.props.field.options, 1)}</div>
     }
 });
 

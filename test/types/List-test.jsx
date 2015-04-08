@@ -13,9 +13,9 @@ describe('List', function () {
     function add(root, c) {
         var refs = root.refs.tasks.refs.field.refs;
         Simulate.click(refs.addBtn);
-        var input = refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
+        var input = refs.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        Simulate.click(refs.createBtn);
+        Simulate.click(refs.addEdit.refs.submitBtn);
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
         var tasks = root.refs.tasks.refs.field.refs;
@@ -24,9 +24,9 @@ describe('List', function () {
     function edit(root, c){
         var tasks = root.refs.tasks.refs.field.refs;
         Simulate.click(tasks['tasks_'+c].refs.edit);
-        var input = tasks.itemEditor.refs.field.refs.value.refs.field.refs.input;
+        var input = tasks.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        Simulate.click(tasks.editBtn);
+        Simulate.click(tasks.addEdit.refs.submitBtn);
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
         var tasks = root.refs.tasks.refs.field.refs;

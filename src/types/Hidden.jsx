@@ -1,13 +1,17 @@
-var React = require('react'), FieldMixin = require('../FieldMixin.jsx');
+var React = require('react'), FieldMixin = require('../FieldMixin.jsx'), Constants = require('../Constants');
 
 
-var TextInput = React.createClass({
+var HiddenInput = React.createClass({
     mixins: [FieldMixin],
+    statics: {
+        inputClassName: Constants.inputClassName
+    },
     render() {
         return <input id={this.props.name}
-                      className="form-control" type="hidden" value={this.getValue()}
+                      className={Constants.clz(HiddenInput.inputClassName, this.props.editorClass)} type="hidden"
+                      value={this.getValue()}
                       data-path={this.props.path}/>
     }
 });
 
-module.exports = TextInput;
+module.exports = HiddenInput;

@@ -3,11 +3,11 @@ var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var _ = require('lodash');
 var loader = require('../loader.jsx');
+var Constants = require('../Constants');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {
         return {
-            title: '',
             placeholder: '',
             itemType: 'Text',
             keyType: 'Text',
@@ -16,7 +16,8 @@ var MixedInput = React.createClass({
             },
             onValidate() {
             },
-            itemTemplate: 'ListItemTemplate'
+            itemTemplate: this.itemTemplate,
+            collectionCreateTemplate: this.collectionCreateTemplate
         }
     },
 
@@ -112,9 +113,9 @@ var MixedInput = React.createClass({
         item.canDelete = field.canDelete;
         item.canEdit = field.canEdit;
         var itemToString = this.itemToString();
-        return (<div className="list-editor">
+        return (<div className={Constants.clz(MixedInput.inputClassName, this.props.editorClass, 'list-editor')}>
             {this.renderAdd()}
-            <ul className="edit-list list-group">
+            <ul className={Constants.clz(MixedInput.inputListClassName)}>
                 {values.map((v, i) => {
                     var path = tu.path(path, v.id);
                     return <ListItemTemplate key={path} pos={i} path={path}

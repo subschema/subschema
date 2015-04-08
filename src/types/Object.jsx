@@ -4,7 +4,6 @@
 var React = require('react');
 var NestedMixin = require('../NestedMixin.jsx');
 var loader = require('../loader.jsx');
-var tu = require('../tutils');
 
 var ObjectInput = React.createClass({
     mixins: [NestedMixin],
@@ -27,9 +26,8 @@ var ObjectInput = React.createClass({
         var obj = {};
         obj.value = this.getValue();
         var Template = loader.loadTemplate(template);
-        var ret =
-            <Template {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</Template>;
-        return ret;
+        return (
+            <Template {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</Template>);
     }
 
 });

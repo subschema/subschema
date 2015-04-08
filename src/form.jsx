@@ -31,7 +31,7 @@ var Form = React.createClass({
             {this.schema && this.schema.schema ? this.renderSchema(this) : null}
             {sb ?
                 <button type="submit" className='btn btn-primary' dangerouslySetInnerHTML={{__html: sb}}/> : null}
-
+            {this.props.children}
         </Template>
     }
 

@@ -76,17 +76,17 @@ var RadioInput = React.createClass({
 
         var RadioItemTemplate = loader.loadTemplate(template);
 
-        return (<ul>{this.makeOptions(field.options).map((option, index)=> {
+        return (<div>{this.makeOptions(field.options).map((option, index)=> {
 
             option.key = '' + name + option.val;
 
-            return <RadioItemTemplate {...option}>
-                <input id={path} type={dataType}
+            return <RadioItemTemplate  {...option} id={path+'.'+index}>
+                <input id={path+'.'+index} type={dataType}
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
 
 
-        }, this)}</ul>)
+        }, this)}</div>)
     }
 });
 

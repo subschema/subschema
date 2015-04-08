@@ -1,22 +1,28 @@
 var _ = require('lodash');
 var React = require('react');
 var Editor = require('../Editor.jsx');
+var loader = require('../loader.jsx');
+var Constants = require('../Constants');
 var CollectionMixin = {
-
+    statics: {
+        collectionCreateTemplate: 'CollectionCreateTemplate',
+        listClassName: Constants.listClassName,
+        itemTemplate: 'ListItemTemplate'
+    },
     getInitialState() {
         return {};
     },
     getItemEditorValue(){
-        return this.refs.itemEditor.getValue();
+        return this.refs.addEdit.refs.itemEditor.getValue();
     },
     getValue(){
         return this.unwrap(this.state.wrapped);
     },
     setValue(value){
-       this.setState(this.wrap({value}));
+        this.setState(this.wrap({value}));
     },
     setErrors(errors){
-      this.setState({errors});
+        this.setState({errors});
     },
     handleMoveUp(pos, val) {
         var values = this.state.wrapped, oval = values && values.concat();
@@ -100,19 +106,27 @@ var CollectionMixin = {
             return null;
         }
         var value = this.state.editValue || (this.state.editValue = {})
-        return <div className="panel-body">
-            <div className="form-group">
-                <Editor ref="itemEditor" field={this.getTemplateItem()} value={value}
-                        pid={this.state.editPid}
-                        form={null}/>
-            </div>
-            <div className="form-group">
-                <button className="btn btn-default pull-left" ref="cancelBtn" onClick={this.handleCancelAdd}>Cancel
-                </button>
-                <button className="btn btn-primary pull-right" ref={create ? 'createBtn' : 'editBtn'}
-                        onClick={handler}>{label}</button>
-            </div>
-        </div>
+        /*return <div className="panel-body">
+         <div className="form-group">
+         <Editor ref="itemEditor" field={this.getTemplateItem()} value={value}
+         pid={this.state.editPid}
+         form={null}/>
+         </div>
+         <div className="form-group">
+         <button className="btn btn-default pull-left" ref="cancelBtn" onClick={this.handleCancelAdd}>Cancel
+         </button>
+         <button className="btn btn-primary pull-right" ref={create ? 'createBtn' : 'editBtn'}
+         onClick={handler}>{label}</button>
+         </div>
+         </div>*/
+        var CreateTemplate = loader.loadTemplate(this.props.collectionCreateTemplate);
+        var title = this.props.title || '';
+        return (<CreateTemplate editPid={this.state.editPid} value={this.state.editValue} field={this.getTemplateItem()}
+                                ref="addEdit"
+                                title={create ? 'Create ' + title : 'Edit ' + title  }
+                                submitButton={label}
+                                onCancel={this.handleCancelAdd}
+                                onSubmit={handler}/>)
     },
     renderAddBtn() {
         if (!this.props.field.canAdd) {
@@ -123,22 +137,19 @@ var CollectionMixin = {
                 className="icon-add"/>Add
             </button>
         </div>
-    },
+    }
+    ,
 
-    renderAdd() {
+    renderAdd()
+    {
         var field = this.props.field;
         if (!(field.canAdd || field.canEdit)) {
             return null;
         }
         var {showAdd, showEdit} = this.state;
-        return showAdd || showEdit ? <div className="panel panel-default">
-            <div className="panel-heading">
-                <h3 className={ 'panel-title clearfix '}>
-                    {showAdd ? 'Create ' + this.props.title : 'Edit ' + this.props.title  }
-                </h3>
-            </div>
-            { this.renderAddEditTemplate(showEdit, showAdd) }
-        </div> : this.renderAddBtn();
+        return showAdd || showEdit ?
+            this.renderAddEditTemplate(showEdit, showAdd)
+            : this.renderAddBtn();
     }
 }
 module.exports = CollectionMixin;

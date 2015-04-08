@@ -6,6 +6,7 @@ var FieldMixin = {
             name: '',
             placeholder: '',
             dataType: this.dataType,
+            editorClass:'',
             onValueChange() {
             },
             onValidate(){
