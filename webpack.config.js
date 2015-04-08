@@ -9,7 +9,7 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
 
 module.exports = {
 
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
 
     entry: {
         app: './public/app.jsx'

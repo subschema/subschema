@@ -12,8 +12,11 @@ module.exports = function (config) {
             'tests.webpack.jsx': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
         },
         reporters: ['dots'], //report results in this format
+
         webpack: { //kind of a copy of your webpack config
-            devtool: 'inline-source-map',
+            cache: true,
+            debug: true,
+            devtool: '@inline-source-map',
 
             entry: {
                 app: './public/app.jsx'
@@ -54,9 +57,6 @@ module.exports = function (config) {
                     'process.env.NODE_ENV': JSON.stringify('development')
                 })]
 
-        },
-        webpackServer: {
-            noInfo: true
         }
     });
 
