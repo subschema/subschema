@@ -4,7 +4,7 @@ var React = require('react'), FieldMixin = require('../FieldMixin.jsx'), Constan
 var Checkbox = React.createClass({
     mixins: [FieldMixin],
     statics: {
-        inputClassName: Constants.inputClassName
+        inputClassName: ''//Constants.inputClassName
     },
     doChange:function(e){
         this.props.onValueChange(e.target.checked ? this.props.value || true : null, this.state.value || false, this.props.name, this.props.path);

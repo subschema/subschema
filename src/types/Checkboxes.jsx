@@ -6,7 +6,7 @@ var Constants = require('../Constants');
 
 var Checkboxes = React.createClass({
     statics: {
-        inputClassName: Constants.inputClassName
+        inputClassName: Constants.inputCheckboxesClassName
     },
     getDefaultProps() {
         return {
