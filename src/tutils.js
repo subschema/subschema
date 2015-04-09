@@ -50,6 +50,23 @@ var api = {
         return dest;
     },
     slice: Function.call.bind(Array.prototype.slice),
+    clone: function (t) {
+        var tt = typeof t;
+        if (t == null || tt === 'number' || tt === 'string' || tt === 'function') {
+            return t;
+        }
+        if (t instanceof Date) {
+            return new Date(t.getTime());
+        }
+        if (Array.isArray(t)) {
+            return t.slice(0);
+        }
+        var ret = {};
+        Object.keys(t).forEach(function (v) {
+            ret[v] = t[v];
+        });
+        return ret;
+    },
     debounce: function (fn, to) {
         var ti;
 

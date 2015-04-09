@@ -1,7 +1,6 @@
 var React = require('react');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
-var _ = require('lodash');
 var loader = require('../loader.jsx');
 var Constants = require('../Constants');
 var MixedInput = React.createClass({
@@ -63,7 +62,7 @@ var MixedInput = React.createClass({
         return null;
     },
     cloneVal(val){
-        return _.clone(val)
+        return tu.clone(val)
 
     },
     uniqueCheck(value){
@@ -105,7 +104,7 @@ var MixedInput = React.createClass({
         return item;
     },
     render() {
-        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || _.isString(itemType)) ? {
+        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
         } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;

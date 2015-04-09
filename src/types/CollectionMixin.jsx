@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var React = require('react');
 var Editor = require('../Editor.jsx');
 var loader = require('../loader.jsx');

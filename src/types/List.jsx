@@ -1,7 +1,5 @@
-var React = require('react'), Constants = require('../Constants');
-
-
-var _ = require('lodash');
+var React = require('react');
+var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var loader = require('../loader.jsx');
@@ -58,7 +56,7 @@ var ListInput = React.createClass({
     },
     cloneVal(val){
         return {
-            value: _.clone(val)
+            value: tu.clone(val)
         }
     },
     itemToString(){
@@ -92,7 +90,7 @@ var ListInput = React.createClass({
         };
     },
     render() {
-        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || _.isString(itemType)) ? {
+        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
         } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;
