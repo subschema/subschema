@@ -1,8 +1,11 @@
 "use strict";
 var api = {
-    isString: function (v) {
-        return typeof v === 'string' || v instanceof String;
-    },
+    template: require('lodash/string/template'),
+    extend: require('lodash/object/extend'),
+    isFunction: require('lodash/lang/isFunction'),
+    isString: require('lodash/lang/isString'),
+    isRegExp: require('lodash/lang/isRegExp'),
+    find:require('lodash/collection/find'),
     unique: function (array) {
         return array.filter(function (a, b, c) {
             // keeps first occurrence

@@ -27,7 +27,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader?experimental'},
+            {test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
             // loads bootstrap's css.

@@ -2,11 +2,7 @@
 //VALIDATORS
 //==================================================================================================
 //Borrowed from backbone-forms, thanks!
-var _ = {
-    template: require('lodash/string/template'),
-    extend: require('lodash/object/extend'),
-    isFunction:require('lodash/lang/isFunction')
-}
+var _ = require('./tutils')
 
 module.exports = (function () {
 

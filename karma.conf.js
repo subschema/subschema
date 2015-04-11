@@ -6,10 +6,10 @@ module.exports = function (config) {
         singleRun: true, //just run once by default
         frameworks: ['mocha'], //use the mocha test framework
         files: [
-            'tests.webpack.jsx' //just load this file
+            'tests.webpack.js' //just load this file
         ],
         preprocessors: {
-            'tests.webpack.jsx': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
+            'tests.webpack.js': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
         },
         reporters: ['dots'], //report results in this format
 
@@ -28,7 +28,7 @@ module.exports = function (config) {
             },
             module: {
                 loaders: [
-                    {test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader?experimental'},
+                    {test: /\.js(x)?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
                     {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
                     {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
                     {

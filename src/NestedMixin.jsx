@@ -168,7 +168,7 @@ var NestedMixin = {
             return schema[f];
         }).map((f) => {
 
-            var ref = _.isString(f) ? schema[f] : f;
+            var ref = tu.isString(f) ? schema[f] : f;
             if (tu.isString(ref)) {
                 ref = {
                     name: f,

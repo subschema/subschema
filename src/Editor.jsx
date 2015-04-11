@@ -10,13 +10,13 @@ function initValidators(v) {
         return validator(v);
     }
     //If it is a RegExp than init ReExp
-    if (_.isRegExp(v)) {
+    if (tu.isRegExp(v)) {
         return loader.loadValidator('regexp')({
             regexp: v
         });
     }
     //If its a function just return it.
-    if (_.isFunction(v)) {
+    if (tu.isFunction(v)) {
         return v;
     }
     //otherwise lets try initing it.
