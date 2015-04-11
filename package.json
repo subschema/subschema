@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.js",
   "scripts": {
@@ -46,6 +46,5 @@
   "peerDependencies": {
     "react": "^0.13.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
