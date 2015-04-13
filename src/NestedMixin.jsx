@@ -2,7 +2,6 @@ var React = require('react');
 var tu = require('./tutils');
 var Editor = require('./Editor.jsx');
 var loader = require('./loader.jsx');
-
 var NestedMixin = {
     getDefaultProps() {
         return {
@@ -188,7 +187,6 @@ var NestedMixin = {
             return ref;
         })
     },
-
     normalizeSchema(schema){
         if (schema == null) {
             return {};
@@ -210,6 +208,7 @@ var NestedMixin = {
         }
         return schema;
     },
+
     renderSchema(form) {
         if (form) {
             this.form = form;

@@ -27,7 +27,7 @@ var Form = React.createClass({
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         var sb = submitButton || this.schema.submitButton;
         var Template = loader.loadTemplate(template);
-        return <Template onValidate={this.handleValidate} onSubmit={this.handleSubmit}>
+        return <Template onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema} value={this.state.value}>
             {this.schema && this.schema.schema ? this.renderSchema(this) : null}
             {sb ?
                 <button type="submit" className='btn btn-primary' dangerouslySetInnerHTML={{__html: sb}}/> : null}

@@ -40,7 +40,7 @@ var MyModal = React.createClass({
 var samples = require.context('./samples/', true, /\.js(x)?$/).keys().map((v)=> {
     return {
         name: v.replace(/\.\/(.*)\.js(x)?/, '$1'),
-        file: v.replace('./','')
+        file: v.replace('./', '')
     };
 });
 
@@ -51,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Login.js',
+            file: 'Wizard.js',
             description: ''
         }
     },
@@ -115,7 +115,8 @@ var App = React.createClass({
 
     render() {
         var {content, loadData, loadErrors} = this.state;
-        var {errors, schema, data, description, setup, teardown} = (content || {});
+        var {errors, schema, data, description, setup, props, teardown} = (content || {});
+
         if (!loadData) data = {};
         if (!loadErrors) errors = {};
         if (setup) {
@@ -126,6 +127,10 @@ var App = React.createClass({
             tmp.pop();
             setup = tmp.join('\n')
         }
+        var propsstr = '';
+        Object.keys(props || {}).forEach(function (key) {
+            propsstr += key + '={' + JSON.stringify(props[key]) + '} ';
+        });
         return <div>
             <div className="navbar">
                 <div className="navbar-inner">
@@ -160,7 +165,9 @@ var App = React.createClass({
                                           errors={ errors }
                                           onValueChange={this.handleValueChange}
                                           onSubmit={this.handleSubmit}
-                                          onValidate={this.handleErrors}/>
+                                          onValidate={this.handleErrors}
+                                        {...props}
+                                        />
                                 </div>
                             </div>
                         </div>
@@ -176,7 +183,7 @@ var App = React.createClass({
                             <div>var schema = {JSON.stringify(schema || {}, null, 2)};</div>
 
 
-                            {'React.render(<Form value={data} schema={schema} errors={errors}/>, document.getElementById("content"))'}
+                            {'React.render(<Form value={data} schema={schema} errors={errors} ' + propsstr + '/>, document.getElementById("content"))'}
 
                         </pre>
 
