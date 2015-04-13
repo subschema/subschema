@@ -6,64 +6,63 @@ const NestedMixin = require('../NestedMixin.jsx');
 const css = require('../styles/wizard.less')
 const ButtonsTemplate = require('./ButtonsTemplate.jsx');
 
-function getNavStates(indx, length) {
-    let styles = []
-    for (let i = 0; i < length; i++) {
-        if (i < indx) {
-            styles.push('done')
-        }
-        else if (i === indx) {
-            styles.push('doing')
-        }
-        else {
-            styles.push('todo')
-        }
-    }
-    return {current: indx, styles: styles}
-}
 
 const Wizard = React.createClass({
-    statics: {
-        getNavStates
-    },
+
     getInitialState() {
         var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;
         schema = NestedMixin.normalizeSchema(schema || subSchema);
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         return {
             compState: 0,
-            navState: getNavStates(0, this.schema.fieldsets.length),
+            navState: this.getNavStates(0, this.schema.fieldsets.length),
             values: []
         }
     },
-
+    getNavStates(indx, length) {
+        let styles = [], values = this.state && this.state.values || [];
+        for (let i = 0; i < length; i++) {
+            if (i < indx || indx == length) {
+                styles.push('done')
+            }
+            else if (i === indx) {
+                styles.push('doing')
+            }
+            else {
+                styles.push('todo')
+            }
+            if (values[i] && values[i].errors) {
+                styles[i]+=' error';
+            }
+        }
+        return {current: Math.min(indx, length - 1), styles: styles}
+    },
     setNavState(next) {
         var len = this.schema.fieldsets.length;
-        this.setState({navState: getNavStates(next, len)})
-        if (next < len) {
-            this.setState({compState: next})
-        }
+        this.setState({navState: this.getNavStates(next, len), compState: Math.min(len - 1, next)})
     },
 
     handleOnClick(evt) {
-        var steps = this.schema.fieldsets.length;
-        if (evt.target.value === steps - 1 &&
-            this.state.compState === steps - 1) {
-            this.setNavState(steps);
+        var steps = this.schema.fieldsets.length, value = evt.target.value;
+        if (value < steps && value <= this.state.values.length) {
+            this.setNavState(value);
         }
-        else {
-            this.setNavState(evt.target.value);
-        }
+
     },
 
-    handleKeyDown(evt) {
-        if (evt.which === 13) {
-            this.setNavState(this.state.compState + 1)
+    handleKeyDown(e) {
+        if (e.which === 13) {
+            if (this.state.compState < this.schema.fieldsets.length - 1) {
+                return this.handleBtn(e, 'next');
+            } else {
+                return this.handleBtn(e, 'submit');
+            }
         }
     },
     handleValidate(){
     },
-    handleSubmit(){
+    handleSubmit(e, errors, value){
+        this.props.onSubmit(e, errors, value);
     },
 
     renderState(compState){
@@ -73,7 +72,8 @@ const Wizard = React.createClass({
         return <Form ref="form" schema={{
         schema,
         fields
-        }} onValidate={this.handleValidate} onSubmit={this.handleSubmit} value={this.state.values[0] || this.props.value}>
+        }} onValidate={this.handleValidate} onSubmit={this.handleSubmit}
+                     value={this.state.values[0] || this.props.value}>
 
             {this.renderBtns(compState)}
         </Form>
@@ -118,25 +118,25 @@ const Wizard = React.createClass({
             }
             case 'next':
             {
-                var messages = form.validate();
-                this.state.values[this.state.compState] = form.getValue();
-                if (!messages) {
-                    this.setNavState(this.state.compState + 1);
+                var errors = form.validate(), compState = this.state.compState;
+                this.state.values[compState] = {value: form.getValue(), errors};
+                if (!errors) {
+                    this.setNavState(compState + 1);
+                } else {
+                    this.setNavState(compState);
                 }
                 break;
             }
             case 'submit':
             {
-                var messages = form.validate();
-                this.state.values[this.state.compState] = form.getValue();
-                if (!messages) {
-                    this.setNavState(this.state.compState + 1);
-                }
+                var errors = form.validate();
+                this.state.values[this.state.compState] = {value: form.getValue(), errors};
                 var data = {};
                 this.state.values.forEach(function (v) {
-                    tu.extend(data, v);
-                })
-                this.handleSubmit(data, messages);
+                    tu.extend(data, v.value);
+                });
+                this.setNavState(this.state.compState + 1);
+                this.handleSubmit(e, errors, data);
                 break;
 
             }

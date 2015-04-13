@@ -16,7 +16,7 @@ module.exports = function (config) {
         webpack: { //kind of a copy of your webpack config
             cache: true,
             debug: true,
-            devtool: '@inline-source-map',
+            devtool: 'inline-source-map',
 
             entry: {
                 app: './public/app.jsx'

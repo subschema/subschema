@@ -14,7 +14,7 @@ var MyModal = React.createClass({
         return (
             <Modal {...this.props} bsStyle='primary' title='Submit' animation={true}>
                 <div className='modal-body'>
-                    <h3>Errors</h3>
+                    {this.props.errors ? <h3>Errors</h3> : null}
                     {this.props.errors && Object.keys(this.props.errors).map((key)=> {
                         return <div>
                             <h4>{key}</h4>
@@ -51,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Wizard.js',
+            file: 'Basic.js',
             description: ''
         }
     },

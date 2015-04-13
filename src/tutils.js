@@ -5,7 +5,11 @@ var api = {
     isFunction: require('lodash/lang/isFunction'),
     isString: require('lodash/lang/isString'),
     isRegExp: require('lodash/lang/isRegExp'),
-    find:require('lodash/collection/find'),
+    isDate: require('lodash/lang/isDate'),
+    isBoolean: require('lodash/lang/isBoolean'),
+    isArray: require('lodash/lang/isArray'),
+    isNumber:require('lodash/lang/isNumber'),
+    find: require('lodash/collection/find'),
     unique: function (array) {
         return array.filter(function (a, b, c) {
             // keeps first occurrence
@@ -13,7 +17,7 @@ var api = {
         });
     },
     values: function (obj) {
-        return obj == null ? [] : Array.isArray(obj) ? obj : Object.keys(obj).map(function (v, i) {
+        return obj == null ? [] : this.isArray(obj) ? obj : Object.keys(obj).map(function (v, i) {
             return obj[v];
         });
     },
