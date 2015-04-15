@@ -12,6 +12,7 @@ var CollectionCreateTemplate = React.createClass({
             <div className="panel-body">
                 <div className="form-group">
                     <Editor ref="itemEditor" field={this.props.field} value={this.props.value}
+                            valueManager={this.props.valueManager}
                             pid={this.props.editPid}
                             form={null}/>
                 </div>

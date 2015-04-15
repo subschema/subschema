@@ -23,26 +23,24 @@ var Checkboxes = React.createClass({
         }
 
     },
-    getInitialState(){
-        return {
-            value: this.props.value
-        }
+    componentWillMount(){
+        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
     },
-    getValue() {
-        return this.state.value
+    componentWillUnMount(){
+        this.props.valueManager.removeListener(this.props.path, this.setValue);
     },
     setValue(value){
         this.setState({value});
     },
 
     handleCheckChange(e){
-        var newValues = this.getValue() ? this.getValue().concat() : [];
+        var newValues = this.state.value || [];
         if (e.target.checked) {
             newValues.push(e.target.value);
         } else {
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
-        this.props.onValueChange(newValues, this.getValue(), this.props.name, this.props.path);
+        this.props.valueManager.update(this.props.path, newValues);
     },
 
 

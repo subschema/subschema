@@ -111,7 +111,7 @@ module.exports = (function () {
             //Don't check empty values (add a 'required' validator for this)
             if (value === null || value === undefined || value === '') return;
 
-            if (value !== attrs[options.field]) return err;
+            if (value !== attrs.path(options.field)) return err;
         };
     };
 

@@ -8,8 +8,10 @@ var api = {
     isDate: require('lodash/lang/isDate'),
     isBoolean: require('lodash/lang/isBoolean'),
     isArray: require('lodash/lang/isArray'),
-    isNumber:require('lodash/lang/isNumber'),
+    isNumber: require('lodash/lang/isNumber'),
     find: require('lodash/collection/find'),
+    noop: function () {
+    },
     unique: function (array) {
         return array.filter(function (a, b, c) {
             // keeps first occurrence
@@ -90,6 +92,7 @@ var api = {
     },
     emptyCheck: function (v) {
         return v != null && v.length > 0;
-    }
+    },
+    push: Function.apply.bind(Array.prototype.push)
 }
 module.exports = api;

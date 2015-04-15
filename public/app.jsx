@@ -8,7 +8,7 @@ var Button = require('react-bootstrap/lib/Button');
 var _ = require('lodash');
 require('./index.less');
 var setupRe = /^function [^{]*\{([\s\S]*)\}$/;
-
+var ValueManager = require('../src/ValueManager');
 var MyModal = React.createClass({
     render() {
         return (
@@ -55,19 +55,33 @@ var App = React.createClass({
             description: ''
         }
     },
+    componentWillMount(){
+        var vm = this.vm = new ValueManager();
+        vm.addListener(null, (data)=> {
+            this.setState({
+                data
+            });
+        });
+        this.loadFile();
+    },
 
     changeFile(e) {
         this.state.file = e.target.value;
         this.loadFile();
     },
     loadFile(){
+        if (this.state.content && this.state.content.teardown) {
+            this.state.content.teardown();
+        }
         var json = this.state.file !== 'none' ? require('./samples/' + this.state.file) : {schema: {}};
         json.output = null;
         var state = {
             loadErrors: this.state.loadErrors,
             loadData: this.state.loadData,
             file: this.state.file,
-            content: json
+            content: json,
+            data: this.state.loadData ? json.data : {},
+            errors: this.state.loadErrors ? json.errors : {}
         };
         if (json.setup) {
             state._setup = json.setup();
@@ -75,24 +89,19 @@ var App = React.createClass({
         this.setState(state);
     },
 
-    componentWillMount() {
-        this.loadFile();
-    },
-
-    handleValueChange(value){
-        this.setState({data: value});
-    },
 
     handleData(e){
-        var load = this.state.loadData = e.target.checked;
-        var data = load ? this.state.content.data : {};
-        this.refs.form.setValue(data);
-        this.setState({data: data});
+        var data = {};
+        if (this.state.loadData = e.target.checked) {
+            data = this.state.content.data;
+        }
+
+        this.vm.setValue(data);
     },
     handleError(e){
         var load = this.state.loadErrors = e.target.checked;
         var errors = load ? this.state.content.errors : {}
-        this.refs.form.setErrors(errors);
+        this.vm.setErrors(errors);
         this.setState({errors: errors})
     },
     handleSubmit(e, errors, value){
@@ -114,11 +123,8 @@ var App = React.createClass({
     },
 
     render() {
-        var {content, loadData, loadErrors} = this.state;
-        var {errors, schema, data, description, setup, props, teardown} = (content || {});
-
-        if (!loadData) data = {};
-        if (!loadErrors) errors = {};
+        var {content, data, errors} = this.state;
+        var { schema, description, setup, props, teardown} = (content || {});
         if (setup) {
             var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {
                 return v.replace(/^	        /, '');
@@ -163,7 +169,7 @@ var App = React.createClass({
                                 <div className="span12">
                                     <Form ref="form" schema={ schema} value={ data}
                                           errors={ errors }
-                                          onValueChange={this.handleValueChange}
+                                          valueManager={this.vm}
                                           onSubmit={this.handleSubmit}
                                           onValidate={this.handleErrors}
                                         {...props}

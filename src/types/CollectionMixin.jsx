@@ -2,6 +2,7 @@ var React = require('react');
 var Editor = require('../Editor.jsx');
 var loader = require('../loader.jsx');
 var Constants = require('../Constants');
+var ValueManager = require('../ValueManager');
 var CollectionMixin = {
     statics: {
         collectionCreateTemplate: 'CollectionCreateTemplate',
@@ -11,9 +12,16 @@ var CollectionMixin = {
     getInitialState() {
         return {};
     },
-    getItemEditorValue(){
-        return this.refs.addEdit.refs.itemEditor.getValue();
+    componentWillMount(){
+        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
     },
+    componentWillUnMount(){
+        this.props.valueManager.removeListener(this.props.path, this.setValue, this);
+    },
+    getItemEditorValue(){
+        return this.itemVM.getValue();
+    },
+
     getValue(){
         return this.unwrap(this.state.wrapped);
     },
@@ -49,7 +57,8 @@ var CollectionMixin = {
     },
 
     changeValue(newValue, oldValue) {
-        if (this.props.onValueChange(this.unwrap(newValue), this.unwrap(oldValue), this.props.name, this.props.path) !== false) {
+        if (this.props.valueManager.update(this.props.path, this.unwrap(newValue)) !== false) {
+
             this.setState({
                 wrapped: newValue,
                 showAdd: false,
@@ -120,8 +129,10 @@ var CollectionMixin = {
          </div>*/
         var CreateTemplate = loader.loadTemplate(this.props.collectionCreateTemplate);
         var title = this.props.title || '';
-        return (<CreateTemplate editPid={this.state.editPid} value={this.state.editValue} field={this.getTemplateItem()}
+        this.itemVM = new ValueManager(this.state.editValue);
+        return (<CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
                                 ref="addEdit"
+                                valueManager={this.itemVM}
                                 title={create ? 'Create ' + title : 'Edit ' + title  }
                                 submitButton={label}
                                 onCancel={this.handleCancelAdd}

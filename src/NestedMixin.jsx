@@ -2,66 +2,15 @@ var React = require('react');
 var tu = require('./tutils');
 var Editor = require('./Editor.jsx');
 var loader = require('./loader.jsx');
+var ValueManager = require('./ValueManager')
 var NestedMixin = {
     getDefaultProps() {
         return {
             path: null,
 
             schema: {},
-            onValueChange() {
-            },
-            onValidate(){
-            },
-            form: null
+            valueManager: ValueManager()
         }
-
-    },
-    componentWillReceiveProps(props){
-        this.setState({
-            value: props.value,
-            errors: props.errors
-        })
-    },
-    getInitialState(){
-        return {
-            value: this.props.value,
-            errors: this.props.errors
-        }
-    },
-/*
-    componentWillMount(){
-        this.setValue(this.props.value);
-
-    },
-*/
-
-    componentDidMount(){
-        this.setValue(this.props.value);
-        this.setErrors(this.props.errors);
-    },
-
-    setValue(newValue, oldValue, property, path){
-        if (property == null) {
-            tu.values(this.refs).forEach((ref)=> {
-                ref.refs.field.setValue(newValue && newValue[ref.props.name]);
-            });
-        } else if (path != null) {
-            var parts = path.split('.', 2);
-            this.refs[parts[0]].refs.field.setValue(newValue, oldValue, property, parts[1]);
-        } else {
-            this.refs[property].setValue(newValue, oldValue, property);
-        }
-    },
-    setErrors(errors){
-        if (!errors) {
-            this.state.errors = null;
-            return;
-        }
-        Object.keys(errors).forEach(function (key) {
-            key = key.replace(this.props.path + '.', '').split('.', 2)[0]
-            this.refs[key] && this.refs[key].setErrors(errors);
-
-        }, this);
 
     },
     makeFieldset(f, i) {
@@ -71,83 +20,22 @@ var NestedMixin = {
         </Template>
     },
 
-    handleValueChange(newValue, oldValue, property, path) {
 
-        if (this.props.onValueChange(newValue, oldValue, property, path) !== false) {
-            if (this.form === this) {
-                this.setValue(newValue, oldValue, property, path);
-            }
-        }
-    },
-
-    handleValidate(errors, newValue, oldValue, property, path){
-        if (this.props.onValidate(newValue, oldValue, property, path) !== false) {
-            /*if (this.form === this) {
-                var e = {};
-                e[path] = errors;
-                this.form.setErrors(e);
-            }*/
-        }
-    },
-    getErrorMessages(){
-        var refs = this.refs;
-        var errors = tu.flatten(Object.keys(refs).map((v) => {
-            var ers = refs[v] && refs[v].editor.getErrorMessages();
-            if (ers == null || ers.length === 0) return 0;
-            var msg = {};
-            msg[refs[v].props.path] = ers;
-            return msg;
-        }).filter(tu.nullCheck));
-    },
-    /**
-     * Return null if no validation errors,
-     * otherwise return a map of errors.
-     */
-        validate(){
-        var refs = this.refs, msgs = null;
-        Object.keys(refs).forEach((v) => {
-            var ref = refs[v], ers;
-
-            //So nested forms do their own validation.
-            if (ref.refs.field.validate) {
-                ers = ref.refs.field.validate();
-                if (ers == null) return null;
-                if (!msgs)msgs = {};
-                Object.keys(ers).forEach((v)=> {
-                    msgs[v] = ers[v];
-                });
-            } else {
-                //otherwise the editor does it.  I know wierd,
-                //open to suggestions.
-                ers = ref.validate();
-                if (ers == null || ers.length === 0) return null;
-                if (msgs == null) msgs = {};
-                msgs[ref.props.path] = ers;
-            }
-        });
-        return msgs;
-    },
     getValue(){
-        var refs = this.refs, value = {};
-        Object.keys(refs).forEach((v) => {
-            value[v] = refs[v].getValue();
-        });
-        return value;
+        return this.props.valueManager.path(this.props.path);
     },
     addEditor(field){
         var f = field.name;
         var {path} = this.props;
-        var {value, errors} = this.state;
         var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
             tmpl['template'] = field.template;
         }
-        return <Editor ref={f} key={'key-' + f} path={path} value={value && value[f]}
+        return <Editor ref={f} key={'key-' + f} path={path}
                        field={field}
                        name={f}
-                       form={this.form}
-                        {...tmpl}
-                       onValueChange={this.handleValueChange} onValidate={this.handleValidate}/>
+            {...tmpl}
+                       valueManager={this.props.valueManager}/>
     },
     makeFields(fields) {
         var fieldMap = {}, schema = this.schema.schema;
@@ -209,12 +97,8 @@ var NestedMixin = {
         return schema;
     },
 
-    renderSchema(form) {
-        if (form) {
-            this.form = form;
-        } else {
-            this.form = this;
-        }
+    renderSchema() {
+
         var schema = this.schema, fieldsets = schema.fieldsets, fields = schema.fields || Object.keys(schema.schema);
         return (fieldsets && Array.isArray(fieldsets) ? fieldsets : ( fieldsets && (fieldsets.legend || fieldsets.fields) ) ? [fieldsets] : [{fields: tu.toArray(fields)}])
             .map(this.makeFieldset, this);

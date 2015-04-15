@@ -191,6 +191,7 @@ describe('List', function () {
         edit(root, 0);
     });
     it('should render edit a value with an error', function () {
+        var EditorTemplate = require('../../src/templates/EditorTemplate.jsx');
         var schema = {
             schema: {
                 tasks: {
@@ -208,8 +209,7 @@ describe('List', function () {
             'tasks.1':[{ message:'Can not be 2' }]
         }
         var root = into(<Form schema={schema} value={data} errors={errors}/>);
-
-        expect(root.refs.tasks.refs.field.refs.tasks_1.refs.error).toExist();
-        expect(root.refs.tasks.refs.field.refs.tasks_1.refs.error.getDOMNode().innerHTML).toEqual('Can not be 2');
+        var found  = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
+        expect(found[0].state.error).toEqual('Can not be 2');
     });
 })

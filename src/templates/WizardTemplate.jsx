@@ -10,7 +10,7 @@ const ButtonsTemplate = require('./ButtonsTemplate.jsx');
 const Wizard = React.createClass({
 
     getInitialState() {
-        var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;
+        var {schema, subSchema,  fields,  ...props} = this.props;
         schema = NestedMixin.normalizeSchema(schema || subSchema);
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         return {
@@ -18,6 +18,16 @@ const Wizard = React.createClass({
             navState: this.getNavStates(0, this.schema.fieldsets.length),
             values: []
         }
+    },
+    componentWillMount(){
+        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
+    },
+    componentWillUnMount(){
+        this.props.valueManager.removeListener(this.props.path, this.setValue, this, true);
+
+    },
+    setValue(value){
+        this.setState({value});
     },
     getNavStates(indx, length) {
         let styles = [], values = this.state && this.state.values || [];
@@ -32,7 +42,7 @@ const Wizard = React.createClass({
                 styles.push('todo')
             }
             if (values[i] && values[i].errors) {
-                styles[i]+=' error';
+                styles[i] += ' error';
             }
         }
         return {current: Math.min(indx, length - 1), styles: styles}
@@ -72,8 +82,8 @@ const Wizard = React.createClass({
         return <Form ref="form" schema={{
         schema,
         fields
-        }} onValidate={this.handleValidate} onSubmit={this.handleSubmit}
-                     value={this.state.values[0] || this.props.value}>
+        }} onSubmit={this.handleSubmit}
+                     valueManager={this.props.valueManager}>
 
             {this.renderBtns(compState)}
         </Form>
@@ -118,7 +128,7 @@ const Wizard = React.createClass({
             }
             case 'next':
             {
-                var errors = form.validate(), compState = this.state.compState;
+                var errors = this.props.valueManager.validate(), compState = this.state.compState;
                 this.state.values[compState] = {value: form.getValue(), errors};
                 if (!errors) {
                     this.setNavState(compState + 1);
@@ -129,7 +139,7 @@ const Wizard = React.createClass({
             }
             case 'submit':
             {
-                var errors = form.validate();
+                var errors = this.props.valueManager.validate();
                 this.state.values[this.state.compState] = {value: form.getValue(), errors};
                 var data = {};
                 this.state.values.forEach(function (v) {
@@ -144,8 +154,6 @@ const Wizard = React.createClass({
 
     },
     render() {
-
-        var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;
 
         var fieldsets = this.schema.fieldsets;
         return (

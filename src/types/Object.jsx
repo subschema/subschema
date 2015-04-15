@@ -13,7 +13,9 @@ var ObjectInput = React.createClass({
             template: 'ObjectTemplate'
         }
     },
-
+    vm(){
+        return this.props.valueManager;
+    },
     render() {
 
         var {field, value,  template, ...props} = this.props;

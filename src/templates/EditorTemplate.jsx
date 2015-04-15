@@ -1,15 +1,27 @@
 var React = require('react');
 var EditorTemplate = React.createClass({
-    displayName:'EditorTemplate',
+    displayName: 'EditorTemplate',
+    componentWillMount(){
+        this.props.valueManager.addErrorListener(this.props.path, this.setError, this, true);
+    },
+    componentWillUnMount(){
+        this.props.valueManager.removeErrorListener(this.props.path, this.setError);
+    },
+    setError(errors){
+        this.setState({
+            error: errors && errors[0].message
+        });
+    },
     render(){
         var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
+        var error = this.state.error;
         return (<div
-            className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' +  fieldClass}>
+            className={"form-group field-name " + (error != null ? errorClassName : '') + ' ' +  fieldClass}>
             {title ? <label className="col-sm-2 control-label" htmlFor={name}>{title}</label> : null}
 
             <div className="col-sm-10">
                 {children}
-                <p className="help-block" ref="help">{message || help}</p>
+                <p className="help-block" ref="help">{error || help}</p>
             </div>
         </div>);
     }

@@ -20,19 +20,7 @@ var ListInput = React.createClass({
 
         }
     },
-    /*
-     extractValue(v) {
-     return v.value;
-     },
-     wrap(prop){
-     return {wrapped: prop && prop.value && prop.value.map(this.toValues) || []};
-     },
-     toValues(value, id) {
-     return {
-     id, value
-     }
-     },
-     */
+
     unwrap(value) {
         var ret = (value || []).map(function (v, i) {
             return v && v.value && v.value.value;

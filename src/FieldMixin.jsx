@@ -6,7 +6,7 @@ var FieldMixin = {
             name: '',
             placeholder: '',
             dataType: this.dataType,
-            editorClass:'',
+            editorClass: '',
             onValueChange() {
             },
             onValidate(){
@@ -14,34 +14,29 @@ var FieldMixin = {
         }
 
     },
-/*    componentWillRecieveProps(props){
-        this.setState({
-            value: props.value
-        });
-    },*/
-    getInitialState(){
-        return {
-            value: this.props.value
-        }
+    componentWillMount(){
+        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
     },
-
+    componentWillUnMount(){
+        this.props.valueManager.removeListener(this.props.path, this.setValue, this);
+    },
     getValue(){
         return this.state && this.state.value;
     },
     setValue(value){
         this.setState({
-            value: value
+            value
         });
     },
     valueFromEvt(e){
         return e.target.value;
     },
     handleChange(e) {
-        var value = this.valueFromEvt(e);
-        this.props.onValueChange(value, this.state.value, this.props.name, this.props.path);
+        this.props.valueManager.update(this.props.path, this.valueFromEvt(e));
     },
     handleValidate(e){
-        this.props.onValidate(this.valueFromEvt(e), this.state.value, this.props.name, this.props.path);
+        // this.props.onValidate(this.valueFromEvt(e), this.state.value, this.props.name, this.props.path);
+        this.props.onValidate();
     }
 
 };

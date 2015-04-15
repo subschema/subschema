@@ -4,27 +4,23 @@ var loader = require('../loader.jsx');
 
 
 var RadioInput = React.createClass({
-    propTypes:{
-      title:React.PropTypes.string
+    propTypes: {
+        title: React.PropTypes.string
     },
     getDefaultProps() {
         return {
             title: '',
             name: '',
             placeholder: '',
-            dataType: 'radio',
-            onValueChange() {
-            },
-            onValidate(){
-            },
             template: 'RadioItemTemplate'
         }
 
     },
-    getInitialState(){
-        return {
-            value: this.props.value
-        }
+    componentWillMount(){
+        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
+    },
+    componentWillUnMount(){
+        this.props.valueManager.removeListener(this.props.path, this.setValue);
     },
     setValue(value){
         this.setState({value});
@@ -44,9 +40,9 @@ var RadioInput = React.createClass({
     handleCheckChange(e){
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.field.forceSelection === false || this.props.field.options && this.props.field.options.length === 1) {
-            this.props.onValueChange(this._compare(e.target.value, this.state.value) ? null : e.target.value, this.state.value, this.props.name, this.props.path);
+            this.props.valueManager.update(this.props.path, this._compare(e.target.value, this.state.value) ? null : e.target.value, this.state.value, this.props.name, this.props.path);
         } else {
-            this.props.onValueChange(e.target.value, this.state.value, this.props.name, this.props.path);
+            this.props.valueManager.update(this.props.path, e.target.value, this.state.value, this.props.name, this.props.path);
         }
     },
     makeOptions(options){
@@ -81,7 +77,7 @@ var RadioInput = React.createClass({
             option.key = '' + name + option.val;
 
             return <RadioItemTemplate  {...option} id={path+'.'+index}>
-                <input id={path+'.'+index} type={dataType}
+                <input id={path+'.'+index} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
 
