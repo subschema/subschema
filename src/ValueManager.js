@@ -32,7 +32,13 @@ function removeListener(listeners) {
 
 function addListener(listeners, find, findOld) {
     return function ValueManager$addListener(path, listener, scope, init) {
-
+        if (tu.isFunction(path)) {
+            listener = path;
+            path = null
+        }
+        if (listener == null) {
+            return;
+        }
         var obj = {path, listener, scope};
 
         init = init === true ? obj.listener : tu.isFunction(init) ? init : null;

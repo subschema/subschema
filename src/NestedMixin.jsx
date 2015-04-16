@@ -13,6 +13,18 @@ var NestedMixin = {
         }
 
     },
+    componentWillMount(){
+        if (this.props.value) {
+            this.props.valueManager.setValue(this.props.value);
+        }
+        if (this.props.errors) {
+            this.props.valueManager.setErrors(this.props.errors);
+        }
+        this.props.valueManager.addListener(this.props.path, this.props.onValueChange, this);
+    },
+    componentWillUnmount(){
+        this.props.valueManager.removeListener(this.props.path, this.props.onValueChange);
+    },
     makeFieldset(f, i) {
         var Template = loader.loadTemplate(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f}>

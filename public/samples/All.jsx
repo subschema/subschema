@@ -4,12 +4,12 @@ var schema = {};
 loader.listTypes().forEach(function (type) {
     schema[type.name] = {
         type: type.name,
-        fieldClass:'row'
+        fieldClass: 'row'
     }
 });
 
-module.exports =  {
-
+module.exports = {
+    description: "All the components with no options passed, just a place to make sure everything is here",
     schema: {
         schema
     }

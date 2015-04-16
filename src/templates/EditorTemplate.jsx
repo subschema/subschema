@@ -4,7 +4,7 @@ var EditorTemplate = React.createClass({
     componentWillMount(){
         this.props.valueManager.addErrorListener(this.props.path, this.setError, this, true);
     },
-    componentWillUnMount(){
+    componentWillUnmount(){
         this.props.valueManager.removeErrorListener(this.props.path, this.setError);
     },
     setError(errors){
