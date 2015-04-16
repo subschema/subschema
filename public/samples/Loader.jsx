@@ -1,6 +1,6 @@
 var React = require('react');
 module.exports = {
-    description: 'This shows how to use a loader to load a schema',
+    description: '<p>This shows how to use a loader to load a schema</p><p>It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types </p>',
     schema: 'Contact',
     data: {
         name: 'Robert Loblaw',
@@ -71,10 +71,10 @@ module.exports = {
                 };
 
                 return <div className="form-group row">
-                        <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
-                        <div style={style}>
-                            <Object ref="val" {...this.props}/>
-                        </div>
+                    <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
+                    <div style={style}>
+                        <Object ref="val" {...this.props}/>
+                    </div>
                 </div>;
 
             }

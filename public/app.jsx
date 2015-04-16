@@ -51,7 +51,7 @@ var App = React.createClass({
             loadData: false,
             data: null,
             errors: {},
-            file: 'Basic.js',
+            file: 'Autocomplete.js',
             description: ''
         }
     },
@@ -124,20 +124,21 @@ var App = React.createClass({
 
     render() {
         var {content, data, errors} = this.state;
-        var { schema, description, setup, props, teardown} = (content || {});
+        var { schema, description, title, setup, props, teardown} = (content || {});
         if (setup) {
             var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {
                 return v.replace(/^	        /, '');
             });
-            tmp.pop();
-            tmp.pop();
+            // tmp.pop();
+            // tmp.pop();
             setup = tmp.join('\n')
         }
+        title =title || this.state.file.replace(/\.js(x)?/, '');
         var propsstr = '';
         Object.keys(props || {}).forEach(function (key) {
             propsstr += key + '={' + JSON.stringify(props[key]) + '} ';
         });
-        return <div>
+        return (<div>
             <div className="navbar">
                 <div className="navbar-inner">
                     <div className="form-inline">
@@ -162,24 +163,24 @@ var App = React.createClass({
 
             <div className="container-fluid">
                 <div className="row-fluid">
+                    <fieldset>
+                        <legend>Example - {title}</legend>
+                        <p dangerouslySetInnerHTML={{__html: description || ''}}/>
 
-                    <div className="span10">
-                        <div className="container-fluid">
-                            <div className="row-fluid">
-                                <div className="span12">
-                                    <Form ref="form" schema={ schema} value={ data}
-                                          errors={ errors }
-                                          valueManager={this.vm}
-                                          onSubmit={this.handleSubmit}
-                                          onValidate={this.handleErrors}
-                                        {...props}
-                                        />
+                        <div className="span10">
+                            <div className="container-fluid">
+                                <div className="row-fluid">
+                                    <div className="span12">
+                                        <Form ref="form" schema={ schema} value={ data}
+                                              errors={ errors }
+                                              valueManager={this.vm}
+                                              onSubmit={this.handleSubmit}
+                                              onValidate={this.handleErrors}
+                                            {...props}
+                                            />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <fieldset>
-                            <legend>Example Usage of {this.state.file}</legend>
-                            <p>{description}</p>
+
                         <pre>
                             <div>var Form = require('subschema').Form;</div>
                             <div>var React = require('react');</div>
@@ -192,11 +193,10 @@ var App = React.createClass({
                             {'React.render(<Form value={data} schema={schema} errors={errors} ' + propsstr + '/>, document.getElementById("content"))'}
 
                         </pre>
+                            </div>
 
-                        </fieldset>
-
-
-                    </div>
+                        </div>
+                    </fieldset>
                 </div>
 
                 {
@@ -204,9 +204,8 @@ var App = React.createClass({
                         <MyModal ref="modal" onRequestHide={this.hideModal} errors={this.state.submitErrors}
                                  value={this.state.submitValue}/> : null
                 }
-
             </div>
-        </div>
+        </div>);
     }
 
 });

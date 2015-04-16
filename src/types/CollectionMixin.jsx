@@ -15,7 +15,7 @@ var CollectionMixin = {
     componentWillMount(){
         this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
     },
-    componentWillUnMount(){
+    componentWillUnmount(){
         this.props.valueManager.removeListener(this.props.path, this.setValue, this);
     },
     getItemEditorValue(){

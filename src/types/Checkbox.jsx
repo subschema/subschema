@@ -6,8 +6,9 @@ var Checkbox = React.createClass({
     statics: {
         inputClassName: ''//Constants.inputClassName
     },
-    doChange:function(e){
-        this.props.onValueChange(e.target.checked ? this.props.value || true : null, this.state.value || false, this.props.name, this.props.path);
+    doChange: function (e) {
+        var hasProp = 'value' in this.props;
+        this.updateValue(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
     },
     render() {
         var className = Constants.clz(Checkbox.inputClassName, this.props.editorClass);

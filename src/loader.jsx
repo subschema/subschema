@@ -4,10 +4,11 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
         /**
          * @param template String - looks for a template named something.
          */
-        loadTemplate: load('loadTemplate'),
-        loadType: load('loadType'),
-        loadSchema: load('loadSchema'),
-        loadValidator: load('loadValidator'),
+        loadTemplate: load('Template'),
+        loadType: load('Type'),
+        loadSchema: load('Schema'),
+        loadValidator: load('Validator'),
+        loadProcessor: load('Processor'),
         listTemplates: list('Templates'),
         listTypes: list('Type'),
         listSchemas: list('Schema'),
@@ -16,16 +17,22 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
         addTemplate: add('Template'),
         addType: add('Type'),
         addValidator: add('Validator'),
+        addProcessor: add('Processor'),
+        listProcessors: list('Processor'),
         addLoader(loader){
             loaders.unshift(loader);
-            return api;
+            return loader;
         },
         removeLoader(loader){
             var idx = loaders.indexOf(loader);
             if (0 > idx) {
                 return;
             }
-            return loaders.splice(idx, 1)[0];
+            var ret = loaders.splice(idx, 1)[0];
+            if (ret && ret && ret.removeLoader) {
+                ret.removeLoader();
+            }
+            return ret;
         },
 
         clearLoaders(){
@@ -88,6 +95,7 @@ function list(method) {
     }
 }
 function load(method) {
+    method = 'load' + method;
     return function load$load(load) {
         var i = 0, l = loaders.length, ret = null;
         for (; i < l; i++) {

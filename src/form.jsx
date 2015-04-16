@@ -12,14 +12,7 @@ var Form = React.createClass({
             }
         }
     },
-    componentWillMount(){
-        if (this.props.value) {
-            this.props.valueManager.setValue(this.props.value);
-        }
-        if (this.props.errors) {
-            this.props.valueManager.setErrors(this.props.errors);
-        }
-    },
+
     handleSubmit(e){
         e && e.preventDefault();
         var vm = this.props.valueManager;
