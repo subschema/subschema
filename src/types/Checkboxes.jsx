@@ -79,7 +79,6 @@ var Checkboxes = React.createClass({
         var CheckboxesGroupTemplate = loader.loadTemplate(this.props.groupTemplate);
         return array.map((option, index)=> {
             option = tu.isString(option) ? {val: option} : option;
-            console.log('key', name + '-' + index + '-' + option.val);
             return (
                 <div
                     key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate) : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)

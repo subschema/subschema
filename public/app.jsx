@@ -1,14 +1,19 @@
-var React = require('react');
-var Form = require('subschema').Form;
+//Subschema
+var Form = require('../src/form.jsx');
 var tu = require('../src/tutils');
+var ValueManager = require('../src/ValueManager');
+
+//Everything else.
+var React = require('react');
 var Alert = require('react-bootstrap/lib/Alert');
 var Modal = require('react-bootstrap/lib/Modal');
 var ModalTrigger = require('react-bootstrap/lib/ModalTrigger');
 var Button = require('react-bootstrap/lib/Button');
+
 var _ = require('lodash');
 require('./index.less');
+
 var setupRe = /^function [^{]*\{([\s\S]*)\}$/;
-var ValueManager = require('../src/ValueManager');
 var MyModal = React.createClass({
     render() {
         return (
@@ -133,7 +138,7 @@ var App = React.createClass({
             // tmp.pop();
             setup = tmp.join('\n')
         }
-        title =title || this.state.file.replace(/\.js(x)?/, '');
+        title = title || this.state.file.replace(/\.js(x)?/, '');
         var propsstr = '';
         Object.keys(props || {}).forEach(function (key) {
             propsstr += key + '={' + JSON.stringify(props[key]) + '} ';

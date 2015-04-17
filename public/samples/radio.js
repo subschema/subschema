@@ -1,4 +1,5 @@
 module.exports = {
+    description: 'Getting radios right is suprisingly tricky.  Here we demonstrate how to use groups radios and radio groups',
     schema: {
         schema: {
             radio1: {

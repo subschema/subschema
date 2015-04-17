@@ -1,4 +1,8 @@
 module.exports = {
+    description: 'This shows a multistep form aka Wizard.\
+    The basics are your fieldsets become steps in a wizard.  The legend becomes the label and the fields are rendered\
+    Sometimes you a good wizard goes a long way\
+    ',
     props: {
         template: 'WizardTemplate'
     },

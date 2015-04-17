@@ -1,4 +1,5 @@
 module.exports = {
+    description: 'Nested froms allow for deeply structured object<br/>. If you need more flexibility consider Mixed or List',
     schema: {
         "schema": {
             "title": {
@@ -28,7 +29,7 @@ module.exports = {
                 }
             }
         },
-        submitButton:'Submit',
+        submitButton: 'Submit',
         "fieldsets": [{
             "legend": "Name",
             "fields": ["title", "name", "email"]

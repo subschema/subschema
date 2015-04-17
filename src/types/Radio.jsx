@@ -4,6 +4,7 @@ var loader = require('../loader.jsx');
 var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 
 var RadioInput = React.createClass({
+    displayName: 'Radio',
     propTypes: {
         title: React.PropTypes.string
     },
@@ -44,6 +45,7 @@ var RadioInput = React.createClass({
         options = options || [];
         var onChange = this.handleCheckChange;
         var value = this.getValue();
+        var path = this.props.path;
         return options.map((option, index)=> {
             var {val, label, labelHTML} = tu.isString(option) ? {val: option, label: option} : option;
             if (val == null) {
@@ -52,8 +54,11 @@ var RadioInput = React.createClass({
             if (label == null) {
                 label = val;
             }
+            var path = option.path = tu.path(path, index);
+
             return {
                 val,
+                path,
                 label,
                 labelHTML,
                 onChange,
@@ -66,18 +71,14 @@ var RadioInput = React.createClass({
         var {name,template,path, dataType, field} = this.props;
 
         var RadioItemTemplate = loader.loadTemplate(template);
-
-        return (<div>{this.makeOptions(field.options).map((option, index)=> {
-
-            option.key = '' + name + option.val;
-
-            return <RadioItemTemplate  {...option} id={path+'.'+index}>
-                <input id={path+'.'+index} type="radio"
+        var options = this.makeOptions(field.options);
+        return <div>{options.map((option, index)=> {
+            return <RadioItemTemplate  {...option} key={option.path}>
+                <input id={fp} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
+        }, this)}</div>
 
-
-        }, this)}</div>)
     }
 });
 

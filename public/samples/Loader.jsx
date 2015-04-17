@@ -1,6 +1,9 @@
 var React = require('react');
 module.exports = {
-    description: '<p>This shows how to use a loader to load a schema</p><p>It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types </p>',
+    description: '<p>This shows how to use a loader to load a schema</p>\
+    <p>It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types </p>\
+    They all follow the same pattern.   Note the list`type` is optional, but useful for future introspection if needed\
+    ',
     schema: 'Contact',
     data: {
         name: 'Robert Loblaw',
@@ -26,11 +29,10 @@ module.exports = {
         'primary.address': [{message: 'No Such Place'}]
     },
     unsetup: function (l) {
-        var loader = require('subschema').loader;
-        loader.removeLoader(l);
+        var loader = require('../../src/loader.jsx').removeLoader(l);
     },
     setup: function () {
-        var loader = require('subschema').loader;
+        var loader = require('../../src/loader.jsx');
         /**
          * If you are using a jsx compiler you would just
          * use jsx, but due to things, its not jsx.
@@ -48,7 +50,7 @@ module.exports = {
                 </div>);
             }
         }));
-        var Object = require('subschema').Types.Object;
+        var Object = require('../../src/types.jsx').Object;
         loader.addType('ToggleObject', React.createClass({
             displayName: 'ToggleObject',
             getInitialState(){

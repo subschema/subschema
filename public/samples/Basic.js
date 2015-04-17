@@ -1,4 +1,5 @@
 module.exports = {
+    description: 'Super basic form, with select and a requied name',
     schema: {
         "schema": {
             "title": {"type": "Select", "options": ["Mr", "Mrs", "Ms"]},

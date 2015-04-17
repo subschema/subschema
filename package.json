@@ -6,8 +6,8 @@
   "scripts": {
     "test": "karma start",
     "start": "webpack-dev-server --content-base ./public/",
-    "package": "webpack --config webpack.config.js -p",
-    "karma": "karma start --no-single-run --colors --auto-watch"
+    "karma": "karma start --no-single-run --colors --auto-watch",
+    "prepublish":"webpack --config webpack.dist.config.js "
   },
   "keywords": [
     "react",

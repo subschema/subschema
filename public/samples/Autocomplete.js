@@ -54,7 +54,7 @@ module.exports = {
                 return value && value.label;
             }
         };
-        var loader = require('subschema').loader;
+        var loader = require('../../src/loader.jsx');
         this._loader = loader.addLoader({
             loadProcessor: function (name) {
                 if (name === 'fakeAjax') {
@@ -69,6 +69,6 @@ module.exports = {
 
     },
     teardown(){
-        require('subschema').loader.removeLoader(this._loader);
+        require('../../src/loader.jsx').removeLoader(this._loader);
     }
 }

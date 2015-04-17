@@ -1,4 +1,5 @@
 module.exports = {
+    description:'The most usable of UI components the lowly checkbox.   This shows single value, groups of checkboxes and a true/false',
     schema: {
         schema: {
             group1: {

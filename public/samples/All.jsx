@@ -1,5 +1,5 @@
 var React = require('react');
-var loader = require('subschema').loader;
+var loader = require('../../src/loader.jsx');
 var schema = {};
 loader.listTypes().forEach(function (type) {
     schema[type.name] = {
@@ -9,7 +9,7 @@ loader.listTypes().forEach(function (type) {
 });
 
 module.exports = {
-    description: "All the components with no options passed, just a place to make sure everything is here",
+    description: "All the components with no options passed, just a place to make sure everything is here.   This may not be a good idea.",
     schema: {
         schema
     }

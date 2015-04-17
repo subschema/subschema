@@ -1,4 +1,5 @@
 module.exports = {
+    description: 'This is a very basic login form. But it shows both email validation and multi field validation',
     schema: {
         schema: {
             username: {

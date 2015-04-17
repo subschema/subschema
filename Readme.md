@@ -160,20 +160,30 @@ This example uses 2 registered schemas, one used by the List type the other used
 ```
 
 ##Events
-Subschema exposes 3 main events, onValueChange, onSubmit and onValidate.  Returning false from one of these handlers will
-stop the processing.
+Events can be registered via the ValueManager.  You can subscribe to a path, a part of a path or all events of a
+type.
+
 
 Example:
 ```jsx
 
+  var vm = ValueManager();
+  //listen to all events
+  vm.addListener(function(newValue, oldValue, path){
+
+
+});
+  vm.addListener('singlePath', function(newValue, oldValue path){});
+  vm.addErrorListener('path', function(){
+
+});
   var App = React.createClass({
     handleSubmit(newValue, oldValue, property, path){
     },
     handleValueChange(newValue, oldValue, property, path){}
     handleValidate(){}
     render(){
-        return <Form schema={'YourSchema'} onSubmit={this.handleSubmit} onValueChange={this.handleValueChange}
-           onValidate={this.handleValidate}
+        return <Form schema={'YourSchema'} onSubmit={this.handleSubmit} valueManager={vm}/>
     }
   
   });

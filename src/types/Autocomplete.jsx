@@ -105,7 +105,7 @@ var Autocomplete = React.createClass({
      * If
      */
     hide: function () {
-        var {selected, input, suggestions, value} = this.state, i = 0, l, options, found = false;
+        var {selected, input, suggestions} = this.state, i = 0, l, options, found = false;
         var p = this.getProcessor();
         if (input == null || input.trim() === '') {
             selected = null;

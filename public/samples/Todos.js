@@ -1,4 +1,5 @@
 module.exports = {
+    description: 'A super simple <b>Todo List</b> because every body\'s gotta.   This one shows how the List type works.   List editing can be turned on or off, by default its off ',
     schema: {
         "schema": {
             "tasks": {
