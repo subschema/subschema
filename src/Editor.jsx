@@ -60,7 +60,7 @@ var Editor = React.createClass({
         this.props.valueManager.removeListener(this.props.path, this.handleChange);
         this.props.valueManager.removeValidateListener(this.props.path, this._validate);
     },
-    handleValidate(newValue, oldValue, path) {
+    handleValidate(value, component, e) {
         this.state.hasValidated = true;
         this.validate();
     },

@@ -3,21 +3,18 @@ var Editor = require('../Editor.jsx');
 var loader = require('../loader.jsx');
 var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
+var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 var CollectionMixin = {
     statics: {
         collectionCreateTemplate: 'CollectionCreateTemplate',
         listClassName: Constants.listClassName,
         itemTemplate: 'ListItemTemplate'
     },
+    mixins: [BasicFieldMixin],
     getInitialState() {
         return {};
     },
-    componentWillMount(){
-        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
-    },
-    componentWillUnmount(){
-        this.props.valueManager.removeListener(this.props.path, this.setValue, this);
-    },
+
     getItemEditorValue(){
         return this.itemVM.getValue();
     },
@@ -57,7 +54,7 @@ var CollectionMixin = {
     },
 
     changeValue(newValue, oldValue) {
-        if (this.props.valueManager.update(this.props.path, this.unwrap(newValue)) !== false) {
+        if (this.updateValue(this.unwrap(newValue)) !== false) {
 
             this.setState({
                 wrapped: newValue,

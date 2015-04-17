@@ -95,11 +95,10 @@ ValueManager.prototype = {
 
 
     onValueChange(path, value, oldValue){
-        var parts = path && path.split('.') || [], i = 0, l = parts.length;
-        var pp;
+        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
         do {
             if (this.listeners.some(v=> {
-                    if (v.path == null && i === 0 || v.path === pp) {
+                    if (v.path === pp) {
                         return (v.listener.call(v.scope, this.path(pp, this.value), this.path(pp, this.oldValue), path) === false);
                     }
                 }, this) === true) {

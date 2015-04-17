@@ -1,12 +1,13 @@
 var React = require('react');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
-
+var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 
 var RadioInput = React.createClass({
     propTypes: {
         title: React.PropTypes.string
     },
+    mixins: [BasicFieldMixin],
     getDefaultProps() {
         return {
             title: '',
@@ -15,12 +16,6 @@ var RadioInput = React.createClass({
             template: 'RadioItemTemplate'
         }
 
-    },
-    componentWillMount(){
-        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
-    },
-    componentWillUnmount(){
-        this.props.valueManager.removeListener(this.props.path, this.setValue);
     },
     setValue(value){
         this.setState({value});
@@ -40,9 +35,9 @@ var RadioInput = React.createClass({
     handleCheckChange(e){
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.field.forceSelection === false || this.props.field.options && this.props.field.options.length === 1) {
-            this.props.valueManager.update(this.props.path, this._compare(e.target.value, this.state.value) ? null : e.target.value, this.state.value, this.props.name, this.props.path);
+            this.updateValue(this._compare(e.target.value, this.state.value) ? null : e.target.value);
         } else {
-            this.props.valueManager.update(this.props.path, e.target.value, this.state.value, this.props.name, this.props.path);
+            this.updateValue(e.target.value);
         }
     },
     makeOptions(options){

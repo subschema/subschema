@@ -11,11 +11,11 @@ var Checkbox = React.createClass({
         this.updateValue(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
     },
     render() {
-        var className = Constants.clz(Checkbox.inputClassName, this.props.editorClass);
         return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}
-                      className={Checkbox.inputClassName} type="checkbox" value={this.state.value}
-                      data-path={this.props.path}
-                      title={this.props.title} placeholder={this.props.placeholder}/>
+                      className={ Constants.clz(Checkbox.inputClassName, this.props.editorClass)} type="checkbox"
+                      value={this.state.value}
+                      checked={this.state.value}
+                      title={this.props.title}/>
     }
 });
 

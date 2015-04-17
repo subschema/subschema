@@ -4,9 +4,9 @@
 var React = require('react');
 var NestedMixin = require('../NestedMixin.jsx');
 var loader = require('../loader.jsx');
-
+var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 var ObjectInput = React.createClass({
-    mixins: [NestedMixin],
+    mixins: [NestedMixin, BasicFieldMixin],
     displayName: 'ObjectInput',
     getDefaultProps(){
         return {

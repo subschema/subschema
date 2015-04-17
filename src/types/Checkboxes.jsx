@@ -1,5 +1,5 @@
 var React = require('react');
-var FieldMixin = require('../FieldMixin.jsx');
+var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
 var Constants = require('../Constants');
@@ -8,6 +8,7 @@ var Checkboxes = React.createClass({
     statics: {
         inputClassName: Constants.inputCheckboxesClassName
     },
+    mixins: [BasicFieldMixin],
     getDefaultProps() {
         return {
             title: '',
@@ -16,19 +17,12 @@ var Checkboxes = React.createClass({
             dataType: this.dataType,
             template: 'CheckboxesTemplate',
             groupTemplate: 'CheckboxesGroupTemplate',
-            onValueChange() {
-            },
             onValidate(){
             }
         }
 
     },
-    componentWillMount(){
-        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
-    },
-    componentWillUnmount(){
-        this.props.valueManager.removeListener(this.props.path, this.setValue);
-    },
+
     setValue(value){
         this.setState({value});
     },

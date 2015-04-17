@@ -4,9 +4,10 @@ var React = require('react');
 var tu = require('../tutils');
 var css = require('../styles/autocomplete.less');
 var loader = require('../loader.jsx');
-
+var BasicFieldMixin = require('../BasicFieldMixin.jsx');
 
 var Autocomplete = React.createClass({
+    mixins: [BasicFieldMixin],
     propTypes: {
         name: React.PropTypes.string.isRequired,
         /* processor: React.PropTypes.shape({
@@ -80,12 +81,6 @@ var Autocomplete = React.createClass({
         }
 
     },
-    componentWillMount(){
-        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
-    },
-    componentWillUnmount(){
-        this.props.valueManager.removeListener(this.props.path, this.setValue);
-    },
     getValue(){
         return this.state.value
     },
@@ -154,7 +149,7 @@ var Autocomplete = React.createClass({
     onSelect: function (o) {
         var p = this.getProcessor();
         var value = p.value(o);
-        if (this.props.valueManager.update(this.props.path, value) !== false) {
+        if (this.updateValue(value) !== false) {
             this.setState({
                 suggestions: [],
                 showing: false,
@@ -172,7 +167,7 @@ var Autocomplete = React.createClass({
         var setState = this.setState.bind(this);
         this.setState({
             input: value,
-            selected:null
+            selected: null
         });
         this._fetch = this.getProcessor().fetch(this.props.url, value, this, function (err, suggestions) {
             if (err) {
@@ -269,8 +264,8 @@ var Autocomplete = React.createClass({
         items && items[0] && items[0].getAsString(this._handleKey.bind(this));
     },
     handleBlur: function (event) {
-        if (this.state.suggestions.length  === 1 && !this.state.showing && !this.state.selected) {
-           this.handleSuggestionClick(this.state.suggestions[Math.max(0, this.state.focus)]);
+        if (this.state.suggestions.length === 1 && !this.state.showing && !this.state.selected) {
+            this.handleSuggestionClick(this.state.suggestions[Math.max(0, this.state.focus)]);
         } else {
             this.handleInvalid();
         }
