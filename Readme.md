@@ -5,7 +5,7 @@ form field layouts, for consisten usage.   Easily create form
 builders or config editors. 
 
 The schema is borrowed
-from (backbone-forms)[https://github.com/powmedia/backbone-forms].
+from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
 
 ###Install
