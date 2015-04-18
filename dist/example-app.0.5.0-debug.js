@@ -6583,7 +6583,7 @@ define("Subschema", ["React","_"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEB
 /***/ function(module, exports, __webpack_require__) {
 
 	var isError = __webpack_require__(103),
-	    restParam = __webpack_require__(117);
+	    restParam = __webpack_require__(116);
 	
 	/**
 	 * Attempts to invoke `func`, returning either the result or the caught error
@@ -6620,7 +6620,7 @@ define("Subschema", ["React","_"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEB
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCopy = __webpack_require__(116),
+	var baseCopy = __webpack_require__(117),
 	    getSymbols = __webpack_require__(115),
 	    isNative = __webpack_require__(110),
 	    keys = __webpack_require__(105);
@@ -7215,35 +7215,6 @@ define("Subschema", ["React","_"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEB
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copies properties of `source` to `object`.
-	 *
-	 * @private
-	 * @param {Object} source The object to copy properties from.
-	 * @param {Array} props The property names to copy.
-	 * @param {Object} [object={}] The object to copy properties to.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseCopy(source, props, object) {
-	  object || (object = {});
-	
-	  var index = -1,
-	      length = props.length;
-	
-	  while (++index < length) {
-	    var key = props[index];
-	    object[key] = source[key];
-	  }
-	  return object;
-	}
-	
-	module.exports = baseCopy;
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
 	
@@ -7302,6 +7273,35 @@ define("Subschema", ["React","_"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEB
 	}
 	
 	module.exports = restParam;
+
+
+/***/ },
+/* 117 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property names to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseCopy(source, props, object) {
+	  object || (object = {});
+	
+	  var index = -1,
+	      length = props.length;
+	
+	  while (++index < length) {
+	    var key = props[index];
+	    object[key] = source[key];
+	  }
+	  return object;
+	}
+	
+	module.exports = baseCopy;
 
 
 /***/ },
@@ -7514,7 +7514,7 @@ define("Subschema", ["React","_"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEB
 
 	var bindCallback = __webpack_require__(139),
 	    isIterateeCall = __webpack_require__(104),
-	    restParam = __webpack_require__(117);
+	    restParam = __webpack_require__(116);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given

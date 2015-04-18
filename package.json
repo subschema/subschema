@@ -7,7 +7,7 @@
     "test": "karma start",
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
-    "prepublish": "webpack --config webpack.dist.config.js "
+    "prepublish": "./scripts/dist.js"
   },
   "keywords": [
     "react",
