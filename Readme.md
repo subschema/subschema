@@ -7,6 +7,8 @@ builders or config editors.
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
+###Example
+You can see examples at [jspears.github.io/subschema](http://jspears.github.io/subschema/)
 
 ###Install
 ```sh
