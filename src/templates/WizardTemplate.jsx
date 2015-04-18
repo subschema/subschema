@@ -1,5 +1,5 @@
 'use strict'
-const React = require('react/addons')
+const React = require('react')
 const Form = require('../form.jsx');
 const tu = require('../tutils');
 const NestedMixin = require('../NestedMixin.jsx');

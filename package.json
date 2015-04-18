@@ -7,7 +7,7 @@
     "test": "karma start",
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
-    "prepublish":"webpack --config webpack.dist.config.js "
+    "prepublish": "webpack --config webpack.dist.config.js "
   },
   "keywords": [
     "react",
@@ -21,27 +21,29 @@
   "author": "Justin Spears",
   "license": "MIT",
   "devDependencies": {
+    "amdefine": "^0.1.0",
     "babel-loader": "^5.0.0",
+    "compression-webpack-plugin": "^0.2.0",
+    "css-loader": "^0.9.1",
     "expect": "^1.6.0",
     "express": "^4.12.3",
+    "extract-text-webpack-plugin": "^0.5.0",
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.7",
     "karma-cli": "0.0.4",
     "karma-mocha": "^0.1.10",
     "karma-sourcemap-loader": "^0.3.4",
     "karma-webpack": "^1.5.0",
-    "mocha": "^2.2.1",
-    "react": "^0.13.1",
-    "react-bootstrap": "^0.20.0",
-    "webpack": "^1.7.3",
-    "webpack-dev-server": "^1.8.0",
-    "css-loader": "^0.9.1",
-    "extract-text-webpack-plugin": "^0.5.0",
     "less": "^2.4.0",
     "less-loader": "^2.2.0",
     "lodash": "^3.6.0",
+    "mocha": "^2.2.1",
+    "react": "^0.13.1",
+    "react-bootstrap": "^0.20.0",
     "style-loader": "^0.9.0",
-    "url-loader": "^0.5.5"
+    "url-loader": "^0.5.5",
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.8.0"
   },
   "peerDependencies": {
     "react": "^0.13.1"
