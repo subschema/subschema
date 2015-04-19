@@ -1,7 +1,8 @@
 //Subschema
-var Form = require('../src/form.jsx');
-var tu = require('../src/tutils');
-var ValueManager = require('../src/ValueManager');
+var Subschema = require('subschema')
+var Form = Subschema.Form
+var tu = Subschema.utils
+var ValueManager = Subschema.ValueManager;
 
 //Everything else.
 var React = require('react');
@@ -10,7 +11,6 @@ var Modal = require('react-bootstrap/lib/Modal');
 var ModalTrigger = require('react-bootstrap/lib/ModalTrigger');
 var Button = require('react-bootstrap/lib/Button');
 
-var _ = require('lodash');
 require('./index.less');
 
 var setupRe = /^function [^{]*\{([\s\S]*)\}$/;

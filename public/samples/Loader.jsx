@@ -29,10 +29,11 @@ module.exports = {
         'primary.address': [{message: 'No Such Place'}]
     },
     unsetup: function (l) {
-        var loader = require('../../src/loader.jsx').removeLoader(l);
+        var loader = require('subschema').loader.removeLoader(l);
     },
     setup: function () {
-        var loader = require('../../src/loader.jsx');
+        var Subschema = require('subschema');
+        var loader = Subschema.loader;
         /**
          * If you are using a jsx compiler you would just
          * use jsx, but due to things, its not jsx.
@@ -50,7 +51,7 @@ module.exports = {
                 </div>);
             }
         }));
-        var Object = require('../../src/types.jsx').Object;
+        var Object = Subschema.Types.Object;
         loader.addType('ToggleObject', React.createClass({
             displayName: 'ToggleObject',
             getInitialState(){

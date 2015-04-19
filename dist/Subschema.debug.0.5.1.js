@@ -1,4 +1,4 @@
-define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return /******/ (function(modules) { // webpackBootstrap
+define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -67,15 +67,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 	'use strict';
 	
-	module.exports.Form = __webpack_require__(1);
-	module.exports.FieldMixin = __webpack_require__(2);
-	module.exports.NestedMixin = __webpack_require__(3);
-	module.exports.Editor = __webpack_require__(4);
-	module.exports.validators = __webpack_require__(5);
-	module.exports.util = __webpack_require__(6);
-	module.exports.loader = __webpack_require__(7);
-	module.exports.Types = __webpack_require__(8);
-	module.exports.ValueManager = __webpack_require__(9);
+	module.exports = __webpack_require__(1);
 
 /***/ },
 /* 1 */
@@ -83,12 +75,28 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 	'use strict';
 	
+	module.exports.Form = __webpack_require__(2);
+	module.exports.FieldMixin = __webpack_require__(3);
+	module.exports.NestedMixin = __webpack_require__(4);
+	module.exports.Editor = __webpack_require__(5);
+	module.exports.validators = __webpack_require__(6);
+	module.exports.util = __webpack_require__(7);
+	module.exports.loader = __webpack_require__(8);
+	module.exports.Types = __webpack_require__(9);
+	module.exports.ValueManager = __webpack_require__(10);
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(10);
-	var NestedMixin = __webpack_require__(3);
-	var loader = __webpack_require__(7);
-	var ValueManager = __webpack_require__(9);
+	var React = __webpack_require__(11);
+	var NestedMixin = __webpack_require__(4);
+	var loader = __webpack_require__(8);
+	var ValueManager = __webpack_require__(10);
 	var Form = React.createClass({
 	    displayName: 'Form',
 	    mixins: [NestedMixin],
@@ -137,14 +145,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Form;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    tu = __webpack_require__(6),
-	    BasicFieldMixin = __webpack_require__(11);
+	var React = __webpack_require__(11),
+	    tu = __webpack_require__(7),
+	    BasicFieldMixin = __webpack_require__(12);
 	var FieldMixin = tu.extend({}, BasicFieldMixin, {
 	    getDefaultProps: function getDefaultProps() {
 	        return {
@@ -180,18 +188,18 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = FieldMixin;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var tu = __webpack_require__(6);
-	var Editor = __webpack_require__(4);
-	var loader = __webpack_require__(7);
-	var ValueManager = __webpack_require__(9);
+	var React = __webpack_require__(11);
+	var tu = __webpack_require__(7);
+	var Editor = __webpack_require__(5);
+	var loader = __webpack_require__(8);
+	var ValueManager = __webpack_require__(10);
 	var NestedMixin = {
 	    getDefaultProps: function getDefaultProps() {
 	        return {
@@ -307,7 +315,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = NestedMixin;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -316,10 +324,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var tu = __webpack_require__(6);
+	var React = __webpack_require__(11);
+	var tu = __webpack_require__(7);
 	var EMPTY_ARR = [];
-	var loader = __webpack_require__(7);
+	var loader = __webpack_require__(8);
 	'use strict';
 	function initValidators(v) {
 	    //If it has a type init it
@@ -484,7 +492,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Editor;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//==================================================================================================
@@ -493,7 +501,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	//Borrowed from backbone-forms, thanks!
 	'use strict';
 	
-	var _ = __webpack_require__(6);
+	var _ = __webpack_require__(7);
 	
 	module.exports = (function () {
 	
@@ -616,21 +624,21 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	})();
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var api = {
-	    template: __webpack_require__(48),
-	    extend: __webpack_require__(49),
-	    isFunction: __webpack_require__(50),
-	    isString: __webpack_require__(51),
-	    isRegExp: __webpack_require__(52),
-	    isDate: __webpack_require__(53),
-	    isBoolean: __webpack_require__(54),
-	    isArray: __webpack_require__(55),
-	    isNumber: __webpack_require__(56),
-	    find: __webpack_require__(57),
+	    template: __webpack_require__(49),
+	    extend: __webpack_require__(50),
+	    isFunction: __webpack_require__(51),
+	    isString: __webpack_require__(52),
+	    isRegExp: __webpack_require__(53),
+	    isDate: __webpack_require__(54),
+	    isBoolean: __webpack_require__(55),
+	    isArray: __webpack_require__(56),
+	    isNumber: __webpack_require__(57),
+	    find: __webpack_require__(58),
 	    noop: function noop() {},
 	    unique: function unique(array) {
 	        return array.filter(function (a, b, c) {
@@ -722,12 +730,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = api;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var tu = __webpack_require__(6),
+	var tu = __webpack_require__(7),
 	    concat = Function.apply.bind(Array.prototype.concat, []),
 	    loaders = [],
 	    api = {
@@ -774,11 +782,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	
 	api.addLoader({
 	    loadTemplate: function loadTemplate(template) {
-	        return __webpack_require__(12)('./' + template + '.jsx');
+	        return __webpack_require__(13)('./' + template + '.jsx');
 	    },
 	    listTemplates: function listTemplates() {
 	
-	        return __webpack_require__(13).keys().map(function (k) {
+	        return __webpack_require__(14).keys().map(function (k) {
 	            return {
 	                name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
 	                path: k
@@ -786,10 +794,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	        });
 	    },
 	    loadType: function loadType(type) {
-	        return __webpack_require__(14)('./' + type + '.jsx');
+	        return __webpack_require__(15)('./' + type + '.jsx');
 	    },
 	    listTypes: function listTypes() {
-	        return __webpack_require__(14).keys().map(function (k) {
+	        return __webpack_require__(15).keys().map(function (k) {
 	            return {
 	                name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
 	                path: k
@@ -799,11 +807,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	        });
 	    },
 	    loadValidator: function loadValidator(validator) {
-	        var validators = __webpack_require__(5);
+	        var validators = __webpack_require__(6);
 	        return validators[validator] && validators[validator].bind(validators);
 	    },
 	    listValidators: function listValidators() {
-	        var validators = __webpack_require__(5);
+	        var validators = __webpack_require__(6);
 	        return Object.keys(validators).map(function (name) {
 	            var validator = validators[name];
 	            return {
@@ -869,26 +877,26 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = api;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var types = {};
 	
-	__webpack_require__(15).keys().forEach(function (v) {
+	__webpack_require__(16).keys().forEach(function (v) {
 	    var name = v.replace(/\.\/(.*)\.js(x)?/, '$1');
-	    types[name] = __webpack_require__(16)("./" + v.replace('./', ''));
+	    types[name] = __webpack_require__(17)("./" + v.replace('./', ''));
 	});
 	module.exports = types;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var tu = __webpack_require__(6);
+	var tu = __webpack_require__(7);
 	
 	function removeListener(listeners) {
 	    return function ValueManager$removeListener(path, listener) {
@@ -1138,13 +1146,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ValueManager;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1172,59 +1180,25 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = FieldMixin;
 
 /***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./AutocompleteItemTemplate.jsx": 17,
-		"./ButtonTemplate.jsx": 18,
-		"./CheckboxTemplate.jsx": 19,
-		"./CheckboxesGroupTemplate.jsx": 20,
-		"./CheckboxesTemplate.jsx": 21,
-		"./CollectionCreateTemplate.jsx": 22,
-		"./EditorTemplate.jsx": 23,
-		"./FieldSetTemplate.jsx": 24,
-		"./FormTemplate.jsx": 25,
-		"./ListItemTemplate.jsx": 26,
-		"./ObjectTemplate.jsx": 27,
-		"./RadioItemTemplate.jsx": 28,
-		"./WizardTemplate.jsx": 29,
-		"./buttonsTemplate.jsx": 30,
-		"./index.js": 31
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 12;
-
-
-/***/ },
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./AutocompleteItemTemplate.jsx": 17,
-		"./ButtonTemplate.jsx": 18,
-		"./CheckboxTemplate.jsx": 19,
-		"./CheckboxesGroupTemplate.jsx": 20,
-		"./CheckboxesTemplate.jsx": 21,
-		"./CollectionCreateTemplate.jsx": 22,
-		"./EditorTemplate.jsx": 23,
-		"./FieldSetTemplate.jsx": 24,
-		"./FormTemplate.jsx": 25,
-		"./ListItemTemplate.jsx": 26,
-		"./ObjectTemplate.jsx": 27,
-		"./RadioItemTemplate.jsx": 28,
-		"./WizardTemplate.jsx": 29,
-		"./buttonsTemplate.jsx": 30
+		"./AutocompleteItemTemplate.jsx": 18,
+		"./ButtonTemplate.jsx": 19,
+		"./CheckboxTemplate.jsx": 20,
+		"./CheckboxesGroupTemplate.jsx": 21,
+		"./CheckboxesTemplate.jsx": 22,
+		"./CollectionCreateTemplate.jsx": 23,
+		"./EditorTemplate.jsx": 24,
+		"./FieldSetTemplate.jsx": 25,
+		"./FormTemplate.jsx": 26,
+		"./ListItemTemplate.jsx": 27,
+		"./ObjectTemplate.jsx": 28,
+		"./RadioItemTemplate.jsx": 29,
+		"./WizardTemplate.jsx": 30,
+		"./buttonsTemplate.jsx": 31,
+		"./index.js": 32
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -1245,22 +1219,20 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Autocomplete.jsx": 32,
-		"./Checkbox.jsx": 33,
-		"./Checkboxes.jsx": 34,
-		"./CollectionMixin.jsx": 35,
-		"./Date.jsx": 36,
-		"./DateTime.jsx": 37,
-		"./Hidden.jsx": 38,
-		"./List.jsx": 39,
-		"./Mixed.jsx": 40,
-		"./Object.jsx": 41,
-		"./Password.jsx": 42,
-		"./Radio.jsx": 43,
-		"./Restricted.jsx": 44,
-		"./Select.jsx": 45,
-		"./Text.jsx": 46,
-		"./TextArea.jsx": 47
+		"./AutocompleteItemTemplate.jsx": 18,
+		"./ButtonTemplate.jsx": 19,
+		"./CheckboxTemplate.jsx": 20,
+		"./CheckboxesGroupTemplate.jsx": 21,
+		"./CheckboxesTemplate.jsx": 22,
+		"./CollectionCreateTemplate.jsx": 23,
+		"./EditorTemplate.jsx": 24,
+		"./FieldSetTemplate.jsx": 25,
+		"./FormTemplate.jsx": 26,
+		"./ListItemTemplate.jsx": 27,
+		"./ObjectTemplate.jsx": 28,
+		"./RadioItemTemplate.jsx": 29,
+		"./WizardTemplate.jsx": 30,
+		"./buttonsTemplate.jsx": 31
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -1281,22 +1253,22 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Autocomplete.jsx": 32,
-		"./Checkbox.jsx": 33,
-		"./Checkboxes.jsx": 34,
-		"./CollectionMixin.jsx": 35,
-		"./Date.jsx": 36,
-		"./DateTime.jsx": 37,
-		"./Hidden.jsx": 38,
-		"./List.jsx": 39,
-		"./Mixed.jsx": 40,
-		"./Object.jsx": 41,
-		"./Password.jsx": 42,
-		"./Radio.jsx": 43,
-		"./Restricted.jsx": 44,
-		"./Select.jsx": 45,
-		"./Text.jsx": 46,
-		"./TextArea.jsx": 47
+		"./Autocomplete.jsx": 33,
+		"./Checkbox.jsx": 34,
+		"./Checkboxes.jsx": 35,
+		"./CollectionMixin.jsx": 36,
+		"./Date.jsx": 37,
+		"./DateTime.jsx": 38,
+		"./Hidden.jsx": 39,
+		"./List.jsx": 40,
+		"./Mixed.jsx": 41,
+		"./Object.jsx": 42,
+		"./Password.jsx": 43,
+		"./Radio.jsx": 44,
+		"./Restricted.jsx": 45,
+		"./Select.jsx": 46,
+		"./Text.jsx": 47,
+		"./TextArea.jsx": 48
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -1317,22 +1289,22 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./Autocomplete.jsx": 32,
-		"./Checkbox.jsx": 33,
-		"./Checkboxes.jsx": 34,
-		"./CollectionMixin.jsx": 35,
-		"./Date.jsx": 36,
-		"./DateTime.jsx": 37,
-		"./Hidden.jsx": 38,
-		"./List.jsx": 39,
-		"./Mixed.jsx": 40,
-		"./Object.jsx": 41,
-		"./Password.jsx": 42,
-		"./Radio.jsx": 43,
-		"./Restricted.jsx": 44,
-		"./Select.jsx": 45,
-		"./Text.jsx": 46,
-		"./TextArea.jsx": 47
+		"./Autocomplete.jsx": 33,
+		"./Checkbox.jsx": 34,
+		"./Checkboxes.jsx": 35,
+		"./CollectionMixin.jsx": 36,
+		"./Date.jsx": 37,
+		"./DateTime.jsx": 38,
+		"./Hidden.jsx": 39,
+		"./List.jsx": 40,
+		"./Mixed.jsx": 41,
+		"./Object.jsx": 42,
+		"./Password.jsx": 43,
+		"./Radio.jsx": 44,
+		"./Restricted.jsx": 45,
+		"./Select.jsx": 46,
+		"./Text.jsx": 47,
+		"./TextArea.jsx": 48
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -1352,9 +1324,45 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var map = {
+		"./Autocomplete.jsx": 33,
+		"./Checkbox.jsx": 34,
+		"./Checkboxes.jsx": 35,
+		"./CollectionMixin.jsx": 36,
+		"./Date.jsx": 37,
+		"./DateTime.jsx": 38,
+		"./Hidden.jsx": 39,
+		"./List.jsx": 40,
+		"./Mixed.jsx": 41,
+		"./Object.jsx": 42,
+		"./Password.jsx": 43,
+		"./Radio.jsx": 44,
+		"./Restricted.jsx": 45,
+		"./Select.jsx": 46,
+		"./Text.jsx": 47,
+		"./TextArea.jsx": 48
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 17;
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var AutocompleteItemTemplate = React.createClass({
 	    displayName: 'AutocompleteItemTemplate',
 	
@@ -1389,12 +1397,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = AutocompleteItemTemplate;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var Button = React.createClass({
 	    displayName: 'Button',
 	
@@ -1429,12 +1437,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Button;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	
 	var CheckboxTemplate = React.createClass({
 	    displayName: "CheckboxTemplate",
@@ -1456,12 +1464,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = CheckboxTemplate;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var CheckboxesGroupTemplate = React.createClass({
 	    displayName: "CheckboxesGroupTemplate",
 	
@@ -1481,21 +1489,21 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = CheckboxesGroupTemplate;
 
 /***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = __webpack_require__(19);
-
-/***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var Editor = __webpack_require__(4);
+	module.exports = __webpack_require__(20);
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(11);
+	var Editor = __webpack_require__(5);
 	
 	var CollectionCreateTemplate = React.createClass({
 	    displayName: 'CollectionCreateTemplate',
@@ -1546,12 +1554,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = CollectionCreateTemplate;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var EditorTemplate = React.createClass({
 	    displayName: 'EditorTemplate',
 	    componentWillMount: function componentWillMount() {
@@ -1601,12 +1609,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = EditorTemplate;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	
 	var FieldSetTemplate = React.createClass({
 	    displayName: 'FieldSetTemplate',
@@ -1634,14 +1642,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = FieldSetTemplate;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	
 	var FormTemplate = React.createClass({
 	    displayName: 'FormTemplate',
@@ -1663,13 +1671,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = FormTemplate;
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var tpath = __webpack_require__(6).path;
+	var React = __webpack_require__(11);
+	var tpath = __webpack_require__(7).path;
 	//var PropsStateValueMixin = require('../PropsStateValueMixin');
 	var ListItemTemplate = React.createClass({
 	    displayName: 'ListItemTemplate',
@@ -1780,14 +1788,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ListItemTemplate;
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	
 	var ObjectTemplate = React.createClass({
 	    displayName: 'ObjectTemplate',
@@ -1809,12 +1817,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ObjectTemplate;
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var RadioItemTemplate = React.createClass({
 	    displayName: "RadioItemTemplate",
 	
@@ -1841,19 +1849,19 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = RadioItemTemplate;
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(10);
-	var Form = __webpack_require__(1);
-	var tu = __webpack_require__(6);
-	var NestedMixin = __webpack_require__(3);
-	var css = __webpack_require__(79);
-	var ButtonsTemplate = __webpack_require__(58);
+	var React = __webpack_require__(11);
+	var Form = __webpack_require__(2);
+	var tu = __webpack_require__(7);
+	var NestedMixin = __webpack_require__(4);
+	var css = __webpack_require__(80);
+	var ButtonsTemplate = __webpack_require__(59);
 	
 	var Wizard = React.createClass({
 	    displayName: 'Wizard',
@@ -2043,16 +2051,16 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Wizard;
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var tu = __webpack_require__(6);
-	var loader = __webpack_require__(7);
+	var React = __webpack_require__(11);
+	var tu = __webpack_require__(7);
+	var loader = __webpack_require__(8);
 	
 	var ButtonsTemplate = React.createClass({
 	    displayName: 'ButtonsTemplate',
@@ -2112,24 +2120,24 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ButtonsTemplate;
 
 /***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports.editor = __webpack_require__(23);
-
-/***/ },
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var tu = __webpack_require__(6);
-	var css = __webpack_require__(81);
-	var loader = __webpack_require__(7);
-	var BasicFieldMixin = __webpack_require__(11);
+	module.exports.editor = __webpack_require__(24);
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(11);
+	var tu = __webpack_require__(7);
+	var css = __webpack_require__(82);
+	var loader = __webpack_require__(8);
+	var BasicFieldMixin = __webpack_require__(12);
 	
 	var Autocomplete = React.createClass({
 	    displayName: 'Autocomplete',
@@ -2432,14 +2440,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Autocomplete;
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var Checkbox = React.createClass({
 	    displayName: 'Checkbox',
@@ -2464,18 +2472,18 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Checkbox;
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var BasicFieldMixin = __webpack_require__(11);
-	var tu = __webpack_require__(6);
-	var loader = __webpack_require__(7);
-	var Constants = __webpack_require__(59);
+	var React = __webpack_require__(11);
+	var BasicFieldMixin = __webpack_require__(12);
+	var tu = __webpack_require__(7);
+	var loader = __webpack_require__(8);
+	var Constants = __webpack_require__(60);
 	
 	var Checkboxes = React.createClass({
 	    displayName: 'Checkboxes',
@@ -2578,17 +2586,17 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Checkboxes;
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var Editor = __webpack_require__(4);
-	var loader = __webpack_require__(7);
-	var Constants = __webpack_require__(59);
-	var ValueManager = __webpack_require__(9);
-	var BasicFieldMixin = __webpack_require__(11);
+	var React = __webpack_require__(11);
+	var Editor = __webpack_require__(5);
+	var loader = __webpack_require__(8);
+	var Constants = __webpack_require__(60);
+	var ValueManager = __webpack_require__(10);
+	var BasicFieldMixin = __webpack_require__(12);
 	var CollectionMixin = {
 	    statics: {
 	        collectionCreateTemplate: 'CollectionCreateTemplate',
@@ -2757,14 +2765,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = CollectionMixin;
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var DateInput = React.createClass({
 	    displayName: 'DateInput',
@@ -2784,14 +2792,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = DateInput;
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var DateTimeInput = React.createClass({
 	    displayName: 'DateTimeInput',
@@ -2811,14 +2819,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = DateTimeInput;
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var HiddenInput = React.createClass({
 	    displayName: 'HiddenInput',
@@ -2838,16 +2846,16 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = HiddenInput;
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var Constants = __webpack_require__(59);
-	var tu = __webpack_require__(6);
-	var CollectionMixin = __webpack_require__(35);
-	var loader = __webpack_require__(7);
+	var React = __webpack_require__(11);
+	var Constants = __webpack_require__(60);
+	var tu = __webpack_require__(7);
+	var CollectionMixin = __webpack_require__(36);
+	var loader = __webpack_require__(8);
 	var ListInput = React.createClass({
 	    displayName: 'ListInput',
 	
@@ -2975,16 +2983,16 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ListInput;
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10);
-	var CollectionMixin = __webpack_require__(35);
-	var tu = __webpack_require__(6);
-	var loader = __webpack_require__(7);
-	var Constants = __webpack_require__(59);
+	var React = __webpack_require__(11);
+	var CollectionMixin = __webpack_require__(36);
+	var tu = __webpack_require__(7);
+	var loader = __webpack_require__(8);
+	var Constants = __webpack_require__(60);
 	var MixedInput = React.createClass({
 	    displayName: 'MixedInput',
 	
@@ -3141,7 +3149,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = MixedInput;
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3150,10 +3158,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var NestedMixin = __webpack_require__(3);
-	var loader = __webpack_require__(7);
-	var BasicFieldMixin = __webpack_require__(11);
+	var React = __webpack_require__(11);
+	var NestedMixin = __webpack_require__(4);
+	var loader = __webpack_require__(8);
+	var BasicFieldMixin = __webpack_require__(12);
 	var ObjectInput = React.createClass({
 	    mixins: [NestedMixin, BasicFieldMixin],
 	    displayName: 'ObjectInput',
@@ -3195,14 +3203,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = ObjectInput;
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var Password = React.createClass({
 	    displayName: 'Password',
@@ -3222,17 +3230,17 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = Password;
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(10);
-	var tu = __webpack_require__(6);
-	var loader = __webpack_require__(7);
-	var BasicFieldMixin = __webpack_require__(11);
+	var React = __webpack_require__(11);
+	var tu = __webpack_require__(7);
+	var loader = __webpack_require__(8);
+	var BasicFieldMixin = __webpack_require__(12);
 	
 	var RadioInput = React.createClass({
 	    displayName: 'Radio',
@@ -3332,14 +3340,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = RadioInput;
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var RestrictedInput = React.createClass({
 	    displayName: 'RestrictedInput',
@@ -3371,14 +3379,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = RestrictedInput;
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var SelectInput = React.createClass({
 	    displayName: 'SelectInput',
@@ -3429,14 +3437,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = SelectInput;
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var TextInput = React.createClass({
 	    displayName: 'TextInput',
@@ -3457,14 +3465,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = TextInput;
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(10),
-	    FieldMixin = __webpack_require__(2),
-	    Constants = __webpack_require__(59);
+	var React = __webpack_require__(11),
+	    FieldMixin = __webpack_require__(3),
+	    Constants = __webpack_require__(60);
 	
 	var TextArea = React.createClass({
 	    displayName: 'TextArea',
@@ -3485,21 +3493,21 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = TextArea;
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignOwnDefaults = __webpack_require__(60),
-	    assignWith = __webpack_require__(61),
-	    attempt = __webpack_require__(62),
-	    baseAssign = __webpack_require__(63),
-	    baseToString = __webpack_require__(64),
-	    baseValues = __webpack_require__(65),
-	    escapeStringChar = __webpack_require__(66),
-	    isError = __webpack_require__(67),
-	    isIterateeCall = __webpack_require__(68),
-	    keys = __webpack_require__(69),
-	    reInterpolate = __webpack_require__(70),
-	    templateSettings = __webpack_require__(71);
+	var assignOwnDefaults = __webpack_require__(62),
+	    assignWith = __webpack_require__(63),
+	    attempt = __webpack_require__(64),
+	    baseAssign = __webpack_require__(65),
+	    baseToString = __webpack_require__(66),
+	    baseValues = __webpack_require__(67),
+	    escapeStringChar = __webpack_require__(68),
+	    isError = __webpack_require__(69),
+	    isIterateeCall = __webpack_require__(70),
+	    keys = __webpack_require__(71),
+	    reInterpolate = __webpack_require__(72),
+	    templateSettings = __webpack_require__(73);
 	
 	/** Used to match empty string literals in compiled template source. */
 	var reEmptyStringLeading = /\b__p \+= '';/g,
@@ -3717,14 +3725,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(72);
+	module.exports = __webpack_require__(61);
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {var baseIsFunction = __webpack_require__(74),
@@ -3773,10 +3781,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
@@ -3814,10 +3822,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var regexpTag = '[object RegExp]';
@@ -3855,10 +3863,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var dateTag = '[object Date]';
@@ -3896,10 +3904,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var boolTag = '[object Boolean]';
@@ -3937,12 +3945,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(76),
+	var isLength = __webpack_require__(77),
 	    isNative = __webpack_require__(75),
-	    isObjectLike = __webpack_require__(73);
+	    isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var arrayTag = '[object Array]';
@@ -3983,10 +3991,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var numberTag = '[object Number]';
@@ -4030,11 +4038,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseEach = __webpack_require__(77),
-	    createFind = __webpack_require__(78);
+	var baseEach = __webpack_require__(78),
+	    createFind = __webpack_require__(79);
 	
 	/**
 	 * Iterates over elements of `collection`, returning the first element
@@ -4092,9 +4100,9 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 58 */
-30,
 /* 59 */
+31,
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4116,7 +4124,57 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	module.exports = api;
 
 /***/ },
-/* 60 */
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assignWith = __webpack_require__(63),
+	    baseAssign = __webpack_require__(65),
+	    createAssigner = __webpack_require__(84);
+	
+	/**
+	 * Assigns own enumerable properties of source object(s) to the destination
+	 * object. Subsequent sources overwrite property assignments of previous sources.
+	 * If `customizer` is provided it is invoked to produce the assigned values.
+	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
+	 * (objectValue, sourceValue, key, object, source).
+	 *
+	 * **Note:** This method mutates `object` and is based on
+	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+	 *
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias extend
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @param {Function} [customizer] The function to customize assigned values.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+	 * // => { 'user': 'fred', 'age': 40 }
+	 *
+	 * // using a customizer callback
+	 * var defaults = _.partialRight(_.assign, function(value, other) {
+	 *   return _.isUndefined(value) ? other : value;
+	 * });
+	 *
+	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+	 * // => { 'user': 'barney', 'age': 36 }
+	 */
+	var assign = createAssigner(function(object, source, customizer) {
+	  return customizer
+	    ? assignWith(object, source, customizer)
+	    : baseAssign(object, source);
+	});
+	
+	module.exports = assign;
+
+
+/***/ },
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used for native method references. */
@@ -4148,11 +4206,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getSymbols = __webpack_require__(83),
-	    keys = __webpack_require__(69);
+	var getSymbols = __webpack_require__(85),
+	    keys = __webpack_require__(71);
 	
 	/** Used for native method references. */
 	var arrayProto = Array.prototype;
@@ -4195,11 +4253,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isError = __webpack_require__(67),
-	    restParam = __webpack_require__(84);
+	var isError = __webpack_require__(69),
+	    restParam = __webpack_require__(86);
 	
 	/**
 	 * Attempts to invoke `func`, returning either the result or the caught error
@@ -4233,13 +4291,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCopy = __webpack_require__(85),
-	    getSymbols = __webpack_require__(83),
+	var baseCopy = __webpack_require__(87),
+	    getSymbols = __webpack_require__(85),
 	    isNative = __webpack_require__(75),
-	    keys = __webpack_require__(69);
+	    keys = __webpack_require__(71);
 	
 	/** Native method references. */
 	var preventExtensions = isNative(Object.preventExtensions = Object.preventExtensions) && preventExtensions;
@@ -4279,7 +4337,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4301,7 +4359,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4329,7 +4387,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used to escape characters for inclusion in compiled string literals. */
@@ -4358,10 +4416,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(73);
+	var isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var errorTag = '[object Error]';
@@ -4400,13 +4458,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 68 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(86),
-	    isIndex = __webpack_require__(87),
-	    isLength = __webpack_require__(76),
-	    isObject = __webpack_require__(88);
+	var getLength = __webpack_require__(88),
+	    isIndex = __webpack_require__(89),
+	    isLength = __webpack_require__(77),
+	    isObject = __webpack_require__(90);
 	
 	/**
 	 * Checks if the provided arguments are from an iteratee call.
@@ -4439,13 +4497,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(76),
+	var isLength = __webpack_require__(77),
 	    isNative = __webpack_require__(75),
-	    isObject = __webpack_require__(88),
-	    shimKeys = __webpack_require__(89);
+	    isObject = __webpack_require__(90),
+	    shimKeys = __webpack_require__(91);
 	
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = isNative(nativeKeys = Object.keys) && nativeKeys;
@@ -4493,7 +4551,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used to match template delimiters. */
@@ -4503,13 +4561,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var escape = __webpack_require__(90),
-	    reEscape = __webpack_require__(91),
-	    reEvaluate = __webpack_require__(92),
-	    reInterpolate = __webpack_require__(70);
+	var escape = __webpack_require__(92),
+	    reEscape = __webpack_require__(93),
+	    reEvaluate = __webpack_require__(94),
+	    reInterpolate = __webpack_require__(72);
 	
 	/**
 	 * By default, the template delimiters used by lodash are like those in
@@ -4576,74 +4634,6 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assignWith = __webpack_require__(61),
-	    baseAssign = __webpack_require__(63),
-	    createAssigner = __webpack_require__(93);
-	
-	/**
-	 * Assigns own enumerable properties of source object(s) to the destination
-	 * object. Subsequent sources overwrite property assignments of previous sources.
-	 * If `customizer` is provided it is invoked to produce the assigned values.
-	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
-	 * (objectValue, sourceValue, key, object, source).
-	 *
-	 * **Note:** This method mutates `object` and is based on
-	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
-	 *
-	 *
-	 * @static
-	 * @memberOf _
-	 * @alias extend
-	 * @category Object
-	 * @param {Object} object The destination object.
-	 * @param {...Object} [sources] The source objects.
-	 * @param {Function} [customizer] The function to customize assigned values.
-	 * @param {*} [thisArg] The `this` binding of `customizer`.
-	 * @returns {Object} Returns `object`.
-	 * @example
-	 *
-	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
-	 * // => { 'user': 'fred', 'age': 40 }
-	 *
-	 * // using a customizer callback
-	 * var defaults = _.partialRight(_.assign, function(value, other) {
-	 *   return _.isUndefined(value) ? other : value;
-	 * });
-	 *
-	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
-	 * // => { 'user': 'barney', 'age': 36 }
-	 */
-	var assign = createAssigner(function(object, source, customizer) {
-	  return customizer
-	    ? assignWith(object, source, customizer)
-	    : baseAssign(object, source);
-	});
-	
-	module.exports = assign;
-
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	module.exports = isObjectLike;
-
-
-/***/ },
 /* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4668,8 +4658,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var escapeRegExp = __webpack_require__(94),
-	    isObjectLike = __webpack_require__(73);
+	var escapeRegExp = __webpack_require__(95),
+	    isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]';
@@ -4729,6 +4719,24 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
 	 * of an array-like value.
 	 */
@@ -4751,11 +4759,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(95),
-	    createBaseEach = __webpack_require__(96);
+	var baseForOwn = __webpack_require__(96),
+	    createBaseEach = __webpack_require__(97);
 	
 	/**
 	 * The base implementation of `_.forEach` without support for callback
@@ -4772,13 +4780,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCallback = __webpack_require__(97),
-	    baseFind = __webpack_require__(98),
-	    baseFindIndex = __webpack_require__(99),
-	    isArray = __webpack_require__(55);
+	var baseCallback = __webpack_require__(98),
+	    baseFind = __webpack_require__(99),
+	    baseFindIndex = __webpack_require__(100),
+	    isArray = __webpack_require__(56);
 	
 	/**
 	 * Creates a `_.find` or `_.findLast` function.
@@ -4803,16 +4811,16 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(80);
+	var content = __webpack_require__(81);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(100)(content, {});
+	var update = __webpack_require__(101)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -4826,23 +4834,23 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	}
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(101)();
+	exports = module.exports = __webpack_require__(102)();
 	exports.push([module.id, "ol.progtrckr {\n  margin: 0;\n  padding-bottom: 2.2rem;\n  list-style-type: none;\n  display: table;\n  padding-left: 0;\n  padding-right: 0;\n  width: 100%;\n}\nol.progtrckr li {\n  text-align: center;\n  line-height: 4.5rem;\n  padding: 0 0.7rem;\n  cursor: pointer;\n  display: table-cell;\n}\nol.progtrckr li span {\n  padding: 0 1.5rem;\n}\n@media (max-width: 650px) {\n  .progtrckr li span {\n    display: none;\n  }\n}\n.progtrckr em {\n  display: none;\n  font-weight: 700;\n  padding-left: 1rem;\n}\n@media (max-width: 650px) {\n  .progtrckr em {\n    display: inline;\n  }\n}\nol.progtrckr li.progtrckr-todo {\n  color: silver;\n  border-bottom: 4px solid silver;\n}\nol.progtrckr li.progtrckr-doing {\n  color: black;\n  border-bottom: 4px solid #33C3F0;\n}\nol.progtrckr li.progtrckr-done {\n  color: black;\n  border-bottom: 4px solid #33C3F0;\n}\nol.progtrckr li:after {\n  content: \"\\00a0\\00a0\";\n}\nol.progtrckr li:before {\n  position: relative;\n  bottom: -3.7rem;\n  float: left;\n  left: 50%;\n}\nol.progtrckr li.progtrckr-todo:before {\n  content: \"\\039F\";\n  color: silver;\n  background-color: white;\n  width: 1.2em;\n  line-height: 1.4em;\n}\nol.progtrckr li.progtrckr-todo:hover:before {\n  color: #0FA0CE;\n}\nol.progtrckr li.progtrckr-doing:before {\n  content: \"\\2022\";\n  color: white;\n  background-color: #33C3F0;\n  width: 1.2em;\n  line-height: 1.2em;\n  border-radius: 1.2em;\n}\nol.progtrckr li.progtrckr-doing:hover:before {\n  color: #0FA0CE;\n}\nol.progtrckr li.progtrckr-done:before {\n  content: \"\\2713\";\n  color: white;\n  background-color: #33C3F0;\n  width: 1.2em;\n  line-height: 1.2em;\n  border-radius: 1.2em;\n}\nol.progtrckr li.progtrckr-done:hover:before {\n  color: #0FA0CE;\n}\n", ""]);
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(82);
+	var content = __webpack_require__(83);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(100)(content, {});
+	var update = __webpack_require__(101)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -4856,19 +4864,69 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	}
 
 /***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(101)();
-	exports.push([module.id, ".autocomplete {\n  position: relative;\n}\n.autocomplete.found .form-control {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.autocomplete.found .list-group {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  width: 100%;\n}\n.autocomplete.found .list-group-item:first-child {\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n  border-top: none;\n}\n.autocomplete.found .list-group-item {\n  cursor: pointer;\n}\n.autocomplete.found .list-group-item:hover {\n  background-color: #eee;\n}\n.autocomplete.found .focused {\n  background-color: #ddd;\n}\n", ""]);
-
-/***/ },
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var constant = __webpack_require__(102),
+	exports = module.exports = __webpack_require__(102)();
+	exports.push([module.id, ".autocomplete {\n  position: relative;\n}\n.autocomplete.found .form-control {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.autocomplete.found .list-group {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  width: 100%;\n}\n.autocomplete.found .list-group-item:first-child {\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n  border-top: none;\n}\n.autocomplete.found .list-group-item {\n  cursor: pointer;\n}\n.autocomplete.found .list-group-item:hover {\n  background-color: #eee;\n}\n.autocomplete.found .focused {\n  background-color: #ddd;\n}\n", ""]);
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var bindCallback = __webpack_require__(103),
+	    isIterateeCall = __webpack_require__(70),
+	    restParam = __webpack_require__(86);
+	
+	/**
+	 * Creates a function that assigns properties of source object(s) to a given
+	 * destination object.
+	 *
+	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return restParam(function(object, sources) {
+	    var index = -1,
+	        length = object == null ? 0 : sources.length,
+	        customizer = length > 2 && sources[length - 2],
+	        guard = length > 2 && sources[2],
+	        thisArg = length > 1 && sources[length - 1];
+	
+	    if (typeof customizer == 'function') {
+	      customizer = bindCallback(customizer, thisArg, 5);
+	      length -= 2;
+	    } else {
+	      customizer = typeof thisArg == 'function' ? thisArg : null;
+	      length -= (customizer ? 1 : 0);
+	    }
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? null : customizer;
+	      length = 1;
+	    }
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+	
+	module.exports = createAssigner;
+
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var constant = __webpack_require__(104),
 	    isNative = __webpack_require__(75),
-	    toObject = __webpack_require__(103);
+	    toObject = __webpack_require__(105);
 	
 	/** Native method references. */
 	var getOwnPropertySymbols = isNative(getOwnPropertySymbols = Object.getOwnPropertySymbols) && getOwnPropertySymbols;
@@ -4888,7 +4946,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used as the `TypeError` message for "Functions" methods. */
@@ -4952,7 +5010,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4981,10 +5039,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(104);
+	var baseProperty = __webpack_require__(106);
 	
 	/**
 	 * Gets the "length" property value of `object`.
@@ -5002,7 +5060,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5029,7 +5087,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5063,15 +5121,15 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(105),
-	    isArray = __webpack_require__(55),
-	    isIndex = __webpack_require__(87),
-	    isLength = __webpack_require__(76),
-	    keysIn = __webpack_require__(106),
-	    support = __webpack_require__(107);
+	var isArguments = __webpack_require__(108),
+	    isArray = __webpack_require__(56),
+	    isIndex = __webpack_require__(89),
+	    isLength = __webpack_require__(77),
+	    keysIn = __webpack_require__(109),
+	    support = __webpack_require__(110);
 	
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -5111,11 +5169,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(64),
-	    escapeHtmlChar = __webpack_require__(108);
+	var baseToString = __webpack_require__(66),
+	    escapeHtmlChar = __webpack_require__(107);
 	
 	/** Used to match HTML entities and HTML characters. */
 	var reUnescapedHtml = /[&<>"'`]/g,
@@ -5165,7 +5223,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used to match template delimiters. */
@@ -5175,7 +5233,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** Used to match template delimiters. */
@@ -5185,60 +5243,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(109),
-	    isIterateeCall = __webpack_require__(68),
-	    restParam = __webpack_require__(84);
-	
-	/**
-	 * Creates a function that assigns properties of source object(s) to a given
-	 * destination object.
-	 *
-	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
-	 *
-	 * @private
-	 * @param {Function} assigner The function to assign values.
-	 * @returns {Function} Returns the new assigner function.
-	 */
-	function createAssigner(assigner) {
-	  return restParam(function(object, sources) {
-	    var index = -1,
-	        length = object == null ? 0 : sources.length,
-	        customizer = length > 2 && sources[length - 2],
-	        guard = length > 2 && sources[2],
-	        thisArg = length > 1 && sources[length - 1];
-	
-	    if (typeof customizer == 'function') {
-	      customizer = bindCallback(customizer, thisArg, 5);
-	      length -= 2;
-	    } else {
-	      customizer = typeof thisArg == 'function' ? thisArg : null;
-	      length -= (customizer ? 1 : 0);
-	    }
-	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-	      customizer = length < 3 ? null : customizer;
-	      length = 1;
-	    }
-	    while (++index < length) {
-	      var source = sources[index];
-	      if (source) {
-	        assigner(object, source, customizer);
-	      }
-	    }
-	    return object;
-	  });
-	}
-	
-	module.exports = createAssigner;
-
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseToString = __webpack_require__(64);
+	var baseToString = __webpack_require__(66);
 	
 	/**
 	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
@@ -5273,11 +5281,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(110),
-	    keys = __webpack_require__(69);
+	var baseFor = __webpack_require__(111),
+	    keys = __webpack_require__(71);
 	
 	/**
 	 * The base implementation of `_.forOwn` without support for callback
@@ -5296,12 +5304,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(86),
-	    isLength = __webpack_require__(76),
-	    toObject = __webpack_require__(103);
+	var getLength = __webpack_require__(88),
+	    isLength = __webpack_require__(77),
+	    toObject = __webpack_require__(105);
 	
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -5333,14 +5341,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseMatches = __webpack_require__(111),
-	    baseMatchesProperty = __webpack_require__(112),
-	    bindCallback = __webpack_require__(109),
-	    identity = __webpack_require__(113),
-	    property = __webpack_require__(114);
+	var baseMatches = __webpack_require__(112),
+	    baseMatchesProperty = __webpack_require__(113),
+	    bindCallback = __webpack_require__(103),
+	    identity = __webpack_require__(114),
+	    property = __webpack_require__(115);
 	
 	/**
 	 * The base implementation of `_.callback` which supports specifying the
@@ -5374,7 +5382,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5405,7 +5413,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5434,7 +5442,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -5630,7 +5638,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function() {
@@ -5651,7 +5659,52 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	}
 
 /***/ },
-/* 102 */
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var identity = __webpack_require__(114);
+	
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+	
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5680,10 +5733,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(88);
+	var isObject = __webpack_require__(90);
 	
 	/**
 	 * Converts `value` to an object if it is not one.
@@ -5700,7 +5753,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5720,11 +5773,39 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(76),
-	    isObjectLike = __webpack_require__(73);
+	/** Used to map characters to HTML entities. */
+	var htmlEscapes = {
+	  '&': '&amp;',
+	  '<': '&lt;',
+	  '>': '&gt;',
+	  '"': '&quot;',
+	  "'": '&#39;',
+	  '`': '&#96;'
+	};
+	
+	/**
+	 * Used by `_.escape` to convert characters to HTML entities.
+	 *
+	 * @private
+	 * @param {string} chr The matched character to escape.
+	 * @returns {string} Returns the escaped character.
+	 */
+	function escapeHtmlChar(chr) {
+	  return htmlEscapes[chr];
+	}
+	
+	module.exports = escapeHtmlChar;
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isLength = __webpack_require__(77),
+	    isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -5763,15 +5844,15 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArguments = __webpack_require__(105),
-	    isArray = __webpack_require__(55),
-	    isIndex = __webpack_require__(87),
-	    isLength = __webpack_require__(76),
-	    isObject = __webpack_require__(88),
-	    support = __webpack_require__(107);
+	var isArguments = __webpack_require__(108),
+	    isArray = __webpack_require__(56),
+	    isIndex = __webpack_require__(89),
+	    isLength = __webpack_require__(77),
+	    isObject = __webpack_require__(90),
+	    support = __webpack_require__(110);
 	
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -5834,7 +5915,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Used for native method references. */
@@ -5917,83 +5998,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** Used to map characters to HTML entities. */
-	var htmlEscapes = {
-	  '&': '&amp;',
-	  '<': '&lt;',
-	  '>': '&gt;',
-	  '"': '&quot;',
-	  "'": '&#39;',
-	  '`': '&#96;'
-	};
-	
-	/**
-	 * Used by `_.escape` to convert characters to HTML entities.
-	 *
-	 * @private
-	 * @param {string} chr The matched character to escape.
-	 * @returns {string} Returns the escaped character.
-	 */
-	function escapeHtmlChar(chr) {
-	  return htmlEscapes[chr];
-	}
-	
-	module.exports = escapeHtmlChar;
-
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var identity = __webpack_require__(113);
-	
-	/**
-	 * A specialized version of `baseCallback` which only supports `this` binding
-	 * and specifying the number of arguments to provide to `func`.
-	 *
-	 * @private
-	 * @param {Function} func The function to bind.
-	 * @param {*} thisArg The `this` binding of `func`.
-	 * @param {number} [argCount] The number of arguments to provide to `func`.
-	 * @returns {Function} Returns the callback.
-	 */
-	function bindCallback(func, thisArg, argCount) {
-	  if (typeof func != 'function') {
-	    return identity;
-	  }
-	  if (thisArg === undefined) {
-	    return func;
-	  }
-	  switch (argCount) {
-	    case 1: return function(value) {
-	      return func.call(thisArg, value);
-	    };
-	    case 3: return function(value, index, collection) {
-	      return func.call(thisArg, value, index, collection);
-	    };
-	    case 4: return function(accumulator, value, index, collection) {
-	      return func.call(thisArg, accumulator, value, index, collection);
-	    };
-	    case 5: return function(value, other, key, object, source) {
-	      return func.call(thisArg, value, other, key, object, source);
-	    };
-	  }
-	  return function() {
-	    return func.apply(thisArg, arguments);
-	  };
-	}
-	
-	module.exports = bindCallback;
-
-
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var createBaseFor = __webpack_require__(115);
+	var createBaseFor = __webpack_require__(116);
 	
 	/**
 	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
@@ -6013,14 +6021,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsMatch = __webpack_require__(116),
-	    constant = __webpack_require__(102),
-	    isStrictComparable = __webpack_require__(117),
-	    keys = __webpack_require__(69),
-	    toObject = __webpack_require__(103);
+	var baseIsMatch = __webpack_require__(117),
+	    constant = __webpack_require__(104),
+	    isStrictComparable = __webpack_require__(118),
+	    keys = __webpack_require__(71),
+	    toObject = __webpack_require__(105);
 	
 	/**
 	 * The base implementation of `_.matches` which does not clone `source`.
@@ -6066,18 +6074,18 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(118),
-	    baseIsEqual = __webpack_require__(119),
-	    baseSlice = __webpack_require__(120),
-	    isArray = __webpack_require__(55),
-	    isKey = __webpack_require__(121),
-	    isStrictComparable = __webpack_require__(117),
-	    last = __webpack_require__(122),
-	    toObject = __webpack_require__(103),
-	    toPath = __webpack_require__(123);
+	var baseGet = __webpack_require__(119),
+	    baseIsEqual = __webpack_require__(120),
+	    baseSlice = __webpack_require__(121),
+	    isArray = __webpack_require__(56),
+	    isKey = __webpack_require__(122),
+	    isStrictComparable = __webpack_require__(118),
+	    last = __webpack_require__(123),
+	    toObject = __webpack_require__(105),
+	    toPath = __webpack_require__(124);
 	
 	/**
 	 * The base implementation of `_.matchesProperty` which does not which does
@@ -6118,7 +6126,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6144,12 +6152,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(104),
-	    basePropertyDeep = __webpack_require__(124),
-	    isKey = __webpack_require__(121);
+	var baseProperty = __webpack_require__(106),
+	    basePropertyDeep = __webpack_require__(125),
+	    isKey = __webpack_require__(122);
 	
 	/**
 	 * Creates a function which returns the property value at `path` on a
@@ -6181,10 +6189,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(103);
+	var toObject = __webpack_require__(105);
 	
 	/**
 	 * Creates a base function for `_.forIn` or `_.forInRight`.
@@ -6214,10 +6222,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqual = __webpack_require__(119);
+	var baseIsEqual = __webpack_require__(120);
 	
 	/**
 	 * The base implementation of `_.isMatch` without support for callback
@@ -6269,10 +6277,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(88);
+	var isObject = __webpack_require__(90);
 	
 	/**
 	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -6290,10 +6298,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(103);
+	var toObject = __webpack_require__(105);
 	
 	/**
 	 * The base implementation of `get` without support for string paths
@@ -6325,10 +6333,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqualDeep = __webpack_require__(125);
+	var baseIsEqualDeep = __webpack_require__(126);
 	
 	/**
 	 * The base implementation of `_.isEqual` without support for `this` binding
@@ -6365,7 +6373,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6403,11 +6411,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(55),
-	    toObject = __webpack_require__(103);
+	var isArray = __webpack_require__(56),
+	    toObject = __webpack_require__(105);
 	
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]+|(["'])(?:(?!\1)[^\n\\]|\\.)*?)\1\]/,
@@ -6437,7 +6445,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6462,11 +6470,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(64),
-	    isArray = __webpack_require__(55);
+	var baseToString = __webpack_require__(66),
+	    isArray = __webpack_require__(56);
 	
 	/** Used to match property names within property paths. */
 	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
@@ -6496,11 +6504,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(118),
-	    toPath = __webpack_require__(123);
+	var baseGet = __webpack_require__(119),
+	    toPath = __webpack_require__(124);
 	
 	/**
 	 * A specialized version of `baseProperty` which supports deep paths.
@@ -6521,14 +6529,14 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var equalArrays = __webpack_require__(126),
-	    equalByTag = __webpack_require__(127),
-	    equalObjects = __webpack_require__(128),
-	    isArray = __webpack_require__(55),
-	    isTypedArray = __webpack_require__(129);
+	var equalArrays = __webpack_require__(127),
+	    equalByTag = __webpack_require__(128),
+	    equalObjects = __webpack_require__(129),
+	    isArray = __webpack_require__(56),
+	    isTypedArray = __webpack_require__(130);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -6629,7 +6637,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6689,7 +6697,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** `Object#toString` result references. */
@@ -6744,10 +6752,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var keys = __webpack_require__(69);
+	var keys = __webpack_require__(71);
 	
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -6824,11 +6832,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_10__) { return
 
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(76),
-	    isObjectLike = __webpack_require__(73);
+	var isLength = __webpack_require__(77),
+	    isObjectLike = __webpack_require__(76);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',

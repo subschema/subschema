@@ -8,7 +8,7 @@ var def = {
     },
     output: {
         path: path.join(__dirname, 'dist/'),
-        filename: '[name].' ,
+        filename: '[name].',
         chunkFilename: '[name].',
         publicPath: '/',
         // export itself to a global var
@@ -70,7 +70,9 @@ module.exports = [makeConf({name: 'umd.' + version}),
         output: {
             filename: ''
         },
-        externals: false,
+        externals: {
+            subschema: './Subschema.everything-amd.' + version+'.js'
+        },
         plugins: [
             new webpack.optimize.DedupePlugin(),
             new webpack.DefinePlugin({

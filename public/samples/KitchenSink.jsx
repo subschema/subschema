@@ -1,6 +1,4 @@
-var React = require('react');
-var loader = require('../../src/loader.jsx');
-var schema = {};
+var loader = require('subschema').loader, schema = {};
 loader.listTypes().forEach(function (type) {
     schema[type.name] = {
         type: type.name,
