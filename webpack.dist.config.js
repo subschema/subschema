@@ -1,4 +1,7 @@
-var webpack = require('webpack'), merge = require('lodash/object/merge'), defaults = require('lodash/object/defaults'), version = require('./package.json').version, path = require('path');
+var webpack = require('webpack'),
+    merge = require('lodash/object/merge'),
+    defaults = require('lodash/object/defaults'),
+    version = require('./package.json').version, path = require('path');
 
 console.log('out', path.join(__dirname, 'dist/'));
 var def = {
@@ -21,7 +24,38 @@ var def = {
         'react': 'React',
         'lodash': '_'
     },
+    module: {
+        loaders: [
+            {test: /\.js(x)?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
+            {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
+            // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
+            // loads bootstrap's css.
+//            / Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
+// loads bootstrap's css.
+            {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
+            {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
+            {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
+            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=image/svg+xml"},
+            // Optionally extract less files
+            // or any other compile-to-css language
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader!'
+            },
+            {
+                test: /\.less$/,
+                loader: 'style!css!less-loader'
+            }
+        ]
+    },
 
+    resolve: {
+        alias: {
+            'subschema': __dirname+'/src/index',
+            'types': __dirname+'/src/types',
+            'styles': __dirname+'/src/styles'
+        }
+    },
     plugins: [
         //   new webpack.optimize.CommonsChunkPlugin('common.js'),
         new webpack.optimize.UglifyJsPlugin(),
@@ -69,9 +103,9 @@ module.exports = [
         output: {
             filename: ''
         },
-        externals: {
+        /*externals: {
             subschema: './dist/Subschema.everything-umd.' + version+'.js'
-        },
+        },*/
         plugins: [
             new webpack.optimize.DedupePlugin(),
             new webpack.DefinePlugin({

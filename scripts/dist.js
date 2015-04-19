@@ -12,6 +12,7 @@ var webpack = require("webpack"), configs = require('../webpack.dist.config.js')
             console.log('err with ' + i, err);
             process.exit(1);
         }
+        console.log('stats for ' + conf.name, stats, '\n\n\n');
         if (!configs.length) {
             console.log('done');
             process.exit(0);
