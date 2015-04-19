@@ -20,10 +20,10 @@ var def = {
         library: "Subschema"
 
     },
-    externals: {
+/*    externals: {
         'react': 'React',
         'lodash': '_'
-    },
+    },*/
     module: {
         loaders: [
             {test: /\.js(x)?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
