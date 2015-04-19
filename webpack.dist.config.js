@@ -70,7 +70,7 @@ module.exports = [
             filename: ''
         },
         externals: {
-            subschema: './Subschema.everything.' + version+'.js'
+            subschema: './dist/Subschema.everything-umd.' + version+'.js'
         },
         plugins: [
             new webpack.optimize.DedupePlugin(),

@@ -5,7 +5,7 @@ var tu = Subschema.utils
 var ValueManager = Subschema.ValueManager;
 
 //Everything else.
-var React = require('react');
+var React = Subschema.React;
 var Alert = require('react-bootstrap/lib/Alert');
 var Modal = require('react-bootstrap/lib/Modal');
 var ModalTrigger = require('react-bootstrap/lib/ModalTrigger');

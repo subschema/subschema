@@ -1,4 +1,4 @@
-define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return /******/ (function(modules) { // webpackBootstrap
+define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_2__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -75,28 +75,35 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	module.exports.Form = __webpack_require__(2);
-	module.exports.FieldMixin = __webpack_require__(3);
-	module.exports.NestedMixin = __webpack_require__(4);
-	module.exports.Editor = __webpack_require__(5);
-	module.exports.validators = __webpack_require__(6);
-	module.exports.util = __webpack_require__(7);
-	module.exports.loader = __webpack_require__(8);
-	module.exports.Types = __webpack_require__(9);
-	module.exports.ValueManager = __webpack_require__(10);
+	module.exports.Form = __webpack_require__(3);
+	module.exports.FieldMixin = __webpack_require__(4);
+	module.exports.NestedMixin = __webpack_require__(5);
+	module.exports.Editor = __webpack_require__(6);
+	module.exports.validators = __webpack_require__(7);
+	module.exports.util = __webpack_require__(8);
+	module.exports.loader = __webpack_require__(9);
+	module.exports.Types = __webpack_require__(10);
+	module.exports.ValueManager = __webpack_require__(11);
+	module.exports.React = __webpack_require__(2);
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(11);
-	var NestedMixin = __webpack_require__(4);
-	var loader = __webpack_require__(8);
-	var ValueManager = __webpack_require__(10);
+	var React = __webpack_require__(2);
+	var NestedMixin = __webpack_require__(5);
+	var loader = __webpack_require__(9);
+	var ValueManager = __webpack_require__(11);
 	var Form = React.createClass({
 	    displayName: 'Form',
 	    mixins: [NestedMixin],
@@ -145,13 +152,13 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = Form;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    tu = __webpack_require__(7),
+	var React = __webpack_require__(2),
+	    tu = __webpack_require__(8),
 	    BasicFieldMixin = __webpack_require__(12);
 	var FieldMixin = tu.extend({}, BasicFieldMixin, {
 	    getDefaultProps: function getDefaultProps() {
@@ -188,18 +195,18 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = FieldMixin;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
-	var tu = __webpack_require__(7);
-	var Editor = __webpack_require__(5);
-	var loader = __webpack_require__(8);
-	var ValueManager = __webpack_require__(10);
+	var React = __webpack_require__(2);
+	var tu = __webpack_require__(8);
+	var Editor = __webpack_require__(6);
+	var loader = __webpack_require__(9);
+	var ValueManager = __webpack_require__(11);
 	var NestedMixin = {
 	    getDefaultProps: function getDefaultProps() {
 	        return {
@@ -315,7 +322,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = NestedMixin;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -324,10 +331,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
-	var tu = __webpack_require__(7);
+	var React = __webpack_require__(2);
+	var tu = __webpack_require__(8);
 	var EMPTY_ARR = [];
-	var loader = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	'use strict';
 	function initValidators(v) {
 	    //If it has a type init it
@@ -492,7 +499,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = Editor;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//==================================================================================================
@@ -501,7 +508,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	//Borrowed from backbone-forms, thanks!
 	'use strict';
 	
-	var _ = __webpack_require__(7);
+	var _ = __webpack_require__(8);
 	
 	module.exports = (function () {
 	
@@ -624,7 +631,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	})();
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -730,12 +737,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = api;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var tu = __webpack_require__(7),
+	var tu = __webpack_require__(8),
 	    concat = Function.apply.bind(Array.prototype.concat, []),
 	    loaders = [],
 	    api = {
@@ -807,11 +814,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	        });
 	    },
 	    loadValidator: function loadValidator(validator) {
-	        var validators = __webpack_require__(6);
+	        var validators = __webpack_require__(7);
 	        return validators[validator] && validators[validator].bind(validators);
 	    },
 	    listValidators: function listValidators() {
-	        var validators = __webpack_require__(6);
+	        var validators = __webpack_require__(7);
 	        return Object.keys(validators).map(function (name) {
 	            var validator = validators[name];
 	            return {
@@ -877,7 +884,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = api;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -891,12 +898,12 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = types;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var tu = __webpack_require__(7);
+	var tu = __webpack_require__(8);
 	
 	function removeListener(listeners) {
 	    return function ValueManager$removeListener(path, listener) {
@@ -1146,12 +1153,6 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	module.exports = ValueManager;
 
 /***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
-
-/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1362,7 +1363,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var AutocompleteItemTemplate = React.createClass({
 	    displayName: 'AutocompleteItemTemplate',
 	
@@ -1402,7 +1403,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var Button = React.createClass({
 	    displayName: 'Button',
 	
@@ -1442,7 +1443,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	"use strict";
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	
 	var CheckboxTemplate = React.createClass({
 	    displayName: "CheckboxTemplate",
@@ -1469,7 +1470,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	"use strict";
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var CheckboxesGroupTemplate = React.createClass({
 	    displayName: "CheckboxesGroupTemplate",
 	
@@ -1502,8 +1503,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
-	var Editor = __webpack_require__(5);
+	var React = __webpack_require__(2);
+	var Editor = __webpack_require__(6);
 	
 	var CollectionCreateTemplate = React.createClass({
 	    displayName: 'CollectionCreateTemplate',
@@ -1559,7 +1560,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var EditorTemplate = React.createClass({
 	    displayName: 'EditorTemplate',
 	    componentWillMount: function componentWillMount() {
@@ -1614,7 +1615,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	
 	var FieldSetTemplate = React.createClass({
 	    displayName: 'FieldSetTemplate',
@@ -1649,7 +1650,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	
 	var FormTemplate = React.createClass({
 	    displayName: 'FormTemplate',
@@ -1676,8 +1677,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
-	var tpath = __webpack_require__(7).path;
+	var React = __webpack_require__(2);
+	var tpath = __webpack_require__(8).path;
 	//var PropsStateValueMixin = require('../PropsStateValueMixin');
 	var ListItemTemplate = React.createClass({
 	    displayName: 'ListItemTemplate',
@@ -1795,7 +1796,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	
 	var ObjectTemplate = React.createClass({
 	    displayName: 'ObjectTemplate',
@@ -1822,7 +1823,7 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	"use strict";
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var RadioItemTemplate = React.createClass({
 	    displayName: "RadioItemTemplate",
 	
@@ -1856,10 +1857,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _objectWithoutProperties = function (obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; };
 	
-	var React = __webpack_require__(11);
-	var Form = __webpack_require__(2);
-	var tu = __webpack_require__(7);
-	var NestedMixin = __webpack_require__(4);
+	var React = __webpack_require__(2);
+	var Form = __webpack_require__(3);
+	var tu = __webpack_require__(8);
+	var NestedMixin = __webpack_require__(5);
 	var css = __webpack_require__(80);
 	var ButtonsTemplate = __webpack_require__(59);
 	
@@ -2058,9 +2059,9 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
-	var tu = __webpack_require__(7);
-	var loader = __webpack_require__(8);
+	var React = __webpack_require__(2);
+	var tu = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	
 	var ButtonsTemplate = React.createClass({
 	    displayName: 'ButtonsTemplate',
@@ -2133,10 +2134,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
-	var tu = __webpack_require__(7);
+	var React = __webpack_require__(2);
+	var tu = __webpack_require__(8);
 	var css = __webpack_require__(82);
-	var loader = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	var BasicFieldMixin = __webpack_require__(12);
 	
 	var Autocomplete = React.createClass({
@@ -2445,8 +2446,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var Checkbox = React.createClass({
@@ -2479,10 +2480,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var BasicFieldMixin = __webpack_require__(12);
-	var tu = __webpack_require__(7);
-	var loader = __webpack_require__(8);
+	var tu = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	var Constants = __webpack_require__(60);
 	
 	var Checkboxes = React.createClass({
@@ -2591,11 +2592,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
-	var Editor = __webpack_require__(5);
-	var loader = __webpack_require__(8);
+	var React = __webpack_require__(2);
+	var Editor = __webpack_require__(6);
+	var loader = __webpack_require__(9);
 	var Constants = __webpack_require__(60);
-	var ValueManager = __webpack_require__(10);
+	var ValueManager = __webpack_require__(11);
 	var BasicFieldMixin = __webpack_require__(12);
 	var CollectionMixin = {
 	    statics: {
@@ -2770,8 +2771,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var DateInput = React.createClass({
@@ -2797,8 +2798,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var DateTimeInput = React.createClass({
@@ -2824,8 +2825,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var HiddenInput = React.createClass({
@@ -2851,11 +2852,11 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var Constants = __webpack_require__(60);
-	var tu = __webpack_require__(7);
+	var tu = __webpack_require__(8);
 	var CollectionMixin = __webpack_require__(36);
-	var loader = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	var ListInput = React.createClass({
 	    displayName: 'ListInput',
 	
@@ -2988,10 +2989,10 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11);
+	var React = __webpack_require__(2);
 	var CollectionMixin = __webpack_require__(36);
-	var tu = __webpack_require__(7);
-	var loader = __webpack_require__(8);
+	var tu = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	var Constants = __webpack_require__(60);
 	var MixedInput = React.createClass({
 	    displayName: 'MixedInput',
@@ -3158,9 +3159,9 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
-	var NestedMixin = __webpack_require__(4);
-	var loader = __webpack_require__(8);
+	var React = __webpack_require__(2);
+	var NestedMixin = __webpack_require__(5);
+	var loader = __webpack_require__(9);
 	var BasicFieldMixin = __webpack_require__(12);
 	var ObjectInput = React.createClass({
 	    mixins: [NestedMixin, BasicFieldMixin],
@@ -3208,8 +3209,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var Password = React.createClass({
@@ -3237,9 +3238,9 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var React = __webpack_require__(11);
-	var tu = __webpack_require__(7);
-	var loader = __webpack_require__(8);
+	var React = __webpack_require__(2);
+	var tu = __webpack_require__(8);
+	var loader = __webpack_require__(9);
 	var BasicFieldMixin = __webpack_require__(12);
 	
 	var RadioInput = React.createClass({
@@ -3345,8 +3346,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var RestrictedInput = React.createClass({
@@ -3384,8 +3385,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var SelectInput = React.createClass({
@@ -3442,8 +3443,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var TextInput = React.createClass({
@@ -3470,8 +3471,8 @@ define("Subschema", ["React"], function(__WEBPACK_EXTERNAL_MODULE_11__) { return
 
 	'use strict';
 	
-	var React = __webpack_require__(11),
-	    FieldMixin = __webpack_require__(3),
+	var React = __webpack_require__(2),
+	    FieldMixin = __webpack_require__(4),
 	    Constants = __webpack_require__(60);
 	
 	var TextArea = React.createClass({
