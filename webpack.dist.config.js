@@ -1,21 +1,15 @@
-var webpack = require('webpack'), merge = require('lodash/object/merge'), defaults = require('lodash/object/defaults'), version = require('./package.json').version;
-var compressionPlugin = new require("compression-webpack-plugin")({
-    asset: "{file}.gz",
-    algorithm: "gzip",
-    regExp: /\.js$|\.html$/,
-    threshold: 10240,
-    minRatio: 0.8
-});
+var webpack = require('webpack'), merge = require('lodash/object/merge'), defaults = require('lodash/object/defaults'), version = require('./package.json').version, path = require('path');
+
+console.log('out', path.join(__dirname, 'dist/'));
 var def = {
     devtool: null,
     entry: {
-        'example-app': './public/app.jsx',
         Subschema: './src/index.js'
     },
     output: {
-        path: 'dist/',
-        filename: '[name].' + version + '-umd.js',
-        chunkFilename: '[name].' + version + '-umd.js',
+        path: path.join(__dirname, 'dist/'),
+        filename: '[name].' ,
+        chunkFilename: '[name].',
         publicPath: '/',
         // export itself to a global var
         libraryTarget: "umd",
@@ -54,47 +48,73 @@ function makeConf(conf) {
     return ret;
 }
 
-module.exports = [makeConf({}), makeConf({
-    externals:false,
-    output: {
-        filename: '[name].' + version + '-everything-amd.js',
-        chunkFilename: '[name].' + version + '-everything-amd.js',
+module.exports = [makeConf({name: 'umd.' + version}),
+    //everything included.
+    makeConf({
+        name: 'everything-amd.' + version,
+        externals: false,
+        output: {
+            filename: '[name].',
+            chunkFilename: '[name].',
 
-        // export itself to a global var
-        libraryTarget: "umd"
-    }
-}),makeConf({}), makeConf({
-    output: {
-        filename: '[name].' + version + '-amd.js',
-        chunkFilename: '[name].' + version + '-amd.js',
-        // export itself to a global var
-        libraryTarget: "amd"
-    }
-}), makeConf({
-    devtool: 'source-map',
-    output: {
-        filename: '[name].' + version + '-debug.js',
-        chunkFilename: '[name].' + version + '-debug.js',
-        // export itself to a global var
-        libraryTarget: "amd"
-    },
-
-    plugins: [
-        //   new webpack.optimize.CommonsChunkPlugin('common.js'),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
-        }),
-        new webpack.NoErrorsPlugin(),
-        function () {
-            this.plugin("done", function (stats) {
-                stats = stats.toJson();
-                console.error(JSON.stringify({
-                    assetsByChunkName: stats.assetsByChunkName
-                }));
-            });
+            // export itself to a global var
+            libraryTarget: "umd"
         }
-    ]
-}),
+    }),
+    //Just the app no compression.
+    makeConf({
+        name: 'example',
+        entry: {
+            'app': './public/app.jsx'
+        },
+        output: {
+            filename: ''
+        },
+        externals: false,
+        plugins: [
+            new webpack.optimize.DedupePlugin(),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            }),
+            new webpack.NoErrorsPlugin(),
+            function () {
+                this.plugin("done", function (stats) {
+                    stats = stats.toJson();
+                    console.error(JSON.stringify({
+                        assetsByChunkName: stats.assetsByChunkName
+                    }));
+                });
+            }
+        ]
+    }),
+    //full debug without compression and with sourcemap
+    makeConf({
+        name: 'debug.' + version,
+        devtool: 'source-map',
+
+        output: {
+            filename: '[name].',
+            chunkFilename: '[name].' + version,
+            // export itself to a global var
+            libraryTarget: "amd"
+        },
+
+        plugins: [
+            //   new webpack.optimize.CommonsChunkPlugin('common.js'),
+            new webpack.optimize.DedupePlugin(),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            }),
+            new webpack.NoErrorsPlugin(),
+            function () {
+                this.plugin("done", function (stats) {
+                    stats = stats.toJson();
+                    console.error(JSON.stringify({
+                        assetsByChunkName: stats.assetsByChunkName
+                    }));
+                });
+            }
+        ]
+    })
 ];
 
