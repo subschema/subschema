@@ -48,15 +48,14 @@ function makeConf(conf) {
     return ret;
 }
 
-module.exports = [makeConf({name: 'umd.' + version}),
+module.exports = [
+    //makeConf({name: 'umd.' + version}),
     //everything included.
     makeConf({
-        name: 'everything-amd.' + version,
+        name: 'everything-umd.' + version,
         externals: false,
         output: {
             filename: '[name].',
-            chunkFilename: '[name].',
-
             // export itself to a global var
             libraryTarget: "umd"
         }
@@ -71,7 +70,7 @@ module.exports = [makeConf({name: 'umd.' + version}),
             filename: ''
         },
         externals: {
-            subschema: './Subschema.everything-amd.' + version+'.js'
+            subschema: './Subschema.everything.' + version+'.js'
         },
         plugins: [
             new webpack.optimize.DedupePlugin(),

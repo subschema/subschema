@@ -77,7 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = __webpack_require__(3);
+	module.exports = __webpack_require__(5);
 
 /***/ },
 /* 1 */,
@@ -87,7 +87,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ },
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103,8 +105,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports.ValueManager = __webpack_require__(32);
 
 /***/ },
-/* 4 */,
-/* 5 */,
 /* 6 */,
 /* 7 */,
 /* 8 */,
@@ -1379,13 +1379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function() {
@@ -1406,6 +1400,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4383,7 +4383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(40)();
+	exports = module.exports = __webpack_require__(34)();
 	exports.push([module.id, "ol.progtrckr {\n  margin: 0;\n  padding-bottom: 2.2rem;\n  list-style-type: none;\n  display: table;\n  padding-left: 0;\n  padding-right: 0;\n  width: 100%;\n}\nol.progtrckr li {\n  text-align: center;\n  line-height: 4.5rem;\n  padding: 0 0.7rem;\n  cursor: pointer;\n  display: table-cell;\n}\nol.progtrckr li span {\n  padding: 0 1.5rem;\n}\n@media (max-width: 650px) {\n  .progtrckr li span {\n    display: none;\n  }\n}\n.progtrckr em {\n  display: none;\n  font-weight: 700;\n  padding-left: 1rem;\n}\n@media (max-width: 650px) {\n  .progtrckr em {\n    display: inline;\n  }\n}\nol.progtrckr li.progtrckr-todo {\n  color: silver;\n  border-bottom: 4px solid silver;\n}\nol.progtrckr li.progtrckr-doing {\n  color: black;\n  border-bottom: 4px solid #33C3F0;\n}\nol.progtrckr li.progtrckr-done {\n  color: black;\n  border-bottom: 4px solid #33C3F0;\n}\nol.progtrckr li:after {\n  content: \"\\00a0\\00a0\";\n}\nol.progtrckr li:before {\n  position: relative;\n  bottom: -3.7rem;\n  float: left;\n  left: 50%;\n}\nol.progtrckr li.progtrckr-todo:before {\n  content: \"\\039F\";\n  color: silver;\n  background-color: white;\n  width: 1.2em;\n  line-height: 1.4em;\n}\nol.progtrckr li.progtrckr-todo:hover:before {\n  color: #0FA0CE;\n}\nol.progtrckr li.progtrckr-doing:before {\n  content: \"\\2022\";\n  color: white;\n  background-color: #33C3F0;\n  width: 1.2em;\n  line-height: 1.2em;\n  border-radius: 1.2em;\n}\nol.progtrckr li.progtrckr-doing:hover:before {\n  color: #0FA0CE;\n}\nol.progtrckr li.progtrckr-done:before {\n  content: \"\\2713\";\n  color: white;\n  background-color: #33C3F0;\n  width: 1.2em;\n  line-height: 1.2em;\n  border-radius: 1.2em;\n}\nol.progtrckr li.progtrckr-done:hover:before {\n  color: #0FA0CE;\n}\n", ""]);
 
 /***/ },
@@ -4415,7 +4415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(40)();
+	exports = module.exports = __webpack_require__(34)();
 	exports.push([module.id, ".autocomplete {\n  position: relative;\n}\n.autocomplete.found .form-control {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.autocomplete.found .list-group {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  width: 100%;\n}\n.autocomplete.found .list-group-item:first-child {\n  border-top-right-radius: 0;\n  border-top-left-radius: 0;\n  border-top: none;\n}\n.autocomplete.found .list-group-item {\n  cursor: pointer;\n}\n.autocomplete.found .list-group-item:hover {\n  background-color: #eee;\n}\n.autocomplete.found .focused {\n  background-color: #ddd;\n}\n", ""]);
 
 /***/ },
@@ -5453,7 +5453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(141),
+	var bindCallback = __webpack_require__(140),
 	    isIterateeCall = __webpack_require__(105),
 	    restParam = __webpack_require__(117);
 
@@ -5541,7 +5541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(140),
+	var baseFor = __webpack_require__(141),
 	    keys = __webpack_require__(106);
 
 	/**
@@ -5603,7 +5603,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var baseMatches = __webpack_require__(142),
 	    baseMatchesProperty = __webpack_require__(143),
-	    bindCallback = __webpack_require__(141),
+	    bindCallback = __webpack_require__(140),
 	    identity = __webpack_require__(144),
 	    property = __webpack_require__(145);
 
@@ -5996,29 +5996,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(146);
-
-	/**
-	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
-	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
-	 * each property. Iteratee functions may exit iteration early by explicitly
-	 * returning `false`.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @param {Function} keysFunc The function to get the keys of `object`.
-	 * @returns {Object} Returns `object`.
-	 */
-	var baseFor = createBaseFor();
-
-	module.exports = baseFor;
-
-
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var identity = __webpack_require__(144);
 
 	/**
@@ -6058,6 +6035,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = bindCallback;
+
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var createBaseFor = __webpack_require__(146);
+
+	/**
+	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
+	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
+	 * each property. Iteratee functions may exit iteration early by explicitly
+	 * returning `false`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @returns {Object} Returns `object`.
+	 */
+	var baseFor = createBaseFor();
+
+	module.exports = baseFor;
 
 
 /***/ },
