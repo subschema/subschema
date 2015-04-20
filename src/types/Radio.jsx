@@ -54,7 +54,7 @@ var RadioInput = React.createClass({
             if (label == null) {
                 label = val;
             }
-            var path = option.path = tu.path(path, index);
+            var path = tu.path(path, index);
 
             return {
                 val,
@@ -74,7 +74,7 @@ var RadioInput = React.createClass({
         var options = this.makeOptions(field.options);
         return <div>{options.map((option, index)=> {
             return <RadioItemTemplate  {...option} key={option.path}>
-                <input id={fp} type="radio"
+                <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
         }, this)}</div>

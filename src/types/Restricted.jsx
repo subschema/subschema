@@ -13,7 +13,7 @@ var RestrictedInput = React.createClass({
         return <div>
             {this.props.field.patternText ? <div className="patternText">{this.props.field.patternText}</div> : null}
             <input ref="input" onBlur={this.handleValidate} onChange={this.handleRestrictedChange} id={this.props.name}
-                   className={Constants.clz(TextInput.inputClassName, this.props.editorClass)}
+                   className={Constants.clz(RestrictedInput.inputClassName, this.props.editorClass)}
                    type={this.props.dataType}
                    value={this.getValue()}
                    data-path={this.props.path}
