@@ -25,7 +25,7 @@ const ButtonsTemplate = React.createClass({
                 action: b,
                 label: b,
                 handler
-            } : _.extend({}, b, {handler});
+            } : tu.extend({}, b, {handler});
             if (this.props.buttonClass) {
                 btn.buttonClass = (btn.buttonClass || '') + ' ' + this.props.buttonClass;
             }
