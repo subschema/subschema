@@ -7,7 +7,7 @@
     "test": "karma start",
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
-    "prepublish": "./scripts/dist.js"
+    "webpack": "webpack --config webpack.config.js "
   },
   "keywords": [
     "react",
@@ -42,7 +42,7 @@
     "react-bootstrap": "^0.20.0",
     "style-loader": "^0.9.0",
     "url-loader": "^0.5.5",
-    "webpack": "^1.7.3",
+    "webpack": "^1.8.5",
     "webpack-dev-server": "^1.8.0"
   },
   "peerDependencies": {
