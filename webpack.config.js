@@ -1,7 +1,6 @@
 var path = require('path');
 
 
-
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
@@ -27,12 +26,8 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.js(x)?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
+            {test: /\.js(x)?$/, loader: 'babel-loader?stage=0'},
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
-            // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
-            // loads bootstrap's css.
-//            / Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
-// loads bootstrap's css.
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
@@ -52,9 +47,9 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema': __dirname+'/src/index',
-            'types': __dirname+'/src/types',
-            'styles': __dirname+'/src/styles'
+            'subschema': __dirname + '/src/index',
+            'types': __dirname + '/src/types',
+            'styles': __dirname + '/src/styles'
         }
     },
 

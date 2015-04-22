@@ -12,6 +12,7 @@ var Modal = require('react-bootstrap/lib/Modal');
 var ModalTrigger = require('react-bootstrap/lib/ModalTrigger');
 var Button = require('react-bootstrap/lib/Button');
 
+var Highlight = require('react-highlight');
 require('./index.less');
 
 var setupRe = /^function [^{]*\{([\s\S]*)\}$/;
@@ -43,12 +44,16 @@ var MyModal = React.createClass({
         );
     }
 });
-var samples = require.context('./samples/', true, /\.js(x)?$/).keys().map((v)=> {
-    return {
-        name: v.replace(/\.\/(.*)\.js(x)?/, '$1'),
-        file: v.replace('./', '')
-    };
-});
+var samples = require.context('./samples/', true, /\.js(x)?$/).keys().filter(function (v) {
+    return !/-setup\.js(x)?/.test(v);
+})
+    .map((v)=> {
+        var file = v.replace('./', '');
+        return {
+            name: v.replace(/\.\/(.*)\.js(x)?/, '$1'),
+            file
+        };
+    });
 
 var App = React.createClass({
     getInitialState(){
@@ -90,8 +95,9 @@ var App = React.createClass({
             errors: this.state.loadErrors ? json.errors : {}
         };
         if (json.setup) {
-            state._setup = json.setup();
+            state._setup = json.setup(Subschema, React);
         }
+
         this.setState(state);
     },
 
@@ -129,15 +135,13 @@ var App = React.createClass({
     },
 
     render() {
-        var {content, data, errors} = this.state;
-        var { schema, description, title, setup, props, teardown} = (content || {});
-        if (setup) {
+        var {content, data, errors, file} = this.state;
+        var { schema, description, title, setup, setupTxt, props, teardown} = (content || {});
+        if (setup && !setupTxt) {
             var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {
                 return v.replace(/^	        /, '');
             });
-            // tmp.pop();
-            // tmp.pop();
-            setup = tmp.join('\n')
+            setupTxt = tmp.join('\n')
         }
         title = title || this.state.file.replace(/\.js(x)?/, '');
         var propsstr = '';
@@ -187,10 +191,11 @@ var App = React.createClass({
                                     </div>
                                 </div>
 
-                        <pre>
-                            <div>var Form = require('subschema').Form;</div>
+                        <Highlight className='javascript'>
+                            <div>var Subschema = require('subschema');</div>
+                            <div>var Form = Subschema.Form;</div>
                             <div>var React = require('react');</div>
-                            { setup ? <div>{setup}</div> : null}
+                            { setupTxt ? <div>{setupTxt}</div> : null}
                             <div>var data = {JSON.stringify(data || {}, null, 2)};</div>
                             <div>var errors = {JSON.stringify(errors || {}, null, 2)};</div>
                             <div>var schema = {JSON.stringify(schema || {}, null, 2)};</div>
@@ -198,7 +203,7 @@ var App = React.createClass({
 
                             {'React.render(<Form value={data} schema={schema} errors={errors} ' + propsstr + '/>, document.getElementById("content"))'}
 
-                        </pre>
+                        </Highlight>
                             </div>
 
                         </div>
@@ -216,4 +221,4 @@ var App = React.createClass({
 
 });
 
-React.render(<App/>, document.getElementsByTagName('body')[0])
+React.render(<App/>, document.getElementById('content'))
