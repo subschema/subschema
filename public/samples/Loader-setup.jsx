@@ -39,7 +39,7 @@ module.exports = function setup(Subschema) {
                 display: this.state.toggled ? 'none' : 'block'
             };
 
-            return <div className="form-group row">
+            return <div className="form-group">
                 <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
                 <div style={style}>
                     <Object ref="val" {...this.props}/>

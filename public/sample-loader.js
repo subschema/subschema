@@ -12,7 +12,7 @@ module.exports = function (setupTxt) {
 };
 
 function handle(setupTxt) {
-    var mod = false, setup = setupTxt.split('\n');
+    var setup = setupTxt.split('\n');
 
     //delete until you get past the export line
     while (!/module\.exports/.test(setup.shift()));
@@ -25,7 +25,5 @@ function handle(setupTxt) {
     //remove the lines until it returns.
     while (!/return/.test(setup.pop()));
 
-
-    // this.cacheable && this.cacheable();
     return setup.join('\n');
 }

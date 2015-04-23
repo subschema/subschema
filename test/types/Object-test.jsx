@@ -16,13 +16,13 @@ describe('Object', function () {
 
     var load;
     beforeEach(function () {
-        load = sample.setup();
+        load = sample.setup(subschema);
     });
     afterEach(function () {
         loader.removeLoader(load);
     });
     it('should render a registered schema', function () {
-        var setup = sample.setup();
+        var setup = sample.setup(subschema);
         var schema = sample.schema, data = sample.data;
         var root = into(<Form schema={schema} value={data}/>);
         expect(root).toExist();

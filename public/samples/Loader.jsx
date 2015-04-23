@@ -1,6 +1,6 @@
 module.exports = {
-    description: '<p>This shows how to use a loader to load a schema</p>\
-    <p>It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types </p>\
+    description: 'This shows how to use a loader to load a schema.\
+    It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types\
     They all follow the same pattern.   Note the list`type` is optional, but useful for future introspection if needed\
     ',
     schema: 'Contact',
@@ -26,9 +26,6 @@ module.exports = {
     },
     errors: {
         'primary.address': [{message: 'No Such Place'}]
-    },
-    unsetup: function (l) {
-        var loader = require('subschema').loader.removeLoader(l);
     },
     setup: require('./Loader-setup.jsx'),
     setupTxt:require('!!raw!../sample-loader!./Loader-setup.jsx')

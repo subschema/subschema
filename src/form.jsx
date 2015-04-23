@@ -30,6 +30,7 @@ var Form = React.createClass({
         var sb = submitButton || this.schema.submitButton;
         var Template = loader.loadTemplate(template);
         return <Template onValidate={this.handleValidate} onSubmit={this.props.onSubmit} schema={this.schema}
+                         className={this.props.className}
                          valueManager={this.props.valueManager}
             >
             {this.schema && this.schema.schema ? this.renderSchema(this) : null}
