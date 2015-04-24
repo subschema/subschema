@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('../react');
 var tpath = require('../tutils').path;
 //var PropsStateValueMixin = require('../PropsStateValueMixin');
 var ListItemTemplate = React.createClass({

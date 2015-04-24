@@ -1,5 +1,5 @@
-var React = require('react');
-var BasicFieldMixin = require('../BasicFieldMixin.jsx');
+var React = require('../react');
+var BasicFieldMixin = require('../BasicFieldMixin.js');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
 var Constants = require('../Constants');

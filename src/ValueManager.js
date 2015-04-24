@@ -115,8 +115,8 @@ ValueManager.prototype = {
 
         var parts = p.split('.');
 
-        for (let i = 0, l = parts.length; i < l; i++) {
-            let key = parts[i];
+        for (var i = 0, l = parts.length; i < l; i++) {
+            var key = parts[i];
             if (obj == null || !(key in obj)) {
                 return null;
             }
@@ -127,8 +127,8 @@ ValueManager.prototype = {
     update(path, value){
         var parts = path.split('.'), obj = this.value || (this.value = {}), oobj = this.oldValue, last = parts[parts.length - 1];
 
-        for (let i = 0, l = parts.length - 1; i < l; i++) {
-            let key = parts[i];
+        for (var i = 0, l = parts.length - 1; i < l; i++) {
+            var key = parts[i];
 
             if (key in obj) {
                 //We won't build the oobj tree, we may need to in the case of multiple changes to the object.  The question becomes

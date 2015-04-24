@@ -1,7 +1,7 @@
-var React = require('react');
+var React = require('../react');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
-var BasicFieldMixin = require('../BasicFieldMixin.jsx');
+var BasicFieldMixin = require('../BasicFieldMixin');
 
 var RadioInput = React.createClass({
     displayName: 'Radio',

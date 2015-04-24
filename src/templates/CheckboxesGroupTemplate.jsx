@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('../react');
 var CheckboxesGroupTemplate = React.createClass({
     render(){
         return (<fieldset className="group">

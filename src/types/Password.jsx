@@ -1,4 +1,4 @@
-var React = require('react'), FieldMixin = require('../FieldMixin.jsx'), Constants = require('../Constants');
+var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
 
 var Password = React.createClass({
     mixins: [FieldMixin],

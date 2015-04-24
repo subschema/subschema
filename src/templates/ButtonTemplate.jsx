@@ -1,5 +1,5 @@
-var React = require('react');
-const Button = React.createClass({
+var React = require('../react');
+var Button = React.createClass({
     getDefaultProps(){
         return {
             action: 'Submit',

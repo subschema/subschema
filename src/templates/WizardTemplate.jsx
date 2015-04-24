@@ -1,13 +1,13 @@
 'use strict'
-const React = require('react')
-const Form = require('../form.jsx');
-const tu = require('../tutils');
-const NestedMixin = require('../NestedMixin.jsx');
-const css = require('../styles/wizard.less')
-const ButtonsTemplate = require('./ButtonsTemplate.jsx');
+var React = require('../react')
+var Form = require('../form');
+var tu = require('../tutils');
+var NestedMixin = require('../NestedMixin');
+var css = require('../styles/wizard.less');
+var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 
 
-const Wizard = React.createClass({
+var Wizard = React.createClass({
 
     getInitialState() {
         var {schema, subSchema,  fields,  ...props} = this.props;

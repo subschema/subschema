@@ -1,4 +1,5 @@
-var webpack = require('webpack');
+var webpack = require('webpack'), path = require('path');
+;
 
 module.exports = function (config) {
     config.set({
@@ -6,20 +7,19 @@ module.exports = function (config) {
         singleRun: true, //just run once by default
         frameworks: ['mocha'], //use the mocha test framework
         files: [
-            'tests.webpack.js' //just load this file
+            './tests.webpack.js' //just load this file
         ],
         preprocessors: {
-            'tests.webpack.js': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
+            './tests.webpack.js': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
         },
         reporters: ['dots'], //report results in this format
-
         webpack: { //kind of a copy of your webpack config
             cache: true,
             debug: true,
             devtool: 'inline-source-map',
 
             entry: {
-                app: './public/app.jsx'
+                app: path.join(__dirname, 'test/support/entry.jsx')
             },
 
             stats: {
@@ -28,15 +28,12 @@ module.exports = function (config) {
             },
             module: {
                 loaders: [
-                    {test: /\.js(x)?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'},
-                    {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
-                    {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
                     {
-                        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                        loader: "url?limit=10000&minetype=application/octet-stream"
+                        test: /\.js(x)?$/,
+                        exclude: [/node_modules/, /tests\.webpack\.js/],
+                        loader: 'babel-loader?stage=0'
                     },
-                    {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
-                    {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=image/svg+xml"},
+                    {test: /\.jsx?$/, loader: 'babel-loader?stage=0'},
                     {
                         test: /\.less$/,
                         loader: 'style!css!less-loader'
@@ -46,9 +43,8 @@ module.exports = function (config) {
 
             resolve: {
                 alias: {
-                    'subschema': __dirname + '/src/index',
-                    'types': __dirname + '/src/types',
-                    'styles': __dirname + '/src/styles'
+                    'react': path.join(__dirname, '/node_modules/react'),
+                    'subschema$': path.join(__dirname, 'src/index.jsx')
                 }
             },
 

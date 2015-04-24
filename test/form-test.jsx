@@ -7,9 +7,8 @@ describe('form', function () {
     this.timeout(30000);
     var Form = require('subschema').Form;
 
-    function into(node) {
-        //return React.render(node, document.getElementsByTagName('body')[0]);
-        return TestUtils.renderIntoDocument(node);
+    function into(node, debug) {
+        return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
     }
 
     it('should create a form', function () {
@@ -79,7 +78,7 @@ describe('form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors}/>);
+        var root = into(<Form value={value} schema={schema} errors={errors}/>, true);
         var input = root.refs.name.refs.field.refs.input,
             field = root.refs.name;
         Simulate.blur(input);
@@ -148,7 +147,7 @@ describe('form', function () {
             'test.more.andMore': [{message: 'Error And More'}]
         }
         var root = into(<Form value={value} schema={schema} errors={errors}/>);
-   //     expect(root.refs.name.state.errors[0].message).toEqual('Error Not My Name');
+        //     expect(root.refs.name.state.errors[0].message).toEqual('Error Not My Name');
         //    expect(root.refs.test.refs.field.state.errors.name[0].message).toEqual('Error Not My Name');
 
 //        expect(root.refs.test.refs.field.refs.more.fstate.errors.name[0].message).toEqual('Error Not My Name');
@@ -196,24 +195,24 @@ describe('form', function () {
         var root = into(<Form value={value} schema={schema} errors={{}}/>);
         root.setErrors(errors);
         /*   expect(root.refs.name.state.errors[0].message).toEqual(msg1);
-        var res = root.validate();
-        expect(res.name[0].message).toEqual(msg1);
-        expect(res['test.stuff'][0].message).toEqual(msg2);
-        expect(res['test.more.andMore'][0].message).toEqual(msg3);
+         var res = root.validate();
+         expect(res.name[0].message).toEqual(msg1);
+         expect(res['test.stuff'][0].message).toEqual(msg2);
+         expect(res['test.more.andMore'][0].message).toEqual(msg3);
 
-        Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: null}})
-        var res = root.validate();
-        expect(res.name[0].message).toEqual(msg1);
-        expect(res['test.stuff'][0].message).toEqual(msg2);
-        expect(res['test.more.andMore'][0].message).toEqual(msg3);
+         Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: null}})
+         var res = root.validate();
+         expect(res.name[0].message).toEqual(msg1);
+         expect(res['test.stuff'][0].message).toEqual(msg2);
+         expect(res['test.more.andMore'][0].message).toEqual(msg3);
 
-        Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: 'stuff'}});
-        res = root.validate();
-        expect(res['test.stuff']).toNotExist();
+         Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: 'stuff'}});
+         res = root.validate();
+         expect(res['test.stuff']).toNotExist();
 
-        Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: ''}});
-        res = root.validate();
-        expect(res['test.stuff'][0].message).toEqual('Required');*/
+         Simulate.change(root.refs.test.refs.field.refs.stuff.refs.field.refs.input, {target: {value: ''}});
+         res = root.validate();
+         expect(res['test.stuff'][0].message).toEqual('Required');*/
 
     });
 })

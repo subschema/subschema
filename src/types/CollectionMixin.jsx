@@ -1,9 +1,9 @@
-var React = require('react');
-var Editor = require('../Editor.jsx');
-var loader = require('../loader.jsx');
+var React = require('../react');
+var Editor = require('../Editor');
+var loader = require('../loader');
 var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
-var BasicFieldMixin = require('../BasicFieldMixin.jsx');
+var BasicFieldMixin = require('../BasicFieldMixin');
 var CollectionMixin = {
     statics: {
         collectionCreateTemplate: 'CollectionCreateTemplate',

@@ -1,8 +1,8 @@
-const React = require('react');
-const tu = require('../tutils');
-const loader = require('../loader.jsx');
+var React = require('../react');
+var tu = require('../tutils');
+var loader = require('../loader');
 
-const ButtonsTemplate = React.createClass({
+var ButtonsTemplate = React.createClass({
     getDefaultProps(){
         return {
             buttonsClass: 'btn-group',

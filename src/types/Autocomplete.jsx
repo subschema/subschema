@@ -1,10 +1,10 @@
 "use strict";
 
-var React = require('react');
+var React = require('../react');
 var tu = require('../tutils');
 var css = require('../styles/autocomplete.less');
-var loader = require('../loader.jsx');
-var BasicFieldMixin = require('../BasicFieldMixin.jsx');
+var loader = require('../loader');
+var BasicFieldMixin = require('../BasicFieldMixin');
 
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin],

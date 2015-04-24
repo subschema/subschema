@@ -1,5 +1,5 @@
-var React = require('react');
-var Editor = require('../Editor.jsx');
+var React = require('../react');
+var Editor = require('../Editor');
 
 var CollectionCreateTemplate = React.createClass({
     render(){

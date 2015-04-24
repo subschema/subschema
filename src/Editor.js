@@ -1,8 +1,8 @@
-var React = require('react');
+"use strict";
+var React = require('./react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
-var loader = require('./loader.jsx');
-"use strict";
+var loader = require('./loader');
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {

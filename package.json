@@ -8,7 +8,6 @@
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "webpack": "webpack --config webpack.config.js -p"
-
   },
   "keywords": [
     "react",
@@ -19,6 +18,7 @@
     "type": "git",
     "url": "https://github.com/jspears/subschema"
   },
+  "web": "src/index.jsx",
   "author": "Justin Spears",
   "license": "MIT",
   "devDependencies": {

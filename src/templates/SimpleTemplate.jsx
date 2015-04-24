@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('../react');
 var SimpleTemplate = React.createClass({
     render(){
         var {name, title, help, errorClassName, message, fieldClass, children} = this.props;

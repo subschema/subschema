@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('../react');
 var AutocompleteItemTemplate = React.createClass({
     getDefaultProps () {
         return {

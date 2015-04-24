@@ -16,7 +16,7 @@ module.exports = function setup(Subschema) {
         }
     }));
 
-    var Object = Subschema.Types.Object;
+    var Object = loader.loadType('Object');
 
     loader.addType('ToggleObject', React.createClass({
         displayName: 'ToggleObject',

@@ -1,5 +1,5 @@
-var React = require('react'), tu = require('./tutils'), BasicFieldMixin = require('./BasicFieldMixin.jsx');
-var FieldMixin = tu.extend({}, BasicFieldMixin, {
+var tu = require('./tutils'), BasicFieldMixin = require('./BasicFieldMixin');
+var FieldValueMixin = tu.extend({}, BasicFieldMixin, {
     getDefaultProps() {
         return {
             title: '',
@@ -33,4 +33,4 @@ var FieldMixin = tu.extend({}, BasicFieldMixin, {
 
 });
 
-module.exports = FieldMixin;
+module.exports = FieldValueMixin;

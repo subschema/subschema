@@ -2,9 +2,8 @@ describe('List', function () {
     var React = require('react/addons');
     var TestUtils = require('react/lib/ReactTestUtils');
     var expect = require('expect');
-    var Form = require('../../src/index').Form;
+    var Form = require('subschema').Form;
     var Simulate = React.addons.TestUtils.Simulate;
-    var _ = require('lodash');
     this.timeout(50000);
     function into(node) {
       //  return React.render(node, document.getElementsByTagName('body')[0]);

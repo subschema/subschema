@@ -2,9 +2,8 @@
 //VALIDATORS
 //==================================================================================================
 //Borrowed from backbone-forms, thanks!
-var _ = require('./tutils')
 
-module.exports = (function () {
+module.exports = (function (_) {
 
     var validators = {};
 
@@ -118,4 +117,4 @@ module.exports = (function () {
 
     return validators;
 
-})();
+})(require('./tutils'));

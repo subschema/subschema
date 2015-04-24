@@ -1,7 +1,7 @@
-var React = require('react');
+var React = require('./react');
 var tu = require('./tutils');
-var Editor = require('./Editor.jsx');
-var loader = require('./loader.jsx');
+var Editor = require('./Editor');
+var loader = require('./loader');
 var ValueManager = require('./ValueManager')
 var NestedMixin = {
     getDefaultProps() {
