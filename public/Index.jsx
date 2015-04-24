@@ -9,7 +9,7 @@ var Index = React.createClass({
 
                 <p>You can see how it works by loading errors and data, from the buttons up top</p>
 
-                <p><a class="btn btn-primary btn-lg" href="https://github.com/jspears/subschema" role="button">Learn
+                <p><a className="btn btn-primary btn-lg" href="https://github.com/jspears/subschema" role="button">Learn
                     more</a></p>
             </div>
         );

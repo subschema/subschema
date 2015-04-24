@@ -16,6 +16,7 @@ module.exports = {
                 validators: [{type: 'match', field: 'password', message: 'Passwords do not match'}]
             }
         },
+        fieldsets:[{legend:'Login Form', fields:['username','password','confirmPassword']}],
         submitButton: 'Login'
     },
     data: {},

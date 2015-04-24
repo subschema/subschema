@@ -2,7 +2,7 @@ var React = require('react');
 var SampleMgr = require('./SampleMgr.jsx');
 var SampleNav = require('./SampleNav.jsx');
 var Router = require('react-router');
-var { RouteHandler } = Router;
+var { RouteHandler, Link } = Router;
 
 
 var Sample = React.createClass({
@@ -38,8 +38,12 @@ var Sample = React.createClass({
     errorsCls(){
         return this.state.loadErrors ? 'active' : '';
     },
+    setupCls(name, active){
+        return 'list-group-item ' + (name === active ? 'active' : '');
+    },
     render() {
-        var params = this.context.router.getCurrentParams();
+        var params = this.context.router.getCurrentParams(), setupCls = this.setupCls;
+        var setup = params.setup;
         return (
 
             <div className="container-fluid">
@@ -60,6 +64,18 @@ var Sample = React.createClass({
                     <div className="col-md-2">
                         <h3>Examples</h3>
                         <SampleNav activeSample={params.sample} samples={SampleMgr.getAll()}/>
+                        <h3>Develop</h3>
+
+                        <div className="list-group left-nav">
+                            <Link to="setup"
+                                  className={setupCls('webpack', setup)}
+                                  key='webpack'
+                                  params={{setup: 'webpack'}}>Webpack</Link>
+                            <Link to="setup"
+                                  className={setupCls('loader', setup)}
+                                  key='loader'
+                                  params={{setup: 'loader'}}>Loaders</Link>
+                        </div>
                     </div>
                     <div className="col-md-10">
                         <RouteHandler {...params}/>
