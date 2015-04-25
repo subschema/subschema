@@ -12,7 +12,7 @@ You can see examples at [jspears.github.io/subschema](http://jspears.github.io/s
 
 ###Install
 ```sh
- $ npm install bb-react-forms
+ $ npm install subschema
  $ npm start &
  $ open http://localhost:8000
  //there are more details of whats going on here.
