@@ -3,6 +3,7 @@ var webpack = require('webpack'), path = require('path');
 
 module.exports = function (config) {
     config.set({
+        browserNoActivityTimeout: 20000,
         browsers: ['Chrome'], //run in Chrome
         singleRun: true, //just run once by default
         frameworks: ['mocha'], //use the mocha test framework
@@ -43,8 +44,7 @@ module.exports = function (config) {
 
             resolve: {
                 alias: {
-                    'react': path.join(__dirname, '/node_modules/react'),
-                    'subschema$': path.join(__dirname, 'src/index.jsx')
+                    'subschema': path.join(__dirname, 'src/index.jsx')
                 }
             },
 

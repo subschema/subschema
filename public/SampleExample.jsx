@@ -1,5 +1,5 @@
 var React = require('react');
-var Highlight = require('react-highlight');
+var Highlight = require('./Highlight.jsx');
 var Example = React.createClass({
     getInitialState(){
         return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors()};
@@ -24,7 +24,7 @@ var Example = React.createClass({
         var propsstr = Object.keys(props || {}).map(function (key) {
             return key + '={' + JSON.stringify(props[key]) + '} ';
         }).join('');
-        return <Highlight className='javascript'>
+        return <Highlight lang='javascript'>
             <div>var Subschema = require('subschema');</div>
             <div>var Form = Subschema.Form;</div>
             <div>var React = require('react');</div>

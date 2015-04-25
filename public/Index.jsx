@@ -2,7 +2,7 @@ var React = require('react');
 var Index = React.createClass({
     render: function () {
         return (
-            <div class="jumbotron">
+            <div className="jumbotron">
                 <h1>Subschema</h1>
 
                 <p>This is app shows how to use Subschema</p>

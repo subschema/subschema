@@ -1,13 +1,14 @@
 {
   "name": "subschema",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.js",
   "scripts": {
     "test": "karma start",
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
-    "webpack": "webpack --config webpack.config.js -p"
+    "webpack": "webpack --config webpack.config.js -p",
+    "postinstall":"node bin/postinstall.js"
   },
   "keywords": [
     "react",
@@ -18,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/jspears/subschema"
   },
-  "web": "src/index.jsx",
+  "main":"src/index.jsx",
   "author": "Justin Spears",
   "license": "MIT",
   "devDependencies": {

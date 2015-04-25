@@ -1,9 +1,11 @@
 var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.concat, []),
     loaders = [],
+    types = {load, list, add},
     api = {
         /**
          * @param template String - looks for a template named something.
          */
+
         loadTemplate: load('Template'),
         loadType: load('Type'),
         loadSchema: load('Schema'),
@@ -13,13 +15,29 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
         listTypes: list('Type'),
         listSchemas: list('Schema'),
         listValidators: list('Validator'),
+        listProcessors: list('Processor'),
+
         addSchema: add('Schema'),
         addTemplate: add('Template'),
         addType: add('Type'),
         addValidator: add('Validator'),
         addProcessor: add('Processor'),
-        listProcessors: list('Processor'),
         addLoader(loader){
+            if (tu.isArray(loader)) {
+                return loader.map(function (v) {
+                    return this.addLoader(v);
+                }, this)
+            }
+            Object.keys(loader).forEach(function (key) {
+                if (!(key in this)) {
+                    var parts = /^(load|list)(.*)/.exec(key);
+                    if (parts && parts.length > 2 && parts[1] in types) {
+                        this[key] = types[parts[1]](parts[2]);
+                    } else {
+                        console.log('do not understand ' + key);
+                    }
+                }
+            }, this);
             loaders.unshift(loader);
             return loader;
         },
@@ -56,18 +74,16 @@ function list(method) {
 function load(method) {
     method = 'load' + method;
     return function load$load(load) {
-        var i = 0, l = loaders.length, ret = null;
+        var i = 0, l = loaders.length, ret = null, scope;
         for (; i < l; i++) {
             var ret = loaders[i][method] && loaders[i][method].apply(this, arguments);
             if (ret != null) {
                 return ret;
             }
         }
-
-        // return require(load);
     }
-
 }
+
 function add(type) {
     var listKey = 'list' + type + 's', loadKey = 'load' + type, lcType = type.toLowerCase();
     return function loader$add(key, value) {

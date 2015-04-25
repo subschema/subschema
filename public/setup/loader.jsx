@@ -1,6 +1,5 @@
 var React = require('react');
-var Highlight = require('react-highlight');
-
+var Highlight = require('../Highlight.jsx');
 var WebpackSetup = React.createClass({
     render(){
         return (<div>
@@ -18,8 +17,7 @@ var WebpackSetup = React.createClass({
                     </div>
                     <div className="panel-body">
 
-                        <Highlight className='javascript'>
-
+                        <Highlight lang="javascript">
                             {require('!!raw!../sample-loader!./../samples/Loader-setup.jsx')}
                         </Highlight>
                     </div>

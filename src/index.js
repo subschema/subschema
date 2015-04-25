@@ -6,3 +6,4 @@ module.exports.validators = require('./validators');
 module.exports.util = require('./tutils');
 module.exports.loader = require('./loader');
 module.exports.ValueManager = require('./ValueManager');
+module.exports.FieldValueMixin = require('./FieldValueMixin');

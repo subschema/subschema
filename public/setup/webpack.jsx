@@ -1,6 +1,5 @@
 var React = require('react');
-var Highlight = require('react-highlight');
-
+var Highlight = require('../Highlight.jsx');
 var WebpackSetup = React.createClass({
     render(){
         return (<div>
@@ -19,7 +18,7 @@ var WebpackSetup = React.createClass({
                     </div>
                     <div className="panel-body">
                         <p>First we need some dependencies</p>
-                        <Highlight className='sh'>
+                        <Highlight lang='bash'>
                             <div>$ npm i webpack --save-dev</div>
                             <div>$ npm i babel-loader --save-dev</div>
                             <div>$ npm i less-loader --save-dev</div>
@@ -34,7 +33,7 @@ var WebpackSetup = React.createClass({
 
                         <p>Then we need some configuration</p>
 
-                        <Highlight className='javascript'>
+                        <Highlight lang='javascript'>
                             {require('raw!../../webpack.config.js')}
                         </Highlight>
                     </div>
@@ -45,7 +44,7 @@ var WebpackSetup = React.createClass({
                     </div>
                     <div className="panel-body">
                         <p>First we should add a few scripts to package.json</p>
-                        <Highlight className='javascript'>
+                        <Highlight lang='javascript'>
 
                             {`
     //add a scripts scection if you don't have one
@@ -64,7 +63,7 @@ var WebpackSetup = React.createClass({
                     </div>
                     <div className="panel-body">
                         <p>In this doc your html belongs in ./public/index.html</p>
-                        <Highlight className='html'>
+                        <Highlight lang='html'>
                             {require('!!raw!../index.html')}
 
                         </Highlight>
@@ -76,7 +75,7 @@ var WebpackSetup = React.createClass({
                     </div>
                     <div className="panel-body">
                         <p>When your developing</p>
-                        <Highlight className='bash'>
+                        <Highlight lang='bash'>
 
                             {`
   $ npm start &
@@ -86,7 +85,7 @@ var WebpackSetup = React.createClass({
                         </Highlight>
 
                         <p>When your deploying</p>
-                        <Highlight className='bash'>
+                        <Highlight lang='bash'>
 
                             {`
   $ npm run webpack

@@ -1,6 +1,4 @@
-var loader = require('./loader');
-
-loader.addLoader({
+module.exports = {
     loadTemplate (template) {
         return require.context("./templates", true, /^\.\/.*\.js(x)?/)('./' + template + '.jsx');
     },
@@ -25,20 +23,5 @@ loader.addLoader({
         }).filter(function (v) {
             return !/Mixin$/.test(v.name);
         });
-    },
-    loadValidator(validator){
-        var validators = require('./validators');
-        return validators[validator] && validators[validator].bind(validators);
-    },
-    listValidators(){
-        var validators = require('./validators');
-        return Object.keys(validators).map(function (name) {
-            var validator = validators[name];
-            return {
-                name, validator
-            };
-        });
     }
-});
-
-module.exports = loader;
+}
