@@ -78,7 +78,7 @@ describe('form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors}/>, true);
+        var root = into(<Form value={value} schema={schema} errors={errors}/>);
         var input = root.refs.name.refs.field.refs.input,
             field = root.refs.name;
         Simulate.blur(input);
