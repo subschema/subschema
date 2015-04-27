@@ -111,22 +111,11 @@ var CollectionMixin = {
             return null;
         }
         var value = this.state.editValue || (this.state.editValue = {})
-        /*return <div className="panel-body">
-         <div className="form-group">
-         <Editor ref="itemEditor" field={this.getTemplateItem()} value={value}
-         pid={this.state.editPid}
-         form={null}/>
-         </div>
-         <div className="form-group">
-         <button className="btn btn-default pull-left" ref="cancelBtn" onClick={this.handleCancelAdd}>Cancel
-         </button>
-         <button className="btn btn-primary pull-right" ref={create ? 'createBtn' : 'editBtn'}
-         onClick={handler}>{label}</button>
-         </div>
-         </div>*/
+
         var CreateTemplate = loader.loadTemplate(this.props.collectionCreateTemplate);
         var title = this.props.title || '';
-        this.itemVM = new ValueManager(this.state.editValue);
+        //need trigger the createValue listeners, if there are any...
+        this.itemVM = this.props.valueManager.createValueManager(this.state.editValue, {}, this.props.path);
         return (<CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
                                 ref="addEdit"
                                 valueManager={this.itemVM}

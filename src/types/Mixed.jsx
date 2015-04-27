@@ -49,17 +49,16 @@ var MixedInput = React.createClass({
     },
     itemToString(){
         if (this.props.itemToString) return this.props.itemToString;
-        else if (this.props.field.labelKey) {
-            var labelKey = this.props.field.labelKey;
-            return function (v) {
-                if (!(v && v.key)) {
-                    return null;
-                }
-                return <span><h4 className="brf-key list-group-item-heading">{v.key}</h4><span
-                    className="brf-value list-group-item-text">{v.value && v.value[labelKey] || ''}</span></span>;
+        var labelKey = this.props.field.labelKey;
+        return function (v) {
+            if (!(v && v.key)) {
+                return null;
             }
+
+            return <span><h4 className="brf-key list-group-item-heading">{v.key}</h4>{labelKey ? <span
+                className="brf-value list-group-item-text">{ v.value[labelKey]}</span> : null}</span>;
         }
-        return null;
+
     },
     cloneVal(val){
         return tu.clone(val)
