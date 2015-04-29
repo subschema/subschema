@@ -3,6 +3,7 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var tu = require('../tutils');
 var Constants = require('../Constants');
+var css = require('../css');
 
 var Checkboxes = React.createClass({
     statics: {
@@ -18,7 +19,7 @@ var Checkboxes = React.createClass({
             name: '',
             placeholder: '',
             dataType: this.dataType,
-            template: 'CheckboxesTemplate',
+            itemTemplate: 'CheckboxesTemplate',
             groupTemplate: 'CheckboxesGroupTemplate',
             onValidate(){
             }
@@ -78,7 +79,7 @@ var Checkboxes = React.createClass({
         makeOptions (array, group) {
         array = array || [];
         var name = this.props.field.name;
-        var CheckboxTemplate = this.template();
+        var CheckboxTemplate = this.template('itemTemplate');
         var CheckboxesGroupTemplate = this.template('groupTemplate');
         return array.map((option, index)=> {
             option = tu.isString(option) ? {val: option} : option;
@@ -93,7 +94,7 @@ var Checkboxes = React.createClass({
     {
 
         return <div
-            className={Constants.clz(Checkboxes.inputClassName, this.props.editorClass)}>{this.makeOptions(this.props.field.options, 1)}</div>
+            className={css.forField(this)}>{this.makeOptions(this.props.field.options, 1)}</div>
     }
 });
 

@@ -1,4 +1,4 @@
-var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
+var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
 
 var HiddenInput = React.createClass({
@@ -8,8 +8,8 @@ var HiddenInput = React.createClass({
     },
     render() {
         return <input id={this.props.name}
-                      className={Constants.clz(HiddenInput.inputClassName, this.props.editorClass)} type="hidden"
-                      value={this.getValue()}
+                      className={css.forField(this)} type="hidden"
+                      value={this.state.value}
                       data-path={this.props.path}/>
     }
 });

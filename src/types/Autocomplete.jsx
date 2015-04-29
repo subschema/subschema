@@ -135,6 +135,9 @@ var Autocomplete = React.createClass({
         this.props.onValidate(selected && selected.val, this.props.value, this.props.name, this.props.path);
         this.setState({suggestions: [], selected, input, showing: false, focus: -1});
     },
+    getProcessor(){
+      return this.processor();
+    },
     removeListener: function () {
         document.removeEventListener("click", this.hide);
     },

@@ -1,4 +1,4 @@
-var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
+var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
 
 var DateInput = React.createClass({
@@ -8,7 +8,7 @@ var DateInput = React.createClass({
     },
     render() {
         return <input onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
-                      className={Constants.clz(DateInput.inputClassName, this.props.editorClass)} type="date"
+                      className={css.forField(this)} type="date"
                       value={this.getValue()}
                       title={this.props.title} placeholder={this.props.placeholder}/>
     }

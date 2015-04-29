@@ -2,6 +2,7 @@ var React = require('../react');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var Constants = require('../Constants');
+var css = require('../css');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     statics: {},
@@ -106,9 +107,9 @@ var MixedInput = React.createClass({
         item.canDelete = field.canDelete;
         item.canEdit = field.canEdit;
         var itemToString = this.itemToString();
-        return (<div className={Constants.clz(MixedInput.inputClassName, this.props.editorClass, 'list-editor')}>
+        return (<div className={css.forField(this, 'list-editor')}>
             {this.renderAdd()}
-            <ul className={Constants.clz(MixedInput.inputListClassName)}>
+            <ul>
                 {values.map((v, i) => {
                     var path = tu.path(path, v.id);
                     return <ListItemTemplate key={path} pos={i} path={path}

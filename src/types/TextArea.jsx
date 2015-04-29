@@ -1,4 +1,4 @@
-var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
+var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
 
 var TextArea = React.createClass({
@@ -8,7 +8,7 @@ var TextArea = React.createClass({
     },
     render() {
         return <textarea onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
-                         className={Constants.clz(TextArea.inputClassName, this.props.editorClass)}
+                         className={css.forField(this)}
                          value={this.getValue()}
                          data-path={this.props.path}
                          title={this.props.title} placeholder={this.props.placeholder}/>

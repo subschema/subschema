@@ -2,7 +2,7 @@ var React = require('../react');
 var tu = require('../tutils');
 var loader = require('../loader.jsx');
 var BasicFieldMixin = require('../BasicFieldMixin');
-
+var css = require('../css');
 var RadioInput = React.createClass({
     displayName: 'Radio',
     propTypes: {
@@ -23,6 +23,7 @@ var RadioInput = React.createClass({
         }
 
     },
+
     setValue(value){
         this.setState({value});
     },
@@ -30,7 +31,6 @@ var RadioInput = React.createClass({
     getValue(){
         return this.state.value;
     },
-
     _compare(val, val2){
         if (val == null && val2 == null) {
             return true;
@@ -41,9 +41,9 @@ var RadioInput = React.createClass({
     handleCheckChange(e){
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.field.forceSelection === false || this.props.field.options && this.props.field.options.length === 1) {
-            this.updateValue(this._compare(e.target.value, this.state.value) ? null : e.target.value);
+            this.props.onValueChange(this._compare(e.target.value, this.state.value) ? null : e.target.value);
         } else {
-            this.updateValue(e.target.value);
+            this.props.onValueChange(e.target.value);
         }
     },
     makeOptions(options){
@@ -77,7 +77,7 @@ var RadioInput = React.createClass({
 
         var RadioItemTemplate = loader.loadTemplate(template);
         var options = this.makeOptions(field.options);
-        return <div>{options.map((option, index)=> {
+        return <div className={css.forField(this)}>{options.map((option, index)=> {
             return <RadioItemTemplate  {...option} key={option.path}>
                 <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>

@@ -26,7 +26,7 @@ function initValidators(v) {
 
 var Editor = React.createClass({
     displayName: 'Editor',
-
+    mixins:[require('./LoaderMixin')],
     getDefaultProps() {
         return {
             field: {
@@ -130,14 +130,14 @@ var Editor = React.createClass({
         var {name,type,fieldClass, editorClass, errorClassName, help} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
-        var Component = loader.loadType(type),
+        var Component = this.props.loader.loadType(type),
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
         var Template;
         if (template === false || field.template === false || type === 'Hidden') {
             Template = null;
         } else {
-            Template = loader.loadTemplate(template || 'EditorTemplate');
+            Template = this.template();
         }
         var child = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                path={path}

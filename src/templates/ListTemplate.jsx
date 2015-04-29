@@ -1,12 +1,12 @@
 var React = require('../react');
 var ListInput = require('../types/List.jsx');
-var Constants = require('../Constants');
-
+var css = require('../css');
 var ListTemplate = React.createClass({
+
     render(){
-        return (<div className={Constants.clz(ListInput.inputClassName, this.props.editorClass, 'list-editor')}>
+        return (<div className={this.props.className}>
             {this.props.renderAdd}
-            <ul className={Constants.clz(ListInput.inputListClassName)}>
+            <ul className={css.forField(this, 'input-list')}>
                 {this.props.children}
             </ul>
         </div>);

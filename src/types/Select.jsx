@@ -1,5 +1,7 @@
 var React = require('../react'), util = require('../tutils'),
-    FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
+    FieldMixin = require('../FieldMixin'), Constants = require('../Constants'),
+    css = require('../css')
+    ;
 function toLabelVal(v) {
     if (util.isString(v)) {
         return {
@@ -16,36 +18,56 @@ function toLabelVal(v) {
 
     return v;
 }
+
 var Select = React.createClass({
     mixins: [FieldMixin],
     statics: {
         inputClassName: Constants.inputClassName
 
     },
-
+    doSelect(e){
+        if (this.props.field.multiple) {
+            //normalize multiple field selection
+            var values = [], options = e.target.options, i = 0, l = options.length;
+            for (; i < l; i++) {
+                if (options[i].selected) {
+                    values.push(options[i].value);
+                }
+            }
+            this.props.onValueChange(values);
+            return
+        }
+        this.props.onValueChange(e.target.value);
+    },
     renderOptions(value){
         var opts = this.props.field.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
-            if (!hasValue && o.val == value) hasValue = true;
+            if (!hasValue && o.val + '' == '' + value) hasValue = true;
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
-        if (this.props.placeholder || !hasValue) {
-            ret.unshift(<option key={'s' + opts.length}
-                                value={null}>{this.props.placeholder || "Please Select"}</option>);
+        var placeholder = this.props.field && this.props.field.placeholder || this.props.placeholder;
+        if (placeholder || !hasValue) {
+            //fixes a bug in react where selecting null, does not select null.
+            var selected = {};
+            if (!hasValue) {
+                selected.selected = true;
+            }
+            ret.unshift(<option key={'null-' + opts.length} {...selected}>
+                {placeholder}</option>);
         }
         return ret;
     },
     render() {
         var {field, name} = this.props;
         var value = this.state.value;
-        var {title, placeholder} = field;
-        var opts = this.props.field.options || [];
-        var hasValue = opts.some(function (v) {
-                return (v === value || v.val === value);
-            }) || value == null;
-
-        return <select className={Constants.clz(Select.inputClassName, this.props.fieldClass)}
-                       onBlur={this.handleValidate} onChange={this.handleChange}
-                       name={name} value={this.getValue()} title={title}
+        var {title, placeholder, multiple} = field;
+        if (multiple & !Array.isArray(value)) {
+            value = value ? [value] : value;
+        }
+        return <select className={css.forField(this)}
+                       multiple={multiple}
+                       ref="input"
+                       onBlur={this.handleValidate} onChange={this.doSelect}
+                       name={name} value={value} title={title}
             >
             {this.renderOptions(value)}
         </select>

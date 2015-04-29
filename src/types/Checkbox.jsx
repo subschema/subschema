@@ -1,4 +1,4 @@
-var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants');
+var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
 
 var Checkbox = React.createClass({
@@ -12,7 +12,7 @@ var Checkbox = React.createClass({
     },
     render() {
         return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}
-                      className={ Constants.clz(Checkbox.inputClassName, this.props.editorClass)} type="checkbox"
+                      className={ css.forField(this)} type="checkbox"
                       value={this.state.value}
                       checked={this.state.value}
                       title={this.props.title}/>
