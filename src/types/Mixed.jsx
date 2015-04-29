@@ -5,14 +5,15 @@ var loader = require('../loader.jsx');
 var Constants = require('../Constants');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
+    statics:{
+
+    },
     getDefaultProps() {
         return {
             placeholder: '',
             itemType: 'Text',
             keyType: 'Text',
             valueType: 'Text',
-            onValueChange() {
-            },
             onValidate() {
             },
             itemTemplate: this.itemTemplate,
@@ -60,10 +61,7 @@ var MixedInput = React.createClass({
         }
 
     },
-    cloneVal(val){
-        return tu.clone(val)
 
-    },
     uniqueCheck(value){
         var values = this.getValue();
         if (this.state.editPid == value) {

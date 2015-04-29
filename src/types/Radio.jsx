@@ -9,6 +9,11 @@ var RadioInput = React.createClass({
         title: React.PropTypes.string
     },
     mixins: [BasicFieldMixin],
+    statics: {
+        subSchema: {
+            options: 'OptionSchema'
+        }
+    },
     getDefaultProps() {
         return {
             title: '',

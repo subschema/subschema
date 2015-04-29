@@ -8,6 +8,19 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin],
+    statics: {
+        subSchema: {
+            type: 'Or',
+            subSchema: {
+                processor: {
+                    type: 'Select',
+                    help: 'A dynamic processor to resolve against',
+                    processor: 'processor-select'
+                },
+                options: 'OptionsSchema'
+            }
+        }
+    },
     propTypes: {
         name: React.PropTypes.string.isRequired,
         /* processor: React.PropTypes.shape({
@@ -149,7 +162,7 @@ var Autocomplete = React.createClass({
     onSelect: function (o) {
         var p = this.getProcessor();
         var value = p.value(o);
-        if (this.updateValue(value) !== false) {
+        if (this.props.onValueChange(value) !== false) {
             this.setState({
                 suggestions: [],
                 showing: false,

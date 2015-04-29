@@ -18,7 +18,9 @@ var Form = React.createClass({
     handleSubmit(e){
         e && e.preventDefault();
         var vm = this.props.valueManager;
-        this.props.onSubmit(e, vm.getErrors(), vm.getValue());
+        if (vm.onSubmit(e, vm.getErrors(), vm.getValue(), this.props.path) !== false) {
+            this.props.onSubmit(e, vm.getErrors(), vm.getValue());
+        }
     },
     setErrors(errors){
         this.props.valueManager.setErrors(errors);
@@ -31,7 +33,7 @@ var Form = React.createClass({
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         var sb = submitButton || this.schema.submitButton;
         var Template = loader.loadTemplate(template);
-        return <Template onValidate={this.handleValidate} onSubmit={this.props.onSubmit} schema={this.schema}
+        return <Template onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
                          className={this.props.className}
                          valueManager={this.props.valueManager}
             >

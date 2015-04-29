@@ -267,5 +267,33 @@ describe('ValueManager', function () {
             expect(e['other']).toNotExist();
 
         });
+    });
+    describe('createValueManager', function () {
+        it('should create a value manager', function () {
+            var vm = ValueManager({stuff: 1});
+            var args = []
+            vm.addCreateValueListener(null, function () {
+                args.push(Array.prototype.slice.call(arguments));
+            });
+            var vm2 = vm.createValueManager({vm: 2}, null, 'vm2');
+            var vm3 = vm2.createValueManager({vm: 3}, null, 'vm2.vm3');
+            var vm4 = vm3.createValueManager({vm: 4}, null, 'vm2.vm3.vm4');
+            expect(args.length).toBe(3);
+            expect(args[0][0].getValue().vm).toBe(2);
+            expect(args[1][0].getValue().vm).toBe(3);
+        });
+        it('should fire in order', function () {
+            var vm = ValueManager({stuff: 1});
+            var args = []
+            vm.addCreateValueListener(null, function () {
+                args.push(Array.prototype.slice.call(arguments));
+            });
+            var vm2 = vm.createValueManager({vm: 2}, null, 'vm2');
+            var vm3 = vm2.createValueManager({vm: 3}, null, 'vm2.vm3');
+            var vm4 = vm3.createValueManager({vm: 4}, null, 'vm2.vm3.vm4');
+            expect(args.length).toBe(3);
+            expect(args[0][0].getValue().vm).toBe(2);
+            expect(args[1][0].getValue().vm).toBe(3);
+        });
     })
 });

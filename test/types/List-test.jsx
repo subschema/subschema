@@ -5,24 +5,30 @@ describe('List', function () {
     var Form = require('subschema').Form;
     var Simulate = React.addons.TestUtils.Simulate;
     this.timeout(50000);
-    function into(node) {
-      //  return React.render(node, document.getElementsByTagName('body')[0]);
-       return TestUtils.renderIntoDocument(node);
+    function into(node, attach) {
+        return attach ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
     }
+
+    function click(node) {
+        Simulate.click(node.getDOMNode ? node.getDOMNode() : node);
+    }
+
     function add(root, c) {
         var refs = root.refs.tasks.refs.field.refs;
-        Simulate.click(refs.addBtn);
+        click(refs.addBtn);
         var input = refs.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        Simulate.click(refs.addEdit.refs.submitBtn);
+        click(refs.addEdit.refs.submitBtn);
+
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
         var tasks = root.refs.tasks.refs.field.refs;
         return tasks['tasks_' + c].refs
     }
-    function edit(root, c){
+
+    function edit(root, c) {
         var tasks = root.refs.tasks.refs.field.refs;
-        Simulate.click(tasks['tasks_'+c].refs.edit);
+        Simulate.click(tasks['tasks_' + c].refs.edit);
         var input = tasks.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
         Simulate.click(tasks.addEdit.refs.submitBtn);
@@ -31,6 +37,7 @@ describe('List', function () {
         var tasks = root.refs.tasks.refs.field.refs;
         return tasks['tasks_' + c].refs
     }
+
     var Todos = require('../../public/samples/Todos'), Schema = Todos.schema;
     it('should render a list', function () {
         var root = into(<Form schema={Schema}/>);
@@ -142,7 +149,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         expect(root).toExist();
         expect(root.refs.tasks).toExist();
 
@@ -169,7 +176,6 @@ describe('List', function () {
         expect(root.getValue().tasks.length).toEqual(0);
 
 
-
     });
     it('should render edit a value', function () {
         var schema = {
@@ -184,7 +190,7 @@ describe('List', function () {
                 }
             }
         }, data = {
-            tasks: ['one']
+            tasks: ['Hello, world 0']
         }
         var root = into(<Form schema={schema} value={data}/>);
         edit(root, 0);
@@ -205,10 +211,10 @@ describe('List', function () {
         }, data = {
             tasks: ['one', 'two']
         }, errors = {
-            'tasks.1':[{ message:'Can not be 2' }]
+            'tasks.1': [{message: 'Can not be 2'}]
         }
         var root = into(<Form schema={schema} value={data} errors={errors}/>);
-        var found  = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
+        var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
         expect(found[0].state.error).toEqual('Can not be 2');
     });
 })

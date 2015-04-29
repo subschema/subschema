@@ -4,19 +4,25 @@ var loader = require('../loader');
 var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
+var LoaderMixin = require('../LoaderMixin');
+
 var CollectionMixin = {
     statics: {
         collectionCreateTemplate: 'CollectionCreateTemplate',
         listClassName: Constants.listClassName,
-        itemTemplate: 'ListItemTemplate'
+        itemTemplate: 'ListItemTemplate',
     },
-    mixins: [BasicFieldMixin],
+    mixins: [BasicFieldMixin, LoaderMixin],
     getInitialState() {
         return {};
     },
-
+    getDefaultProps(){
+        return {
+            buttonTemplate: 'ButtonTemplate'
+        }
+    },
     getItemEditorValue(){
-        return this.itemVM.getValue();
+        return this.state.editValue && this.state.editValue.getValue();
     },
 
     getValue(){
@@ -49,12 +55,12 @@ var CollectionMixin = {
             showAdd: false,
             showEdit: true,
             editPid: pid,
-            editValue: this.cloneVal(val)
+            editValue: val
         });
     },
 
     changeValue(newValue, oldValue) {
-        if (this.updateValue(this.unwrap(newValue)) !== false) {
+        if (this.props.onValueChange(this.unwrap(newValue)) !== false) {
 
             this.setState({
                 wrapped: newValue,
@@ -66,19 +72,19 @@ var CollectionMixin = {
     },
     handleAddBtn(e) {
         e && e.preventDefault();
-        this.setState({showAdd: true, editValue: null});
+        this.setState({showAdd: true, editValue: {}});
     },
     handleCancelAdd(e) {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false, editValue: null});
     },
-    handleAddValue(e) {
+    handleAddValue(e, value) {
         e && e.preventDefault();
-        this.addValue(this.getItemEditorValue());
+        this.addValue(value);
     },
-    handleEditValue(e) {
+    handleEditValue(e, nv) {
         e && e.preventDefault();
-        var value = this.state.wrapped, oval = value && value.concat(), editPid = this.state.editPid, nv = this.getItemEditorValue();
+        var value = this.state.wrapped, oval = value && value.concat(), editPid = this.state.editPid;
         value.some(function (v, i) {
             if (v.id === editPid) {
                 v.value = nv;
@@ -98,7 +104,10 @@ var CollectionMixin = {
         this.changeValue(values, oval);
 
     },
-
+    getCollectionCreateTemplate(){
+        var template = this.props.field && this.props.field.createTemplate || this.props.collectionCreateTemplate;
+        return loader.loadTemplate(template);
+    },
     renderAddEditTemplate(edit, create) {
         var handler, label = ''
         if (edit) {
@@ -110,29 +119,33 @@ var CollectionMixin = {
         } else {
             return null;
         }
-        var value = this.state.editValue || (this.state.editValue = {})
-
-        var CreateTemplate = loader.loadTemplate(this.props.collectionCreateTemplate);
+        var CreateTemplate = this.getCollectionCreateTemplate();
         var title = this.props.title || '';
-        //need trigger the createValue listeners, if there are any...
-        this.itemVM = this.props.valueManager.createValueManager(this.state.editValue, {}, this.props.path);
-        return (<CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
-                                ref="addEdit"
-                                valueManager={this.itemVM}
-                                title={create ? 'Create ' + title : 'Edit ' + title  }
-                                submitButton={label}
-                                onCancel={this.handleCancelAdd}
-                                onSubmit={handler}/>)
+        return (
+            <CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
+                            valueManager={this.props.valueManager}
+                            ref="addEdit"
+                            value={this.state.editValue}
+                            title={create ? 'Create ' + title : 'Edit ' + title  }
+                            submitButton={label}
+                            onCancel={this.handleCancelAdd}
+                            onSubmit={handler}/>)
     },
+    /* return <div className="clearfix">
+     <button className="btn btn-xs pull-right btn-default" ref="addBtn" onClick={this.handleAddBtn}><i
+     className="icon-add"/>Add
+     </button>
+     </div>*/
     renderAddBtn() {
         if (!this.props.field.canAdd) {
             return null;
         }
-        return <div className="clearfix">
-            <button className="btn btn-xs pull-right btn-default" ref="addBtn" onClick={this.handleAddBtn}><i
-                className="icon-add"/>Add
-            </button>
-        </div>
+        var Template = this.template('buttonTemplate');
+        return <Template ref="addBtn" buttonClass='btn btn-xs pull-right btn-default' label="Add"
+                         iconClassName="icon-add" onClick={this.handleAddBtn}><i
+            className="icon-add"/>
+        </Template>
+
     }
     ,
 

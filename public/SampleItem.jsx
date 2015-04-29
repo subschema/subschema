@@ -62,6 +62,7 @@ var SampleItem = React.createClass({
         this.updateVM(value, content);
     },
     handleSubmit(){
+        alert('submit called');
     },
     handleErrors(){
     },

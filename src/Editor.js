@@ -32,8 +32,8 @@ var Editor = React.createClass({
             field: {
                 type: 'Text'
             },
-            onValueChange() {
-            },
+            /*onValueChange() {
+            },*/
             onValidate() {
             },
             template: 'EditorTemplate'

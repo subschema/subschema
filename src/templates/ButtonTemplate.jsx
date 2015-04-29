@@ -5,9 +5,7 @@ var Button = React.createClass({
             action: 'Submit',
             label: 'Submit',
             buttonClass: 'btn',
-            handle: function () {
-
-            }
+            iconClass: null
         }
     },
     getInitialState(){
@@ -18,12 +16,14 @@ var Button = React.createClass({
     setDisabled(disabled){
         this.setState({disabled});
     },
-    handler: function (e) {
-        this.props.handler(e, this.props.action, this);
+    handleClick(e){
+        this.props.onClick(e, this.props.action, this);
     },
     render(){
         return <button className={this.props.buttonClass} disabled={this.state.disabled}
-                       onClick={this.handler}>{this.props.label}</button>
+                       onClick={this.handleClick}>
+            {this.props.iconClass ? <i className={this.props.iconClass}/> : null}
+            {this.props.label}</button>
     }
 });
 module.exports = Button;

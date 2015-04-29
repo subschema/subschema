@@ -6,7 +6,10 @@ var Constants = require('../Constants');
 
 var Checkboxes = React.createClass({
     statics: {
-        inputClassName: Constants.inputCheckboxesClassName
+        inputClassName: Constants.inputCheckboxesClassName,
+        subSchema: {
+            options: 'OptionSchema'
+        }
     },
     mixins: [BasicFieldMixin],
     getDefaultProps() {
@@ -34,7 +37,7 @@ var Checkboxes = React.createClass({
         } else {
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
-        this.props.valueManager.update(this.props.path, newValues);
+        this.props.onValueChange(newValues);
     },
 
 

@@ -13,6 +13,13 @@ module.exports = {
     entry: {
         app: './public/app.jsx'
     },
+    devServer: {
+        contentBase: "./build",
+        info: false, //  --no-info option
+        hot: true,
+        inline: true,
+        port:8084
+    },
 
     output: {
         path: '.build/',
@@ -47,7 +54,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema': path.join(__dirname, 'src/index.jsx'),
+            'subschema':__dirname,
             'react': path.join(__dirname, '/node_modules/react')
         }
     },

@@ -38,14 +38,20 @@ var ListItemTemplate = React.createClass({
     },
     handleEdit(e) {
         e.preventDefault();
-        this.props.onEdit(this.props.pos, this.props.value, this.props.pid);
+        var val = this.props.value;
+        if (this.props.valueProp) {
+            val = {};
+            val[this.props.valueProp] = this.props.value;
+        }
+
+        this.props.onEdit(this.props.pos, val, this.props.pid);
     },
     renderField(){
         var field = this.props.field, content = this.props.itemToString(this.props.value);
 
         if (field.canEdit) {
             return <span className="item-value" ref="edit" onClick={this.handleEdit}
-                      path={tpath(this.props.path, this.props.pos)}>{content}</span>;
+                         path={tpath(this.props.path, this.props.pos)}>{content}</span>;
         } else {
             return <span className="item-value">{content}</span>;
         }

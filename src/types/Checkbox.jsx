@@ -4,11 +4,11 @@ var React = require('../react'), FieldMixin = require('../FieldMixin'), Constant
 var Checkbox = React.createClass({
     mixins: [FieldMixin],
     statics: {
-        inputClassName: ''//Constants.inputClassName
+        inputClassName: ''//Constants.inputClassName,
     },
     doChange: function (e) {
         var hasProp = 'value' in this.props;
-        this.updateValue(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
+        this.props.onValueChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
     },
     render() {
         return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}

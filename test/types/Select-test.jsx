@@ -17,7 +17,7 @@ describe('Select', function () {
             options: [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]
         }, vm = ValueManager({test: 2});
 
-        var root = into(<Select field={field} path="test" valueManager={vm}/>, false);
+        var root = into(<Select field={field} path="test" valueManager={vm}/>);
         var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'select');
         expect(inputs.length).toEqual(1);
         var select = inputs[0];

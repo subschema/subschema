@@ -113,7 +113,7 @@ var Wizard = React.createClass({
                 });
             }
         }
-        return <ButtonsTemplate buttons={buttons} handler={this.handleBtn}/>
+        return <ButtonsTemplate buttons={buttons} onClick={this.handleBtn}/>
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();

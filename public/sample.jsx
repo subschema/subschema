@@ -75,6 +75,10 @@ var Sample = React.createClass({
                                   className={setupCls('loader', setup)}
                                   key='loader'
                                   params={{setup: 'loader'}}>Loaders</Link>
+                            <Link to="setup"
+                                  className={setupCls('schema', setup)}
+                                  key='schema'
+                                  params={{setup: 'schema'}}>Schema Builder</Link>
                         </div>
                     </div>
                     <div className="col-md-10">

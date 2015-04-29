@@ -8,6 +8,9 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var ObjectInput = React.createClass({
     mixins: [NestedMixin, BasicFieldMixin],
     displayName: 'ObjectInput',
+    statics:{
+        subSchema: 'SubschemaBuilder'
+    },
     getDefaultProps(){
         return {
             template: 'ObjectTemplate'

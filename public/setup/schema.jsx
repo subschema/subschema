@@ -1,5 +1,5 @@
 var React = require('react');
-var SchemaBuilder = require('../builder/SchemaBuilder.jsx');
+var SchemaBuilder = require('subschema-builder').Builder;
 var SchemaDoc = React.createClass({
     render(){
         return (<div>
@@ -8,7 +8,7 @@ var SchemaDoc = React.createClass({
                 <legend></legend>
                 <p className="lead">
                     The subschema schema was borrowed from backbone-forms. It seems reasonable enough, though I don't
-                    garuntee compat
+                    garantee compatibilty.
                 </p>
 
                 <div className="panel">
@@ -26,4 +26,4 @@ var SchemaDoc = React.createClass({
         </div>);
     }
 });
-module.export = SchemaDoc;
+module.exports = SchemaDoc;

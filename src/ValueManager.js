@@ -31,6 +31,10 @@ function removeListener(listeners) {
 }
 /**
  * This callback is displayed as a global member.
+ * It will call them in order of most distant to least distance path.
+ * In the event of two paths being the same distance, it will call the last
+ * added first.
+ *
  * @callback ValueManagerListener
  * @param {*} newValue - The new value to be updated
  * @param {*} oldValue - The previous value updated.
@@ -41,6 +45,8 @@ function addListener(listeners, find, findOld) {
 
     return function ValueManager$addListener(path, listener, scope, init) {
         if (tu.isFunction(path)) {
+            init = scope;
+            scope = listener;
             listener = path;
             path = null
         }
@@ -53,7 +59,18 @@ function addListener(listeners, find, findOld) {
         if (init) {
             init.call(obj.scope, find(path), findOld(path), path)
         }
-        listeners.push(obj);
+        if (listeners.length === 0) {
+            listeners.push(obj)
+        } else {
+            var plength = path ? path.split('.').length : 0;
+            for (var i = 0, l = listeners.length; i < l; i++) {
+                var lp = listeners[i].path, cllength = lp ? lp.split('.').length : 0;
+                if (plength >= cllength || i + 1 === l) {
+                    listeners.splice(i, 0, obj);
+                    break;
+                }
+            }
+        }
         return obj;
     }
 }
@@ -145,21 +162,40 @@ function ValueManager(value, errors) {
 
     this.createListeners = [];
     this.addCreateValueListener = addListener(this.createListeners);
-    this.removeCreateValueListener =  removeListener(this.createListeners);
+    this.removeCreateValueListener = removeListener(this.createListeners);
+
+    this.submitListeners = [];
+    /**
+     * adds a submit listener.
+     * @param {String} [path] -  path to listen to.
+     * @param {Function} [ValueManagerListener] - the listener to look for.
+     * @param {Listener} [listener] - the listener returned from addListener();
+     */
+    this.addSubmitListener = addListener(this.submitListeners);
+    /**
+     * removes a submit listener;
+     */
+    this.removeSubmitListener = removeListener(this.submitListeners);
 }
 
 ValueManager.prototype = {
     createValueManager(value, errors, path){
-        var vm = ValueManager(value, errors), v, i = 0, l = this.createListeners.length;
+        var vm = ValueManager(value, errors);
+        vm.addCreateValueListener(null, this.onCreateValueManager, this);
+        this.onCreateValueManager(vm, path);
+        return vm;
+    },
+    onCreateValueManager(vm, path){
+        var v, i = 0, l = this.createListeners.length
         for (; i < l; i++) {
             var v = this.createListeners[i];
             if (!(v.path == null || v.path === path))
                 continue;
             if (v.listener.call(v.scope, vm, path) === false) {
-                break;
+                return false;
             }
         }
-        return vm;
+        return true;
     },
     /**
      * Removes all listeners, both error and value.
@@ -170,8 +206,26 @@ ValueManager.prototype = {
         this.errorListeners.length = 0;
         this.validateListeners.length = 0;
         this.createListeners.length = 0;
+        this.submitListeners.length = 0;
     }
     ,
+    /**
+     * When onSubmit is called this is fired
+     */
+    onSubmit: function (e, value, errors, path) {
+        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
+        do {
+            if (this.submitListeners.some(v=> {
+                    if (v.path == null || v.path === pp) {
+                        return (v.listener.call(v.scope, e, value, errors, path) === false);
+                    }
+                }, this) === true) {
+                return false
+            }
+            pp = tu.path(pp, parts[i]);
+        } while (i++ < l);
+        return true;
+    },
 
     /**
      * Triggers the value change on all listeneners.
@@ -189,6 +243,7 @@ ValueManager.prototype = {
             }
             pp = tu.path(pp, parts[i]);
         } while (i++ < l);
+        return true;
     }
     ,
     /**
@@ -247,9 +302,11 @@ ValueManager.prototype = {
                 }
             }
         }
-
-        obj[last] = value;
-
+        if (value === void(0)) {
+            delete obj[last];
+        } else {
+            obj[last] = value;
+        }
         //We will build a path for the new value, but not for the oldvalue.   This
         // might break whean a value changes multiple times.
         return this.onValueChange(path, value, oobj && oobj[last]) !== false;

@@ -1,5 +1,6 @@
-var tu = require('./tutils'), BasicFieldMixin = require('./BasicFieldMixin');
-var FieldValueMixin = tu.extend({}, BasicFieldMixin, {
+var BasicFieldMixin = require('./BasicFieldMixin');
+var FieldValueMixin = {
+    mixins: [BasicFieldMixin],
     getDefaultProps() {
         return {
             title: '',
@@ -21,16 +22,15 @@ var FieldValueMixin = tu.extend({}, BasicFieldMixin, {
             value
         });
     },
-    valueFromEvt(e){
-        return e.target.value;
-    },
     handleChange(e) {
-        this.updateValue(this.valueFromEvt(e));
+        this.props.onValueChange(this.valueFromEvt(e));
     },
     handleValidate(e){
         this.props.onValidate(this.valueFromEvt(e), this, e);
+    },
+    template(){
+
     }
 
-});
-
+};
 module.exports = FieldValueMixin;

@@ -13,19 +13,20 @@ var ButtonsTemplate = React.createClass({
                 label: 'Submit',
                 template: 'Button'
             }],
-            handler: function (event, action, btn) {
+            onClick: function (event, action, btn) {
 
             }
         }
     },
+
     makeButtons(){
-        var handler = this.props.handler;
+        var onClick = this.props.onClick;
         return this.props.buttons.map((b)=> {
             var btn = tu.isString(b) ? {
                 action: b,
                 label: b,
-                handler
-            } : tu.extend({}, b, {handler});
+                onClick
+            } : tu.extend({}, b, {onClick});
             if (this.props.buttonClass) {
                 btn.buttonClass = (btn.buttonClass || '') + ' ' + this.props.buttonClass;
             }

@@ -10,7 +10,57 @@ describe('form', function () {
     function into(node, debug) {
         return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
     }
+    it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
+        var value = {}, schema = {
+            schema: {
+                name: {
+                    type: 'Text',
+                    validators: ['email']
+                }
+            }
+        }, errors = {};
 
+        var root = into(<Form value={value} schema={schema} errors={errors}/>);
+        var input = root.refs.name.refs.field.refs.input,
+            field = root.refs.name;
+        Simulate.blur(input);
+        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+
+        expect(edit.state.error).toNotExist();
+
+        /*
+         Simulate.change(input, {target: {value: 'dude@g'}});
+         expect(field.state.errors.name).toNotExist();
+         */
+
+        Simulate.change(input, {target: {value: 'dude@g.com'}});
+
+        expect(edit.state.error).toNotExist();
+
+        Simulate.change(input, {target: {value: 'dude@g'}});
+        expect(edit.state.error).toExist();
+        Simulate.change(input, {target: {value: 'dude@g.com'}});
+
+        expect(edit.state.error).toNotExist();
+
+
+        Simulate.change(input, {target: {value: 'dude@g'}});
+
+        expect(edit.state.error).toExist();
+
+        Simulate.blur(input);
+        expect(edit.state.error).toExist();
+
+        Simulate.change(input, {target: {value: 'dude@go.com'}});
+        expect(edit.state.error).toNotExist();
+
+        Simulate.change(input, {target: {value: 'dude@g'}});
+        expect(edit.state.error).toExist();
+
+        Simulate.change(input, {target: {value: ''}});
+        expect(edit.state.error).toNotExist();
+        done();
+    });
     it('should create a form', function () {
 
         var root = into(<Form />);
@@ -68,53 +118,6 @@ describe('form', function () {
         expect(edit.state.error).toEqual('Required');
     });
 
-    it('should create a form with a schema and value and triggered error only after having been valid', function () {
-        var value = {}, schema = {
-            schema: {
-                name: {
-                    type: 'Text',
-                    validators: ['email']
-                }
-            }
-        }, errors = {};
-
-        var root = into(<Form value={value} schema={schema} errors={errors}/>);
-        var input = root.refs.name.refs.field.refs.input,
-            field = root.refs.name;
-        Simulate.blur(input);
-        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
-
-        expect(edit.state.error).toNotExist();
-
-        /*
-         Simulate.change(input, {target: {value: 'dude@g'}});
-         expect(field.state.errors.name).toNotExist();
-         */
-        Simulate.change(input, {target: {value: 'dude@g.com'}});
-
-        expect(edit.state.error).toNotExist();
-
-        Simulate.change(input, {target: {value: 'dude@g'}});
-        expect(edit.state.error).toExist();
-
-        Simulate.change(input, {target: {value: 'dude@g.com'}});
-        expect(edit.state.error).toNotExist();
-
-        Simulate.change(input, {target: {value: 'dude@g'}});
-        expect(edit.state.error).toExist();
-
-        Simulate.blur(input);
-        expect(edit.state.error).toExist();
-
-        Simulate.change(input, {target: {value: 'dude@go.com'}});
-        expect(edit.state.error).toNotExist();
-
-        Simulate.change(input, {target: {value: 'dude@g'}});
-        expect(edit.state.error).toExist();
-
-        Simulate.change(input, {target: {value: ''}});
-        expect(edit.state.error).toNotExist();
-    });
     it('should create a nested form with multiple errors', function () {
         var value = {}, schema = {
             schema: {
@@ -215,4 +218,7 @@ describe('form', function () {
          expect(res['test.stuff'][0].message).toEqual('Required');*/
 
     });
+
+
+
 })
