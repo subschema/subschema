@@ -3,12 +3,12 @@
 
 var React = require('../react');
 var NestedMixin = require('../NestedMixin');
-var loader = require('../loader.jsx');
 var BasicFieldMixin = require('../BasicFieldMixin');
+var LoaderMixin = require('../LoaderMixin');
 var ObjectInput = React.createClass({
-    mixins: [NestedMixin, BasicFieldMixin],
+    mixins: [NestedMixin, BasicFieldMixin, LoaderMixin],
     displayName: 'ObjectInput',
-    statics:{
+    statics: {
         subSchema: 'SubschemaBuilder'
     },
     getDefaultProps(){
@@ -30,7 +30,7 @@ var ObjectInput = React.createClass({
 
         var obj = {};
         obj.value = this.getValue();
-        var Template = loader.loadTemplate(template);
+        var Template = this.template();
         return (
             <Template {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</Template>);
     }

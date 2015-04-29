@@ -1,23 +1,20 @@
 var React = require('../react');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
-var loader = require('../loader.jsx');
 var Constants = require('../Constants');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
-    statics:{
-
-    },
+    statics: {},
     getDefaultProps() {
         return {
             placeholder: '',
             itemType: 'Text',
             keyType: 'Text',
             valueType: 'Text',
+            itemTemplate: 'ListItemTemplate',
+
             onValidate() {
-            },
-            itemTemplate: this.itemTemplate,
-            collectionCreateTemplate: this.collectionCreateTemplate
+            }
         }
     },
 
@@ -101,10 +98,10 @@ var MixedInput = React.createClass({
         return item;
     },
     render() {
-        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
+        var {name,  itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
-        } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;
+        } : itemType, ListItemTemplate = this.template('itemTemplate'), values = this.state.wrapped || [], length = values.length;
         item.canReorder = field.canReorder;
         item.canDelete = field.canDelete;
         item.canEdit = field.canEdit;

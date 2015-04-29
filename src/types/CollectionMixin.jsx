@@ -1,6 +1,5 @@
 var React = require('../react');
 var Editor = require('../Editor');
-var loader = require('../loader');
 var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
@@ -8,9 +7,8 @@ var LoaderMixin = require('../LoaderMixin');
 
 var CollectionMixin = {
     statics: {
-        collectionCreateTemplate: 'CollectionCreateTemplate',
         listClassName: Constants.listClassName,
-        itemTemplate: 'ListItemTemplate',
+        itemTemplate: 'ListItemTemplate'
     },
     mixins: [BasicFieldMixin, LoaderMixin],
     getInitialState() {
@@ -18,11 +16,9 @@ var CollectionMixin = {
     },
     getDefaultProps(){
         return {
+            createTemplate: 'CollectionCreateTemplate',
             buttonTemplate: 'ButtonTemplate'
         }
-    },
-    getItemEditorValue(){
-        return this.state.editValue && this.state.editValue.getValue();
     },
 
     getValue(){
@@ -104,10 +100,6 @@ var CollectionMixin = {
         this.changeValue(values, oval);
 
     },
-    getCollectionCreateTemplate(){
-        var template = this.props.field && this.props.field.createTemplate || this.props.collectionCreateTemplate;
-        return loader.loadTemplate(template);
-    },
     renderAddEditTemplate(edit, create) {
         var handler, label = ''
         if (edit) {
@@ -119,7 +111,7 @@ var CollectionMixin = {
         } else {
             return null;
         }
-        var CreateTemplate = this.getCollectionCreateTemplate();
+        var CreateTemplate = this.template('createTemplate');
         var title = this.props.title || '';
         return (
             <CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}

@@ -3,16 +3,7 @@ var webpack = require('webpack'), path = require('path');
 module.exports = function (config) {
     config.set({
         browserNoActivityTimeout: 20000,
-//        browsers: ['Chrome'], //run in Chrome
-        browsers: [ 'Chrome_without_security'],
-
-        // you can define custom flags
-        customLaunchers: {
-            Chrome_without_security: {
-                base: 'Chrome',
-                flags: ['--disable-web-security']
-            }
-        },
+        browsers: ['Chrome'], //run in Chrome
         singleRun: true, //just run once by default
         frameworks: ['mocha'], //use the mocha test framework
         files: [

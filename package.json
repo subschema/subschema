@@ -4,7 +4,7 @@
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.jsx",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start --single-run --browsers Firefox",
     "start": "webpack-dev-server --content-base ./public/",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
@@ -36,12 +36,12 @@
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.7",
     "karma-cli": "0.0.4",
+    "karma-firefox-launcher": "^0.1.4",
     "karma-mocha": "^0.1.10",
     "karma-sourcemap-loader": "^0.3.4",
     "karma-webpack": "^1.5.0",
     "less": "^2.4.0",
     "less-loader": "^2.2.0",
-
     "mocha": "^2.2.1",
     "modernizr": "^3.0.0-alpha.4",
     "raw-loader": "^0.5.1",

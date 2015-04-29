@@ -1,7 +1,7 @@
 var React = require('../react');
-var BasicFieldMixin = require('../BasicFieldMixin.js');
+var BasicFieldMixin = require('../BasicFieldMixin');
+var LoaderMixin = require('../LoaderMixin');
 var tu = require('../tutils');
-var loader = require('../loader.jsx');
 var Constants = require('../Constants');
 
 var Checkboxes = React.createClass({
@@ -11,7 +11,7 @@ var Checkboxes = React.createClass({
             options: 'OptionSchema'
         }
     },
-    mixins: [BasicFieldMixin],
+    mixins: [BasicFieldMixin, LoaderMixin],
     getDefaultProps() {
         return {
             title: '',
@@ -78,8 +78,8 @@ var Checkboxes = React.createClass({
         makeOptions (array, group) {
         array = array || [];
         var name = this.props.field.name;
-        var CheckboxTemplate = loader.loadTemplate(this.props.template);
-        var CheckboxesGroupTemplate = loader.loadTemplate(this.props.groupTemplate);
+        var CheckboxTemplate = this.template();
+        var CheckboxesGroupTemplate = this.template('groupTemplate');
         return array.map((option, index)=> {
             option = tu.isString(option) ? {val: option} : option;
             return (

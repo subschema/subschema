@@ -3,24 +3,10 @@
 var React = require('../react');
 var tu = require('../tutils');
 var css = require('../styles/autocomplete.less');
-var loader = require('../loader');
 var BasicFieldMixin = require('../BasicFieldMixin');
-
+var LoaderMixin = require('../LoaderMixin');
 var Autocomplete = React.createClass({
-    mixins: [BasicFieldMixin],
-    statics: {
-        subSchema: {
-            type: 'Or',
-            subSchema: {
-                processor: {
-                    type: 'Select',
-                    help: 'A dynamic processor to resolve against',
-                    processor: 'processor-select'
-                },
-                options: 'OptionsSchema'
-            }
-        }
-    },
+    mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
         name: React.PropTypes.string.isRequired,
         /* processor: React.PropTypes.shape({
@@ -98,7 +84,7 @@ var Autocomplete = React.createClass({
         return this.state.value
     },
     setValue(v){
-        var p = this.getProcessor();
+        var p = this.processor();
         var value = p.value(v);
         var input = p.format(v);
 
@@ -233,17 +219,7 @@ var Autocomplete = React.createClass({
             }
         }
     },
-    getProcessor(){
-        var processor = this.props.field.processor;
-        if (processor) {
-            if (tu.isString(processor)) {
-                return loader.loadProcessor(processor);
-            } else {
-                return processor;
-            }
-        }
-        return this.props.processor;
-    },
+
     renderSuggestions: function () {
         var suggestions = this.state.suggestions;
         if (this.state.showing === false || suggestions.length === 0) {
@@ -252,9 +228,9 @@ var Autocomplete = React.createClass({
         }
         this.addListener();
         var {focus, input} = this.state;
-        var processor = this.getProcessor();
+        var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
-        var CompleteItem = loader.loadTemplate(this.props.field.itemTemplate || this.props.itemTemplate);
+        var CompleteItem = this.template('itemTemplate');
         return <ul className="list-group">
             {suggestions.map((item, i) => <CompleteItem
                 key={item.val}
