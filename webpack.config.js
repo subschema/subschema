@@ -33,7 +33,16 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.js(x)?$/, loader: 'babel-loader?stage=0'},
+            {test: /\.js(x)?$/,
+                excludes:/node_modules/,
+                includes:[
+                    '~/node_modules/react',
+                    '~/node_modules/react-router',
+                    '~/node_modules/react-bootstrap',
+                    '~/node_modules/subschema-builder'
+
+                ],
+                loader: 'babel-loader?stage=0'},
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},

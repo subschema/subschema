@@ -25,13 +25,16 @@ var Select = React.createClass({
         inputClassName: Constants.inputClassName
 
     },
-    doSelect(e){
+    handleSelect(e){
         if (this.props.field.multiple) {
+            var placeholder = this.props.field.placeholder;
             //normalize multiple field selection
-            var values = [], options = e.target.options, i = 0, l = options.length;
+            var values = [], options = e.target.options, i = 0, l = options.length, option;
             for (; i < l; i++) {
-                if (options[i].selected) {
-                    values.push(options[i].value);
+                var option = options[i];
+                if (option.selected) {
+                    if (option.label != placeholder)
+                        values.push(option.value);
                 }
             }
             this.props.onValueChange(values);
@@ -40,16 +43,17 @@ var Select = React.createClass({
         this.props.onValueChange(e.target.value);
     },
     renderOptions(value){
-        var opts = this.props.field.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
+        var field = this.props.field, multiple = field.multiple, opts = field.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
             if (!hasValue && o.val + '' == '' + value) hasValue = true;
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
         var placeholder = this.props.field && this.props.field.placeholder || this.props.placeholder;
-        if (placeholder || !hasValue) {
+        if (placeholder || (!multiple && !!hasValue)) {
             //fixes a bug in react where selecting null, does not select null.
             var selected = {};
             if (!hasValue) {
                 selected.selected = true;
+                selected.value = null;
             }
             ret.unshift(<option key={'null-' + opts.length} {...selected}>
                 {placeholder}</option>);
@@ -60,13 +64,13 @@ var Select = React.createClass({
         var {field, name} = this.props;
         var value = this.state.value;
         var {title, placeholder, multiple} = field;
-        if (multiple & !Array.isArray(value)) {
+        if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
         return <select className={css.forField(this)}
                        multiple={multiple}
                        ref="input"
-                       onBlur={this.handleValidate} onChange={this.doSelect}
+                       onBlur={this.handleValidate} onChange={this.handleSelect}
                        name={name} value={value} title={title}
             >
             {this.renderOptions(value)}

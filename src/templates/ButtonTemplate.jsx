@@ -20,10 +20,11 @@ var Button = React.createClass({
         this.props.onClick(e, this.props.action, this);
     },
     render(){
-        return <button className={this.props.buttonClass} disabled={this.state.disabled}
-                       onClick={this.handleClick}>
-            {this.props.iconClass ? <i className={this.props.iconClass}/> : null}
-            {this.props.label}</button>
+        var {buttonClass, title, iconClass, onClick, label, ...props} = this.props;
+        return <button className={buttonClass} title={title} disabled={this.state.disabled}
+                       onClick={this.handleClick} {...props}>
+            {iconClass ? <i className={iconClass}/> : null}
+            {label}</button>
     }
 });
 module.exports = Button;

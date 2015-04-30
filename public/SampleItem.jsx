@@ -10,7 +10,7 @@ var SampleItem = React.createClass({
 
     componentWillMount(){
         SampleMgr.valueManager().addListener(null, this.setValue, this);
-        this.vm = new ValueManager();
+
 
 
     },
@@ -23,6 +23,7 @@ var SampleItem = React.createClass({
         this.vm = null;
     },
     getInitialState(){
+        this.vm = new ValueManager();
         return this.setUpProps(this.props);
     },
     setUpProps(props){
@@ -34,7 +35,7 @@ var SampleItem = React.createClass({
             if (this._loaded) {
                 Subschema.loader.removeLoader(this._loaded);
             }
-            this._loaded = content.setup && content.setup(Subschema);
+            this._loaded = content.setup && content.setup(Subschema, this);
 
         }
 

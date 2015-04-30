@@ -133,7 +133,7 @@ var CollectionMixin = {
             return null;
         }
         var Template = this.template('buttonTemplate');
-        return <Template ref="addBtn" buttonClass='btn btn-xs pull-right btn-default' label="Add"
+        return <Template ref="addBtn" buttonClass='btn btn-xs pull-right btn-default btn-add' label="Add"
                          iconClassName="icon-add" onClick={this.handleAddBtn}><i
             className="icon-add"/>
         </Template>

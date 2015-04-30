@@ -27,6 +27,14 @@ module.exports = function (config) {
                 loaders: [
                     {
                         test: /\.js(x)?$/,
+                        excludes:/node_modules/,
+                        includes:[
+                            '~/node_modules/react',
+                            '~/node_modules/react-router',
+                            '~/node_modules/react-bootstrap',
+                            '~/node_modules/subschema-builder'
+
+                        ],
                         loader: 'babel-loader?stage=0'
                     },
                     {
