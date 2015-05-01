@@ -52,7 +52,6 @@
     "react-hot-loader": "^1.2.5",
     "react-router": "^0.13.2",
     "style-loader": "^0.9.0",
-    "subschema-builder": "file:../subschema-builder",
     "text-loader": "0.0.1",
     "url-loader": "^0.5.5",
     "webpack": "^1.8.5",

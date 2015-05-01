@@ -67,7 +67,7 @@ module.exports = function (Subschema, node) {
             schema.schema.model.options = [];
         }
         //Change the state of the form and it will rerender.  Otherwise... it won't.
-        this.setState({content: {schema}});
+        this.setState({schema});
     }, node, true);
 
 

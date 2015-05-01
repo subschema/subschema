@@ -3,6 +3,7 @@ var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var loader = require('../loader.jsx');
+var css = require('../css');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {
@@ -11,8 +12,6 @@ var ListInput = React.createClass({
             title: '',
             placeholder: '',
             itemType: 'Text',
-            onValueChange() {
-            },
             onValidate() {
             },
             itemTemplate: 'ListItemTemplate',
@@ -89,9 +88,9 @@ var ListInput = React.createClass({
         this._item = item;
         var err = this.state.errors || {};
         var itemToString = this.itemToString();
-        return (<div className={Constants.clz(ListInput.inputClassName, this.props.editorClass, 'list-editor')}>
+        return (<div className={css.forField(this, 'list-editor')}>
             {this.renderAdd()}
-            <ul className={Constants.clz(ListInput.inputListClassName)}>
+            <ul className={css.forField(this, ListInput.inputListClassName)}>
                 {values.map((v, i) => {
                     var lipath = tu.path(path, v.id);
                     return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}
