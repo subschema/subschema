@@ -9,21 +9,20 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
 module.exports = {
 
     devtool: 'source-map',
-
     entry: {
         app: './public/app.jsx'
     },
     devServer: {
-        contentBase: "./build",
-        info: false, //  --no-info option
+        contentBase: path.join(__dirname, ".build"),
+        info: true, //  --no-info option
         hot: true,
         inline: true,
         port:8084
     },
 
     output: {
-        path: '.build/',
-        filename: '[name].js',
+        path: path.join(__dirname, ".build"),
+        filename: 'app.js',
         chunkFilename: '[id].chunk.js',
         publicPath: '/'
     },
@@ -35,6 +34,7 @@ module.exports = {
         loaders: [
             {test: /\.js(x)?$/,
                 excludes:/node_modules/,
+                //do this to prevent babel fromt tanslating everything.
                 includes:[
                     '~/node_modules/react',
                     '~/node_modules/react-router',
@@ -42,7 +42,7 @@ module.exports = {
                     '~/node_modules/subschema-builder'
 
                 ],
-                loader: 'babel-loader?stage=0'},
+                loaders: ['babel-loader?stage=0']},
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
@@ -69,7 +69,7 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
+
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),

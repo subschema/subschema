@@ -8,6 +8,7 @@ var FieldValueMixin = {
             placeholder: '',
             dataType: this.dataType,
             editorClass: '',
+            field: {},
             onValidate(){
             }
         }
