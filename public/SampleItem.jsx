@@ -12,7 +12,6 @@ var SampleItem = React.createClass({
         SampleMgr.valueManager().addListener(null, this.setValue, this);
 
 
-
     },
 
     componentWillUnmount(){
@@ -40,6 +39,7 @@ var SampleItem = React.createClass({
         }
 
         return {
+            schema:content.schema,
             content,
             file
         };
@@ -69,7 +69,9 @@ var SampleItem = React.createClass({
     },
 
     render () {
-        var { schema, description, title, setup, setupTxt, props, data, errors, teardown} = (this.state || {}).content || {};
+        var schema = this.state.schema;
+        var { description, title, setup, setupTxt, props, data, errors, teardown} = (this.state || {}).content || {};
+
         var file = this.state.file;
         if (setup && !setupTxt) {
             var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {

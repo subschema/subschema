@@ -1,5 +1,4 @@
 var React = require('react');
-var SchemaBuilder = require('subschema-builder').Builder;
 var SchemaDoc = React.createClass({
     render(){
         return (<div>
@@ -18,7 +17,6 @@ var SchemaDoc = React.createClass({
                     <div className="panel-body">
                         I was going to write a doc to describe how to write schema, but instead here is a little
                         schema builder to do it for me.
-                        <SchemaBuilder/>
                     </div>
                 </div>
 
