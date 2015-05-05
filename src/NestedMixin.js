@@ -73,10 +73,9 @@ var NestedMixin = {
                 if (!ref.type) {
                     ref.type = 'Text';
                 }
-                if (!ref.name) {
-                    ref.name = f;
-                }
             }
+            //name should always equal ref;
+            ref.name = f;
             if (!ref.fields && fieldMap[f]) {
                 ref.fields = fieldMap[f];
             }

@@ -8,20 +8,24 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
 
 module.exports = {
 
-    devtool: 'source-map',
-    entry: {
-        app: './public/app.jsx'
-    },
+    devtool: 'eval',
+    entry: [
+        'webpack-dev-server/client?http://localhost:' + 8084,
+        'webpack/hot/only-dev-server',
+        path.join(__dirname, 'public/app.jsx')
+    ],
+
     devServer: {
-        contentBase: path.join(__dirname, ".build"),
+        contentBase: path.join(__dirname, "public"),
         info: true, //  --no-info option
         hot: true,
         inline: true,
-        port:8084
+        port: 8084
     },
 
     output: {
         path: path.join(__dirname, ".build"),
+
         filename: 'app.js',
         chunkFilename: '[id].chunk.js',
         publicPath: '/'
@@ -32,17 +36,25 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.js(x)?$/,
-                excludes:/node_modules/,
+            {
+                test: /\.js(x)?$/,
+                exclude: /node_modules/,
                 //do this to prevent babel fromt tanslating everything.
-                includes:[
-                    '~/node_modules/react',
-                    '~/node_modules/react-router',
-                    '~/node_modules/react-bootstrap',
-                    '~/node_modules/subschema-builder'
-
+                include: [
+                    path.join(__dirname, 'src'),
+                    path.join(__dirname, 'public')
                 ],
-                loaders: ['babel-loader?stage=0']},
+                loaders: ['react-hot', 'babel-loader?stage=0']
+            },
+            {
+                test: /\.js(x)?$/,
+                exclude: [
+                    /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|react-highlight))/,
+                    path.join(__dirname, 'src'),
+                    path.join(__dirname, 'public')
+                ],
+                loaders: ['babel-loader?stage=0']
+            },
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
@@ -63,12 +75,14 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema':__dirname,
+            'subschema': __dirname,
             'react': path.join(__dirname, '/node_modules/react')
         }
     },
 
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
 
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')

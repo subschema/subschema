@@ -27,7 +27,7 @@ module.exports = function setup(Subschema) {
 
         },
         value: function (obj) {
-            return obj;
+            return obj && obj.val;
         },
         format: function (value) {
             return value && value.label;

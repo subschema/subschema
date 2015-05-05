@@ -136,20 +136,22 @@ describe('List', function () {
         var root = into(<Form schema={schema} value={data}/>);
 
         expect(root.refs.tasks.refs.field.refs.addBtn).toNotExist();
-        var tasks = root.refs.tasks.refs.field.refs;
+        var tasks = byComponents(root, ListTemplate);
+        expect(tasks.length).toBe(3);
+        tasks.forEach(function (task) {
+            task = task.refs.buttons.refs;
+            expect(task.upBtn).toNotExist();
+            expect(task.deleteBtn).toNotExist();
+            expect(task.downBtn).toNotExist();
 
-        expect(tasks.tasks_0.refs.upBtn).toNotExist();
-        expect(tasks.tasks_0.refs.deleteBtn).toNotExist();
-        expect(tasks.tasks_0.refs.downBtn).toNotExist();
+            expect(task.upBtn).toNotExist();
+            expect(task.deleteBtn).toNotExist();
+            expect(task.downBtn).toNotExist();
 
-        expect(tasks.tasks_1.refs.upBtn).toNotExist();
-        expect(tasks.tasks_1.refs.deleteBtn).toNotExist();
-        expect(tasks.tasks_1.refs.downBtn).toNotExist();
-
-        expect(tasks.tasks_2.refs.upBtn).toNotExist();
-        expect(tasks.tasks_2.refs.deleteBtn).toNotExist();
-        expect(tasks.tasks_2.refs.downBtn).toNotExist();
-
+            expect(task.upBtn).toNotExist();
+            expect(task.deleteBtn).toNotExist();
+            expect(task.downBtn).toNotExist();
+        })
     });
 
     it('should render a list without data and add values', function () {
@@ -167,7 +169,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>, true);
+        var root = into(<Form schema={schema} value={data}/>);
         expect(root).toExist();
         expect(root.refs.tasks).toExist();
 

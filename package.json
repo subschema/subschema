@@ -6,6 +6,7 @@
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
     "start": "webpack-dev-server --content-base ./public/",
+    "hot":"node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
     "webpack": "webpack --config webpack.config.js -p",
@@ -24,6 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "amdefine": "^0.1.0",
+    "babel-core": "^5.1.11",
     "babel-loader": "^5.0.0",
     "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.9.1",
@@ -48,6 +50,7 @@
     "react": "^0.13.1",
     "react-bootstrap": "^0.20.0",
     "react-highlight": "^0.4.1",
+    "react-hot-loader": "^1.2.5",
     "react-router": "^0.13.2",
     "style-loader": "^0.9.0",
     "subschema-builder": "file:../subschema-builder",
