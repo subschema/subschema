@@ -25,7 +25,11 @@ module.exports = {
         var classes = [];
         addClasses(classes, util.slice(arguments, 1));
         var field = node.props.field;
-        if (node.constructor.inputClassName) {
+        var className = field && field.className || node.props.className;
+
+        if (className) {
+            addClasses(classes, className);
+        } else if (node.constructor.inputClassName) {
             util.push(classes, node.constructor.inputClassName.split(/\s+?/));
         }
         if (field) {

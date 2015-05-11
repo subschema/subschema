@@ -268,6 +268,7 @@ var Autocomplete = React.createClass({
         var suggestions = this.state.suggestions,
             name = this.props.name,
             className = 'autocomplete ' + (suggestions.length > 0 ? this.props.foundCls : this.props.notFoundCls);
+        var autoFocus = this.props.field && this.props.field.autoFocus || this.props.autoFocus;
         return <div className={className}>
             <input
                 ref="input"
@@ -279,8 +280,8 @@ var Autocomplete = React.createClass({
                 value={this.state.input}
                 name={name}
                 className=" form-control "
-
                 placeholder={this.props.placeholder}
+                {...{autoFocus}}
                 />
             {this.renderSuggestions()}
         </div>

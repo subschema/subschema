@@ -10,6 +10,12 @@ var FieldValueMixin = {
             editorClass: '',
             field: {},
             onValidate(){
+            },
+            onFocus(){
+            },
+            onBlur(){
+            },
+            onValid(){
             }
         }
 

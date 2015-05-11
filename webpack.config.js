@@ -64,7 +64,9 @@ module.exports = {
     resolve: {
         alias: {
             'subschema':__dirname,
-            'react': path.join(__dirname, '/node_modules/react')
+            'react': path.join(__dirname, '/node_modules/react'),
+            'utils':path.join(__dirname, '/node_modules/formatter.js/src/utils'),
+            'pattern':path.join(__dirname, '/node_modules/formatter.js/src/pattern')
         }
     },
 

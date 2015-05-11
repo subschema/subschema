@@ -6,7 +6,7 @@
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
     "start": "webpack-dev-server --content-base ./public/",
-    "hot":"node webpack-server.js",
+    "hot": "node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
     "webpack": "webpack --config webpack.config.js -p",
@@ -33,6 +33,7 @@
     "expect": "^1.6.0",
     "express": "^4.12.3",
     "extract-text-webpack-plugin": "^0.5.0",
+    "formatter.js": "^0.1.5",
     "highlight.js": "^8.5.0",
     "jsdoc-to-markdown": "^1.0.3",
     "karma": "^0.12.31",
