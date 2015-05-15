@@ -67,6 +67,14 @@ var Autocomplete = React.createClass({
             onSelect: function (e) {
 
             },
+            onBlur(){
+            },
+            onFocus(){
+            },
+            onValid(){
+            },
+            onValidate(){
+            },
             showing: 'Searching...'
         }
 
@@ -134,9 +142,10 @@ var Autocomplete = React.createClass({
 
         this.props.onValidate(selected && selected.val, this.props.value, this.props.name, this.props.path);
         this.setState({suggestions: [], selected, input, showing: false, focus: -1});
+        this.props.onBlur();
     },
     getProcessor(){
-      return this.processor();
+        return this.processor();
     },
     removeListener: function () {
         document.removeEventListener("click", this.hide);
@@ -261,6 +270,7 @@ var Autocomplete = React.createClass({
         } else {
             this.handleInvalid();
         }
+        this.props.onBlur();
     },
     handleInvalid: function () {
     },
@@ -275,6 +285,7 @@ var Autocomplete = React.createClass({
                 onChange={this.handleChange}
                 onPaste={this.handlePaste}
                 onBlur={this.handleBlur}
+                onFocus={this.props.onFocus}
                 onKeyUp={this.handleKeyUp}
                 type="text"
                 value={this.state.input}

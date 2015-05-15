@@ -141,6 +141,7 @@ var Editor = React.createClass({
         }
         var child = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                path={path}
+                                {...field}
                                editorClass={editorClass}
                                valueManager={this.props.valueManager}
                                onValidate={this.handleValidate}/>;

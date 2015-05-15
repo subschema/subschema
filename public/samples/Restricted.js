@@ -17,11 +17,20 @@ module.exports = {
                 "title": "Pattern",
                 "type": "Restricted",
                 "formatter": "###"
+            },
+            'usphone':{
+                "title":"US Phone",
+                "type":"Restricted",
+                "formatter":"# (###) ###-####"
+            }/*,
+            'dollars':{
+                "title":"US Dollars",
+                "type":"Restricted",
+                "formatter":"00.00"
             }
-
-
+*/
         },
-        "fieldsets": [{"legend": "Restricted values", "fields": ["mm/yy", "ccard", "uszip", "###"]}]
+        "fieldsets": [{"legend": "Restricted values", "fields": ["mm/yy", "ccard", "uszip", "###", 'usphone']}]
     },
     data: {
         "mm/yy": '02/22',

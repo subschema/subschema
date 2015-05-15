@@ -19,14 +19,20 @@ var Restricted = React.createClass({
         inputClassName: Constants.inputClassName
     },
     getInitialState(){
+        var value = this.props.value ? this.formatter(this.props.value) : {
+            isValid: false,
+            value: ''
+        };
+
         return {
-            value: this.props.value || ''
+            value: value.value || '',
+            hasValidValue: value.isValid
         }
     },
     formatters: {
-        uszip(value){
+        uszip(value, isBackspace){
             value = (value || '').substring(0, 10);
-            var parts = zipRe.exec(value) || [], stateValue = this.state.value || '', isBackspace = stateValue.length > value.length, hasValidValue = false;
+            var parts = zipRe.exec(value) || [], isValid = false;
 
             if (parts) {
                 if (parts[2]) {
@@ -34,7 +40,7 @@ var Restricted = React.createClass({
                 } else {
                     value = parts[1];
                 }
-                hasValidValue = value.length === 5 || value.length === 10;
+                isValid = value.length === 5 || value.length === 10;
 
             } else {
                 value = '';
@@ -42,41 +48,12 @@ var Restricted = React.createClass({
 
             return {
                 value,
-                hasValidValue
+                isValid
             }
         },
-        creditcard(value){
-
-            var parts = cardRe.exec(value) || [], stateValue = this.state.value || '', isBackspace = stateValue.length > value.length;
-            value = (value || '').replace(/\s+?/g, '');
-            if (parts.shift()) {
-                var str = '';
-                var last = parts.pop();
-                parts.forEach(function (v) {
-                    if (v !== '') {
-                        if (v.length === 4) {
-                            str += v + ' '
-                        } else {
-                            str += v;
-                        }
-                    }
-                });
-                str += (last || '');
-                return {
-                    value: (isBackspace) ? str.substring(0, (lastEq(stateValue, ' ') ? stateValue.length - 1 : stateValue.length)) : str,
-                    isValid: str.length === 19
-                }
-            }
-            if (value && value.trim() === '') {
-                return {value: value.trim(), isValid: true};
-            }
-            return {
-                value: '',
-                isValid: true
-            }
-        },
-        shortDate(value){
-            var parts = dateRe.exec(value) || [], stateValue = this.state.value || '', isBackspace = stateValue.length > value.length;
+        creditcard: '#### #### #### ####',
+        shortDate(value, isBackspace){
+            var parts = dateRe.exec(value) || [];
             if (parts.shift()) {
                 var str = '';
                 var last = parts.pop();
@@ -109,65 +86,70 @@ var Restricted = React.createClass({
     makeFormatter: function (format) {
         return makeFormatter(format);
     },
-    formatter: function (value) {
+    formatter: function (value, isBackspace) {
+        if (this._formatter) {
+            return this._formatter.call(this, value, isBackspace);
+        }
         var field = this.props.field;
         var formatter = field.formatter || this.props.formatter;
 
         if (typeof formatter === 'string') {
-            if (this.formatters[formatter]) {
-                return (this._formmater = this.formatters[formatter]).call(this, value);
+            formatter = this.formatters[formatter] || formatter;
+            if (typeof formatter === 'function') {
+                return (this._formatter = formatter).call(this, value, isBackspace);
             } else {
-                return (this._formatter = this.makeFormatter(formatter)).call(this, value);
+                return (this._formatter = this.makeFormatter(formatter)).call(this, value, isBackspace);
             }
         } else if (typeof formatter === 'function') {
-            return (this._formatter = formatter).call(this, value);
+            return (this._formatter = formatter).call(this, value, isBackspace);
         }
         return value;
     },
     handleKeyDown(e){
+        if (e.key === 'Enter') {
+            this.props.onValid(this.state.hasValidValue, {
+                isValid: this.state.hasValidValue,
+                value: this.state.value
+            });
+            return;
+        }
         if (e.key === 'Delete') {
             e.preventDefault();
             var pos = e.target.selectionStart, end = e.target.selectionEnd;
             var value = (this.state.value || '');
             value = value.substring(0, pos) + value.substring(end);
-            value = this.formatter(value);
-            this.props.onValid(value.isValid, value);
-            this.setState({
-                value: value.value,
-                hasValue: value.value.length > 0,
-                hasValidValue: value.isValid
-            })
+            this._value(value);
             return;
         }
         if (e.key === 'Backspace') {
             e.preventDefault();
+            e.stopPropagation();
             var value = (this.state.value || '');
             var pos = e.target.selectionStart, end = e.target.selectionEnd;
+            var back = false;
             if (pos === end) {
-                value = this.formatter(value.trim().substring(0, value.length - 1));
+                value = value.trim().substring(0, value.length - 1);
+                back = true;
             } else {
-                value = this.formatter(value.substring(0, pos) + value.substring(end));
+                value = value.substring(0, pos) + value.substring(end);
             }
-            this.props.onValid(value.isValid, value);
-            this.setState({
-                value: value.value,
-                hasValue: value.value.length > 0,
-                hasValidValue: value.isValid
-            })
+            this._value(value, back);
             return;
         }
     },
+    _value(str, isBackspace){
+        var value = this.formatter(str, isBackspace) || {isValid: false};
+        this.props.onValid(value.isValid, value);
+        this.props.onValueChange(value.value);
+        this.setState({
+            value: value.value,
+            hasValue: value.value.length !== 0,
+            hasValidValue: value.isValid
+        });
 
+    },
     handleValueChange(e){
-        var value = this.formatter(e.target.value.trim());
-        if (value.value) {
-            this.props.onValid(value.isValid, value);
-            this.setState({
-                value: value.value,
-                hasValue: value.value.length !== 0,
-                hasValidValue: value.isValid
-            });
-        }
+        this._value(e.target.value.trim());
     },
     render(){
         var field = this.props.field;
