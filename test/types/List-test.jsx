@@ -117,6 +117,12 @@ describe('List', function () {
         expect(tasks.tasks_0).toExist();
         expect(tasks.tasks_1).toExist();
         expect(tasks.tasks_2).toExist();
+        var li = byComponents(root, ListTemplate)[0];
+        click(li.refs.edit);
+        var edit = byComponent(root, CreateTemplate);
+        var input = byTag(edit, 'input');
+        expect(input.getDOMNode().value).toBe('one');
+
     });
     it('should render a list with data is not editable', function () {
         var schema = {
@@ -182,11 +188,13 @@ describe('List', function () {
         expect(a1.upBtn).toExist();
         expect(a1.deleteBtn).toExist();
         expect(a1.downBtn).toNotExist();
+
         var a2 = add(root, 2).buttons.refs;
         expect(a2.upBtn).toExist();
         expect(a2.deleteBtn).toExist();
         expect(a2.downBtn).toNotExist();
         expect(a1.downBtn).toExist();
+
 
         click(a0.deleteBtn);
         expect(root.getValue().tasks.length).toEqual(2);

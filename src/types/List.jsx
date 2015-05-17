@@ -68,8 +68,8 @@ var ListInput = React.createClass({
     getTemplateItem(){
         return {
             type: 'Object',
-            name: this.props.field.name,
-            title: this.props.field.title,
+            name: this.props.name,
+            title: this.props.title,
             subSchema: {
                 value: this.props.field.itemType || this.props.itemType
             },

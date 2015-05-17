@@ -24,7 +24,7 @@ var NestedMixin = {
     makeFieldset(f, i) {
         var Template = loader.loadTemplate(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f}>
-            {this.makeFields(f.fields).map(this.addEditor, this)}
+            {this.makeFields(f.fields)}
         </Template>
     },
 
@@ -32,8 +32,7 @@ var NestedMixin = {
     getValue(){
         return this.props.valueManager.path(this.props.path);
     },
-    addEditor(field){
-        var f = field.name;
+    addEditor(field, f){
         var {path} = this.props;
         var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
@@ -59,14 +58,11 @@ var NestedMixin = {
         });
 
 
-        return tu.unique(fields).filter((f)=> {
-            return schema[f];
-        }).map((f) => {
-
+        return tu.unique(fields).map((f, i) => {
+            f = tu.isString(f) ? f : f && f.name || 'field-' + i;
             var ref = tu.isString(f) ? schema[f] : f;
             if (tu.isString(ref)) {
                 ref = {
-                    name: f,
                     type: ref
                 }
             } else {
@@ -74,13 +70,11 @@ var NestedMixin = {
                     ref.type = 'Text';
                 }
             }
-            //name should always equal ref;
-            ref.name = f;
             if (!ref.fields && fieldMap[f]) {
                 ref.fields = fieldMap[f];
             }
-            return ref;
-        })
+            return this.addEditor(ref, f);
+        });
     },
     normalizeSchema(schema){
         if (schema == null) {

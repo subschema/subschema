@@ -51,7 +51,7 @@ var CollectionMixin = {
             showAdd: false,
             showEdit: true,
             editPid: pid,
-            editValue: val
+            editValue: this.cloneVal(val)
         });
     },
 

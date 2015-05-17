@@ -26,14 +26,14 @@ function initValidators(v) {
 
 var Editor = React.createClass({
     displayName: 'Editor',
-    mixins:[require('./LoaderMixin')],
+    mixins: [require('./LoaderMixin')],
     getDefaultProps() {
         return {
             field: {
                 type: 'Text'
             },
             /*onValueChange() {
-            },*/
+             },*/
             onValidate() {
             },
             template: 'EditorTemplate'
@@ -121,13 +121,13 @@ var Editor = React.createClass({
             return field.title;
         }
         //Add spaces
-        return field.name.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => {
+        return this.props.name.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => {
             return s.toUpperCase();
         });
     },
     render() {
         var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props;
-        var {name,type,fieldClass, editorClass, errorClassName, help} = field;
+        var {type,fieldClass, editorClass, errorClassName, help} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var Component = this.props.loader.loadType(type),
@@ -141,8 +141,8 @@ var Editor = React.createClass({
         }
         var child = <Component ref="field" {...props} field={field} name={name} form={this.props.form}
                                path={path}
-                                {...field}
                                editorClass={editorClass}
+            {...field}
                                valueManager={this.props.valueManager}
                                onValidate={this.handleValidate}/>;
         //errMessage, errorClassName, name, fieldClass, title, help

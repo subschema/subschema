@@ -2,22 +2,20 @@ var formatter = require('../src/formatter');
 
 var expect = require('expect');
 describe('should create a formatter from a a pattern', function () {
-    // this.timeout(20000);
 
-
-
-    describe('00000', function () {
-        var pattern = formatter('00000');
-        it('should pad 10', function () {
-            var result = pattern('10');
-            expect(result.value).toBe('00010');
+    this.timeout(20000);
+    describe('1 (###) ###-####', function(){
+        it('should format even with a number', function(){
+            var pattern = formatter('1 (###) ###-####'), result;
+            result = pattern('2345678901')
+            expect(result.value).toBe('1 (234) 567-8901')
         });
-        it('should pad 1000', function () {
-            var result = pattern('1000');
-            expect(result.value).toBe('01000');
+        it('should format even with a number and matches', function(){
+            var pattern = formatter('1 (###) ###-####'), result;
+            result = pattern('12345678901')
+            expect(result.value).toBe('1 (234) 567-8901')
         });
     });
-
 
     describe('###-##-#### ', function () {
         var pattern = formatter('###-##-####'), result;
@@ -76,6 +74,7 @@ describe('should create a formatter from a a pattern', function () {
 
         });
     });
+
     describe('format # (###) ###-####', function () {
 
 
@@ -84,7 +83,6 @@ describe('should create a formatter from a a pattern', function () {
         it('should format a complete', function () {
 
             result = pattern('1234567');
-            expect(result.value).toBe('1 (234) 567-');
             expect(result.isValid).toBe(false);
         });
 
@@ -123,7 +121,8 @@ describe('should create a formatter from a a pattern', function () {
             result = pattern('1234567', true);
             expect(result.value).toBe('1 (234) 567');
             expect(result.isValid).toBe(false);
-
+        });
+        it('should format incomplete and backpace', function () {
             result = pattern('1234', true);
             expect(result.value).toBe('1 (234');
             expect(result.isValid).toBe(false);
@@ -133,14 +132,26 @@ describe('should create a formatter from a a pattern', function () {
             result = pattern('123456789');
             expect(result.isValid).toBe(false);
             expect(result.value).toBe('1 (234) 567-89');
+        });
+        it('should handle invalid delimeters', function () {
+            result = pattern('123-45-6789');
 
-            /*
-             result = pattern('123-45-6789');
-
-             expect(result.isValid).toBe(false);
-             expect(result.value).toBe('123-45-6789');*/
+            expect(result.isValid).toBe(false);
+            expect(result.value).toBe('1 (234) 567-89');
         })
     });
+    describe('00000', function () {
 
+        var pattern = formatter('00000'), result;
+        it('should pad 10', function () {
+            result = pattern('10');
+            expect(result.value).toBe('00010');
+        });
+
+        it('should pad 1000', function () {
+            result = pattern('1000');
+            expect(result.value).toBe('01000');
+        });
+    });
 
 });
