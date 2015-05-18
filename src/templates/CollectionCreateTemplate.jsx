@@ -14,6 +14,7 @@ var CollectionCreateTemplate = React.createClass({
                 <div className="form-group">
                     <Editor ref="itemEditor" field={this.props.field} value={this.props.value}
                             valueManager={this.valueManager}
+                            name={this.props.name}
                             pid={this.props.editPid}
                             form={null}/>
                 </div>

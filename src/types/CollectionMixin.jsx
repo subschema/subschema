@@ -116,6 +116,7 @@ var CollectionMixin = {
         return (
             <CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
                             valueManager={this.props.valueManager}
+                            name={this.props.name}
                             ref="addEdit"
                             value={this.state.editValue}
                             title={create ? 'Create ' + title : 'Edit ' + title  }

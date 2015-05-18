@@ -101,13 +101,13 @@ var MixedInput = React.createClass({
         return item;
     },
     render() {
-        var {name,  itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
+        var {name,  itemType, errors, canReorder, canDelete, canEdit, canAdd, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
         } : itemType, ListItemTemplate = this.template('itemTemplate'), values = this.state.wrapped || [], length = values.length;
-        item.canReorder = field.canReorder;
-        item.canDelete = field.canDelete;
-        item.canEdit = field.canEdit;
+        item.canReorder = canReorder;
+        item.canDelete = canDelete;
+        item.canEdit = canEdit;
         var itemToString = this.itemToString();
         return (<div className={css.forField(this, 'list-editor')}>
             {this.renderAdd()}
@@ -118,6 +118,7 @@ var MixedInput = React.createClass({
                                              onMoveUp={this.handleMoveUp}
                                              onMoveDown={this.handleMoveDown} onDelete={this.handleDelete}
                                              onEdit={this.handleEdit}
+
                                              field={item}
                                              pid={v.id}
                                              itemToString={itemToString}
