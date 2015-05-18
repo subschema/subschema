@@ -21,7 +21,7 @@ module.exports = {
             'usphone':{
                 "title":"US Phone",
                 "type":"Restricted",
-                "formatter":"# (###) ###-####"
+                "formatter":"1 (###) ###-####"
             }/*,
             'dollars':{
                 "title":"US Dollars",

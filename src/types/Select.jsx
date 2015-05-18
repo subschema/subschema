@@ -39,7 +39,14 @@ var Select = React.createClass({
             }
             this.props.onValueChange(values);
             return
+        }else if (this.props.placeholder){
+            if (e.target.value === this.props.placeholder){
+                this.props.onValueChange(null);
+                return;
+            }
         }
+
+
         this.props.onValueChange(e.target.value);
     },
     renderOptions(value){
