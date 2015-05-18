@@ -2,9 +2,10 @@
 
 var React = require('../react');
 var tu = require('../tutils');
-var css = require('../styles/autocomplete.less');
+var autocompleteLess = require('../styles/autocomplete.less');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
+var css = require('../css');
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
@@ -20,7 +21,9 @@ var Autocomplete = React.createClass({
         notFoundCls: React.PropTypes.string
 
     },
-
+    statics: {
+        inputClassName: 'form-control'
+    },
     getDefaultProps: function () {
         var self = this;
         return {
@@ -36,7 +39,7 @@ var Autocomplete = React.createClass({
                 fetch: function (url, value, component, cb) {
 
                     value = value.toLowerCase();
-                    var data = (component.props.field.options || []).map(function (v) {
+                    var data = (component.props.options || []).map(function (v) {
                         return {
                             label: v.label || v.val || v,
                             data: v,
@@ -275,24 +278,21 @@ var Autocomplete = React.createClass({
     handleInvalid: function () {
     },
     render: function () {
-        var suggestions = this.state.suggestions,
-            name = this.props.name,
-            className = 'autocomplete ' + (suggestions.length > 0 ? this.props.foundCls : this.props.notFoundCls);
-        var autoFocus = this.props.field && this.props.field.autoFocus || this.props.autoFocus;
-        return <div className={className}>
+        var suggestions = this.state.suggestions;
+
+        var autoFocus = this.props.autoFocus;
+        var {onChange,onPaste, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp, className, ...props} = this.props;
+        return <div
+            className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
             <input
-                ref="input"
                 onChange={this.handleChange}
                 onPaste={this.handlePaste}
                 onBlur={this.handleBlur}
-                onFocus={this.props.onFocus}
                 onKeyUp={this.handleKeyUp}
                 type="text"
                 value={this.state.input}
-                name={name}
-                className=" form-control "
-                placeholder={this.props.placeholder}
-                {...{autoFocus}}
+                className={css.forField(this)}
+                {...props}
                 />
             {this.renderSuggestions()}
         </div>

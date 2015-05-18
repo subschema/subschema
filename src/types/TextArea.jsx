@@ -7,11 +7,16 @@ var TextArea = React.createClass({
         inputClassName: Constants.inputClassName
     },
     render() {
-        return <textarea onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
+        var {fieldAttrs, value, onBlur, onChange, onValueChange, ...props} = this.props;
+        return <textarea onBlur={this.handleValidate}
+                         onChange={this.handleChange}
+                         id={this.props.name}
                          className={css.forField(this)}
-                         value={this.getValue()}
-                         data-path={this.props.path}
-                         title={this.props.title} placeholder={this.props.placeholder}/>
+                         value={this.state.value}
+
+            {...props}
+            {...fieldAttrs}
+            />
     }
 });
 

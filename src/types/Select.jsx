@@ -26,8 +26,8 @@ var Select = React.createClass({
 
     },
     handleSelect(e){
-        if (this.props.field.multiple) {
-            var placeholder = this.props.field.placeholder;
+        if (this.props.multiple) {
+            var placeholder = this.props.placeholder;
             //normalize multiple field selection
             var values = [], options = e.target.options, i = 0, l = options.length, option;
             for (; i < l; i++) {
@@ -43,11 +43,11 @@ var Select = React.createClass({
         this.props.onValueChange(e.target.value);
     },
     renderOptions(value){
-        var field = this.props.field, multiple = field.multiple, opts = field.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
+        var props = this.props, multiple = props.multiple, opts = props.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
             if (!hasValue && o.val + '' == '' + value) hasValue = true;
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
-        var placeholder = this.props.field && this.props.field.placeholder || this.props.placeholder;
+        var placeholder = this.props.placeholder;
         if (placeholder || (!multiple && !!hasValue)) {
             //fixes a bug in react where selecting null, does not select null.
             var selected = {};
@@ -61,17 +61,18 @@ var Select = React.createClass({
         return ret;
     },
     render() {
-        var {field, name} = this.props;
+        var {field, onChange, fieldAttrs, onBlur, value, multiple, placeholder, name, ...props} = this.props;
         var value = this.state.value;
-        var {title, placeholder, multiple} = field;
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
         return <select className={css.forField(this)}
                        multiple={multiple}
                        ref="input"
+                       value={value}
                        onBlur={this.handleValidate} onChange={this.handleSelect}
-                       name={name} value={value} title={title}
+            {...props}
+            {...fieldAttrs}
             >
             {this.renderOptions(value)}
         </select>

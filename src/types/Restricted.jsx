@@ -90,8 +90,7 @@ var Restricted = React.createClass({
         if (this._formatter) {
             return this._formatter.call(this, value, isBackspace);
         }
-        var field = this.props.field;
-        var formatter = field.formatter || this.props.formatter;
+        var formatter = this.props.formatter;
 
         if (typeof formatter === 'string') {
             formatter = this.formatters[formatter] || formatter;
@@ -152,20 +151,13 @@ var Restricted = React.createClass({
         this._value(e.target.value.trim());
     },
     render(){
-        var field = this.props.field;
-        var autoFocus = field && field.autoFocus || this.props.autoFocus;
-        var placeholder = field && field.placeholder || this.props.placeholder;
-        if (autoFocus) {
-            autoFocus = {autoFocus}
-        }
+        var {onChange, onKeyDown, value, fieldAttrs, ...props} = this.props;
         return <input type="text" value={this.state.value}
                       className={css.forField(this)}
                       onChange={this.handleValueChange}
-                      onFocus={this.props.onFocus}
-                      onBlur={this.props.onBlur}
                       onKeyDown={this.handleKeyDown}
-            {...{placeholder}}
-            {...autoFocus}
+            {...props}
+            {...fieldAttrs}
             />;
     }
 });

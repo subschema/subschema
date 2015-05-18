@@ -13,11 +13,9 @@ describe('Radio', function () {
     }
 
     it('should create a radios', function () {
-        var field = {
-            options: [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]
-        }, vm = ValueManager({test: 2});
+        var  vm = ValueManager({test: 2});
 
-        var root = into(<Radio field={field} path="test" valueManager={vm}/>, false);
+        var root = into(<Radio options={ [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test" valueManager={vm}/>, false);
         var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'input');
         expect(inputs.length).toEqual(2);
 

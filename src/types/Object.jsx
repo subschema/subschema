@@ -21,12 +21,11 @@ var ObjectInput = React.createClass({
     },
     render() {
 
-        var {field, value,  template, ...props} = this.props;
-        var { schema, subSchema} = field;
-        schema = schema || subSchema;
+        var {field, value,  template, subSchema, schema, fields, ...props} = this.props;
+        schema =  subSchema || schema;
         schema = this.normalizeSchema(schema);
 
-        this.schema = schema.schema ? schema : {schema: schema, fields: field.fields};
+        this.schema = schema.schema ? schema : {schema: schema, fields };
 
         var obj = {};
         obj.value = this.getValue();

@@ -10,7 +10,8 @@ var Form = React.createClass({
         return {
             template: 'FormTemplate',
             onSubmit(){
-            }
+            },
+            novalidate: false
         }
     },
 
@@ -18,6 +19,9 @@ var Form = React.createClass({
     handleSubmit(e){
         e && e.preventDefault();
         var vm = this.props.valueManager;
+        if (!this.props.novalidate) {
+            vm.validate();
+        }
         if (vm.onSubmit(e, vm.getErrors(), vm.getValue(), this.props.path) !== false) {
             this.props.onSubmit(e, vm.getErrors(), vm.getValue());
         }

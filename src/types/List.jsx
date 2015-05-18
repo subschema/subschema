@@ -48,8 +48,8 @@ var ListInput = React.createClass({
     },
     itemToString(){
         if (this.props.itemToString) return this.props.itemToString;
-        else if (this.props.field.labelKey) {
-            var labelKey = this.props.field.labelKey;
+        else if (this.props.labelKey) {
+            var labelKey = this.props.labelKey;
             return function (v) {
                 if (!(v)) {
                     return null;
@@ -71,20 +71,20 @@ var ListInput = React.createClass({
             name: this.props.name,
             title: this.props.title,
             subSchema: {
-                value: this.props.field.itemType || this.props.itemType
+                value: this.props.itemType
             },
             fields: ['value']
         };
     },
     render() {
-        var {name, itemTemplate, itemType, errors, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
+        var {name, itemTemplate, itemType, errors, path,field, value} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
         } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;
-        item.canReorder = field.canReorder;
-        item.canDelete = field.canDelete;
-        item.canEdit = field.canEdit;
-        item.canAdd = field.canAdd;
+        item.canReorder = this.props.canReorder;
+        item.canDelete = this.props.canDelete;
+        item.canEdit = this.props.canEdit;
+        item.canAdd = this.props.canAdd;
         this._item = item;
         var err = this.state.errors || {};
         var itemToString = this.itemToString();

@@ -9,10 +9,13 @@ var Password = React.createClass({
         inputClassName: Constants.inputClassName
     },
     render(){
+        var {onBlur, onChange, onValueChange, value, fieldAttrs, ...props} =this.props;
         return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
                       className={css.forField(this)} type="password"
-                      value={this.getValue()} title={this.props.title}
-                      placeholder={this.props.placeholder}/>
+                      value={this.state.value}
+            {...props}
+            {...fieldAttrs}
+            />
     }
 
 });

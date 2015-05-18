@@ -51,7 +51,7 @@ var Checkboxes = React.createClass({
         var labelContent = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : val;
         var opts = {
             onChange: this.handleCheckChange,
-            name: this.props.field.name,
+            name: this.props.name,
             checked: value ? !!~value.indexOf(val) : false,
             ref: id.replace(/\./g, '_'),
             id,
@@ -78,7 +78,7 @@ var Checkboxes = React.createClass({
      */
         makeOptions (array, group) {
         array = array || [];
-        var name = this.props.field.name;
+        var name = this.props.name;
         var CheckboxTemplate = this.template('itemTemplate');
         var CheckboxesGroupTemplate = this.template('groupTemplate');
         return array.map((option, index)=> {
@@ -94,7 +94,7 @@ var Checkboxes = React.createClass({
     {
 
         return <div
-            className={css.forField(this)}>{this.makeOptions(this.props.field.options, 1)}</div>
+            className={css.forField(this)}>{this.makeOptions(this.props.options, 1)}</div>
     }
 });
 
