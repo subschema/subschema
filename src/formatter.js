@@ -8,7 +8,7 @@ function ret(exact, val, d, backward) {
 }
 function fmt(delim, placeholder) {
     delim = delim || '';
-    return function fmt$return(exact, val, d, backward) {
+     function fmt$return(exact, val, d, backward) {
         if (placeholder && !backward) {
             return delim;
         }
@@ -17,6 +17,8 @@ function fmt(delim, placeholder) {
         }
         return (exact == null || exact === '' ) ? val : backward ? exact : exact + delim;
     };
+    fmt$return.placeholder = placeholder;
+    return fmt$return;
 }
 function upper(delim) {
     return function fmt$return(exact, val, d, backward) {
@@ -137,13 +139,14 @@ function makeFormatter(format) {
                 break;
         }
         var incr = handlers.length;
-        var value = '', done = false;
+        var value = '', done = false,isPlaceholder = false;
         for (var i = 0, l = incr * 3; i < l; i += 3, d++) {
             /*if (parts[i] == '' && parts[i + 1] == null) {
              break;
              }*/
-            done = isBackward && (i + 3 !== l) ? parts[i + 3] == null && parts[i + 4] == null : false;
-            value += handlers[d](parts[i], parts[i + 1], parts[i + 2], done);
+            var isNextPlaceholder = (parts[i] !== parts[i + 2]) && (handlers[d+1] && handlers[d+1].placeholder === true);
+            done = (i + 3 !== l) ? parts[i + 3] == null && parts[i + 4] == null ? isBackward ?  true : !isNextPlaceholder : false : isNextPlaceholder;
+            value += handlers[d](parts[i], parts[i + 1], parts[i + 2], done ? isBackward : false);
             if (done) {
                 break;
             }

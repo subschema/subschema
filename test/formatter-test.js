@@ -6,7 +6,7 @@ describe('should create a formatter from a a pattern', function () {
     this.timeout(20000);
     describe('1 (###) ###-####', function(){
         var pattern = formatter('1 (###) ###-####'), result;
-        it.skip('should format correctly as typed', function(){
+        it('should format correctly as typed', function(){
             result = pattern('2')
             expect(result.value).toBe('1 (2');
             result = pattern('23')
@@ -26,6 +26,31 @@ describe('should create a formatter from a a pattern', function () {
             result = pattern('234567890')
             expect(result.value).toBe('1 (234) 567-890');
             result = pattern('2345678901')
+            expect(result.value).toBe('1 (234) 567-8901');
+
+        });
+        it('should format correctly as typed backwards', function(){
+            //result = pattern('')
+            //expect(result.value).toBe('');
+            result = pattern('2')
+            expect(result.value).toBe('1 (2');
+            result = pattern('23', true)
+            expect(result.value).toBe('1 (23');
+            result = pattern('234', true)
+            expect(result.value).toBe('1 (234');
+            result = pattern('2345', true)
+            expect(result.value).toBe('1 (234) 5');
+            result = pattern('23456', true)
+            expect(result.value).toBe('1 (234) 56');
+            result = pattern('234567', true)
+            expect(result.value).toBe('1 (234) 567');
+            result = pattern('2345678', true)
+            expect(result.value).toBe('1 (234) 567-8');
+            result = pattern('23456789', true)
+            expect(result.value).toBe('1 (234) 567-89');
+            result = pattern('234567890', true)
+            expect(result.value).toBe('1 (234) 567-890');
+            result = pattern('2345678901', true)
             expect(result.value).toBe('1 (234) 567-8901');
 
         });
