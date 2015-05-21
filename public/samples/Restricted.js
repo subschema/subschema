@@ -18,6 +18,10 @@ module.exports = {
                 "type": "Restricted",
                 "formatter": "###"
             },
+            "unrestricted":{
+                "title":"Plain",
+                "type":"Text"
+            },
             'usphone':{
                 "title":"US Phone",
                 "type":"Restricted",
@@ -30,7 +34,7 @@ module.exports = {
             }
 */
         },
-        "fieldsets": [{"legend": "Restricted values", "fields": ["mm/yy", "ccard", "uszip", "###", 'usphone']}]
+        "fieldsets": [{"legend": "Restricted values", "fields": ["unrestricted", "mm/yy", "ccard", "uszip", "###", 'usphone']}]
     },
     data: {
         "mm/yy": '02/22',

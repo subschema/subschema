@@ -105,6 +105,7 @@ var Restricted = React.createClass({
         return value;
     },
     handleKeyDown(e){
+        var pos = e.target.selectionStart, end = e.target.selectionEnd;
         if (e.key === 'Enter') {
             this.props.onValid(this.state.hasValidValue, {
                 isValid: this.state.hasValidValue,
@@ -114,17 +115,15 @@ var Restricted = React.createClass({
         }
         if (e.key === 'Delete') {
             e.preventDefault();
-            var pos = e.target.selectionStart, end = e.target.selectionEnd;
             var value = (this.state.value || '');
             value = value.substring(0, pos) + value.substring(end);
-            this._value(value);
+            this._value(value, false, pos);
             return;
         }
         if (e.key === 'Backspace') {
             e.preventDefault();
             e.stopPropagation();
             var value = (this.state.value || '');
-            var pos = e.target.selectionStart, end = e.target.selectionEnd;
             var back = false;
             if (pos === end) {
                 value = value.trim().substring(0, value.length - 1);
@@ -132,23 +131,32 @@ var Restricted = React.createClass({
             } else {
                 value = value.substring(0, pos) + value.substring(end);
             }
-            this._value(value, back);
+            this._value(value, back, pos + value.length);
             return;
         }
     },
-    _value(str, isBackspace){
+    _value(str, isBackspace, caret){
         var value = this.formatter(str, isBackspace) || {isValid: false};
         this.props.onValid(value.isValid, value);
         this.props.onValueChange(value.value);
+        if (caret != null) {
+            if (isBackspace) {
+                caret += value.position -1;
+            } else {
+                caret += value.position + 1;
+            }
+        }
         this.setState({
             value: value.value,
             hasValue: value.value.length !== 0,
             hasValidValue: value.isValid
-        });
+        }, caret ? function () {
+            this.getDOMNode().setSelectionRange(caret, caret);
+        } : null);
 
     },
     handleValueChange(e){
-        this._value(e.target.value.trim());
+        this._value(e.target.value.trim(), false, e.target.selectionEnd);
     },
     render(){
         var {onChange, onKeyDown, value, fieldAttrs, ...props} = this.props;

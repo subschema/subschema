@@ -8,7 +8,7 @@ function ret(exact, val, d, backward) {
 }
 function fmt(delim, placeholder) {
     delim = delim || '';
-    return function fmt$return(exact, val, d, backward) {
+    function fmt$return(exact, val, d, backward) {
         if (placeholder && !backward) {
             return delim;
         }
@@ -17,6 +17,10 @@ function fmt(delim, placeholder) {
         }
         return (exact == null || exact === '' ) ? val : backward ? exact : exact + delim;
     };
+    if (placeholder) {
+        fmt$return.placeholder = true;
+    }
+    return fmt$return;
 }
 function upper(delim) {
     return function fmt$return(exact, val, d, backward) {
@@ -29,6 +33,13 @@ function lower(delim) {
         exact = (ret(exact, val, d) || '').toUpperCase();
         return backward ? exact : exact + delim;
     };
+}
+function notEmpty(vals) {
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        if (!(arguments[i] == null || arguments[i] == ''))
+            return true;
+    }
+    return false;
 }
 function _pad(value, length, right) {
     value = value || '';
@@ -111,8 +122,8 @@ function makeFormatter(format) {
                 //empty pattern so that the patterns
                 // and the input align when its a non matching pattern
                 var fdelim = fixDelim(delim);
-                exact = '('+fdelim+')';
-                pattern += '('+fdelim+'|)()(?:'+fdelim+'|(!'+fdelim+'))?';
+                exact = '(' + fdelim + ')';
+                pattern += '(' + fdelim + '|)()(?:' + fdelim + '|(!' + fdelim + '))?';
                 validPattern += '()(' + fdelim + ')';
                 handlers.push(fmt(delim, true));
                 break;
@@ -122,43 +133,55 @@ function makeFormatter(format) {
     var re = new RegExp('^' + pattern), vre = new RegExp('^' + validPattern + '$', 'g');
     return function makeFormatter$formatter(input, isBackward) {
         vre.lastIndex = re.index = re.lastIndex = 0;
-        var idx = 0, d = 0, p;
+        var idx = 0, d = 0, p, pl;
         var parts = re.exec(input);
         parts.shift();
         //remove delimeters
 
         parts = re.exec(clean(parts));
         parts.shift();
-        while (parts.length) {
-            p = parts[parts.length - 1];
-            if (p == null || p == '')
-                parts.pop();
-            else
+        while ((pl = parts.length)) {
+            if (notEmpty(parts[pl - 1], parts[pl - 2], parts[pl - 3])) {
                 break;
+            } else {
+                parts.splice(-3, 3);
+            }
         }
         var incr = handlers.length;
         var value = '', done = false;
+        var position = 0, handler;
         for (var i = 0, l = incr * 3; i < l; i += 3, d++) {
-            /*if (parts[i] == '' && parts[i + 1] == null) {
-             break;
-             }*/
-            done = isBackward && (i + 3 !== l) ? parts[i + 3] == null && parts[i + 4] == null : false;
-            value += handlers[d](parts[i], parts[i + 1], parts[i + 2], done);
+            done = i + 3 >= parts.length;
+            handler = handlers[d];
+            var doBack = done ? isBackward : false;
+            value += handler(parts[i], parts[i + 1], parts[i + 2], doBack);
+            if (done && !isBackward && parts[i+1] !== parts[i+3]){
+                var k = d + 1;
+                while(handlers[k] && handlers[k].placeholder){
+                    value += handlers[k]();
+                    position++;
+                    k++;
+                }
+            }
+            /*if (!doBack && handler.placeholder) {
+                position++;
+            }*/
             if (done) {
                 break;
             }
         }
         return {
             isValid: vre.test(value),
-            value: value
+            value: value,
+            position: position
         }
     }
 }
 //So we only care about every 3rd group.  Remove delimeters
 // and such, so the next parse can have something nice to work with.
-function clean(parts){
+function clean(parts) {
     var p = '';
-    for(var i=0; i<parts.length; i+=3){
+    for (var i = 0; i < parts.length; i += 3) {
         p += parts[i] || '';
     }
     return p;
