@@ -33,7 +33,7 @@ var NestedMixin = {
         return this.props.valueManager.path(this.props.path);
     },
     addEditor(field, f){
-        var {path} = this.props;
+        var {path, ...props} = this.props;
         var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
             tmpl['template'] = field.template;

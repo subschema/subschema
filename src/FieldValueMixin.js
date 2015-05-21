@@ -16,6 +16,8 @@ var FieldValueMixin = {
             onBlur(){
             },
             onValid(){
+            },
+            onChange(){
             }
         }
 
@@ -30,10 +32,15 @@ var FieldValueMixin = {
         });
     },
     handleChange(e) {
+        this.props.onChange.call(this, e);
         this.props.onValueChange(this.valueFromEvt(e));
     },
     handleValidate(e){
+        if (this.props.onBlur) {
+            this.props.onBlur.call(this, e);
+        }
         this.props.onValidate(this.valueFromEvt(e), this, e);
+
     },
     template(){
 

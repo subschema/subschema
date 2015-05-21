@@ -46,7 +46,7 @@ var Autocomplete = React.createClass({
                             val: v.val || v.label || v
                         }
                     }).filter(function (v) {
-                        var l = v.val.toLowerCase(), v;
+                        var l = ('' + v.val).toLowerCase(), v;
 
                         if (l.indexOf(value) === 0) {
                             return true;
@@ -83,13 +83,43 @@ var Autocomplete = React.createClass({
 
     },
     getInitialState () {
+        var value = this.props.value;
+        var input = this.props.input;
         return {
             suggestions: [],
-            input: '',
             showing: false,
-            focus: -1
+            focus: -1,
+            input,
+            value
         }
 
+    },
+    _processProps(props){
+        if (props.value && !props.input) {
+            props.processor.fetch(props.url, props.value, this, function (e, o) {
+                if (o && o.length === 1) {
+                    this.setValue(o[0]);
+                } else {
+                    this.setState({
+                        suggestions: o,
+                        showing: true
+                    });
+                }
+
+            }.bind(this));
+        } else if (!props.value && props.input) {
+            props.processor.fetch(props.url, props.input, this, function (e, o) {
+                this.setState({
+                    suggestions: o,
+                    showing: true,
+                    input: props.input
+                });
+            }.bind(this));
+        }
+
+    },
+    componentWillMount(){
+        this._processProps(this.props);
     },
     getValue(){
         return this.state.value
@@ -98,13 +128,16 @@ var Autocomplete = React.createClass({
         var p = this.processor();
         var value = p.value(v);
         var input = p.format(v);
-
+        var length = input && input.length || 0;
+        var refs = this.refs;
         this.setState({
             value,
             selected: v,
             input,
             showing: false,
             suggestions: []
+        }, function () {
+            refs.input.getDOMNode().setSelectionRange(length, length);
         });
     },
     /**
@@ -175,19 +208,19 @@ var Autocomplete = React.createClass({
         }
     },
     _handleDispatch: function (value) {
-        if (this._fetch && this._fetch.cancel) {
-            this._fetch.cancel();
-        }
-        var setState = this.setState.bind(this);
         this.setState({
             input: value,
             selected: null
         });
-        this._fetch = this.getProcessor().fetch(this.props.url, value, this, function (err, suggestions) {
+
+        if (this._fetch && this._fetch.cancel) {
+            this._fetch.cancel();
+        }
+        this._fetch = this.getProcessor().fetch(this.props.url, value, this, (err, suggestions) => {
             if (err) {
                 return;
             }
-            setState({
+            this.setState({
                 suggestions: suggestions,
                 showing: true,
                 input: value
@@ -260,6 +293,9 @@ var Autocomplete = React.createClass({
     },
 
     handleChange: function (e) {
+        if (this.props.onChange) {
+            this.props.onChange.call(this, e);
+        }
         this._handleDispatch(e.target.value);
     },
 
@@ -273,15 +309,14 @@ var Autocomplete = React.createClass({
         } else {
             this.handleInvalid();
         }
-        this.props.onBlur();
+        this.props.onBlur.call(this, event);
     },
     handleInvalid: function () {
     },
+
     render: function () {
         var suggestions = this.state.suggestions;
-
-        var autoFocus = this.props.autoFocus;
-        var {onChange,onPaste, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp, className, ...props} = this.props;
+        var {onChange,onPaste,  fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp, className, ...props} = this.props;
         return <div
             className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
             <input
@@ -290,6 +325,7 @@ var Autocomplete = React.createClass({
                 onBlur={this.handleBlur}
                 onKeyUp={this.handleKeyUp}
                 type="text"
+                ref="input"
                 value={this.state.input}
                 className={css.forField(this)}
                 {...props}
