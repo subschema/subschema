@@ -104,7 +104,13 @@ var Restricted = React.createClass({
         }
         return value;
     },
+    valueFromEvt: function (e) {
+        return e.target.value;
+    },
     handleKeyDown(e){
+        if (this.props.onKeyDown) {
+            this.props.onKeyDown.call(this, e);
+        }
         var pos = e.target.selectionStart, end = e.target.selectionEnd;
         if (e.key === 'Enter') {
             this.props.onValid(this.state.hasValidValue, {
@@ -138,10 +144,12 @@ var Restricted = React.createClass({
     _value(str, isBackspace, caret){
         var value = this.formatter(str, isBackspace) || {isValid: false};
         this.props.onValid(value.isValid, value);
-        this.props.onValueChange(value.value);
+        if (value.isValid) {
+            this.props.onValueChange(value.value);
+        }
         if (caret != null) {
             if (isBackspace) {
-                caret += value.position -1;
+                caret += value.position - 1;
             } else {
                 caret += value.position + 1;
             }
@@ -156,17 +164,17 @@ var Restricted = React.createClass({
 
     },
     handleValueChange(e){
+        this.props.onChange.call(this, e);
         this._value(e.target.value.trim(), false, e.target.selectionEnd);
     },
+
     render(){
-        var {onChange, onKeyDown, value, fieldAttrs, ...props} = this.props;
-        return <input type="text" value={this.state.value}
+        var {onChange, onValueChange, onBlur, className,field,value, dataType, value, fieldAttrs, ...props} = this.props
+        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
                       className={css.forField(this)}
-                      onChange={this.handleValueChange}
-                      onKeyDown={this.handleKeyDown}
-            {...props}
-            {...fieldAttrs}
-            />;
+                      type={dataType || 'text'}
+                      value={this.state.value}
+            {...props} {...fieldAttrs} onKeyDown={this.handleKeyDown}/>
     }
 });
 

@@ -148,7 +148,8 @@ var Editor = React.createClass({
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ?
             <Template field={field} name={name} fieldClass={fieldClass} title={title} help={help} path={path}
-                      errorClassName={errorClassName} valueManager={this.props.valueManager}>
+                      errorClassName={errorClassName} valueManager={this.props.valueManager}
+                      onValueChange={this.handleChange}>
                 {child}
             </Template> :
             child;

@@ -6,6 +6,7 @@ var autocompleteLess = require('../styles/autocomplete.less');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
+var Dom = require('../Dom');
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
@@ -46,7 +47,7 @@ var Autocomplete = React.createClass({
                             val: v.val || v.label || v
                         }
                     }).filter(function (v) {
-                        var l = ('' + v.val).toLowerCase(), v;
+                        var l = ('' + v.val).toLowerCase();
 
                         if (l.indexOf(value) === 0) {
                             return true;
@@ -118,9 +119,9 @@ var Autocomplete = React.createClass({
         }
 
     },
-    componentWillMount(){
-        this._processProps(this.props);
-    },
+    /*  componentWillMount(){
+     //        this._processProps(this.props);
+     },*/
     getValue(){
         return this.state.value
     },
@@ -147,47 +148,107 @@ var Autocomplete = React.createClass({
      * So if there is only 1 selection select it.
      * If
      */
-    hide: function () {
-        var {selected, input, suggestions} = this.state, i = 0, l, options, found = false;
-        var p = this.getProcessor();
-        if (input == null || input.trim() === '') {
-            selected = null;
-            input = null;
-        } else if (!selected || input !== selected.label) {
-            if (suggestions.length === 1) {
-                selected = suggestions[0];
-                input = selected.label;
-            } else {
+        hide(selectValue) {
+        var {selected, input, suggestions, focus} = this.state, i = 0, l, options, found = false;
+        if (selectValue) {
+
+
+            var p = this.getProcessor();
+            if (selectValue && focus > -1) {
+
+                selected = suggestions[focus];
+            } else if (input == null || input.trim() === '') {
                 selected = null;
-                options = suggestions;
-                l = options.length;
-                for (; i < l; i++) {
-                    var opt = options[i];
-                    if (opt.label === input) {
-                        selected = opt;
-                        input = opt.label;
-                        found = true;
-                        break;
+                input = null;
+            } else if (!selected || input !== selected.label) {
+                if (suggestions.length === 1) {
+                    selected = suggestions[0];
+                    input = selected.label;
+                } else {
+                    selected = null;
+                    options = suggestions;
+                    l = options.length;
+                    for (; i < l; i++) {
+                        var opt = options[i];
+                        if (opt.label === input) {
+                            selected = opt;
+                            input = opt.label;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        input = null;
                     }
                 }
-                if (!found) {
-                    input = null;
-                }
             }
+            if (selected !== this.state.selected) {
+                this.onSelect(selected);
+            } else {
+                this.props.onValidate(selected && selected.val, this.props.value, this.props.name, this.props.path);
+                this.setState({suggestions: [], selected, input, showing: false, focus: -1});
+            }
+        } else {
+            this.setState({showing: false, focus: -1, suggestions: []})
+        }
+        //        this.props.onBlur();
+    },
+    componentWillUnmount(){
+        this.unbindDocument();
+    },
+    componentDidMount(){
+        this.bindDocument();
+    },
+    bindDocument() {
+        this.unbindDocument();
+        this._onDocumentClickListener =
+            Dom.listen(this, 'click', this.handleDocumentClick);
+
+        this._onDocumentKeyupListener =
+            Dom.listen(this, 'keyup', this.handleDocumentKeyUp);
+
+        this._onDocumentKeydownListener =
+            Dom.listen(this, 'keypress', this.handleDocumentEnter);
+    },
+
+    unbindDocument() {
+        if (this._onDocumentClickListener) {
+            this._onDocumentClickListener.remove();
         }
 
-        this.props.onValidate(selected && selected.val, this.props.value, this.props.name, this.props.path);
-        this.setState({suggestions: [], selected, input, showing: false, focus: -1});
-        this.props.onBlur();
+        if (this._onDocumentKeyupListener) {
+            this._onDocumentKeyupListener.remove();
+        }
+        if (this._onDocumentKeydownListener) {
+            this._onDocumentKeydownListener.remove();
+        }
     },
+    handleDocumentEnter(e){
+//        console.log('keyUp', e.key);
+        if (e.keyCode === 13 && this.state.suggestions.length) {
+            e.preventDefault();
+            this.hide(true);
+        }
+    },
+    handleDocumentKeyUp(e) {
+
+        if (e.keyCode === 27) {
+            this.hide(false);
+        }
+    },
+
+    handleDocumentClick(e) {
+        // If the click originated from within this component
+        // don't do anything.
+        if (Dom.isNodeInRoot(e.target, React.findDOMNode(this))) {
+            return;
+        }
+
+        this.hide(false);
+    },
+
     getProcessor(){
         return this.processor();
-    },
-    removeListener: function () {
-        document.removeEventListener("click", this.hide);
-    },
-    addListener: function () {
-        document.addEventListener("click", this.hide);
     },
 
     handleSuggestionClick: function (o) {
@@ -229,6 +290,9 @@ var Autocomplete = React.createClass({
     },
 
     handleKeyUp: function (e) {
+        if (this.props.onKeyUp) {
+            this.props.onKeyUp.call(this, e);
+        }
         var focus = this.state.focus, s = this.state.suggestions;
         if (s.length) {
             var update = false;
@@ -271,10 +335,9 @@ var Autocomplete = React.createClass({
     renderSuggestions: function () {
         var suggestions = this.state.suggestions;
         if (this.state.showing === false || suggestions.length === 0) {
-            this.removeListener();
+
             return null;
         }
-        this.addListener();
         var {focus, input} = this.state;
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
@@ -314,22 +377,38 @@ var Autocomplete = React.createClass({
     handleInvalid: function () {
     },
 
+    createInput(props){
+        if (this.props.children) {
+            return React.Children.map(this.props.children, (child, idx)=> {
+                if (child.props.onValueChange) {
+                    var {onChange, ...nprops} = props;
+                    nprops.onValueChange = this._handleDispatch;
+                    nprops.onChange = this.handleChange;
+                    return React.cloneElement(child, nprops);
+                } else {
+                    return React.cloneElement(child, props);
+                }
+            });
+        }
+        return <input
+            type="text"
+            ref="input"
+            value={this.state.input}
+            className={css.forField(this)}
+            {...props}
+            />;
+    },
     render: function () {
         var suggestions = this.state.suggestions;
-        var {onChange,onPaste,  fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp, className, ...props} = this.props;
+        var {onChange,onPaste, children, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp,  ...props} = this.props;
+        props.onChange = this.handleChange;
+        props.onPaste = this.handlePaste;
+        props.onKeyUp = this.handleKeyUp;
+        props.onBlur = this.handleBlur;
+        props.onFocus = this.handleFocus;
         return <div
             className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
-            <input
-                onChange={this.handleChange}
-                onPaste={this.handlePaste}
-                onBlur={this.handleBlur}
-                onKeyUp={this.handleKeyUp}
-                type="text"
-                ref="input"
-                value={this.state.input}
-                className={css.forField(this)}
-                {...props}
-                />
+            {this.createInput(props)}
             {this.renderSuggestions()}
         </div>
     }
