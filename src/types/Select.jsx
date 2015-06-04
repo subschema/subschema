@@ -37,17 +37,17 @@ var Select = React.createClass({
                         values.push(option.value);
                 }
             }
-            this.props.onValueChange(values);
+            this.props.handleChange(values);
             return
         }else if (this.props.placeholder){
             if (e.target.value === this.props.placeholder){
-                this.props.onValueChange(null);
+                this.props.handleChange(null);
                 return;
             }
         }
 
 
-        this.props.onValueChange(e.target.value);
+        this.props.handleChange(e.target.value);
     },
     renderOptions(value){
         var props = this.props, multiple = props.multiple, opts = props.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {

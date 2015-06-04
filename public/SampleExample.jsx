@@ -5,12 +5,22 @@ var Example = React.createClass({
         return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors()};
     },
     componentWillMount(){
-        this.props.valueManager.addListener(null, this.setValue, this, true);
-        this.props.valueManager.addErrorListener(null, this.setErrors, this, true);
+        this.addListeners(this.props.valueManager);
     },
     componentWillUnmount(){
-        this.props.valueManager.removeListener(null, this.setValue);
-        this.props.valueManager.removeErrorListener(null, this.setErrors);
+        this.removeListeners(this.props.valueManager);
+    },
+    addListeners(valueManager){
+        valueManager.addListener(null, this.setValue, this, true);
+        valueManager.addErrorListener(null, this.setErrors, this, true);
+    },
+    removeListeners(valueManager){
+        valueManager.removeListener(null, this.setValue);
+        valueManager.removeErrorListener(null, this.setErrors);
+    },
+    componentWillReceiveProps(props){
+        this.removeListeners(this.props.valueManager);
+        this.addListeners(props.valueManager);
     },
     setValue(data){
         this.setState({data});

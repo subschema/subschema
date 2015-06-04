@@ -21,12 +21,17 @@ var BasicFieldMixin = {
     },
     getDefaultProps(){
         return {
-            onValueChange(value)
-            {
+            handleChange(value){
                 if (!this.valueManager) {
+                    this.onValueChange(value);
                     return;
                 }
-                return this.valueManager.update(this.path, value);
+                if (this.valueManager.update(this.path, value) !== false) {
+                    this.onValueChange(value);
+                }
+            },
+            onValueChange(value)
+            {
             }
         }
     }

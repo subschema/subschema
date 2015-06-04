@@ -19,8 +19,24 @@ var SampleItem = React.createClass({
         if (this._loaded) {
             Subschema.loader.removeLoader(this._loaded);
         }
+        //this.vm.removeAll();
         this.vm = null;
     },
+
+    componentWillReceiveProps(newProps){
+
+        if (newProps.sample != this.state.sample) {
+            //We will create a new ValueManager every time a
+            // a  new sample.  In order to prevent leaks
+            this.vm.removeAll();
+            this.vm = ValueManager();
+        }
+        var obj = this.setUpProps(newProps);
+        this.updateVM(SampleMgr.valueManager().getValue(), obj.content);
+        this.setState(obj);
+
+    },
+
     getInitialState(){
         this.vm = new ValueManager();
         return this.setUpProps(this.props);
@@ -35,21 +51,17 @@ var SampleItem = React.createClass({
                 Subschema.loader.removeLoader(this._loaded);
             }
             this._loaded = content.setup && content.setup(Subschema, this);
-
         }
 
+
         return {
-            schema:content.schema,
+            schema: content.schema,
             content,
-            file
+            file,
+            sample: props.sample
         };
     },
-    componentWillReceiveProps(newProps){
-        var obj = this.setUpProps(newProps);
-        this.updateVM(SampleMgr.valueManager().getValue(), obj.content);
-        this.setState(obj);
 
-    },
     updateVM(value, content){
         if ('loadData' in value)
             this.vm.setValue(value.loadData ? content.data : {});
@@ -96,6 +108,7 @@ var SampleItem = React.createClass({
                                         <div className="panel-body">
 
                                             <Form ref="form" schema={schema}
+                                                  key="form"
                                                   valueManager={this.vm}
                                                   onSubmit={this.handleSubmit}
                                                   onValidate={this.handleErrors}
@@ -106,7 +119,8 @@ var SampleItem = React.createClass({
                                 </div>
                             </div>
                             <h4>Example:</h4>
-                            <Example valueManager={this.vm} schema={schema} props={props} setupTxt={setupTxt}/>
+                            <Example valueManager={this.vm} schema={schema} props={props} setupTxt={setupTxt}
+                                     ref="example" key="example"/>
                         </div>
 
                     </div>

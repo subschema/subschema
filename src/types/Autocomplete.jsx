@@ -195,6 +195,7 @@ var Autocomplete = React.createClass({
     },
     componentWillUnmount(){
         this.unbindDocument();
+
     },
     componentDidMount(){
         this.bindDocument();
@@ -257,7 +258,7 @@ var Autocomplete = React.createClass({
     onSelect: function (o) {
         var p = this.getProcessor();
         var value = p.value(o);
-        if (this.props.onValueChange(value) !== false) {
+        if (this.props.handleChange(value) !== false) {
             this.setState({
                 suggestions: [],
                 showing: false,
@@ -405,7 +406,6 @@ var Autocomplete = React.createClass({
         props.onPaste = this.handlePaste;
         props.onKeyUp = this.handleKeyUp;
         props.onBlur = this.handleBlur;
-        props.onFocus = this.handleFocus;
         return <div
             className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
             {this.createInput(props)}

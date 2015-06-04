@@ -56,7 +56,7 @@ var CollectionMixin = {
     },
 
     changeValue(newValue, oldValue) {
-        if (this.props.onValueChange(this.unwrap(newValue)) !== false) {
+        if (this.props.handleChange(this.unwrap(newValue)) !== false) {
 
             this.setState({
                 wrapped: newValue,
@@ -134,7 +134,7 @@ var CollectionMixin = {
             return null;
         }
         var Template = this.template('buttonTemplate');
-        return <Template ref="addBtn" buttonClass='btn btn-xs pull-right btn-default btn-add' label="Add"
+        return <Template ref="addBtn" buttonClass='btn btn-xs btn-default btn-add' label="Add"
                          iconClassName="icon-add" onClick={this.handleAddBtn}><i
             className="icon-add"/>
         </Template>

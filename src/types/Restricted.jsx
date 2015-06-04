@@ -144,9 +144,7 @@ var Restricted = React.createClass({
     _value(str, isBackspace, caret){
         var value = this.formatter(str, isBackspace) || {isValid: false};
         this.props.onValid(value.isValid, value);
-        if (value.isValid) {
-            this.props.onValueChange(value.value);
-        }
+        this.props.handleChange(value.value);
         if (caret != null) {
             if (isBackspace) {
                 caret += value.position - 1;

@@ -32,8 +32,8 @@ var FieldValueMixin = {
         });
     },
     handleChange(e) {
-        this.props.onChange.call(this, e);
-        this.props.onValueChange(this.valueFromEvt(e));
+        this.props.onChange(this, e);
+        this.props.handleChange(this.valueFromEvt(e));
     },
     handleValidate(e){
         if (this.props.onBlur) {
