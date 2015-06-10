@@ -1,9 +1,10 @@
 var React = require('./react');
 var tu = require('./tutils');
 var Editor = require('./Editor');
-var loader = require('./loader');
-var ValueManager = require('./ValueManager')
+var ValueManager = require('./ValueManager');
+var LoaderMixin = require('./LoaderMixin');
 var NestedMixin = {
+    mixins:[LoaderMixin],
     getDefaultProps() {
         return {
             path: null,
@@ -22,7 +23,7 @@ var NestedMixin = {
         }
     },
     makeFieldset(f, i) {
-        var Template = loader.loadTemplate(f.template || 'FieldSetTemplate');
+        var Template = this.template(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f}>
             {this.makeFields(f.fields)}
         </Template>
@@ -33,13 +34,14 @@ var NestedMixin = {
         return this.props.valueManager.path(this.props.path);
     },
     addEditor(field, f){
-        var {path, ...props} = this.props;
+        var {path, loader, ...props} = this.props;
         var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
             tmpl['template'] = field.template;
         }
         return <Editor ref={f} key={'key-' + f} path={path}
                        field={field}
+                       loader={loader}
                        name={f}
             {...tmpl}
                        valueManager={this.props.valueManager}/>
@@ -81,14 +83,14 @@ var NestedMixin = {
             return {};
         }
         if (tu.isString(schema)) {
-            var loaded = loader.loadSchema(schema);
+            var loaded = this.props.loader.loadSchema(schema);
             if (loaded.schema) {
                 schema = loaded;
             } else {
                 schema = {schema: loaded};
             }
         } else if (tu.isString(schema.schema)) {
-            var loaded = loader.loadSchema(schema.schema);
+            var loaded = this.props.loader.loadSchema(schema.schema);
             if (loaded.schema) {
                 schema = loaded;
             } else {

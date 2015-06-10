@@ -2,7 +2,6 @@ var React = require('../react');
 var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
-var loader = require('../loader.jsx');
 var css = require('../css');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
@@ -80,7 +79,7 @@ var ListInput = React.createClass({
         var {name, itemTemplate, itemType, errors, path,field, value} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
-        } : itemType, ListItemTemplate = loader.loadTemplate(itemTemplate), values = this.state.wrapped || [], length = values.length;
+        } : itemType, ListItemTemplate = this.template(itemTemplate), values = this.state.wrapped || [], length = values.length;
         item.canReorder = this.props.canReorder;
         item.canDelete = this.props.canDelete;
         item.canEdit = this.props.canEdit;

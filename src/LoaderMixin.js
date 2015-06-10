@@ -1,4 +1,4 @@
-var loader = require('./loader'), util = require('./tutils');
+var  util = require('./tutils'), loader = require('./loader');
 var LoaderMixin = {
     getDefaultProps(){
         return {

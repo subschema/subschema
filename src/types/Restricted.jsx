@@ -51,7 +51,7 @@ var Restricted = React.createClass({
                 isValid
             }
         },
-        creditcard: '#### #### #### ####',
+        creditcard: '#### #### #### #### ###',
         shortDate(value, isBackspace){
             var parts = dateRe.exec(value) || [];
             if (parts.shift()) {
@@ -97,7 +97,7 @@ var Restricted = React.createClass({
             if (typeof formatter === 'function') {
                 return (this._formatter = formatter).call(this, value, isBackspace);
             } else {
-                return (this._formatter = this.makeFormatter(formatter)).call(this, value, isBackspace);
+                return (this._formatter = this.makeFormatter(formatter, this.props.validator)).call(this, value, isBackspace);
             }
         } else if (typeof formatter === 'function') {
             return (this._formatter = formatter).call(this, value, isBackspace);

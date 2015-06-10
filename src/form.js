@@ -1,7 +1,5 @@
 var React = require('./react');
 var NestedMixin = require('./NestedMixin');
-var loader = require('./loader');
-
 var ValueManager = require('./ValueManager');
 var Form = React.createClass({
     displayName: 'Form',
@@ -36,9 +34,10 @@ var Form = React.createClass({
         schema = this.normalizeSchema(schema);
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         var sb = submitButton || this.schema.submitButton;
-        var Template = loader.loadTemplate(template);
+        var Template = this.template(template);
         return <Template onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
                          className={this.props.className}
+                         loader={this.props.loader}
                          valueManager={this.props.valueManager}
             >
             {this.schema && this.schema.schema ? this.renderSchema(this) : null}

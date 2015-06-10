@@ -4,9 +4,8 @@
 var React = require('../react');
 var NestedMixin = require('../NestedMixin');
 var BasicFieldMixin = require('../BasicFieldMixin');
-var LoaderMixin = require('../LoaderMixin');
 var ObjectInput = React.createClass({
-    mixins: [NestedMixin, BasicFieldMixin, LoaderMixin],
+    mixins: [NestedMixin, BasicFieldMixin],
     displayName: 'ObjectInput',
     statics: {
         subSchema: 'SubschemaBuilder'

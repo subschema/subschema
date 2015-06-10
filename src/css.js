@@ -32,6 +32,19 @@ module.exports = {
         } else if (node.constructor.inputClassName) {
             util.push(classes, node.constructor.inputClassName.split(/\s+?/));
         }
+        return classes.join(' ');
+    },
+    forEditor: function (node) {
+        var classes = [];
+        addClasses(classes, util.slice(arguments, 1));
+        var field = node.props.field;
+        var className =  node.props.fieldClsName || node.props.fieldClassName;
+
+        if (className) {
+            addClasses(classes, className);
+        } else if (node.constructor.fieldClassName) {
+            util.push(classes, node.constructor.inputClassName.split(/\s+?/));
+        }
         if (field) {
             addClasses.call(node, classes, field.fieldClass);
             addClasses.call(node, classes, field.fieldCls);

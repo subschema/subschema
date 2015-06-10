@@ -1,8 +1,8 @@
 var React = require('../react');
 var tu = require('../tutils');
-var loader = require('../loader');
 
 var ButtonsTemplate = React.createClass({
+    mixins: [require('../LoaderMixin')],
     getDefaultProps(){
         return {
             buttonsClass: 'btn-group',
@@ -31,7 +31,7 @@ var ButtonsTemplate = React.createClass({
             if (this.props.buttonClass) {
                 btn.buttonClass = (btn.buttonClass || '') + ' ' + this.props.buttonClass;
             }
-            btn.template = loader.loadTemplate(b.template || this.props.buttonTemplate);
+            btn.template = this.props.loader.loadTemplate(b.template || this.props.buttonTemplate);
             return btn;
         })
     },

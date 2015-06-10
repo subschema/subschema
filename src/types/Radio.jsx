@@ -1,14 +1,14 @@
 var React = require('../react');
 var tu = require('../tutils');
-var loader = require('../loader.jsx');
 var BasicFieldMixin = require('../BasicFieldMixin');
+var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var RadioInput = React.createClass({
     displayName: 'Radio',
     propTypes: {
         title: React.PropTypes.string
     },
-    mixins: [BasicFieldMixin],
+    mixins: [BasicFieldMixin,LoaderMixin],
     statics: {
         subSchema: {
             options: 'OptionSchema'
@@ -75,7 +75,7 @@ var RadioInput = React.createClass({
     {
         var {name,template,path, value, dataType,options, field} = this.props;
 
-        var RadioItemTemplate = loader.loadTemplate(template);
+        var RadioItemTemplate = this.template(template);
         var options = this.makeOptions(options);
         return <div className={css.forField(this)}>{options.map((option, index)=> {
             return <RadioItemTemplate  {...option} key={option.path}>

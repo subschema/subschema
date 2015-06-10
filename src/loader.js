@@ -6,22 +6,26 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
          * @param template String - looks for a template named something.
          */
 
+        addTemplate: add('Template'),
         loadTemplate: load('Template'),
+        listTemplates: list('Template'),
+
+        addType: add('Type'),
         loadType: load('Type'),
-        loadSchema: load('Schema'),
-        loadValidator: load('Validator'),
-        loadProcessor: load('Processor'),
-        listTemplates: list('Templates'),
         listTypes: list('Type'),
-        listSchemas: list('Schema'),
-        listValidators: list('Validator'),
-        listProcessors: list('Processor'),
 
         addSchema: add('Schema'),
-        addTemplate: add('Template'),
-        addType: add('Type'),
+        loadSchema: load('Schema'),
+        listSchemas: list('Schema'),
+
         addValidator: add('Validator'),
+        loadValidator: load('Validator'),
+        listValidators: list('Validator'),
+
         addProcessor: add('Processor'),
+        loadProcessor: load('Processor'),
+        listProcessors: list('Processor'),
+
         addLoader(loader){
             if (tu.isArray(loader)) {
                 return loader.map(function (v) {
@@ -38,7 +42,9 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
                     }
                 }
             }, this);
+
             loaders.unshift(loader);
+            console.log('added loader', loader, loaders);
             return loader;
         },
         removeLoader(loader){

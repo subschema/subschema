@@ -39,7 +39,7 @@ var Autocomplete = React.createClass({
             processor: {
                 fetch: function (url, value, component, cb) {
 
-                    value = value.toLowerCase();
+                    value = value && value.toLowerCase();
                     var data = (component.props.options || []).map(function (v) {
                         return {
                             label: v.label || v.val || v,
@@ -197,6 +197,9 @@ var Autocomplete = React.createClass({
         this.unbindDocument();
 
     },
+    componentWillMount(){
+        this._processProps(this.props);
+    },
     componentDidMount(){
         this.bindDocument();
     },
@@ -258,7 +261,7 @@ var Autocomplete = React.createClass({
     onSelect: function (o) {
         var p = this.getProcessor();
         var value = p.value(o);
-        if (this.props.handleChange(value) !== false) {
+        if (this.props.handleChange.call(this.props, value) !== false) {
             this.setState({
                 suggestions: [],
                 showing: false,
@@ -358,7 +361,7 @@ var Autocomplete = React.createClass({
 
     handleChange: function (e) {
         if (this.props.onChange) {
-            this.props.onChange.call(this, e);
+            this.props.onChange(e);
         }
         this._handleDispatch(e.target.value);
     },
@@ -379,12 +382,19 @@ var Autocomplete = React.createClass({
     },
 
     createInput(props){
-        if (this.props.children) {
+        if (this.props.children && this.props.children.length) {
+            var handleDispatch = this._handleDispatch;
             return React.Children.map(this.props.children, (child, idx)=> {
                 if (child.props.onValueChange) {
                     var {onChange, ...nprops} = props;
-                    nprops.onValueChange = this._handleDispatch;
-                    nprops.onChange = this.handleChange;
+                    var onChildChange = child.props.onChange;
+                    nprops.onValueChange = function(val){
+                        handleDispatch(val);
+                    }
+                    /*nprops.onChange = function (e) {
+                        this.handleChange(e.target.value);
+                        onChildChange && onChildChange.call(this, e);
+                    }*/
                     return React.cloneElement(child, nprops);
                 } else {
                     return React.cloneElement(child, props);

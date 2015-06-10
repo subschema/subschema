@@ -8,7 +8,7 @@ function ret(exact, val, d, backward) {
 }
 function fmt(delim, placeholder) {
     delim = delim || '';
-     function fmt$return(exact, val, d, backward) {
+    function fmt$return(exact, val, d, backward) {
         if (placeholder && !backward) {
             return delim;
         }
@@ -51,11 +51,32 @@ function pad(delim, padding) {
     };
 
 }
-function makeFormatter(format) {
+function defaultValidator(value, regex) {
+    return regex.test(value);
+}
+function createValidator(validator) {
+    if (validator === void(0)) {
+        return defaultValidator;
+    }
+    if (typeof validator === 'function') {
+        return validator;
+    }
+    var re;
+    if (typeof validator === 'string') {
+        re = new RegExp(regex);
+    }
+    if (validator instanceof RegExp) {
+        re = validator;
+    }
+    if (re == null)
+        throw 'Do not know what to do with ' + validator;
+    return RegExp.prototype.test.bind(re)
+
+}
+function makeFormatter(format, validator) {
+    validator = createValidator(validator);
     var parts;
     var pattern = '', validPattern = '';
-    var delims = [];
-    var i = 0;
     var handlers = [];
     reRe.lastIndex = 0;
     while ((parts = reRe.exec(format)) != null && parts.index < format.length) {
@@ -113,8 +134,8 @@ function makeFormatter(format) {
                 //empty pattern so that the patterns
                 // and the input align when its a non matching pattern
                 var fdelim = fixDelim(delim);
-                exact = '('+fdelim+')';
-                pattern += '('+fdelim+'|)()(?:'+fdelim+'|(!'+fdelim+'))?';
+                exact = '(' + fdelim + ')';
+                pattern += '(' + fdelim + '|)()(?:' + fdelim + '|(!' + fdelim + '))?';
                 validPattern += '()(' + fdelim + ')';
                 handlers.push(fmt(delim, true));
                 break;
@@ -139,31 +160,33 @@ function makeFormatter(format) {
                 break;
         }
         var incr = handlers.length;
-        var value = '', done = false,isPlaceholder = false;
+        var value = '', done = false, isPlaceholder = false;
         for (var i = 0, l = incr * 3; i < l; i += 3, d++) {
             /*if (parts[i] == '' && parts[i + 1] == null) {
              break;
              }*/
-            var isNextPlaceholder = (parts[i] !== parts[i + 2]) && (handlers[d+1] && handlers[d+1].placeholder === true);
-            done = (i + 3 !== l) ? parts[i + 3] == null && parts[i + 4] == null ? isBackward ?  true : !isNextPlaceholder : false : isNextPlaceholder;
+            var isNextPlaceholder = (parts[i] !== parts[i + 2]) && (handlers[d + 1] && handlers[d + 1].placeholder === true);
+            done = (i + 3 !== l) ? parts[i + 3] == null && parts[i + 4] == null ? isBackward ? true : !isNextPlaceholder : false : isNextPlaceholder;
             value += handlers[d](parts[i], parts[i + 1], parts[i + 2], done ? isBackward : false);
             if (done) {
                 break;
             }
         }
         return {
-            isValid: vre.test(value),
+            isValid: validator(value, vre),
             value: value
         }
     }
 }
+
 //So we only care about every 3rd group.  Remove delimeters
 // and such, so the next parse can have something nice to work with.
-function clean(parts){
+function clean(parts) {
     var p = '';
-    for(var i=0; i<parts.length; i+=3){
+    for (var i = 0; i < parts.length; i += 3) {
         p += parts[i] || '';
     }
     return p;
 }
+
 module.exports = makeFormatter;
