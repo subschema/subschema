@@ -1,8 +1,7 @@
 #Subschema
-Create forms by just declaring the schema.  Has validation,
-update, support for server side errors.  Easily change all your
-form field layouts, for consisten usage.   Easily create form
-builders or config editors. 
+Create forms by  declaring the schema in JSON.  Has validation,
+data update, support for server side errors, and a bunch of input types.  Easily change all your
+form field layouts.
 
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
@@ -21,6 +20,22 @@ You can see examples at [jspears.github.io/subschema](http://jspears.github.io/s
   http://localhost:8080/webpack-dev-server/
 
 ```
+
+###Built In types
+
+* Autocomplete - Autocompleter with ajax support
+* Checkbox - Checkbox
+* Checkboxes - Checkbox/Radio groups
+* Hidden - Hidden Input
+* List - List with add/edit/remove/reorder support
+* Mixed - Edit object and their keys
+* Object - Nested Objects
+* Password - Password field
+* Radio - Radio
+* Restricted - Restricted input field.
+* Select- Select/Multi select support.
+* Text - Text input
+* TextArea - TextArea input
 
 ###Example
 You provide the schema and subschema renders it.  Keeping the values,
