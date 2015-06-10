@@ -44,7 +44,6 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
             }, this);
 
             loaders.unshift(loader);
-            console.log('added loader', loader, loaders);
             return loader;
         },
         removeLoader(loader){
