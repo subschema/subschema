@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.jsx",
   "browser": "dist/subschema.js",
@@ -12,7 +12,6 @@
     "docs": "node bin/docs.js",
     "prepublish": "webpack --config webpack.config.js -p",
     "postinstall": "node bin/postinstall.js"
-
   },
   "keywords": [
     "react",
