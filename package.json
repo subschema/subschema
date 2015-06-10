@@ -9,8 +9,9 @@
     "hot": "node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
-    "webpack": "webpack --config webpack.config.js -p",
+    "prepublish": "webpack --config webpack.config.js -p",
     "postinstall": "node bin/postinstall.js"
+
   },
   "keywords": [
     "react",

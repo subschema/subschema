@@ -1,6 +1,5 @@
 var path = require('path');
 
-
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
@@ -10,39 +9,43 @@ module.exports = {
 
     devtool: 'source-map',
     entry: {
-        app: './public/app.jsx'
+        subschema: './src/index.jsx'
     },
     devServer: {
         contentBase: path.join(__dirname, ".build"),
         info: true, //  --no-info option
         hot: true,
         inline: true,
-        port:8084
+        port: 8084
     },
 
     output: {
-        path: path.join(__dirname, ".build"),
-        filename: 'app.js',
-        chunkFilename: '[id].chunk.js',
-        publicPath: '/'
+        path: path.join(__dirname, "dist"),
+        filename: 'subschema.js',
+        libraryTarget: 'commonjs2'
     },
+    externals: [{
+        react: true
+    }],
     stats: {
         colors: true,
         reasons: true
     },
     module: {
         loaders: [
-            {test: /\.js(x)?$/,
-                excludes:/node_modules/,
+            {
+                test: /\.js(x)?$/,
+                excludes: /node_modules/,
                 //do this to prevent babel fromt tanslating everything.
-                includes:[
+                includes: [
                     '~/node_modules/react',
                     '~/node_modules/react-router',
                     '~/node_modules/react-bootstrap',
                     '~/node_modules/subschema-builder'
 
                 ],
-                loaders: ['babel-loader?stage=0']},
+                loaders: ['babel-loader?stage=0']
+            },
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
@@ -63,10 +66,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema':__dirname,
-            'react': path.join(__dirname, '/node_modules/react'),
-            'utils':path.join(__dirname, '/node_modules/formatter.js/src/utils'),
-            'pattern':path.join(__dirname, '/node_modules/formatter.js/src/pattern')
+            'subschema': __dirname
         }
     },
 
