@@ -22,10 +22,12 @@ module.exports = {
     output: {
         path: path.join(__dirname, "dist"),
         filename: 'subschema.js',
-        libraryTarget: 'commonjs2'
+        libraryTarget: 'umd',
+        library: 'Subschema'
     },
     externals: [{
-        react: true
+     'react/addons': 'react',
+      react: true
     }],
     stats: {
         colors: true,
