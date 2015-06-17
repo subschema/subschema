@@ -388,7 +388,7 @@ var Autocomplete = React.createClass({
                 if (child.props.onValueChange) {
                     var {onChange, ...nprops} = props;
                     var onChildChange = child.props.onChange;
-                    nprops.onValueChange = function(val){
+                    nprops.onValueChange = function (val) {
                         handleDispatch(val);
                     }
                     /*nprops.onChange = function (e) {
@@ -400,6 +400,10 @@ var Autocomplete = React.createClass({
                     return React.cloneElement(child, props);
                 }
             });
+        }
+        if (props.inputType) {
+            var Input = this.props.loader.loadType(props.inputType);
+            return <Input value={this.state.input} {...props}/>
         }
         return <input
             type="text"

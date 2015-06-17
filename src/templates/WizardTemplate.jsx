@@ -5,8 +5,8 @@ var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');
 var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
-
-
+//var TimeoutTransitionGroup = require('../transition/TimeoutTransitionGroup.jsx');
+var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 var Wizard = React.createClass({
 
     getInitialState() {
@@ -15,20 +15,21 @@ var Wizard = React.createClass({
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         return {
             compState: 0,
+            prevState: 0,
             navState: this.getNavStates(0, this.schema.fieldsets.length),
             values: []
         }
     },
-    componentWillMount(){
+/*    componentWillMount(){
         this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
+
     },
     componentWillUnmount(){
         this.props.valueManager.removeListener(this.props.path, this.setValue, this, true);
-
-    },
+   },
     setValue(value){
         this.setState({value});
-    },
+    },*/
     getNavStates(indx, length) {
         let styles = [], values = this.state && this.state.values || [];
         for (let i = 0; i < length; i++) {
@@ -49,7 +50,12 @@ var Wizard = React.createClass({
     },
     setNavState(next) {
         var len = this.schema.fieldsets.length;
-        this.setState({navState: this.getNavStates(next, len), compState: Math.min(len - 1, next)})
+        this.setState({
+                navState: this.getNavStates(next, len),
+                prevState: this.state.compState,
+                compState: Math.min(len - 1, next)
+            }
+        )
     },
 
     handleOnClick(evt) {
@@ -75,19 +81,19 @@ var Wizard = React.createClass({
         this.props.onSubmit(e, errors, value);
     },
 
-    renderState(compState){
-        var schema = tu.extend({}, this.schema.schema);
-        var fields = this.schema.fieldsets[compState].fields;
+    /* renderState(compState){
+     var schema = tu.extend({}, this.schema.schema);
+     var fields = this.schema.fieldsets[compState].fields;
 
-        return <Form ref="form" schema={{
-        schema,
-        fields
-        }} onSubmit={this.handleSubmit}
-                     valueManager={this.props.valueManager}>
+     return <Form ref="form" key={"key-"+compState} schema={{
+     schema,
+     fields
+     }} onSubmit={this.handleSubmit}
+     valueManager={this.props.valueManager}>
 
-            {this.renderBtns(compState)}
-        </Form>
-    },
+     {this.renderBtns(compState)}
+     </Form>
+     },*/
     renderBtns(compState){
         var buttons = this.schema.fieldsets[compState].buttons;
         if (!buttons && buttons !== false) {
@@ -113,7 +119,7 @@ var Wizard = React.createClass({
                 });
             }
         }
-        return <ButtonsTemplate buttons={buttons} onClick={this.handleBtn}/>
+        return <ButtonsTemplate key={'btn-'+compState} buttons={buttons} onClick={this.handleBtn}/>
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();
@@ -156,11 +162,15 @@ var Wizard = React.createClass({
     render() {
 
         var fieldsets = this.schema.fieldsets;
+        var schema = tu.extend({}, this.schema.schema);
+        var compState = this.state.compState;
+        var fields = this.schema.fieldsets[compState].fields;
+        var transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
         return (
-            <div className="container" onKeyDown={this.handleKeyDown}>
+            <div className="wizard-container" onKeyDown={this.handleKeyDown}>
                 <ol className="progtrckr">{
                     fieldsets.map((s, i) =>
-                            <li value={i} key={i}
+                            <li value={i} key={'li'+i}
                                 className={"progtrckr-" + this.state.navState.styles[i]}
                                 onClick={this.handleOnClick}>
                                 <em>{i + 1}</em>
@@ -168,9 +178,19 @@ var Wizard = React.createClass({
                             </li>
                     )}
                 </ol>
-                {this.renderState(this.state.compState)}
+                <ReactCSSTransitionGroup transitionName={transition} transitionEnter={true} transitionLeave={true}
+                                         className='slide-container'>
+                    <Form ref="form"
+                          className={'compState w'+compState}
+                          key={"form-"+compState}
+                          schema={{schema, fields}}
+                          onSubmit={this.handleSubmit}
+                          valueManager={this.props.valueManager}>
+                        {this.renderBtns(compState)}
+                    </Form>
+                </ReactCSSTransitionGroup>
             </div>
-        )
+        );
     }
 })
 

@@ -7,6 +7,7 @@ ol.progtrckr {
   padding-right: 0;
   width: 100%;
 }
+
 ol.progtrckr li {
   text-align: center;
   line-height: 4.5rem;
@@ -14,19 +15,23 @@ ol.progtrckr li {
   cursor: pointer;
   display: table-cell;
 }
+
 ol.progtrckr li span {
   padding: 0 1.5rem;
 }
+
 @media (max-width: 650px) {
   .progtrckr li span {
     display: none;
   }
 }
+
 .progtrckr em {
   display: none;
   font-weight: 700;
   padding-left: 1rem;
 }
+
 @media (max-width: 650px) {
   .progtrckr em {
     display: inline;
@@ -37,23 +42,35 @@ ol.progtrckr li.progtrckr-todo {
   color: silver;
   border-bottom: 4px solid silver;
 }
+.progtrckr li:after {
+  content:' ';
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  min-width: 100%;
+  background-color: red;
+}
 ol.progtrckr li.progtrckr-doing {
   color: black;
   border-bottom: 4px solid #33C3F0;
 }
+
 ol.progtrckr li.progtrckr-done {
   color: black;
   border-bottom: 4px solid #33C3F0;
 }
+
 ol.progtrckr li:after {
   content: "\00a0\00a0";
 }
+
 ol.progtrckr li:before {
   position: relative;
   bottom: -3.7rem;
   float: left;
   left: 50%;
 }
+
 ol.progtrckr li.progtrckr-todo:before {
   content: "\039F";
   color: silver;
@@ -61,6 +78,7 @@ ol.progtrckr li.progtrckr-todo:before {
   width: 1.2em;
   line-height: 1.4em;
 }
+
 ol.progtrckr li.progtrckr-todo:hover:before {
   color: #0FA0CE;
 }
@@ -73,6 +91,7 @@ ol.progtrckr li.progtrckr-doing:before {
   line-height: 1.2em;
   border-radius: 1.2em;
 }
+
 ol.progtrckr li.progtrckr-doing:hover:before {
   color: #0FA0CE;
 }
@@ -85,6 +104,74 @@ ol.progtrckr li.progtrckr-done:before {
   line-height: 1.2em;
   border-radius: 1.2em;
 }
+
 ol.progtrckr li.progtrckr-done:hover:before {
   color: #0FA0CE;
+}
+
+
+.wizardSwitch-enter {
+  left: 100%;
+  &.wizardSwitch-enter-active {
+    animation: moveToLeft .5s ease-in-out both;
+  }
+}
+
+.wizardSwitch-leave {
+  left: 0;
+  &.wizardSwitch-leave-active {
+    animation: moveToLeft .5s ease-in-out both;
+
+  }
+}
+.wizardSwitchBack-enter {
+  left: -100%;
+  &.wizardSwitchBack-enter-active {
+    animation: moveToRight .5s ease-in-out both;
+  }
+}
+
+.wizardSwitchBack-leave {
+  left: 0;
+  &.wizardSwitchBack-leave-active {
+    animation: moveToRight .5s ease-in-out both;
+  }
+}
+
+.slide-container {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  vertical-align: top;
+  min-height: 500px;
+  form {
+    background-color: #fff;
+    display: inline-block;
+    min-width: 100%;
+    white-space: normal;
+    vertical-align: top;
+    position: absolute;
+  }
+}
+
+
+@keyframes moveToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+}
+
+
+@keyframes moveToRight {
+  from {
+  }
+  to {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
 }

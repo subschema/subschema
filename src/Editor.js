@@ -126,8 +126,8 @@ var Editor = React.createClass({
         });
     },
     render() {
-        var {field, name, value, path, onValueChange,  template,onValidate, ...props} = this.props;
-        var {type,fieldClass, editorClass, errorClassName,help, ...rfield} = field;
+        var {field,  onValueChange,  template, onValidate, ...props} = this.props;
+        var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var Component = this.props.loader.loadType(type),
@@ -139,16 +139,13 @@ var Editor = React.createClass({
         } else {
             Template = this.template();
         }
-        var child = <Component ref="field" {...props} field={rfield} name={name} form={this.props.form}
-                               path={path}
-                               editorClass={editorClass}
-            {...field}
-                               valueManager={this.props.valueManager}
+        var child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
+
                                onValidate={this.handleValidate}/>;
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ?
-            <Template field={rfield} name={name} fieldClass={fieldClass} title={title} help={help} path={path}
-                      errorClassName={errorClassName} valueManager={this.props.valueManager}
+            <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
+                      errorClassName={errorClassName}
                       onValueChange={this.handleChange}>
                 {child}
             </Template> :

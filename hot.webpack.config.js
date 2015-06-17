@@ -24,7 +24,7 @@ module.exports = {
     },
 
     output: {
-        path: path.join(__dirname, ".build"),
+        path: path.join(__dirname, ".hot"),
 
         filename: 'app.js',
         chunkFilename: '[id].chunk.js',

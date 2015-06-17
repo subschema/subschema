@@ -54,27 +54,8 @@ function pad(delim, padding) {
 function defaultValidator(value, regex) {
     return regex.test(value);
 }
-function createValidator(validator) {
-    if (validator === void(0)) {
-        return defaultValidator;
-    }
-    if (typeof validator === 'function') {
-        return validator;
-    }
-    var re;
-    if (typeof validator === 'string') {
-        re = new RegExp(regex);
-    }
-    if (validator instanceof RegExp) {
-        re = validator;
-    }
-    if (re == null)
-        throw 'Do not know what to do with ' + validator;
-    return RegExp.prototype.test.bind(re)
-
-}
 function makeFormatter(format, validator) {
-    validator = createValidator(validator);
+    validator = validator || defaultValidator;
     var parts;
     var pattern = '', validPattern = '';
     var handlers = [];

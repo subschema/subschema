@@ -9,26 +9,13 @@ module.exports = {
 
     devtool: 'source-map',
     entry: {
-        subschema: './src/index.jsx'
+        app: './public/app.jsx'
     },
-    devServer: {
-        contentBase: path.join(__dirname, ".build"),
-        info: true, //  --no-info option
-        hot: true,
-        inline: true,
-        port: 8084
+	output:{
+        path: path.join(__dirname, '../subschema-gh-pages'),
+        filename: 'app.[hash].js'
     },
-
-    output: {
-        path: path.join(__dirname, "dist"),
-        filename: 'subschema.js',
-        libraryTarget: 'umd',
-        library: 'Subschema'
-    },
-    externals: [{
-     'react/addons': 'react',
-      react: true
-    }],
+	target:"web",
     stats: {
         colors: true,
         reasons: true
@@ -66,17 +53,18 @@ module.exports = {
         ]
     },
 
-/*    resolve: {
+    resolve: {
         alias: {
             'subschema': __dirname
         }
-    },*/
+    },
 
     plugins: [
 
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+            'process.env.NODE_ENV': JSON.stringify('production')
         }),
+		//new webpack.optimize.DedupePlugin(),
         function () {
             this.plugin("done", function (stats) {
                 stats = stats.toJson();

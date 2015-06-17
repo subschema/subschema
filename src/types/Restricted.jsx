@@ -6,13 +6,36 @@ var makeFormatter = require('../formatter');
 function ret(op) {
     return op;
 }
-var cardRe = /^(\d{0,4})(?:[^\d]?(\d{0,4}))(?:[^\d]?(\d{0,4}))(?:[^\d]?(\d{0,4}))$/;
 var dateRe = /^([0,1]?\d?)(?:\/?(\d{0,2}))?$/;
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
-var reRe = /(#*)?(A*)?(a*)?([^#Aa]*)?/g;
 function lastEq(input, val) {
     return input && input[input.length - 1] === val;
 }
+
+function defaultValidator(value, regex) {
+    return regex.test(value);
+}
+function createValidator(validator, loader) {
+    if (validator === void(0)) {
+        return defaultValidator;
+    }
+    if (typeof validator === 'function') {
+        return validator;
+    }
+    if (typeof validator === 'string') {
+        validator = loader.loadValidator(validator)();
+        return function (value) {
+            return !validator(value)
+        }
+    }
+    if (validator instanceof RegExp) {
+        return RegExp.prototype.test.bind(re)
+    }
+    throw 'Do not know what to do with ' + validator;
+
+
+}
+
 var Restricted = React.createClass({
     mixins: [FieldValueMixin],
     statics: {
@@ -27,6 +50,11 @@ var Restricted = React.createClass({
         return {
             value: value.value || '',
             hasValidValue: value.isValid
+        }
+    },
+    componentWillReceiveProps(props){
+        if (props.formatter !== this.props.formatter) {
+            this._formatter = null;
         }
     },
     formatters: {
@@ -51,7 +79,7 @@ var Restricted = React.createClass({
                 isValid
             }
         },
-        creditcard: '#### #### #### #### ###',
+        creditcard: '#### #### #### ####',
         shortDate(value, isBackspace){
             var parts = dateRe.exec(value) || [];
             if (parts.shift()) {
@@ -83,9 +111,7 @@ var Restricted = React.createClass({
             }
         }
     },
-    makeFormatter: function (format) {
-        return makeFormatter(format);
-    },
+
     formatter: function (value, isBackspace) {
         if (this._formatter) {
             return this._formatter.call(this, value, isBackspace);
@@ -97,7 +123,7 @@ var Restricted = React.createClass({
             if (typeof formatter === 'function') {
                 return (this._formatter = formatter).call(this, value, isBackspace);
             } else {
-                return (this._formatter = this.makeFormatter(formatter, this.props.validator)).call(this, value, isBackspace);
+                return (this._formatter = makeFormatter(formatter, createValidator(this.props.validator, this.props.loader))).call(this, value, isBackspace);
             }
         } else if (typeof formatter === 'function') {
             return (this._formatter = formatter).call(this, value, isBackspace);

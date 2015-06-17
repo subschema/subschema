@@ -11,7 +11,8 @@
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
     "prepublish": "webpack --config webpack.config.js -p",
-    "postinstall": "node bin/postinstall.js"
+    "postinstall": "node bin/postinstall.js",
+    "build-demo":"webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
     "react",
