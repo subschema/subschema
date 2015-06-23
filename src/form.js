@@ -27,6 +27,7 @@ var Form = React.createClass({
     setErrors(errors){
         this.props.valueManager.setErrors(errors);
     },
+
     render() {
 
         var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;

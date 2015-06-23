@@ -42,14 +42,16 @@ ol.progtrckr li.progtrckr-todo {
   color: silver;
   border-bottom: 4px solid silver;
 }
+
 .progtrckr li:after {
-  content:' ';
+  content: ' ';
   position: absolute;
   bottom: 0;
   height: 4px;
   min-width: 100%;
   background-color: red;
 }
+
 ol.progtrckr li.progtrckr-doing {
   color: black;
   border-bottom: 4px solid #33C3F0;
@@ -109,9 +111,9 @@ ol.progtrckr li.progtrckr-done:hover:before {
   color: #0FA0CE;
 }
 
-
 .wizardSwitch-enter {
   left: 100%;
+  overflow: hidden;
   &.wizardSwitch-enter-active {
     animation: moveToLeft .5s ease-in-out both;
   }
@@ -119,13 +121,16 @@ ol.progtrckr li.progtrckr-done:hover:before {
 
 .wizardSwitch-leave {
   left: 0;
+  overflow: hidden;
   &.wizardSwitch-leave-active {
     animation: moveToLeft .5s ease-in-out both;
 
   }
 }
+
 .wizardSwitchBack-enter {
   left: -100%;
+  overflow: hidden;
   &.wizardSwitchBack-enter-active {
     animation: moveToRight .5s ease-in-out both;
   }
@@ -133,14 +138,22 @@ ol.progtrckr li.progtrckr-done:hover:before {
 
 .wizardSwitchBack-leave {
   left: 0;
+  overflow: hidden;
   &.wizardSwitchBack-leave-active {
     animation: moveToRight .5s ease-in-out both;
   }
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
 .slide-container {
   position: relative;
-  overflow: hidden;
   display: block;
   white-space: nowrap;
   vertical-align: top;
@@ -155,7 +168,6 @@ ol.progtrckr li.progtrckr-done:hover:before {
   }
 }
 
-
 @keyframes moveToLeft {
   from {
     transform: translateX(0);
@@ -165,7 +177,6 @@ ol.progtrckr li.progtrckr-done:hover:before {
     transform: translateX(-100%);
   }
 }
-
 
 @keyframes moveToRight {
   from {

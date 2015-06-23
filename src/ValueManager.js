@@ -41,7 +41,21 @@ function removeListener(listeners) {
  * @param {String} path - The path to value updated
  */
 function addListener(listeners, find, findOld) {
+    function remove() {
+        listeners.splice(listeners.indexOf(this), 1);
+        return this;
+    }
 
+    function once() {
+        var self = this, listener = self.listener;
+
+        this.listener = function () {
+            var ret = listener.apply(this, arguments);
+            self.remove();
+            return ret;
+        }
+        return this;
+    }
 
     return function ValueManager$addListener(path, listener, scope, init) {
         if (tu.isFunction(path)) {
@@ -53,7 +67,7 @@ function addListener(listeners, find, findOld) {
         if (listener == null) {
             return;
         }
-        var obj = {path, listener, scope};
+        var obj = {path, listener, scope, remove, once};
 
         init = init === true ? obj.listener : tu.isFunction(init) ? init : null;
         if (init) {
@@ -64,7 +78,9 @@ function addListener(listeners, find, findOld) {
         } else {
             var plength = path ? path.split('.').length : 0;
             for (var i = 0, l = listeners.length; i < l; i++) {
+
                 var lp = listeners[i].path, cllength = lp ? lp.split('.').length : 0;
+
                 if (plength >= cllength || i + 1 === l) {
                     listeners.splice(i, 0, obj);
                     break;
@@ -434,6 +450,30 @@ ValueManager.prototype = {
             if (path == null || v.path === path || pp.indexOf(path) === 0)
                 v.listener.call(v.scope, path);
         });
+    },
+    /**
+     * Trigger Validators And Callback with Errors for paths.
+     */
+        validatePaths(paths, callback){
+        var copyPaths = paths && paths.concat() || [];
+        var errors;
+        paths.forEach(function validatePaths$forEach(path) {
+            function error$callback(error) {
+                this.removeErrorListener(path, error$callback);
+                if (error) {
+                    errors = errors || {};
+                    errors[path] = error;
+                }
+                copyPaths.splice(copyPaths.indexOf(path), 1);
+                if (copyPaths.length === 0 && callback) {
+                    callback(errors);
+                }
+            }
+
+            this.addErrorListener(path, error$callback, this);
+            this.validate(path);
+        }, this);
+        return errors;
     }
 }
 

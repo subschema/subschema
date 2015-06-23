@@ -146,7 +146,9 @@ var Editor = React.createClass({
         return Template ?
             <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
-                      onValueChange={this.handleChange}>
+                      help={props.help || rfield.help}
+                      onValidate={this.handleValidate}
+>
                 {child}
             </Template> :
             child;

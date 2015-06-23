@@ -75,7 +75,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema': __dirname,
+            'subschema':path.join( __dirname, 'src/index.jsx'),
             'react': path.join(__dirname, '/node_modules/react')
         }
     },

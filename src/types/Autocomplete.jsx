@@ -138,7 +138,7 @@ var Autocomplete = React.createClass({
             showing: false,
             suggestions: []
         }, function () {
-            refs.input.getDOMNode().setSelectionRange(length, length);
+            refs && refs.input && refs.input.getDOMNode().setSelectionRange(length, length);
         });
     },
     /**
@@ -231,6 +231,7 @@ var Autocomplete = React.createClass({
 //        console.log('keyUp', e.key);
         if (e.keyCode === 13 && this.state.suggestions.length) {
             e.preventDefault();
+            e.stopPropagation();
             this.hide(true);
         }
     },
@@ -259,6 +260,9 @@ var Autocomplete = React.createClass({
         this.onSelect(o);
     },
     onSelect: function (o) {
+        if (this.props.onSelect(o) === false) {
+            return;
+        }
         var p = this.getProcessor();
         var value = p.value(o);
         if (this.props.handleChange.call(this.props, value) !== false) {
@@ -392,9 +396,9 @@ var Autocomplete = React.createClass({
                         handleDispatch(val);
                     }
                     /*nprops.onChange = function (e) {
-                        this.handleChange(e.target.value);
-                        onChildChange && onChildChange.call(this, e);
-                    }*/
+                     this.handleChange(e.target.value);
+                     onChildChange && onChildChange.call(this, e);
+                     }*/
                     return React.cloneElement(child, nprops);
                 } else {
                     return React.cloneElement(child, props);
@@ -403,7 +407,7 @@ var Autocomplete = React.createClass({
         }
         if (props.inputType) {
             var Input = this.props.loader.loadType(props.inputType);
-            return <Input value={this.state.input} {...props}/>
+            return <Input {...props} value={this.state.input}/>
         }
         return <input
             type="text"
