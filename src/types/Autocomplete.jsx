@@ -138,7 +138,7 @@ var Autocomplete = React.createClass({
             showing: false,
             suggestions: []
         }, function () {
-            refs && refs.input && refs.input.getDOMNode().setSelectionRange(length, length);
+//            refs && refs.input && refs.input.getDOMNode().setSelectionRange(length, length);
         });
     },
     /**
@@ -323,6 +323,10 @@ var Autocomplete = React.createClass({
                 }
                 case 'Enter':
                 {
+                     if (e){
+                         e.preventDefault();
+                         e.stopPropagation();
+                     }
                     if (this.state.suggestions.length) {
                         this.handleSuggestionClick(this.state.suggestions[Math.max(this.state.focus, 0)]);
                         this.setState({suggestions: [], showing: false, focus: -1});
@@ -422,7 +426,7 @@ var Autocomplete = React.createClass({
         var {onChange,onPaste, children, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp,  ...props} = this.props;
         props.onChange = this.handleChange;
         props.onPaste = this.handlePaste;
-        props.onKeyUp = this.handleKeyUp;
+        props.onKeyDown = this.handleKeyUp;
         props.onBlur = this.handleBlur;
         return <div
             className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
