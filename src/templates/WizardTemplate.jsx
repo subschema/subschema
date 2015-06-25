@@ -8,15 +8,23 @@ var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 //var TimeoutTransitionGroup = require('../transition/TimeoutTransitionGroup.jsx');
 var ReactCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx')
 var CSSCore = require("react/lib/CSSCore");
-var Wizard = React.createClass({
+var LoaderMixin = require('../LoaderMixin');
+
+function donner(done) {
+    done();
+}
+
+var WizardTemplate = React.createClass({
+    mixins: [LoaderMixin],
+    displayName: 'WizardTemplate',
     getDefaultProps(){
         return {
-            onNext(){
+            wizardProgressTemplate: 'WizardProgressTemplate',
+            onNext: donner,
+            onPrevious: donner,
+            onNavChange(current, previous, wizard){
             },
-            onPrevious(){
-            },
-            onDone(){
-            }
+            onDone: donner
         }
     },
     getInitialState() {
@@ -26,51 +34,61 @@ var Wizard = React.createClass({
         return {
             compState: 0,
             prevState: 0,
-            navState: this.getNavStates(0, this.schema.fieldsets.length),
-            values: []
+            maxState: 0
         }
     },
-    getNavStates(indx, length) {
-        let styles = [];
-        for (let i = 0; i < length; i++) {
-            if (i < indx || indx == length) {
-                styles.push('done')
+
+    next(){
+        var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
+        this.setState({disabled: true});
+        this._validate((e)=> {
+            if (e) {
+                this.setState({disabled: false});
+                return;
             }
-            else if (i === indx) {
-                styles.push('doing')
+            if (this.props.onNext((resp)=>this.go(next, resp), next, current) === false) {
+                this.setState({disabled: false, maxState: Math.max(next, this.state.maxState)});
+                return;
             }
-            else {
-                styles.push('todo')
-            }
-        }
-        return {current: Math.min(indx, length - 1), styles: styles}
+        });
     },
+    previous(){
+        var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState - 1;
+        this.setState({disabled: true});
+
+        if (this.props.onPrevious((resp)=>this.go(next, resp), next, current) === false) {
+            this.setState({disabled: false});
+            return;
+        }
+    },
+    go(pos, resp){
+        if (resp === false) {
+            this.setState({disabled: false});
+            return;
+        }
+        this.setNavState(resp == null ? pos : resp);
+    },
+    _validate(done){
+        this.props.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
+    },
+
     setNavState(next) {
-        var len = this.schema.fieldsets.length;
-        if (next > this.state.compState) {
-            if (this.props.onNext(next) === false) {
-                this.setState({disabled: false});
-                return;
-            }
-        } else if (next < this.state.compState) {
-            if (this.props.onPrevious(next) === false) {
-                this.setState({disabled: false});
-                return;
-            }
+
+        var len = this.schema.fieldsets.length, compState = this.state.compState;
+        next = Math.max(Math.min(len - 1, next), 0);
+        if (this.props.onNavChange(next, compState, this.schema.fieldsets[next]) !== false) {
+            this.setState({
+                compState: next,
+                disabled: false,
+                prevState: next === compState ? this.state.prevState : compState
+            });
         }
-        this.setState({
-                navState: this.getNavStates(next, len),
-                prevState: this.state.compState,
-                compState: Math.min(len - 1, next),
-                disabled: false
-            }
-        )
     },
 
     handleOnClick(evt) {
         var steps = this.schema.fieldsets.length, value = evt.target.value;
-        if (value < steps && value <= this.state.values.length) {
-            this.setNavState(value);
+        if (value < steps && value <= this.state.maxState) {
+            this.setNavState(value, true);
         }
 
     },
@@ -87,7 +105,15 @@ var Wizard = React.createClass({
     handleValidate(){
     },
     handleSubmit(e){
-        this.props.onSubmit(e, this.props.valueManager.getErrors(), this.props.valueManager.getValue());
+        this._validate((errors)=> {
+            if (!errors && this.props.onDone((submit)=> {
+                    if (submit !== false) {
+                        this.props.onSubmit(e, errors, this.props.valueManager.getValue());
+                    }
+                }, e, this.schema.fieldsets[this.state.compState]) === false) {
+                return;
+            }
+        })
     },
 
     /* renderState(compState){
@@ -139,71 +165,59 @@ var Wizard = React.createClass({
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();
-        var compState = this.state.compState;
-        this.setState({disabled: true});
         switch (action) {
 
             case 'previous':
             {
-                this.setNavState(this.state.compState - 1);
+                this.previous();
                 break;
             }
             case 'next':
             {
-                this.props.valueManager.validatePaths(this.schema.fieldsets[compState].fields, (errors)=> {
-                    if (!errors) {
-                        this.setNavState(compState + 1);
-                        return;
-                    } else {
-                        this.setState({disabled: false})
-                    }
-                });
+                this.next();
                 break;
             }
             case 'submit':
             {
-                this.props.valueManager.validatePaths(this.schema.fieldsets[compState].fields, (errors)=> {
-
-                    this.setState({disabled: false});
-                    if (!errors)
-                        this.handleSubmit(e);
-                });
+                this.handleSubmit(e);
                 break;
             }
         }
 
     },
     handleEnter(){
-        console.log('enter');
         CSSCore.addClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
     },
     handleLeave(done){
-        console.log('leave');
         CSSCore.removeClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
         done();
+    },
+    renderProgress(fieldsets){
+        if (this.props.wizardProgressTemplate === false) {
+            return null;
+        }
+        var Template = this.props.loader.loadTemplate(this.props.wizardProgressTemplate);
+        if (!Template) {
+            return null;
+        }
+        return <Template fieldsets={fieldsets} valueManager={this.props.valueManager} index={this.state.compState}
+                         onClick={this.handleOnClick}/>
     },
     render() {
 
         var fieldsets = this.schema.fieldsets;
         var schema = tu.extend({}, this.schema.schema);
         var compState = this.state.compState;
-        var fields = this.schema.fieldsets[compState].fields;
+        var fields = fieldsets[compState].fields;
         var transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
 
         return (
             <div className="wizard-container" onKeyDown={this.handleKeyDown}>
-                <ol className="progtrckr">{
-                    fieldsets.map((s, i) =>
-                            <li value={i} key={'li'+i}
-                                className={"progtrckr-" + this.state.navState.styles[i]}
-                                onClick={this.handleOnClick}>
-                                <em>{i + 1}</em>
-                                <span>{s.legend}</span>
-                            </li>
-                    )}
-                </ol>
-                <ReactCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true} transitionLeave={true}
-                                         className='slide-container' onEnter={this.handleEnter} onDidLeave={this.handleLeave}>
+                {this.renderProgress(fieldsets)}
+                <ReactCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
+                                         transitionLeave={true}
+                                         className='slide-container' onEnter={this.handleEnter}
+                                         onDidLeave={this.handleLeave}>
                     <Form ref="form"
                           className={'compState w'+compState}
                           key={"form-"+compState}
@@ -218,4 +232,4 @@ var Wizard = React.createClass({
     }
 })
 
-module.exports = Wizard;
+module.exports = WizardTemplate;

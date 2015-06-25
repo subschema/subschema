@@ -350,6 +350,7 @@ var Autocomplete = React.createClass({
 
             return null;
         }
+        this.bindDocument();
         var {focus, input} = this.state;
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;

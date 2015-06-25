@@ -38,7 +38,7 @@ module.exports = {
         var classes = [];
         addClasses(classes, util.slice(arguments, 1));
         var field = node.props.field;
-        var className =  node.props.fieldClsName || node.props.fieldClassName;
+        var className =  node.props.fieldClsName || node.props.fieldClassName || node.props.fieldClass;
 
         if (className) {
             addClasses(classes, className);

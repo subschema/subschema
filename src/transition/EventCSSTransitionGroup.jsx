@@ -50,9 +50,11 @@ var EventCSSTransitionGroup = React.createClass({
                 onAppear: this.props.onAppear,
                 onEnter: this.props.onEnter,
                 onLeave: this.props.onLeave,
+
                 onDidAppear: this.props.onDidAppear,
                 onDidLeave: this.props.onDidLeave,
                 onDidEnter: this.props.onDidEnter,
+
                 enter:this.props.transitionEnter,
                 leave:this.props.transitionLeave,
                 appear:this.props.transitionAppear

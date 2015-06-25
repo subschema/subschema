@@ -115,9 +115,7 @@ var EventCSSTransitionGroupChild = React.createClass({
     componentWillAppear: function (done) {
         if (this.props.appear || this.props.onAppear || this.props.onDidAppear) {
             this.props.onAppear && this.props.onAppear();
-            this.transition('appear', this.props.onDidAppear ? ()=> {
-                this.props.onDidAppear(done)
-            } : done);
+            this.transition('appear', this.props.onDidAppear ? this.props.onDidAppear.bind(this, done) : done);
         } else {
             done();
         }
@@ -126,9 +124,7 @@ var EventCSSTransitionGroupChild = React.createClass({
     componentWillEnter: function (done) {
         if (this.props.enter || this.props.onEnter || this.props.onDidEnter) {
             this.props.onEnter && this.props.onEnter();
-            this.transition('enter', this.props.onDidEnter ? ()=> {
-                this.props.onDidEnter(done)
-            } : done);
+            this.transition('enter', this.props.onDidEnter ? this.props.onDidEnter.bind(this, done) : done);
         } else {
             done();
         }
@@ -137,9 +133,7 @@ var EventCSSTransitionGroupChild = React.createClass({
     componentWillLeave: function (done) {
         if (this.props.leave || this.props.onLeave || this.props.onDidLeave) {
             this.props.onLeave && this.props.onLeave();
-            this.transition('leave', this.props.onDidLeave ? ()=> {
-                this.props.onDidLeave(done)
-            } : done);
+            this.transition('leave', this.props.onDidLeave ? this.props.onDidLeave.bind(this, done) : done);
         } else {
             done();
         }

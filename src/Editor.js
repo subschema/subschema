@@ -2,6 +2,36 @@
 var React = require('./react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
+/**
+ * Safe chained function
+ *
+ * Will only create a new function if needed,
+ * otherwise will pass back existing functions or null.
+ *
+ * @param {function} one
+ * @param {function} two
+ * @returns {function|null}
+ */
+function applyFuncs(one, two) {
+    let hasOne = typeof one === 'function';
+    let hasTwo = typeof two === 'function';
+
+    if (!hasOne && !hasTwo) {
+        return null;
+    }
+    if (!hasOne) {
+        return two;
+    }
+    if (!hasTwo) {
+        return one;
+    }
+
+    return function chainedFunction() {
+        one.apply(this, arguments);
+        two.apply(this, arguments);
+    };
+}
+
 
 function initValidators(v) {
     //If it has a type init it
@@ -42,7 +72,8 @@ var Editor = React.createClass({
     },
     getInitialState(){
         return {
-            hasChanged: false
+            hasChanged: false,
+            isValid: false
         }
     },
 
@@ -125,8 +156,11 @@ var Editor = React.createClass({
             return s.toUpperCase();
         });
     },
+    handleValid: function (valid) {
+        this.setState({valid})
+    },
     render() {
-        var {field,  onValueChange,  template, onValidate, ...props} = this.props;
+        var {field,  onValueChange,  onValid, template, onValidate, ...props} = this.props;
         var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
@@ -142,13 +176,16 @@ var Editor = React.createClass({
         var child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
                                onValidate={this.handleValidate}/>;
+        /*if (onValid) {
+            onValid = applyFuncs(this.handleValid, onValid);
+        }*/
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ?
-            <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
+            <Template field={rfield} {...props} onValid={onValid} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
-                      help={props.help || rfield.help}
+                      help={!this.state.valid && (props.help || rfield.help)}
                       onValidate={this.handleValidate}
->
+                >
                 {child}
             </Template> :
             child;

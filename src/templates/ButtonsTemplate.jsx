@@ -38,13 +38,11 @@ var ButtonsTemplate = React.createClass({
 
     render(){
         return <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-10">
-                <div className={this.props.buttonsClass}>
-                    {this.makeButtons().map((b, i)=> {
-                        var Template = b.template;
-                        return <Template key={"btn-"+i} {...b} />
-                    })}
-                </div>
+            <div className={this.props.buttonsClass}>
+                {this.makeButtons().map((b, i)=> {
+                    var Template = b.template;
+                    return <Template key={"btn-"+i} {...b} />
+                })}
             </div>
         </div>
     }

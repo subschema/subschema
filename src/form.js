@@ -36,8 +36,9 @@ var Form = React.createClass({
         this.schema = schema.schema ? schema : {schema: schema, fields: fields};
         var sb = submitButton || this.schema.submitButton;
         var Template = this.template(template);
-        return <Template onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
+        return <Template ref="form" onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
                          className={this.props.className}
+            {...props}
                          loader={this.props.loader}
                          valueManager={this.props.valueManager}
             >
