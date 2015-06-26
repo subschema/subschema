@@ -160,7 +160,7 @@ var Editor = React.createClass({
         this.setState({valid})
     },
     render() {
-        var {field,  onValueChange,  onValid, template, onValidate, ...props} = this.props;
+        var {field,  onValueChange,   template, onValidate, ...props} = this.props;
         var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
@@ -181,7 +181,7 @@ var Editor = React.createClass({
         }*/
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ?
-            <Template field={rfield} {...props} onValid={onValid} fieldClass={fieldClass} title={title}
+            <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
                       help={!this.state.valid && (props.help || rfield.help)}
                       onValidate={this.handleValidate}
