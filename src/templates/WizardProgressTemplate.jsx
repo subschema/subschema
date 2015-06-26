@@ -1,4 +1,5 @@
 var React = require('react');
+var WizardProgressLess = require('../styles/wizard-progress.less');
 var WizardProgressTemplate = React.createClass({
     getDefaultProps(){
         return {
