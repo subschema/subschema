@@ -192,7 +192,11 @@ Example:
 
 
 });
-  vm.addListener('singlePath', function(newValue, oldValue path){});
+  vm.addListener('singlePath', function(newValue, oldValue path){
+   //get all the values.  just for documentation sake.
+   var value = vm.getValue();
+
+  });
   vm.addErrorListener('path', function(){
 
 });
@@ -209,34 +213,48 @@ Example:
 
 
 
+
 ```
 
+
 #Custom Types
-A new type will need to implement 2 methods, getValue(), and setValue() and receive a property of value. They also need
-to be registered with the loader.
+A new type doesn't have to do anything, but if you want its values to participate in
+validation and value management it should regitster itself with the value manager.
 
-```jsx
-var loader = require('subschema').loader;
+```es6
+var MyType = React.createClass({
+   componentWillMount(){
+     this._listener = this.props.valueManager.addListener(this.props.path, this.onUpdate, this, true);
+   },
+   componenWillUnmount(){
+     this._listener.remove();
+   },
+   //this will update your state, when valueManager is changes values.
+   onUpdate(value){
+        this.setState({value});
+   },
+   // this will update value manager when your component changes something.  onUpdate will set the state
+   // of the component so don't do it here unless you want double state changes.
+   update(value){
+    this.props.valueManager.update(this.props.path, value);
+   },
+   //you know what to do.
+   render(){
+     return //magic here
+   }
 
-loader.addType('Simple', React.createClass({
-    getInitialState(){
-      return {
-        value:this.props.value
-      }
-    },
-    setValue(val){
-        this.setState({value:val});
-    },
-    getValue(){
-        return this.state.value
-    },
-    render(){
-        <input value={this.state.value}/>       
-    }
+
 
 });
 
+
 ```
+Or you can just use the mixin
+
+var MyType = React.createClass({
+   mixin:['subschema/FieldValueMixin'],
+
+});
 
 
 
