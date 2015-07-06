@@ -184,6 +184,7 @@ type.
 
 
 Example:
+
 ```jsx
 
   var vm = ValueManager();
@@ -221,7 +222,8 @@ Example:
 A new type doesn't have to do anything, but if you want its values to participate in
 validation and value management it should regitster itself with the value manager.
 
-```es6
+```jsx
+
 var MyType = React.createClass({
    componentWillMount(){
      this._listener = this.props.valueManager.addListener(this.props.path, this.onUpdate, this, true);
@@ -249,12 +251,19 @@ var MyType = React.createClass({
 
 
 ```
+
 Or you can just use the mixin
+
+
+```jsx
 
 var MyType = React.createClass({
    mixin:['subschema/FieldValueMixin'],
 
 });
+```
+
+
 
 
 
