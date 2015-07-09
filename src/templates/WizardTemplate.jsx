@@ -6,7 +6,7 @@ var NestedMixin = require('../NestedMixin');
 var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 //var TimeoutTransitionGroup = require('../transition/TimeoutTransitionGroup.jsx');
-var ReactCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx')
+var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx')
 var CSSCore = require("react/lib/CSSCore");
 var LoaderMixin = require('../LoaderMixin');
 
@@ -205,16 +205,17 @@ var WizardTemplate = React.createClass({
     },
     render() {
 
-        var fieldsets = this.schema.fieldsets;
-        var schema = tu.extend({}, this.schema.schema);
-        var compState = this.state.compState;
-        var fields = fieldsets[compState].fields;
-        var transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
+        var fieldsets = this.schema.fieldsets,
+            schema = tu.extend({}, this.schema.schema),
+            compState = this.state.compState,
+            fields = fieldsets[compState].fields,
+            transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
 
         return (
             <div className="wizard-container" onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets)}
-                <ReactCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
+
+                <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
                                          transitionLeave={true}
                                          className='slide-container' onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
@@ -226,7 +227,7 @@ var WizardTemplate = React.createClass({
                           valueManager={this.props.valueManager}>
                         {this.renderBtns(compState)}
                     </Form>
-                </ReactCSSTransitionGroup>
+                </EventCSSTransitionGroup>
             </div>
         );
     }
