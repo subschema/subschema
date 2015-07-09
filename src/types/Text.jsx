@@ -7,7 +7,7 @@ var TextInput = React.createClass({
         inputClassName: Constants.inputClassName
     },
     render() {
-        var {onChange, onValueChange, onBlur, className,field,value, type, dataType, value, fieldAttrs, ...props} = this.props
+        var {onChange, onValueChange, onBlur, className, field, value, dataType, value, fieldAttrs, type, ...props} = this.props
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
                       className={css.forField(this)}
 
