@@ -39,7 +39,7 @@ You can see examples at [jspears.github.io/subschema](http://jspears.github.io/s
 
 ###Example
 You provide the schema and subschema renders it.  Keeping the values,
-and errors in check. 
+and errors in check.
 
 
 ```jsx
@@ -80,13 +80,13 @@ and errors in check.
 
 ```
 ## Loaders
-Subschema allows for new types, validators, templates and even schemas to be registered with loaders.   To add your own 
+Subschema allows for new types, validators, templates and even schemas to be registered with loaders.   To add your own
 of any of these call the corresponding add method.
 
 ### Type Loader
 
 This adds a type "ToggleType" to the loaders.  Now you can
-use this type anywhere in your schema, you would otherwise use a 
+use this type anywhere in your schema, you would otherwise use a
 type.
 
 Example:
@@ -113,14 +113,14 @@ loader.addType('ToggleType', React.createClass({
                                              var style = {
                                                  display: this.state.toggled ? 'none' : 'block'
                                              };
-                             
+
                                              return <div className="form-group row">
                                                      <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
                                                      <div style={style}>
                                                          <Object ref="val" {...this.props}/>
                                                      </div>
                                              </div>;
-                             
+
                                          }
                                      }));
 
@@ -202,14 +202,14 @@ Example:
 
 });
   var App = React.createClass({
-    handleSubmit(newValue, oldValue, property, path){
+    handleSubmit(event, value, errors){
     },
     handleValueChange(newValue, oldValue, property, path){}
     handleValidate(){}
     render(){
         return <Form schema={'YourSchema'} onSubmit={this.handleSubmit} valueManager={vm}/>
     }
-  
+
   });
 
 
@@ -262,10 +262,3 @@ var MyType = React.createClass({
 
 });
 ```
-
-
-
-
-
-
-
