@@ -108,7 +108,7 @@ var WizardTemplate = React.createClass({
         this._validate((errors)=> {
             if (!errors && this.props.onDone((submit)=> {
                     if (submit !== false) {
-                        this.props.onSubmit(e, errors, this.props.valueManager.getValue());
+                        this.props.onSubmit(e, this.props.valueManager.getValue(), errors);
                     }
                 }, e, this.schema.fieldsets[this.state.compState]) === false) {
                 return;
