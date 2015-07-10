@@ -2,6 +2,7 @@
 var React = require('./react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
+
 /**
  * Safe chained function
  *
@@ -173,12 +174,20 @@ var Editor = React.createClass({
         } else {
             Template = this.template();
         }
-        var child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
+        var child;
+        if (Component instanceof Promise) {
+            var Lazy = this.props.loader.loadType('LazyType');
+            child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
+
+                          onValidate={this.handleValidate} promise={Component}/>
+        } else {
+            child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
                                onValidate={this.handleValidate}/>;
+        }
         /*if (onValid) {
-            onValid = applyFuncs(this.handleValid, onValid);
-        }*/
+         onValid = applyFuncs(this.handleValid, onValid);
+         }*/
         //errMessage, errorClassName, name, fieldClass, title, help
         return Template ?
             <Template field={rfield} {...props} fieldClass={fieldClass} title={title}

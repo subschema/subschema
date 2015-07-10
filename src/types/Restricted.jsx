@@ -193,12 +193,11 @@ var Restricted = React.createClass({
     },
 
     render(){
-        var {onChange, onValueChange, onBlur, className,field,value, dataType, value, fieldAttrs, ...props} = this.props
+        var {onChange, onValueChange, onBlur, className,field,value, dataType, value, type, fieldAttrs, ...props} = this.props
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
                       className={css.forField(this)}
-                      type={dataType || 'text'}
                       value={this.state.value}
-            {...props} {...fieldAttrs} onKeyDown={this.handleKeyDown}/>
+            {...props} {...fieldAttrs}  type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
     }
 });
 
