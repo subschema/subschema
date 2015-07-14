@@ -23,19 +23,26 @@ You can see examples at [jspears.github.io/subschema](http://jspears.github.io/s
 
 ###Built In types
 
-* Autocomplete - Autocompleter with ajax support
-* Checkbox - Checkbox
-* Checkboxes - Checkbox/Radio groups
-* Hidden - Hidden Input
-* List - List with add/edit/remove/reorder support
-* Mixed - Edit object and their keys
-* Object - Nested Objects
-* Password - Password field
-* Radio - Radio
-* Restricted - Restricted input field.
-* Select- Select/Multi select support.
-* Text - Text input
-* TextArea - TextArea input
+- [Schema Definition](#schema-definition)
+   - [Autocomplete](#autocomplete)
+   - [Checkbox](#checkbox)
+   - [Checkboxes](#checkboxes)
+   - [CollectionMixin](#collectionmixin)
+   - [CreateItemMixin.js](#createitemmixin.js)
+   - [Date](#date)
+   - [DateTime](#datetime)
+   - [Hidden](#hidden)
+   - [LazyType](#lazytype)
+   - [List](#list)
+   - [Mixed](#mixed)
+   - [Object](#object)
+   - [Password](#password)
+   - [Radio](#radio)
+   - [Restricted](#restricted)
+   - [Select](#select)
+   - [Text](#text)
+   - [TextArea](#textarea)
+
 
 ###Example
 You provide the schema and subschema renders it.  Keeping the values,
@@ -257,6 +264,76 @@ var MyType = React.createClass({
 });
 
 
+<a name=autocomplete/>
+##Autocomplete
+
+
+<a name=checkbox/>
+##Checkbox
+
+
+<a name=checkboxes/>
+##Checkboxes
+
+
+<a name=collectionmixin/>
+##CollectionMixin
+
+
+<a name=createitemmixin.js/>
+##CreateItemMixin.js
+
+
+<a name=date/>
+##Date
+
+
+<a name=datetime/>
+##DateTime
+
+
+<a name=hidden/>
+##Hidden
+
+
+<a name=lazytype/>
+##LazyType
+
+
+<a name=list/>
+##List
+
+
+<a name=mixed/>
+##Mixed
+
+
+<a name=object/>
+##Object
+
+
+<a name=password/>
+##Password
+
+
+<a name=radio/>
+##Radio
+
+
+<a name=restricted/>
+##Restricted
+
+
+<a name=select/>
+##Select
+
+
+<a name=text/>
+##Text
+
+
+<a name=textarea/>
+##TextArea
 
 
 
