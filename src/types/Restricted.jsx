@@ -66,7 +66,7 @@ var Restricted = React.createClass({
                 if (parts[2]) {
                     value = parts[1] + '-' + parts[2]
                 } else {
-                    value = parts[1];
+                    value = parts[1] || '';
                 }
                 isValid = value.length === 5 || value.length === 10;
 

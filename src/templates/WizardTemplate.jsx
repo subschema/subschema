@@ -22,6 +22,8 @@ var WizardTemplate = React.createClass({
             wizardProgressTemplate: 'WizardProgressTemplate',
             onNext: donner,
             onPrevious: donner,
+            onAction: function (pos, action, wizard) {
+            },
             onNavChange(current, previous, wizard){
             },
             onDone: donner
@@ -181,6 +183,10 @@ var WizardTemplate = React.createClass({
             {
                 this.handleSubmit(e);
                 break;
+            }
+            default:
+            {
+                this.props.onAction(this.state.compState, action, this);
             }
         }
 
