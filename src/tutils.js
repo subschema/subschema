@@ -67,13 +67,8 @@ var api = {
         if (t instanceof Date) {
             return new Date(t.getTime());
         }
-        if (Array.isArray(t)) {
-            return t.slice(0);
-        }
-        var ret = {};
-        Object.keys(t).forEach(function (v) {
-            ret[v] = t[v];
-        });
+        var {...ret} = t;
+
         return ret;
     },
     debounce: function (fn, to) {
