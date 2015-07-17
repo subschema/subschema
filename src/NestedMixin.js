@@ -62,7 +62,7 @@ var NestedMixin = {
 
         return tu.unique(fields).map((f, i) => {
             f = tu.isString(f) ? f : f && f.name || 'field-' + i;
-            var ref = tu.isString(f) ? schema[f] : f;
+            var ref = tu.isString(f) ? tu.clone(schema[f]) : f;
             if (tu.isString(ref)) {
                 ref = {
                     type: ref
