@@ -1,27 +1,5 @@
-var BasicFieldMixin = require('./BasicFieldMixin');
 var FieldValueMixin = {
-    mixins: [BasicFieldMixin],
-    getDefaultProps() {
-        return {
-            title: '',
-            name: '',
-            placeholder: '',
-            dataType: this.dataType,
-            editorClass: '',
-            field: {},
-            onValidate(){
-            },
-            onFocus(){
-            },
-            onBlur(){
-            },
-            onValid(){
-            },
-            onChange(){
-            }
-        }
-
-    },
+    mixins: [require('./BasicFieldMixin'), require('./FieldValueDefaultPropsMixin')],
 
     getValue(){
         return this.state && this.state.value;
