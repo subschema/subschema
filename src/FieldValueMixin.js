@@ -1,14 +1,5 @@
 var FieldValueMixin = {
-    mixins: [require('./BasicFieldMixin'), require('./FieldValueDefaultPropsMixin')],
-
-    getValue(){
-        return this.state && this.state.value;
-    },
-    setValue(value){
-        this.setState({
-            value
-        });
-    },
+    mixins: [require('./BasicFieldMixin'), require('./FieldValueDefaultPropsMixin'), require('./FieldStateMixin')],
     handleChange(e) {
         this.props.onChange(e);
         this.props.handleChange(this.valueFromEvt(e));
@@ -16,9 +7,6 @@ var FieldValueMixin = {
     handleValidate(e){
         this.props.onBlur.call(this, e);
         this.props.onValidate(this.valueFromEvt(e), this, e);
-
-    },
-    template(){
 
     }
 
