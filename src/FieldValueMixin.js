@@ -1,36 +1,5 @@
-var BasicFieldMixin = require('./BasicFieldMixin');
 var FieldValueMixin = {
-    mixins: [BasicFieldMixin],
-    getDefaultProps() {
-        return {
-            title: '',
-            name: '',
-            placeholder: '',
-            dataType: this.dataType,
-            editorClass: '',
-            field: {},
-            onValidate(){
-            },
-            onFocus(){
-            },
-            onBlur(){
-            },
-            onValid(){
-            },
-            onChange(){
-            }
-        }
-
-    },
-
-    getValue(){
-        return this.state && this.state.value;
-    },
-    setValue(value){
-        this.setState({
-            value
-        });
-    },
+    mixins: [require('./BasicFieldMixin'), require('./FieldValueDefaultPropsMixin'), require('./FieldStateMixin')],
     handleChange(e) {
         this.props.onChange(e);
         this.props.handleChange(this.valueFromEvt(e));
@@ -38,9 +7,6 @@ var FieldValueMixin = {
     handleValidate(e){
         this.props.onBlur.call(this, e);
         this.props.onValidate(this.valueFromEvt(e), this, e);
-
-    },
-    template(){
 
     }
 
