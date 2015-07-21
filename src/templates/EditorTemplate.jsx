@@ -20,7 +20,7 @@ var EditorTemplate = React.createClass({
             className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
             {title ? <label className="col-sm-2 control-label" htmlFor={name}><span dangerouslySetInnerHTML={{__html:title}}/></label> : null}
 
-            <div className="col-sm-10">
+            <div className={title ? "col-sm-10" : "col-sm-12"}>
                 {children}
                 <p className="help-block" ref="help">{error || help}</p>
             </div>
