@@ -37,7 +37,7 @@ function createValidator(validator, loader) {
 }
 
 var Restricted = React.createClass({
-    mixins: [FieldValueMixin],
+    mixins: [require('../BasicFieldMixin'), require('../FieldValueDefaultPropsMixin'),  require('../FieldHandleValueMixin')],
     statics: {
         inputClassName: Constants.inputClassName
     },
