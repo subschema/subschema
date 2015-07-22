@@ -14,7 +14,7 @@ var Checkbox = React.createClass({
         var {onValueChange, onChange,value, fieldAttrs, className, onBlur, ...props} = this.props;
         return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}
                       className={ css.forField(this)} type="checkbox"
-                      value={this.state.value}
+                      checked={this.state.value}
             {...props}
             {...fieldAttrs}
             />
