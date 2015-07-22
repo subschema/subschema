@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.jsx",
   "browser": "dist/subschema.js",
@@ -23,10 +23,6 @@
     "forms",
     "backbone-forms"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jspears/subschema"
-  },
   "author": "Justin Spears",
   "license": "MIT",
   "devDependencies": {
