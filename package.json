@@ -4,6 +4,10 @@
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.jsx",
   "browser": "dist/subschema.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jspears/subschema"
+  },
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
     "start": "webpack-dev-server --content-base ./public/",

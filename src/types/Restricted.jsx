@@ -52,6 +52,12 @@ var Restricted = React.createClass({
             hasValidValue: value.isValid
         }
     },
+    setValue(value){
+        this.setState({value});
+    },
+    getValue(){
+        return this.state.value;
+    },
     componentWillReceiveProps(props){
         if (props.formatter !== this.props.formatter) {
             this._formatter = null;
