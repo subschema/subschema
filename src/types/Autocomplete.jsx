@@ -410,16 +410,20 @@ var Autocomplete = React.createClass({
                 }
             });
         }
-        if (props.inputType) {
-            var Input = this.props.loader.loadType(props.inputType);
-            return <Input {...props} value={this.state.input}/>
+        var {valueManager,inputType, type, ...cprops} = props;
+        if (inputType) {
+            var Input = this.props.loader.loadType(inputType);
+            return <Input {...cprops} ref="input" value={this.state.input}/>
         }
+
         return <input
+            id={cprops.name}
             type="text"
+            {...cprops}
             ref="input"
             value={this.state.input}
             className={css.forField(this)}
-            {...props}
+
             />;
     },
     render: function () {
