@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/jspears/subschema"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
     "start": "webpack-dev-server --content-base ./public/",
