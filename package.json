@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
-    "start": "webpack-dev-server --content-base ./public/",
+    "start": "webpack-dev-server --config ./hot.webpack.config",
     "hot": "node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
