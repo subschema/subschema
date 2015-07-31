@@ -19,7 +19,7 @@ var RadioInput = React.createClass({
             title: '',
             name: '',
             placeholder: '',
-            template: 'RadioItemTemplate'
+            itemTemplate: 'RadioItemTemplate'
         }
 
     },
@@ -73,9 +73,9 @@ var RadioInput = React.createClass({
     },
     render()
     {
-        var {name,template,path, value, dataType,options, field} = this.props;
+        var {name,itemTemplate,path, value, dataType,options, field} = this.props;
 
-        var RadioItemTemplate = this.template(template);
+        var RadioItemTemplate = this.template(itemTemplate);
         var options = this.makeOptions(options);
         return <div className={css.forField(this)}>{options.map((option, index)=> {
             return <RadioItemTemplate  {...option} key={option.path}>
