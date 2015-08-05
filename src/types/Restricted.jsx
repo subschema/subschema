@@ -35,9 +35,15 @@ function createValidator(validator, loader) {
 
 
 }
-
+function title(value) {
+    value = value || '';
+    if (value.length === 0) {
+        return value;
+    }
+    return value.substring(0, 1).toUpperCase() + value.substring(1);
+}
 var Restricted = React.createClass({
-    mixins: [require('../BasicFieldMixin'), require('../FieldValueDefaultPropsMixin'),  require('../FieldHandleValueMixin')],
+    mixins: [require('../BasicFieldMixin'), require('../FieldValueDefaultPropsMixin'), require('../FieldHandleValueMixin')],
     statics: {
         inputClassName: Constants.inputClassName
     },
@@ -84,6 +90,14 @@ var Restricted = React.createClass({
                 value,
                 isValid
             }
+        },
+        capitalize(value) {
+            return {value:title(value), isValid:false};
+        },
+        title(value, isBackspace){
+            value = value || '';
+
+            return { value:value.split(/\s+?/).map(title).join(' '), isValid:false};
         },
         creditcard: '#### #### #### ####',
         shortDate(value, isBackspace){
@@ -195,7 +209,7 @@ var Restricted = React.createClass({
     },
     handleValueChange(e){
         this.props.onChange.call(this, e);
-        this._value(e.target.value.trim(), false, e.target.selectionEnd);
+        this._value(e.target.value, false, e.target.selectionEnd);
     },
 
     render(){
@@ -203,7 +217,7 @@ var Restricted = React.createClass({
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
                       className={css.forField(this)}
                       value={this.state.value}
-            {...props} {...fieldAttrs}  type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
+            {...props} {...fieldAttrs} type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
     }
 });
 
