@@ -68,7 +68,7 @@ var Select = React.createClass({
         return ret;
     },
     render() {
-        var {field, onChange, fieldAttrs, onBlur, value, multiple, placeholder, name, ...props} = this.props;
+        var {field, onChange, fieldAttrs, onBlur, type, value, multiple, placeholder,  ...props} = this.props;
         var value = this.state.value;
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
