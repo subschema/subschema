@@ -9,7 +9,7 @@ var Form = React.createClass({
             template: 'FormTemplate',
             onSubmit(){
             },
-            novalidate: false
+            noValidate: false
         }
     },
 

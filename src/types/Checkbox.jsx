@@ -11,10 +11,11 @@ var Checkbox = React.createClass({
         this.props.handleChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
     },
     render() {
-        var {onValueChange, onChange,value, fieldAttrs, className, onBlur, ...props} = this.props;
+        var {onValueChange, onChange,value, type, dataType, fieldAttrs, className, onBlur, ...props} = this.props;
         return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}
-                      className={ css.forField(this)} type="checkbox"
+                      className={ css.forField(this)}
                       checked={this.state.value}
+                      type={dataType || 'checkbox'}
             {...props}
             {...fieldAttrs}
             />

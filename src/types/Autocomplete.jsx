@@ -189,7 +189,7 @@ var Autocomplete = React.createClass({
                 this.setState({suggestions: [], selected, input, showing: false, focus: -1});
             }
         } else {
-            this.setState({showing: false, focus: -1, suggestions: []})
+            this.setState({showing: false, focus: -1, suggestions: []}, this.un)
         }
         //        this.props.onBlur();
     },
@@ -350,7 +350,6 @@ var Autocomplete = React.createClass({
 
             return null;
         }
-        this.bindDocument();
         var {focus, input} = this.state;
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
