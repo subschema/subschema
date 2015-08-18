@@ -2,21 +2,19 @@ var React = require('react');
 var SchemaDoc = React.createClass({
     render(){
         return (<div>
-            <h3>Schema</h3>
+            <h3>Example</h3>
             <fieldset>
                 <legend></legend>
                 <p className="lead">
-                    The subschema schema was borrowed from backbone-forms. It seems reasonable enough, though I don't
-                    guarantee compatibilty.
+                    Simple Example
                 </p>
 
                 <div className="panel">
                     <div className="panel-heading">
-                        <h3>Writing Schema</h3>
+                        <h3>Simple Example</h3>
                     </div>
                     <div className="panel-body">
-                        I am going to write a doc to describe how to write schema.   If you feel like doing so, please
-                        send a pull request
+                       A very simple example of a project can be found  <a href="https://github.com/jspears/subschema-simple-example">here</a>.
                     </div>
                 </div>
 
