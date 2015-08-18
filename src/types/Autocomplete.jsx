@@ -200,11 +200,12 @@ var Autocomplete = React.createClass({
     componentWillMount(){
         this._processProps(this.props);
     },
-    componentDidMount(){
-        this.bindDocument();
-    },
     bindDocument() {
+        if (this._bound) {
+            return;
+        }
         this.unbindDocument();
+        this._bound = true;
         this._onDocumentClickListener =
             Dom.listen(this, 'click', this.handleDocumentClick);
 
@@ -216,6 +217,7 @@ var Autocomplete = React.createClass({
     },
 
     unbindDocument() {
+        this._bound = false;
         if (this._onDocumentClickListener) {
             this._onDocumentClickListener.remove();
         }
@@ -241,7 +243,13 @@ var Autocomplete = React.createClass({
             this.hide(false);
         }
     },
-
+    componentWillUpdate(nextProps, nextState){
+        if (nextState && nextState.suggestions && nextState.suggestions.length) {
+            this.bindDocument();
+        } else {
+            this.unbindDocument();
+        }
+    },
     handleDocumentClick(e) {
         // If the click originated from within this component
         // don't do anything.
@@ -323,10 +331,10 @@ var Autocomplete = React.createClass({
                 }
                 case 'Enter':
                 {
-                     if (e){
-                         e.preventDefault();
-                         e.stopPropagation();
-                     }
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                     if (this.state.suggestions.length) {
                         this.handleSuggestionClick(this.state.suggestions[Math.max(this.state.focus, 0)]);
                         this.setState({suggestions: [], showing: false, focus: -1});
