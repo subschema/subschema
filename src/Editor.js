@@ -2,7 +2,7 @@
 var React = require('./react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
-
+var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
 /**
  * Safe chained function
  *
@@ -175,12 +175,13 @@ var Editor = React.createClass({
             Template = this.template();
         }
         var child;
-        if (Component instanceof Promise) {
+        if (hasPromise && Component instanceof Promise) {
             var Lazy = this.props.loader.loadType('LazyType');
             child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
                           onValidate={this.handleValidate} promise={Component}/>
-        } else {
+        }
+        else {
             child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
                                onValidate={this.handleValidate}/>;
