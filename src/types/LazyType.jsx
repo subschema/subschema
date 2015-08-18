@@ -1,4 +1,4 @@
-const React = require('react');
+const React = require('../react');
 const LazyType = React.createClass({
     mixins: [require('../LoaderMixin')],
     getInitialState(){

@@ -12,13 +12,12 @@
 
 'use strict';
 
-var React = require("react");
+var React = require("react/addons");
 
-var assign = require("react/lib/Object.assign");
+var assign = React.__spread;
 
-var ReactTransitionGroup = React.createFactory(
-    require("react/lib/ReactTransitionGroup")
-);
+var ReactTransitionGroup = React.createFactory(React.addons.TransitionGroup);
+
 var EventCSSTransitionGroupChild = React.createFactory(
     require("./EventCSSTransitionGroupChild.jsx")
 );
