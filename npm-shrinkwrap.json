@@ -1,0 +1,35 @@
+{
+  "name": "subschema",
+  "version": "0.9.14",
+  "dependencies": {
+    "file-loader": {
+      "version": "0.8.1",
+      "from": "file-loader@*",
+      "resolved": "http://npm.paypal.com/file-loader/-/file-loader-0.8.1.tgz",
+      "dependencies": {
+        "loader-utils": {
+          "version": "0.2.6",
+          "from": "loader-utils@~0.2.5",
+          "resolved": "http://npm.paypal.com/loader-utils/-/loader-utils-0.2.6.tgz",
+          "dependencies": {
+            "json5": {
+              "version": "0.1.0",
+              "from": "json5@0.1.x",
+              "resolved": "http://npm.paypal.com/json5/-/json5-0.1.0.tgz"
+            },
+            "big.js": {
+              "version": "2.5.1",
+              "from": "big.js@~2.5.1",
+              "resolved": "http://npm.paypal.com/big.js/-/big.js-2.5.1.tgz"
+            }
+          }
+        }
+      }
+    },
+    "lodash": {
+      "version": "3.6.0",
+      "from": "lodash@^3.6.0",
+      "resolved": "http://npm.paypal.com/lodash/-/lodash-3.6.0.tgz"
+    }
+  }
+}
