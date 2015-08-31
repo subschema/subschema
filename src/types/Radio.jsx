@@ -5,9 +5,6 @@ var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var RadioInput = React.createClass({
     displayName: 'Radio',
-    propTypes: {
-        title: React.PropTypes.string
-    },
     mixins: [BasicFieldMixin,LoaderMixin],
     statics: {
         subSchema: {
