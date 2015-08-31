@@ -27,15 +27,14 @@ You can see examples at [jspears.github.io/subschema](http://jspears.github.io/s
    - [Autocomplete](#autocomplete)
    - [Checkbox](#checkbox)
    - [Checkboxes](#checkboxes)
-   - [CollectionMixin](#collectionmixin)
-   - [CreateItemMixin.js](#createitemmixin.js)
    - [Date](#date)
    - [DateTime](#datetime)
    - [Hidden](#hidden)
    - [LazyType](#lazytype)
    - [List](#list)
    - [Mixed](#mixed)
-   - [Object](#object)
+   - [Number](#number)
+	- [Object](#object)
    - [Password](#password)
    - [Radio](#radio)
    - [Restricted](#restricted)
@@ -97,6 +96,7 @@ use this type anywhere in your schema, you would otherwise use a
 type.
 
 Example:
+
 ```jsx
 var loader = require('subschema').loader;
 
@@ -187,14 +187,14 @@ This example uses 2 registered schemas, one used by the List type the other used
 
 ##Events
 Events can be registered via the ValueManager.  You can subscribe to a path, a part of a path or all events of a
-type.
+type. 
 
 
 Example:
 
 ```jsx
-
-  var vm = ValueManager();
+  var values = {}, errors ={};	
+  var vm = ValueManager(values,errors);
   //listen to all events
   vm.addListener(function(newValue, oldValue, path){
 
@@ -271,78 +271,154 @@ var MyType = React.createClass({
 ```
 
 
+##Types
+Subschema comes with a few built in types. You can create your own types as described elsewhere in the document.
 
 
-<a name=autocomplete/>
-##Autocomplete
+###<a name="autocomplete"></a>Autocomplete
+Autocomplete is an autocompleter, it has an optional processor which will resolve against the loaders installed processors.   
+
+See the [example]("http://jspears.github.io/subschema/#/Autocomplete")
 
 
-<a name=checkbox/>
-##Checkbox
+###<a name="checkbox"></a>Checkbox
+A checkbox component 
 
 
-<a name=checkboxes/>
-##Checkboxes
+
+###<a name="checkboxes"></a>Checkboxes
+Render an array of checkboxes.
+Has an itemTemplate, and groupTemplate property that can be set to change the decoration around each checkbox, or group of checkboxes respectively.
+See the [example]("http://jspears.github.io/subschema/#/Checkboxes")
 
 
-<a name=collectionmixin/>
-##CollectionMixin
+
+###<a name="date"></a>Date
+Barely a component, but oneday it will be made useful
 
 
-<a name=createitemmixin.js/>
-##CreateItemMixin.js
+###<a name="datetime"></a>DateTime
+Barely a component, but oneday it will be made useful
 
 
-<a name=date/>
-##Date
+###<a name="hidden"></a> Hidden
+Hidden
+Render a hidden input field
+
+See the [example](http://jspears.github.io/subschema/#/Hidden)
+
+###<a name="lazytype"></a>LazyType
+A wrapper that will lazily load when the loader returns a Promise from a loader.   This probably should not be used directly.
 
 
-<a name=datetime/>
-##DateTime
+###<a name="list"></a>List
+Renders a list of objects.  A subschema can be specified to
+describe items in the list.
+
+It has the following extra options
+
+ * canReorder - Allow reordering (default false)
+ * canDelete - Allow deleting (default false)
+ * canEdit - Allow editing (default false)
+ * canAdd - Allow adding (default false)
+ * itemTemplate - Template to wrap list items.
+ * collectionCreateTemplate - Template for creating items.
+ * itemType - The type of each item
+
+See the [example](http://jspears.github.io/subschema/#/Todos)
 
 
-<a name=hidden/>
-##Hidden
+###<a name="mixed"></a>Mixed
+Much like a list but uses the keys of the objects instead of indexes. 
+
+See the [example](http://jspears.github.io/subschema/#/Questionaire)
+
+###<a name="number"></a>Number
+A number type.  Probably better off using dataType=number.
 
 
-<a name=lazytype/>
-##LazyType
+###<a name="object"></a>Object
+Renders an object key.   Wrapps said object in a fieldset by default. 
+
+See the [example](http://jspears.github.io/subschema/#/NestedForms)
+
+###<a name="password"></a>Password
+Password type.
+
+See the [example](http://jspears.github.io/subschema/#/Login)
 
 
-<a name=list/>
-##List
+###<a name="radio"></a>Radio
+Renders radio groups. Options can be strings or
+ {val, label} objects.
+
+```js
+  "type":"Radio",
+  "options": [
+        {
+          "val": 0,
+          "label": "Option 1"
+        },
+        {
+          "val": 1,
+          "label": "Option 2"
+        },
+        {
+          "val": 2,
+          "label": "Option 3"
+        }
+      ]
+      
+```
+      
+See the [example](http://jspears.github.io/subschema/#/Radio)
 
 
-<a name=mixed/>
-##Mixed
 
 
-<a name=object/>
-##Object
+###<a name="restricted"></a>Restricted
+Restrict the input format.  Its a little barbaric but 
+has the built in restrictions
+
+The formatter attribute can have the following
+
+* uszip - US Zip Code
+* capitalize - Capitalize the first letter.
+* title - barbaric title casing.
+* shortDate - MM/YY format.
+* creditcard - Don't use its just an idea.  Real credit card numbers have all sorts of formats.
+* 1 (###) ### #### - It will restirced the \# in any format 
+
+See the [example](http://jspears.github.io/subschema/#/Restricted)
 
 
-<a name=password/>
-##Password
+###<a name="select"></a>Select
+A select component.  Uses the placeholder as the default value if set.   Tries to handle null value gracefully.
+
+* options - An array of strings or {val, label} objects.
+* multiple - If set to true it will allow for multiple selection.
+
+See the [example](http://jspears.github.io/subschema/#/CarMake)
+
+###<a name="text"></a>Text
+Text input the default and the workhorse.  
+
+See the [example](http://jspears.github.io/subschema/#/Basic)
+
+###<a name="textarea"></a>TextArea
+TextArea input pretty much same as text except its a textarea.
+
+##<a name="templates"></a>Templates
+Templates are the decoration around form elements.   Templates handle the display of error messages, or the actual type themself.  Anywhere a property is described as a Template, the loader will try to resolve the corresponding string to the template.
+
+###<a name="wizard"></a>WizardTemplate
+The wizard template is used to turn fieldsets into a wizard style entry.
+See the [example](http://jspears.github.io/subschema/#/Wizard)
 
 
-<a name=radio/>
-##Radio
+##Validators
+Validators are registered on a field as an array of strings
 
-
-<a name=restricted/>
-##Restricted
-
-
-<a name=select/>
-##Select
-
-
-<a name=text/>
-##Text
-
-
-<a name=textarea/>
-##TextArea
 
 
 
