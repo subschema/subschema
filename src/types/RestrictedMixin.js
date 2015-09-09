@@ -92,12 +92,13 @@ var RestrictedMixin = {
             }
         },
         capitalize(value) {
-            return {value: title(value), isValid: false};
+            value = title(value);
+            return {value , isValid: value && value.length >=1};
         },
         title(value, isBackspace){
             value = value || '';
 
-            return {value: value.split(/\s+?/).map(title).join(' '), isValid: false};
+            return {value: value.split(/\s+?/).map(title).join(' '), isValid: value && value.length >=1};
         },
         creditcard: '#### #### #### ####',
         shortDate(value, isBackspace){
