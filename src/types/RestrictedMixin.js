@@ -7,6 +7,8 @@ function ret(op) {
     return op;
 }
 var dateRe = /^([0,1]?\d?)(?:\/?(\d{0,2}))?$/;
+var date4yRe = /^([0,1]?\d?)([^\d])?(2?0?\d{0,2})?$/;
+
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
 function lastEq(input, val) {
     return input && input[input.length - 1] === val;
@@ -100,6 +102,68 @@ var RestrictedMixin = {
             return {value: value.split(/\s+?/).map(title).join(' '), isValid: false};
         },
         creditcard: '#### #### #### ####',
+        mm20YY(value, isBackspace){
+            var parts = date4yRe.exec(value) || [];
+            if (parts.shift()) {
+                var str = '';
+                var [mm,delim, last] = parts;
+                //invalid month, best guess
+                if (parseInt(mm, 10) > 12) {
+                    str = '0' + mm[0] + '/';
+                } else {
+                    //otherwise
+                    if (!last && mm.length === 1 && parseInt(mm, 10) > 1) {
+                        str += '0' + mm + '/';
+                    } else if (mm.length === 2) {
+                        str = mm + '/';
+                    } else if (last) {
+                        str += '0' + mm + '/';
+                    } else if (delim) {
+                        str = mm.length === 1 ? '0' + mm + '/' : mm + '/';
+                    } else {
+                        str = mm;
+                    }
+
+                    if (last) {
+                        last = parseInt(last, 10);
+                        if (last === 2) {
+                            str += '2';
+                        } else if (last < 2) {
+                            str += '20' + last;
+                        } else if (last === 20) {
+                            str += '20';
+                        } else if (last < 21) {
+                            str += '20' + last;
+                        } else if (last > 100) {
+                            str += last;
+                        } else if (last > 10) {
+                            str += '20' + last;
+                        }
+                    }
+                }
+                var isValid = false;
+                if (str.length === 7){
+                    isValid = true;
+                    var parts = str.split('/');
+                    parts.push(parts.pop().replace(/^20/,''));
+                    str = parts.join('/');
+                }
+                return {
+                    value: (isBackspace) ? str.substring(0, (lastEq(value, '/') ? value.length - 1 : value.length)) : str,
+                    isValid
+                };
+            }
+            if (value && value.trim() === '') {
+                return {
+                    value: value.trim(),
+                    isValid: false
+                }
+            }
+            return {
+                value: '',
+                isValid: false
+            }
+        },
         shortDate(value, isBackspace){
             var parts = dateRe.exec(value) || [];
             if (parts.shift()) {
