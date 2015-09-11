@@ -19,7 +19,8 @@ var Autocomplete = React.createClass({
         onSelect: React.PropTypes.func,
         minLength: React.PropTypes.number,
         foundCls: React.PropTypes.string,
-        notFoundCls: React.PropTypes.string
+        notFoundCls: React.PropTypes.string,
+        autoSelectSingle: React.PropTypes.bool
 
     },
     statics: {
@@ -297,11 +298,15 @@ var Autocomplete = React.createClass({
             if (err) {
                 return;
             }
-            this.setState({
-                suggestions: suggestions,
-                showing: true,
-                input: value
-            });
+            if (this.props.autoSelectSingle && suggestions && suggestions.length === 1) {
+                this.onSelect(suggestions[0]);
+            } else {
+                this.setState({
+                    suggestions: suggestions,
+                    showing: true,
+                    input: value
+                });
+            }
         });
     },
 
@@ -384,10 +389,13 @@ var Autocomplete = React.createClass({
 
     handlePaste: function (event) {
         var items = event.clipboardData && event.clipboardData.items;
-        items && items[0] && items[0].getAsString(this._handleKey.bind(this));
+        items && items[0] && items[0].getAsString((input)=> {
+
+            this.setState({input, suggestions: [], showing: false});
+        });
     },
     handleBlur: function (event) {
-        if (this.state.suggestions.length === 1 && !this.state.showing && !this.state.selected) {
+        if (this.state.suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(this.state.suggestions[Math.max(0, this.state.focus)]);
         } else {
             this.handleInvalid();
@@ -406,6 +414,13 @@ var Autocomplete = React.createClass({
                     var onChildChange = child.props.onChange;
                     nprops.onValueChange = function (val) {
                         handleDispatch(val);
+                    }
+                    var onBlur = nprops.onBlur;
+                    nprops.onBlur = (e)=> {
+                        this.handleBlur(e);
+                        if (onBlur) {
+                            onBlur(e);
+                        }
                     }
                     /*nprops.onChange = function (e) {
                      this.handleChange(e.target.value);
