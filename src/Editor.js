@@ -124,7 +124,7 @@ var Editor = React.createClass({
         value = arguments.length === 0 ? this.getValue() : value;
         errors = errors || this.getErrorMessages(value);
 
-        this.props.valueManager.updateErrors(this.props.path, errors);
+        this.props.valueManager.updateErrors(this.props.path, errors, value);
         this.setState({
             hasValidated: true
         });
