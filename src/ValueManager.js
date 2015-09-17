@@ -377,14 +377,14 @@ ValueManager.prototype = {
      * @param {String} errors.name - Name of the error.
      * @param {String} errors.message - Message of the error.
      */
-        onError(path, errors)
+        onError(path, errors, value)
     {
         errors = errors && errors[0] ? errors : null;
         var oErrors = this.errors || {}, listeners = this.errorListeners;
 
         return listeners.some((v)=> {
             if (path == null || v.path == null || v.path === path || path.indexOf(v.path + '.') === 0) {
-                return (v.listener.call(v.scope, errors, oErrors[path], path) === false);
+                return (v.listener.call(v.scope, errors, oErrors[path], path, value) === false);
             }
         }, this);
 
@@ -416,12 +416,12 @@ ValueManager.prototype = {
         return ret;
     }
     ,
-    updateErrors(path, errors)
+    updateErrors(path, errors, value)
     {
         errors = Array.isArray(errors) ? errors : [errors];
         errors = errors && errors[0] ? errors : null;
         this.errors[path] = errors;
-        this.onError(path, errors);
+        this.onError(path, errors, value);
     }
     ,
     errorsFor(path)
@@ -443,12 +443,12 @@ ValueManager.prototype = {
      * Trigger the validators.
      *
      */
-        validate(path)
+        validate(path, value)
     {
         var pp = path && path + '.';
         this.validateListeners.forEach(function ValueManager$validate$forEach(v) {
             if (path == null || v.path === path || pp.indexOf(path) === 0)
-                v.listener.call(v.scope, path);
+                v.listener.call(v.scope, path, value);
         });
     },
     /**
