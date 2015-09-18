@@ -459,7 +459,6 @@ ValueManager.prototype = {
         var errors;
         paths.forEach(function validatePaths$forEach(path) {
             function error$callback(error) {
-                this.removeErrorListener(path, error$callback);
                 if (error) {
                     errors = errors || {};
                     errors[path] = error;
@@ -470,7 +469,7 @@ ValueManager.prototype = {
                 }
             }
 
-            this.addErrorListener(path, error$callback, this);
+            this.addErrorListener(path, error$callback, this).once();
             this.validate(path);
         }, this);
         return errors;
