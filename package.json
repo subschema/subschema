@@ -50,6 +50,7 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.4.0",
     "less-loader": "^2.2.0",
+    "lodash": "^3.10.1",
     "mocha": "^2.2.1",
     "modernizr": "^3.0.0-alpha.4",
     "raw-loader": "^0.5.1",
