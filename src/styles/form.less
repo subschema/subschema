@@ -1,0 +1,50 @@
+.form-group {
+
+  .help-block {
+    color: #737373;
+    float: right;
+  }
+
+  .error-block {
+    color: #a94442;
+    margin: 5px 0 10px 0;
+  }
+
+  .control-label {
+    margin-right: 10px;
+  }
+
+  .col-sm-10 {
+    width: 100%;
+    display: table;
+
+    .control-label, .control-content {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .control-label {
+      min-width: 150px;
+    }
+
+    .control-content {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      position: relative;
+      display: block;
+
+      .control-label, .control-content {
+        display: block;
+      }
+
+      .help-block {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        margin: 0;
+      }
+    }
+  }
+}

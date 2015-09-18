@@ -1,5 +1,8 @@
 var React = require('../react');
 var css = require('../css');
+
+require('../styles/form.less')
+
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
     componentWillMount(){
@@ -17,12 +20,15 @@ var EditorTemplate = React.createClass({
         var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
         var error = this.state.error;
         return (<div
-            className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
-            {title ? <label className="col-sm-2 control-label" htmlFor={name}><span dangerouslySetInnerHTML={{__html:title}}/></label> : null}
+            className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>            
 
             <div className="col-sm-10">
-                {children}
-                <p className="help-block" ref="help">{error || help}</p>
+              {title ? <label className="control-label" htmlFor={name}><span dangerouslySetInnerHTML={{__html:title}}/></label> : null}
+              <div className="control-content">
+                  <p className="help-block" ref="help">{help}</p>
+                  {children}                
+                  <p className="error-block" ref="error">{error}</p>
+              </div>
             </div>
         </div>);
     }
