@@ -66,11 +66,6 @@ var RestrictedMixin = {
     getValue(){
         return this.state.value;
     },
-    componentWillReceiveProps(props){
-        if (props.formatter !== this.props.formatter) {
-            this._formatter = null;
-        }
-    },
     formatters: {
         uszip(value, isBackspace){
             value = (value || '').substring(0, 10);
@@ -142,10 +137,10 @@ var RestrictedMixin = {
                     }
                 }
                 var isValid = false;
-                if (str.length === 7){
+                if (str.length === 7) {
                     isValid = true;
                     var parts = str.split('/');
-                    parts.push(parts.pop().replace(/^20/,''));
+                    parts.push(parts.pop().replace(/^20/, ''));
                     str = parts.join('/');
                 }
                 return {

@@ -275,13 +275,14 @@ var Autocomplete = React.createClass({
         var p = this.getProcessor();
         var value = p.value(o);
         if (this.props.handleChange.call(this.props, value) !== false) {
+            var input = p.format(value);
             this.setState({
                 suggestions: [],
                 showing: false,
                 focus: -1,
                 selected: o,
-                value: value,
-                input: p.format(o)
+                value,
+                input
             });
         }
     },
@@ -397,14 +398,10 @@ var Autocomplete = React.createClass({
     handleBlur: function (event) {
         if (this.state.suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(this.state.suggestions[Math.max(0, this.state.focus)]);
-        } else {
-            this.handleInvalid();
         }
-        this.props.onBlur.call(this, event);
+        this.props.onValidate(event);
+        this.props.onBlur(event);
     },
-    handleInvalid: function () {
-    },
-
     createInput(props){
         if (this.props.children && this.props.children.length) {
             var handleDispatch = this._handleDispatch;

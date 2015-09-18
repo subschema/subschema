@@ -44,7 +44,12 @@ function title(value) {
 }
 var Restricted = React.createClass({
     mixins: [require('./RestrictedMixin')],
+    componentWillReceiveProps(newProps){
+        if (this.props.value !== newProps.value) {
+            this._value(newProps.value);
+        }
 
+    },
     render(){
         var {onChange, onValueChange, onBlur, className,field,value, dataType, value, type, fieldAttrs, ...props} = this.props
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
