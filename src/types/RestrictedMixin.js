@@ -89,12 +89,12 @@ var RestrictedMixin = {
             }
         },
         capitalize(value) {
-            return {value: title(value), isValid: false};
+            return {value: title(value), isValid: (value && value.length > 2)};
         },
         title(value, isBackspace){
-            value = value || '';
+            value = (value || '').split(/\s+?/).map(title).join(' ');
 
-            return {value: value.split(/\s+?/).map(title).join(' '), isValid: false};
+            return {value, isValid: (value && value.length > 2)};
         },
         creditcard: '#### #### #### ####',
         mm20YY(value, isBackspace){
