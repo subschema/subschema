@@ -25,9 +25,11 @@ var EditorTemplate = React.createClass({
             <div className="col-sm-10">
               {title ? <label className="control-label" htmlFor={name}><span dangerouslySetInnerHTML={{__html:title}}/></label> : null}
               <div className="control-content">
-                  <p className="help-block" ref="help">{help}</p>
-                  {children}                
+                <div className="helpers">
                   <p className="error-block" ref="error">{error}</p>
+                  <p className="help-block" ref="help">{help}</p>                  
+                </div>                  
+                  {children}
               </div>
             </div>
         </div>);
