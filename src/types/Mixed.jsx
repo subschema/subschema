@@ -78,7 +78,7 @@ var MixedInput = React.createClass({
     },
     getTemplateItem(){
         var kt = this.props.field.keyType,
-            action = this.state.editPid  != null ? 'edit' : 'save',
+            action = this.state.editPid != null ? 'edit' : 'save',
             keyType = tu.isString(kt) ? {
                 type: kt
             } : kt || {},
@@ -131,7 +131,9 @@ var MixedInput = React.createClass({
                                              field={item}
                                              pid={v.id}
                                              itemToString={itemToString}
-                                             value={v.value} errors={errors} last={i + 1 === length}/>
+                                             value={v.value} errors={errors} last={i + 1 === length}>
+                        {this.props.inline && this.state.editPid === v.id ? this.renderAddEditTemplate(v, false) : null}
+                    </ListItemTemplate>
                 })}
             </ul>
         </div>);
