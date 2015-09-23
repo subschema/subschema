@@ -1,6 +1,9 @@
 var React = require('../react');
 var tpath = require('../tutils').path;
 var Buttons = require('../templates/ButtonsTemplate.jsx');
+var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
+require('../styles/transitions.less');
+
 var ListItemTemplate = React.createClass({
     mixins: [require('./ListItemMixin')],
 
@@ -8,10 +11,10 @@ var ListItemTemplate = React.createClass({
         var field = this.props.field, content = this.props.itemToString(this.props.value);
 
         if (field.canEdit) {
-            return <a className="item-value" ref="edit" onClick={this.handleEdit}
+            return <a className="item-value" ref="edit" key="edit" onClick={this.handleEdit}
                       path={tpath(this.props.path, this.props.pos)}>{content}</a>;
         } else {
-            return <span className="item-value">{content}</span>;
+            return <span className="item-value" key="content">{content}</span>;
         }
     },
     buttons(pos, last, canReorder, canDelete){
@@ -58,12 +61,13 @@ var ListItemTemplate = React.createClass({
         var {type, name, canReorder, canDelete} = field;
         var error = errors && errors[0] && errors[0].message;
         return <li className={'list-group-item '+(error ? 'has-error' : '')}>
-            {this.renderField()}
-            { error ? <p ref="error" className="help-block">{error}</p> : null }
-            <Buttons buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
-                     buttonsClass='btn-group pull-right'/>
-            {this.props.children}
-        </li>
+                {this.renderField()}
+                { error ? <p ref="error"  key="error" className="help-block">{error}</p> : null }
+                <Buttons key="buttons" buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
+                         buttonsClass='btn-group pull-right'/>
+                {this.props.children}
+            </li>
+
     }
 
 });

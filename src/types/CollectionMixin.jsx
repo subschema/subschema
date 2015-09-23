@@ -4,7 +4,8 @@ var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
-
+var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
+require('../styles/transitions.less');
 var CollectionMixin = {
     statics: {
         listClassName: Constants.listClassName,
@@ -137,7 +138,7 @@ var CollectionMixin = {
         var CreateTemplate = this.template('createTemplate');
         var title = this.props.title || '';
         return (
-            <CreateTemplate editPid={this.state.editPid} field={this.getTemplateItem()}
+            <CreateTemplate key="addEdit" editPid={this.state.editPid} field={this.getTemplateItem()}
                             valueManager={this.props.valueManager}
                             name={this.props.name}
                             ref="addEdit"
@@ -157,7 +158,7 @@ var CollectionMixin = {
             return null;
         }
         var Template = this.template('buttonTemplate');
-        return <Template ref="addBtn" buttonClass='btn btn-xs btn-default btn-add' label="Add"
+        return <Template ref="addBtn" key="addBtn" buttonClass='btn btn-xs btn-default btn-add' label="Add"
                          iconClassName="icon-add" onClick={this.handleAddBtn}><i
             className="icon-add"/>
         </Template>
@@ -172,9 +173,9 @@ var CollectionMixin = {
             return null;
         }
         var {showAdd, showEdit} = this.state;
-        return showAdd || showEdit ?
+        return <ReactCSSTransitionGroup transitionName="transition_height" transitionAppear={true} transitionLeave={true}>{showAdd || showEdit ?
              showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
-            : this.renderAddBtn();
+            : this.renderAddBtn()}</ReactCSSTransitionGroup>;
     }
 }
 module.exports = CollectionMixin;

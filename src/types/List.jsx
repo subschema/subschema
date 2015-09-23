@@ -3,6 +3,8 @@ var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var css = require('../css');
+var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
+require('../styles/transitions.less');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {
@@ -100,7 +102,7 @@ var ListInput = React.createClass({
         var itemToString = this.itemToString();
         return (<div className={css.forField(this, 'list-editor')}>
             {this.renderAdd()}
-            <ul className={css.forField(this, ListInput.inputListClassName)}>
+            <ReactCSSTransitionGroup component="ul" transitionName="transition_scale" className={css.forField(this, ListInput.inputListClassName)} transitionAppear={true} transitionLeave={true}>
                 {values.map((v, i) => {
                     var lipath = tu.path(path, v.id);
                     return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}
@@ -116,7 +118,7 @@ var ListInput = React.createClass({
                         {this.props.inline && this.state.editPid === v.id ? this.renderAddEditTemplate(v, false) : null}
                     </ListItemTemplate>
                 })}
-            </ul>
+            </ReactCSSTransitionGroup>
         </div>);
     }
 
