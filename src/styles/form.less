@@ -1,0 +1,63 @@
+.form-group {
+  overflow: hidden;
+
+  > div {
+    display: flex;
+  }
+
+  .help-block {
+    color: #737373;
+  }
+
+  .error-block {
+    color: #a94442;
+  }
+
+  .help-block, .error-block {
+    margin: 0;
+    padding-left: 15px;
+  }
+
+  .control-label {
+    margin-right: 10px;
+  }
+
+  .col-sm-10 {
+    width: 100%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 0;
+
+    .control-label {
+      min-width: 150px;
+    }
+
+    .control-content {
+      width: 100%;
+    }
+
+    .helpers {
+      display: flex;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    @media (max-width: 768px) {
+      position: relative;
+      display: block;
+
+      .control-label, .control-content {
+        display: block;
+      }
+
+      .help-block {
+        display: none;
+        > p {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
