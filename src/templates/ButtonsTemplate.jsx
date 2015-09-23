@@ -9,11 +9,11 @@ var ButtonsTemplate = React.createClass({
             buttonClass: 'btn',
             buttonTemplate: 'ButtonTemplate',
             buttons: [{
-                action: 'Submit',
+                action: 'submit',
                 label: 'Submit',
                 template: 'Button'
             }],
-            onClick: function (event, action, btn) {
+            onClick: function (event, action, btn, value) {
 
             }
         }
@@ -41,7 +41,7 @@ var ButtonsTemplate = React.createClass({
             <div className={this.props.buttonsClass}>
                 {this.makeButtons().map((b, i)=> {
                     var Template = b.template;
-                    return <Template key={"btn-"+i} {...b} />
+                    return <Template key={"btn-"+i} {...b} loader={this.props.loader} valueManager={this.props.valueManager}/>
                 })}
             </div>
         </div>

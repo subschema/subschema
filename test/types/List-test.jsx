@@ -21,6 +21,21 @@ describe('List', function () {
         return TestUtils.findRenderedDOMComponentWithTag(node, tag);
     }
 
+    function byTags(node, tag) {
+        return TestUtils.scryRenderedDOMComponentsWithTag(node, tag);
+    }
+
+    function filterProp(node, property, value) {
+        node = Array.isArray(node) ? node : [node];
+        return node.filter((n)=> {
+            if (property in n.props) {
+                if (value === null) return true;
+                return n.props[property] === value;
+            }
+            return false;
+        })
+    }
+
     function byComponent(node, comp) {
         return TestUtils.scryRenderedComponentsWithType(node, comp)[0];
     }
@@ -37,7 +52,9 @@ describe('List', function () {
         var create = TestUtils.scryRenderedComponentsWithType(root, CreateTemplate)[0];
         var input = byTag(create, 'input');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        click(create.refs.submitBtn);
+
+        var btns = filterProp(byTags(create, 'button'), 'action', 'save');
+        click(btns[0]);
 
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
@@ -50,7 +67,8 @@ describe('List', function () {
         Simulate.click(tasks['tasks_' + c].refs.edit);
         var input = tasks.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        Simulate.click(tasks.addEdit.refs.submitBtn);
+        var btns = filterProp(byTags(tasks.addEdit, 'button'), 'action', 'edit');
+        click(btns[0]);
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
         var tasks = root.refs.tasks.refs.field.refs;

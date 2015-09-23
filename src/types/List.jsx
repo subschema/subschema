@@ -14,7 +14,7 @@ var ListInput = React.createClass({
             onValidate() {
             },
             itemTemplate: 'ListItemTemplate',
-            collectionCreateTemplate:this.collectionCreateTemplate
+            collectionCreateTemplate: this.collectionCreateTemplate
 
         }
     },
@@ -60,19 +60,30 @@ var ListInput = React.createClass({
             return v && v.toString();
         };
     },
-    /* unwrap:function(value){
-     if (value == null) return [];
-     return value.map(this.extractValue);
-     },*/
+
     getTemplateItem(){
+        var action = this.state.editPid  != null ? 'edit' : 'save';
         return {
             type: 'Object',
             name: this.props.name,
-            title: this.props.title,
+            title: false,
+
             subSchema: {
-                value: this.props.itemType
+
+                value: {
+                    type: this.props.itemType,
+                    title: this.props.title
+                }
             },
-            fields: ['value']
+            fieldsets: [{
+                fields: ['value'],
+                buttons: {
+                    onClick: this.handleBtnGroup,
+                    buttonsClass: 'btn-group pull-right',
+                    buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
+                        , {label: 'Save', action: action, buttonClass: 'btn-primary btn'}]
+                }
+            }]
         };
     },
     render() {
@@ -101,7 +112,9 @@ var ListInput = React.createClass({
                                              path={lipath}
                                              errors={err && err[lipath]}
                                              pid={v.id}
-                                             value={v.value.value} last={i + 1 === length}/>
+                                             value={v.value.value} last={i + 1 === length}>
+                        {this.props.inline && this.state.editPid === v.id ? this.renderAddEditTemplate(v, false) : null}
+                    </ListItemTemplate>
                 })}
             </ul>
         </div>);

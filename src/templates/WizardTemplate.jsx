@@ -30,16 +30,23 @@ var WizardTemplate = React.createClass({
         }
     },
     getInitialState() {
-        var {schema, subSchema,  fields,  ...props} = this.props;
-        schema = NestedMixin.normalizeSchema(schema || subSchema);
-        this.schema = schema.schema ? schema : {schema: schema, fields: fields};
+
         return {
             compState: 0,
             prevState: 0,
             maxState: 0
         }
     },
+    componentWillMount(){
+        this.assignSchema(this.props);
 
+    },
+    componentWillReceiveProps(props){
+        this.assignSchema(props);
+    },
+    assignSchema(props){
+        this.schema = NestedMixin.normalizeSchema(NestedMixin.extractSchema(props), props.loader);
+    },
     next(){
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
         this.setState({disabled: true});

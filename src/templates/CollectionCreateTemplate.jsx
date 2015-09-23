@@ -18,12 +18,6 @@ var CollectionCreateTemplate = React.createClass({
                             pid={this.props.editPid}
                             form={null}/>
                 </div>
-                <div className="form-group">
-                    <button className="btn btn-default pull-left" ref="cancelBtn" type="reset" onClick={this.props.onCancel}>Cancel
-                    </button>
-                    <button className="btn btn-primary pull-right" type="submit" ref='submitBtn'
-                            onClick={this.handleSubmit}>{this.props.submitButton}</button>
-                </div>
             </div>
         </div>);
     }
