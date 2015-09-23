@@ -3,8 +3,79 @@ var tu = require('./tutils');
 var Editor = require('./Editor');
 var ValueManager = require('./ValueManager');
 var LoaderMixin = require('./LoaderMixin');
+var warning = require("react/lib/warning");
+var noTypeInfo;
+if ("production" !== process.env.NODE_ENV) {
+    noTypeInfo = function (f) {
+        ("production" !== process.env.NODE_ENV ? warning(
+            false,
+            'subschema: tried to instatiate a field without any type info probable a typo %s', f) : null);
+    };
+} else {
+    noTypeInfo = function () {
+    }
+}
+
+function extractSchema(props) {
+    if (props.subSchema) {
+        var {fields, fieldsets, subSchema } = props
+        return {
+            fields,
+            fieldsets,
+            schema: subSchema
+        }
+    }
+    return props.schema
+}
+
+function normalizeSchema(oschema, loader) {
+    if (oschema == null) {
+        return {};
+    }
+    if (tu.isString(oschema)) {
+        var loaded = loader.loadSchema(oschema);
+        return normalizeSchema(loaded);
+    } else if (tu.isString(oschema.schema)) {
+        var {schema, ...rest} = oschema;
+        rest.schema = loader.loadSchema(schema);
+        return normalizeSchema(rest);
+    }
+    if (!oschema.schema) {
+        return normalizeSchema({
+            schema: oschema
+        });
+    }
+    //make a copy of the schema.
+    var {fields, fieldsets, ...schema} = oschema;
+
+    if (fieldsets) {
+        schema.fieldsets = tu.toArray(fieldsets).map((fieldset)=> {
+            if (fieldset.fields) {
+                var {fields, ...rest} = fieldset;
+                rest.fields = tu.toArray(fields);
+                return rest;
+            } else if (tu.isString(fieldset)) {
+                return {
+                    fields: tu.toArray(fieldset)
+                }
+            } else if (tu.isArray(fieldset)) {
+                return {
+                    fields: tu.toArray(fieldset)
+                }
+            } else {
+                console.log('do not know what %s this is ', fieldset);
+            }
+        });
+    } else if (fields) {
+        schema.fieldsets = [{fields: tu.toArray(fields)}]
+    } else {
+        schema.fieldsets = [{fields: Object.keys(schema.schema)}];
+    }
+    return schema;
+}
+
 var NestedMixin = {
-    mixins:[LoaderMixin],
+    mixins: [LoaderMixin],
     getDefaultProps() {
         return {
             path: null,
@@ -21,10 +92,14 @@ var NestedMixin = {
         if (this.props.errors) {
             this.props.valueManager.setErrors(this.props.errors);
         }
+        this.schema = normalizeSchema(extractSchema(this.props), this.props.loader);
+    },
+    componentWillReceiveProps(newProps){
+        this.schema = normalizeSchema(extractSchema(newProps), this.props.loader);
     },
     makeFieldset(f, i) {
         var Template = this.template(f.template || 'FieldSetTemplate');
-        return <Template key={'f' + i} field={f}>
+        return <Template key={'f' + i} field={f} legend={f.legend} loader={this.props.loader} valueManager={this.props.valueManager}>
             {this.makeFields(f.fields)}
         </Template>
     },
@@ -34,6 +109,9 @@ var NestedMixin = {
         return this.props.valueManager.path(this.props.path);
     },
     addEditor(field, f){
+        if (field == null) {
+            return null;
+        }
         var {path, loader, ...props} = this.props;
         var tmpl = {}, path = tu.path(path, f);
         if (field.template) {
@@ -68,6 +146,10 @@ var NestedMixin = {
                     type: ref
                 }
             } else {
+                if (ref == null) {
+                    noTypeInfo(f);
+                    return null;
+                }
                 if (!ref.type) {
                     ref.type = 'Text';
                 }
@@ -78,33 +160,11 @@ var NestedMixin = {
             return this.addEditor(ref, f);
         });
     },
-    normalizeSchema(schema){
-        if (schema == null) {
-            return {};
-        }
-        if (tu.isString(schema)) {
-            var loaded = this.props.loader.loadSchema(schema);
-            if (loaded.schema) {
-                schema = loaded;
-            } else {
-                schema = {schema: loaded};
-            }
-        } else if (tu.isString(schema.schema)) {
-            var loaded = this.props.loader.loadSchema(schema.schema);
-            if (loaded.schema) {
-                schema = loaded;
-            } else {
-                schema = {schema: loaded};
-            }
-        }
-        return schema;
-    },
 
     renderSchema() {
-
-        var schema = this.schema, fieldsets = schema.fieldsets, fields = schema.fields || Object.keys(schema.schema);
-        return (fieldsets && Array.isArray(fieldsets) ? fieldsets : ( fieldsets && (fieldsets.legend || fieldsets.fields) ) ? [fieldsets] : [{fields: tu.toArray(fields)}])
-            .map(this.makeFieldset, this);
+        return this.schema.fieldsets.map(this.makeFieldset, this);
     }
 }
+NestedMixin.normalizeSchema = normalizeSchema;
+NestedMixin.extractSchema = extractSchema;
 module.exports = NestedMixin;
