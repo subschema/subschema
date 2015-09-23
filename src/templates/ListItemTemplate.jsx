@@ -3,6 +3,7 @@ var tpath = require('../tutils').path;
 var Buttons = require('../templates/ButtonsTemplate.jsx');
 var ListItemTemplate = React.createClass({
     mixins: [require('./ListItemMixin')],
+
     renderField(){
         var field = this.props.field, content = this.props.itemToString(this.props.value);
 
@@ -61,6 +62,7 @@ var ListItemTemplate = React.createClass({
             { error ? <p ref="error" className="help-block">{error}</p> : null }
             <Buttons buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
                      buttonsClass='btn-group pull-right'/>
+            {this.props.children}
         </li>
     }
 

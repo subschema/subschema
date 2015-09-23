@@ -20,7 +20,26 @@ var CollectionMixin = {
             buttonTemplate: 'ButtonTemplate'
         }
     },
+    /* unwrap:function(value){
+     if (value == null) return [];
+     return value.map(this.extractValue);
+     },*/
+    handleBtnGroup(e, action, btn){
+        e && e.preventDefault();
+        switch (action) {
 
+            case 'edit':
+                this.handleEditValue(e, btn.props.valueManager.getValue());
+                break;
+            case 'save':
+                this.handleAddValue(e, btn.props.valueManager.getValue());
+                break;
+            case 'cancel':
+            default:
+                this.handleCancelAdd(e);
+        }
+        this.setState({editPid: null});
+    },
     getValue(){
         return this.unwrap(this.state.wrapped);
     },
@@ -80,14 +99,18 @@ var CollectionMixin = {
     },
     handleEditValue(e, nv) {
         e && e.preventDefault();
-        var value = this.state.wrapped, oval = value && value.concat(), editPid = this.state.editPid;
-        value.some(function (v, i) {
+        var value = this.state.wrapped,  editPid = this.state.editPid;
+
+        var newValue = value.map(function (v, i) {
             if (v.id === editPid) {
-                v.value = nv;
-                return true;
+                return {
+                    id:editPid,
+                    value:nv
+                };
             }
+            return v;
         });
-        this.changeValue(value, oval);
+        this.changeValue(newValue, value);
 
     },
 
@@ -150,7 +173,7 @@ var CollectionMixin = {
         }
         var {showAdd, showEdit} = this.state;
         return showAdd || showEdit ?
-            this.renderAddEditTemplate(showEdit, showAdd)
+             showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
             : this.renderAddBtn();
     }
 }

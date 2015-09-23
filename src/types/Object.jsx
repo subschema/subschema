@@ -1,15 +1,9 @@
 "use strict";
-
-
 var React = require('../react');
-var NestedMixin = require('../NestedMixin');
-var BasicFieldMixin = require('../BasicFieldMixin');
+var mixins = [require('../NestedMixin'), require('../BasicFieldMixin')];
+
 var ObjectInput = React.createClass({
-    mixins: [NestedMixin, BasicFieldMixin],
-    displayName: 'ObjectInput',
-    statics: {
-        subSchema: 'SubschemaBuilder'
-    },
+    mixins,
     getDefaultProps(){
         return {
             template: 'ObjectTemplate'
@@ -20,17 +14,12 @@ var ObjectInput = React.createClass({
     },
     render() {
 
-        var {field, value,  template, subSchema, schema, fields, ...props} = this.props;
-        schema =  subSchema || schema;
-        schema = this.normalizeSchema(schema);
-
-        this.schema = schema.schema ? schema : {schema: schema, fields };
-
+        var {fieldsets,value,  template, subSchema, schema, fields, ...props} = this.props;
         var obj = {};
         obj.value = this.getValue();
         var Template = this.template();
         return (
-            <Template {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.props.form) : null}</Template>);
+            <Template {...obj} {...props}>{this.schema && this.schema.schema ? this.renderSchema(this.schema) : null}</Template>);
     }
 
 });

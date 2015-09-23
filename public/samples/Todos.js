@@ -8,7 +8,8 @@ module.exports = {
                 canAdd: true,
                 canDelete: true,
                 canReorder: true,
-                canEdit: true
+                canEdit: true,
+                inline:true
             }
         },
         "fieldsets": [{

@@ -78,6 +78,7 @@ var MixedInput = React.createClass({
     },
     getTemplateItem(){
         var kt = this.props.field.keyType,
+            action = this.state.editPid  != null ? 'edit' : 'save',
             keyType = tu.isString(kt) ? {
                 type: kt
             } : kt || {},
@@ -89,7 +90,15 @@ var MixedInput = React.createClass({
                     key: keyType,
                     value: this.props.field.valueType || this.props.valueType
                 },
-                fields: ['key', 'value']
+                fieldsets: [{
+                    fields: ['key', 'value'],
+                    buttons: {
+                        onClick: this.handleBtnGroup,
+                        buttonsClass: 'btn-group pull-right',
+                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
+                            , {label: 'Save', action: action, buttonClass: 'btn-primary btn'}]
+                    }
+                }]
             };
 
         if (!keyType.type) {
