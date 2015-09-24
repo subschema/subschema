@@ -6,13 +6,14 @@ require('../styles/transitions.less');
 var CollectionCreateTemplate = React.createClass({
     mixins: [CreateItemMixin],
     render(){
+        var title = this.props.title;
         return (<div className="panel panel-default">
 
-            <div className="panel-heading">
+            {title ? <div className="panel-heading">
                 <h3 className={ 'panel-title clearfix '}>
-                    {this.props.title}
+                    {title}
                 </h3>
-            </div>
+            </div> : null}
             <div className="panel-body">
                 <div className="form-group">
                     <Editor ref="itemEditor" field={this.props.field} value={this.props.value}
