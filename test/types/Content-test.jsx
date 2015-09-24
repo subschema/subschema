@@ -6,14 +6,17 @@ var loader = require('../../src/loader.js');
 var Text = require('../../src/types/Text.jsx');
 var Content = require('../../src/types/Content.jsx');
 var Editor = require('../../src/Editor');
-
+loader.addType('Test', React.createClass({
+    displayName: 'Test',
+    render(){
+        return <div><span>hello</span>{this.props.children}</div>
+    }
+}));
 function into(node, debug) {
     return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
 }
 
-describe.only('Content', function () {
-    var remove;
-    this.timeout(50000);
+describe('Content', function () {
 
     it('should do simple subsitution', function () {
         var vm = ValueManager({test: 2});
@@ -56,13 +59,8 @@ describe.only('Content', function () {
         expect(node.tagName).toBe('SPAN');
 
     });
-    loader.addType('Test', React.createClass({
-        displayName: 'Test',
-        render(){
-            return <div><span>hello</span>{this.props.children}</div>
-        }
-    }))
-    it.only('should render loaded types', function () {
+
+    it('should render loaded types', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
         var vm = ValueManager({what, more});
