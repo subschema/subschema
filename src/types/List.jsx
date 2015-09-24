@@ -64,18 +64,18 @@ var ListInput = React.createClass({
     },
 
     getTemplateItem(){
-        var action = this.state.editPid  != null ? 'edit' : 'save';
+        var action = this.state.editPid != null ? 'edit' : 'save';
+        var value = tu.isString(this.props.itemType) ? {
+            type: this.props.itemType
+        } : this.props.itemType;
+        value.title = false;
         return {
             type: 'Object',
             name: this.props.name,
             title: false,
 
             subSchema: {
-
-                value: {
-                    type: this.props.itemType,
-                    title: this.props.title
-                }
+                value
             },
             fieldsets: [{
                 fields: ['value'],
@@ -102,7 +102,9 @@ var ListInput = React.createClass({
         var itemToString = this.itemToString();
         return (<div className={css.forField(this, 'list-editor')}>
             {this.renderAdd()}
-            <ReactCSSTransitionGroup component="ul" transitionName="transition_scale" className={css.forField(this, ListInput.inputListClassName)} transitionAppear={true} transitionLeave={true}>
+            <ReactCSSTransitionGroup component="ul" transitionName="transition_scale"
+                                     className={css.forField(this, ListInput.inputListClassName)}
+                                     transitionAppear={true} transitionLeave={true}>
                 {values.map((v, i) => {
                     var lipath = tu.path(path, v.id);
                     return <ListItemTemplate ref={name+'_'+i} key={'li-' + name + '-' + v.id} pos={i}

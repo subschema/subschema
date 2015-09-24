@@ -34,16 +34,16 @@ function normalizeSchema(oschema, loader) {
     }
     if (tu.isString(oschema)) {
         var loaded = loader.loadSchema(oschema);
-        return normalizeSchema(loaded);
+        return normalizeSchema(loaded, loader);
     } else if (tu.isString(oschema.schema)) {
         var {schema, ...rest} = oschema;
         rest.schema = loader.loadSchema(schema);
-        return normalizeSchema(rest);
+        return normalizeSchema(rest, loader);
     }
     if (!oschema.schema) {
         return normalizeSchema({
             schema: oschema
-        });
+        }, loader);
     }
     //make a copy of the schema.
     var {fields, fieldsets, ...schema} = oschema;
