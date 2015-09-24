@@ -17,7 +17,7 @@
     "hot": "node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
-    "prepublish": "webpack --config webpack.config.js -p",
+
     "postinstall": "node bin/postinstall.js",
     "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
@@ -30,8 +30,8 @@
   "license": "MIT",
   "devDependencies": {
     "amdefine": "^0.1.0",
-    "babel-core": "^5.1.11",
-    "babel-loader": "^5.0.0",
+    "babel-core": "^5.8.25",
+    "babel-loader": "^5.3.2",
     "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.9.1",
     "dmd": "^1.0.3",
@@ -41,6 +41,7 @@
     "formatter.js": "^0.1.5",
     "highlight.js": "^8.5.0",
     "jsdoc-to-markdown": "^1.0.3",
+    "json-loader": "^0.5.3",
     "karma": "^0.13.9",
     "karma-chrome-launcher": "^0.1.7",
     "karma-cli": "0.0.4",
@@ -62,13 +63,14 @@
     "style-loader": "^0.9.0",
     "text-loader": "0.0.1",
     "url-loader": "^0.5.5",
-    "webpack": "^1.8.5",
-    "webpack-dev-middleware": "^1.0.11",
-    "webpack-dev-server": "^1.8.0"
+    "webpack": "^1.12.2",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-dev-server": "^1.11.0"
   },
   "peerDependencies": {
     "react": "*",
     "lodash": "*"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }
