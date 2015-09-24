@@ -30,7 +30,8 @@ module.exports = {
                     '~/node_modules/react',
                     '~/node_modules/react-router',
                     '~/node_modules/react-bootstrap',
-                    '~/node_modules/subschema-builder'
+                    '~/node_modules/subschema-builder',
+                    '~/node_modules/react-highlight'
 
                 ],
                 loaders: ['babel-loader?stage=0']
@@ -55,7 +56,8 @@ module.exports = {
 
     resolve: {
         alias: {
-            'subschema': __dirname
+            'subschema':path.join( __dirname, 'src/index.jsx'),
+            'react': path.join(__dirname, '/node_modules/react')
         }
     },
 
