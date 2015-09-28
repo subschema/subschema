@@ -1,8 +1,12 @@
 var React = require('../react');
 var css = require('../css');
+<<<<<<< HEAD
 
 require('../styles/form.less')
 
+=======
+var Content = require('../types/Content.jsx')
+>>>>>>> Making content more flexible with children
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
     componentWillMount(){
@@ -17,11 +21,9 @@ var EditorTemplate = React.createClass({
         });
     },
     render(){
-        var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
+        var {name, title, help, errorClassName, message, fieldClass, loader, valueManager, children} = this.props;
         var error = this.state.error;
-        return (<div
-            className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>            
-
+        return (<div className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>            
             <div className="col-sm-10">
               {title ? <label className="control-label" htmlFor={name}><span dangerouslySetInnerHTML={{__html:title}}/></label> : null}
               <div className="control-content">

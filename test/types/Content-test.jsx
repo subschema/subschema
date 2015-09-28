@@ -76,6 +76,37 @@ describe('Content', function () {
         expect(node.tagName).toBe('SPAN');
 
     });
+    it('should render loaded an empty p', function () {
+        var what = '<' + 'h1' + '>2<' + '/h1>';
+        var more = 1;
+        var vm = ValueManager({what, more});
+        var content = {
+            h3: 'your value is {what}', Test: {
+                content: ['is more']
+            }
+        };
+        var root = into(<Content key='t2' type='p' className='stuff' content={''} valueManager={vm} path="test"
+                                 loader={loader}/>, true);
+        var node = React.findDOMNode(root);
+        var str = node.innerHTML;
+        expect(str).toBe('');
+        //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
+        expect(node.tagName).toBe('P');
+        expect(node.className).toBe('stuff');
+    });
+    it.only('should render nested content', function () {
+        var title = {
 
+            type: 'h3',
+            content: 'hello',
+            className: 'panel-title clearfix'
 
+        };
+
+        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}/>, true);
+
+        var node = React.findDOMNode(root);
+        var str = node.innerHTML;
+        console.log('str', str);
+    })
 });

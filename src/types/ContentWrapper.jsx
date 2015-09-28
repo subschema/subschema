@@ -60,8 +60,7 @@ var ContentWrapper = React.createClass({
         this._value = this.substitute(content);
     },
     render(){
-        var {type, content, context, ...props} = this.props
-        var Type;
+        var {type, content, children, context, ...props} = this.props, Type
 
         if (React.DOM[type]) {
             props.dangerouslySetInnerHTML = {
@@ -73,6 +72,7 @@ var ContentWrapper = React.createClass({
         }
         return <Type {...props}>
             <span key='content' dangerouslySetInnerHTML={{ __html: this._value(this.state)}}/>
+            {children}
         </Type>
 
     }

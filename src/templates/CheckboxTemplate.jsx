@@ -1,5 +1,5 @@
 var React = require('../react');
-
+var Content = require('../types/Content.jsx');
 var CheckboxTemplate = React.createClass({
     render(){
         return (<div className="checkbox">
