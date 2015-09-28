@@ -6,40 +6,6 @@ var DOM = React.DOM || {};
 var map = require('lodash/collection/map');
 var isObject = require('lodash/lang/isObject');
 var tu = require('../tutils');
-var defaults = require('lodash/object/defaults');
-function renderChild(content, props, prefix) {
-    if (!content) {
-        return null;
-    }
-    if (tu.isString(content)) {
-        return <ContentWrapper key={'content-'+prefix} {...props} content={content}/>
-    }
-
-    if (Array.isArray(content)) {
-
-        return map(content, (c, key)=> {
-            if (c.content) {
-                return renderChild(c.content || c, defaults(c, props), prefix + '-ac-' + key);
-            } else {
-                return renderChild(c, props, prefix + '-a-' + key);
-            }
-        });
-    }
-
-    if (isObject(content)) {
-
-        return map(content, (c, key)=> {
-            if (c.content) {
-                return renderChild(c.content || c, defaults({type: key}, c, props), prefix + '-mc-' + key);
-            } else {
-                return renderChild(c, defaults({type: key}, props), prefix + '-m-' + key);
-            }
-        });
-    }
-
-    return <Content key={'conent-ft-'+prefix}  {...props} content={content}/>
-}
-
 
 var Content = React.createClass({
     getDefaultProps(){
@@ -48,27 +14,86 @@ var Content = React.createClass({
             content: ''
         }
     },
-    render(){
-        var {type, content, context, ...props} = this.props, Ctype;
+    renderChildren(props, children){
+        if (!(this.props.children && props.children)) {
+            return null;
+        }
+        if (!(this.props.children && props.children)) {
+            return null;
+        }
+        if (props.children === true) {
+            return this.props.children;
+        }
+        var toChildren;
+        if (tu.isString(props.children) || tu.isArray(props.children)) {
+            toChildren = tu.toArray(props.children);
+        } else if (isObject(props.children)) {
+            toChildren = Object.keys(props.children).filter((v)=> v === true);
+        }
+        if (!toChildren) {
+            return null;
+        }
+        return toChildren.map((v)=> {
+            return children[v];
+        });
+
+    },
+    renderChild(content, props, prefix, children) {
+        if (content == null || content === false) {
+            return null;
+        }
+        if (tu.isString(content)) {
+            return <ContentWrapper {...props} key={'content-'+prefix} content={content}
+                                              valueManager={this.props.valueManager} loader={this.props.loader}/>
+        }
+
+        if (Array.isArray(content)) {
+            return map(content, (c, key)=> {
+                if (c.content) {
+                    return <Content {...c} key={'content-'+prefix+'-'+key} valueManager={this.props.valueManager}
+                                           loader={this.props.loader}>
+                        {this.renderChildren(c, children)}
+                    </Content>
+                }
+                return this.renderChild(c, {}, prefix + '-a-' + key, children);
+
+            });
+        }
+
+        return <Content {...props} key={'content-ft-'+prefix} content={content}
+                                   valueManager={this.props.valueManager}
+                                   loader={this.props.loader}>
+            {this.renderChildren(props, children)}
+        </Content>
+    },
+
+    render()
+    {
+        var {type, content, children, valueManager, loader, context, ...props} = this.props, Ctype;
+        if (content == null || content === false) {
+            return null;
+        }
         if (type === 'Content') {
             type = 'span';
         }
-        if (tu.isString(content)) {
+        if (content.content) {
+            var {...rest} = content;
+            delete rest.content;
+            children = this.renderChild(content.content, rest, 'dom', children)
+        } else if (tu.isString(content)) {
             props.type = type;
-            return renderChild(content, props, 'c');
+            return this.renderChild(content, props, 'str-c');
         }
-        var children = renderChild(content, props, 'dom');
 
         if (React.DOM[type]) {
-            if (children) {
-                props.children = children;
-            }
-            return React.createElement(type, props);
+            return React.createElement(type, props, children);
         }
-        if (this.props.loader) {
-            Ctype = this.props.loader.loadType(type);
+
+        if (loader) {
+            Ctype = loader.loadType(type);
         }
-        return <Ctype {...props}>
+
+        return <Ctype {...props} valueManager={valueManager} loader={loader}>
             {children}
         </Ctype>
     }

@@ -15,6 +15,7 @@ module.exports = {
                 title: 'True or False No Value'
             },
             groupsOfGroups: {
+                title:'Group of Groups',
                 options: [
                     {
                         group: 'North America', options: [

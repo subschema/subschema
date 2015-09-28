@@ -216,7 +216,8 @@ var RestrictedMixin = {
         if (this.props.onKeyDown) {
             this.props.onKeyDown.call(this, e);
         }
-        var pos = e.target.selectionStart, end = e.target.selectionEnd;
+        var pos = e.target.selectionStart, end = e.target.selectionEnd, value = (this.state.value || '');
+
         if (e.key === 'Enter') {
             this.props.onValid(this.state.hasValidValue, {
                 isValid: this.state.hasValidValue,
@@ -226,7 +227,6 @@ var RestrictedMixin = {
         }
         if (e.key === 'Delete') {
             e.preventDefault();
-            var value = (this.state.value || '');
             value = value.substring(0, pos) + value.substring(end);
             this._value(value, false, pos);
             return;
@@ -234,7 +234,6 @@ var RestrictedMixin = {
         if (e.key === 'Backspace') {
             e.preventDefault();
             e.stopPropagation();
-            var value = (this.state.value || '');
             var back = false;
             if (pos === end) {
                 value = value.trim().substring(0, value.length - 1);
@@ -244,6 +243,13 @@ var RestrictedMixin = {
             }
             this._value(value, back, pos + value.length);
             return;
+        }
+        if (pos < value.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            var nvalue = value.split('');
+            nvalue.splice(pos, Math.max(end -pos, 1), String.fromCharCode(e.keyCode) );
+            this._value(nvalue.join(''), false, pos);
         }
     },
     _value(str, isBackspace, caret){

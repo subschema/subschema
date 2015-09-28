@@ -10,6 +10,7 @@ module.exports = {
 
     devtool: 'eval',
     entry: [
+
         'webpack-dev-server/client?http://localhost:' + 8084,
         'webpack/hot/only-dev-server',
         path.join(__dirname, 'public/app.jsx')
@@ -44,7 +45,7 @@ module.exports = {
                     path.join(__dirname, 'src'),
                     path.join(__dirname, 'public')
                 ],
-                loaders: ['react-hot', 'babel-loader?stage=0']
+                loaders: ['react-hot', 'babel-loader?stage=0&externalHelpers&optional=runtime']
             },
             {
                 test: /\.js(x)?$/,
@@ -53,7 +54,7 @@ module.exports = {
                     path.join(__dirname, 'src'),
                     path.join(__dirname, 'public')
                 ],
-                loaders: ['babel-loader?stage=0']
+                loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
             },
             {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -81,6 +82,7 @@ module.exports = {
     },
 
     plugins: [
+
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
 
