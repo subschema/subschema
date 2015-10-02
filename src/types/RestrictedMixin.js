@@ -6,17 +6,80 @@ var makeFormatter = require('../formatter');
 function ret(op) {
     return op;
 }
-var dateRe = /^([0,1]?\d?)(?:\/?(\d{0,2}))?$/;
-var date4yRe = /^([0,1]?\d?)([^\d])?(2?0?\d{0,2})?$/;
 
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
 function lastEq(input, val) {
     return input && input[input.length - 1] === val;
 }
-
+/*function findCharPosAfter(value, char, pos) {
+ for (var i = pos, l = value.length; i < l; i++) {
+ if (value[i] === char) {
+ return i + 1;
+ }
+ }
+ return value.length;
+ }*/
 function defaultValidator(value, regex) {
     return regex.test(value);
 }
+var dd_yyyy = makeFormatter('##/####');
+function shortDate(value, isBackspace, caret) {
+    var ref = dd_yyyy(value, isBackspace, caret),
+        parts = ref.value.split('/', 2),
+        position = ref.position,
+        str = '',
+        [mm, last] = parts;
+    //invalid month, best guess
+    if (parseInt(mm, 10) > 12) {
+        str = '0' + mm[0] + '/';
+    } else if (!isBackspace) {
+        //otherwise
+        if (!last && mm.length === 1 && parseInt(mm, 10) > 1) {
+            str += '0' + mm + '/';
+        } else if (mm.length === 2) {
+            str = mm + '/';
+            position = str.length;
+        } else if (last) {
+            str += '0' + mm + '/';
+        } else {
+            str = mm;
+        }
+
+        if (last) {
+            last = parseInt(last, 10);
+            if (last === 2) {
+                str += '2';
+            } else if (last < 2) {
+                str += '20' + last;
+            } else if (last === 20) {
+                str += '20';
+            } else if (last < 21) {
+                str += '20' + last;
+            } else if (last > 100) {
+                str += last;
+            } else if (last > 10) {
+                str += '20' + last;
+            }
+        }
+    } else {
+        str = ref.value;
+    }
+    var isValid = false;
+    if (str.length === 7) {
+        isValid = true;
+        var parts = str.split('/');
+        parts.push(parts.pop().replace(/^20/, ''));
+        str = parts.join('/');
+    } else {
+        str = str.substring(0, 7);
+    }
+    return {
+        value: str,
+        isValid,
+        position
+    };
+
+};
 function createValidator(validator, loader) {
     if (validator === void(0)) {
         return defaultValidator;
@@ -38,7 +101,6 @@ function createValidator(validator, loader) {
 
 }
 function title(value) {
-    value = value || '';
     if (value.length === 0) {
         return value;
     }
@@ -61,13 +123,13 @@ var RestrictedMixin = {
         }
     },
     setValue(value){
-        this.setState({value});
+        this.setState({value: value});
     },
     getValue(){
         return this.state.value;
     },
     formatters: {
-        uszip(value, isBackspace){
+        uszip(value, isBackspace, position){
             value = (value || '').substring(0, 10);
             var parts = zipRe.exec(value) || [], isValid = false;
 
@@ -88,124 +150,56 @@ var RestrictedMixin = {
                 isValid
             }
         },
-        capitalize(value) {
-            return {value: title(value), isValid: (value && value.length > 2)};
+        capitalize(value, isBackward, position) {
+            value = value || '';
+            var isValid = value && value.length > 2 || false;
+            if (isBackward) {
+                position--;
+            } else {
+                position++;
+                value = title(value);
+            }
+            return {
+                value,
+                isValid,
+                position
+            };
         },
-        title(value, isBackspace){
-            value = (value || '').split(/\s+?/).map(title).join(' ');
-
-            return {value, isValid: (value && value.length > 2)};
+        title(value, isBackward, position){
+            value = value || '';
+            var isValid = value && value.length > 2 || false;
+            if (isBackward) {
+                position--;
+            } else {
+                value = value.replace(/([^\s]*)(\s*)/g, title);
+                position++;
+            }
+            return {
+                value,
+                isValid,
+                position
+            }
         },
         creditcard: '#### #### #### ####',
-        mm20YY(value, isBackspace){
-            var parts = date4yRe.exec(value) || [];
-            if (parts.shift()) {
-                var str = '';
-                var [mm,delim, last] = parts;
-                //invalid month, best guess
-                if (parseInt(mm, 10) > 12) {
-                    str = '0' + mm[0] + '/';
-                } else {
-                    //otherwise
-                    if (!last && mm.length === 1 && parseInt(mm, 10) > 1) {
-                        str += '0' + mm + '/';
-                    } else if (mm.length === 2) {
-                        str = mm + '/';
-                    } else if (last) {
-                        str += '0' + mm + '/';
-                    } else if (delim) {
-                        str = mm.length === 1 ? '0' + mm + '/' : mm + '/';
-                    } else {
-                        str = mm;
-                    }
-
-                    if (last) {
-                        last = parseInt(last, 10);
-                        if (last === 2) {
-                            str += '2';
-                        } else if (last < 2) {
-                            str += '20' + last;
-                        } else if (last === 20) {
-                            str += '20';
-                        } else if (last < 21) {
-                            str += '20' + last;
-                        } else if (last > 100) {
-                            str += last;
-                        } else if (last > 10) {
-                            str += '20' + last;
-                        }
-                    }
-                }
-                var isValid = false;
-                if (str.length === 7) {
-                    isValid = true;
-                    var parts = str.split('/');
-                    parts.push(parts.pop().replace(/^20/, ''));
-                    str = parts.join('/');
-                }
-                return {
-                    value: (isBackspace) ? str.substring(0, (lastEq(value, '/') ? value.length - 1 : value.length)) : str,
-                    isValid
-                };
-            }
-            if (value && value.trim() === '') {
-                return {
-                    value: value.trim(),
-                    isValid: false
-                }
-            }
-            return {
-                value: '',
-                isValid: false
-            }
-        },
-        shortDate(value, isBackspace){
-            var parts = dateRe.exec(value) || [];
-            if (parts.shift()) {
-                var str = '';
-                var last = parts.pop();
-                var mm = parts.shift();
-                if (mm.length === 2) {
-                    str += mm + '/'
-                } else if (last || last === '') {
-                    str += '0' + mm + '/'
-                } else {
-                    str += mm;
-                }
-                str += (last || '');
-                return {
-                    value: (isBackspace) ? str.substring(0, (lastEq(value, '/') ? value.length - 1 : value.length)) : str,
-                    isValid: str.length === 5
-                };
-            }
-            if (value && value.trim() === '') {
-                return {
-                    value: value.trim(),
-                    isValid: false
-                }
-            }
-            return {
-                value: '',
-                isValid: false
-            }
-        }
+        mm20YY: shortDate,
+        shortDate
     },
 
-    formatter: function (value, isBackspace) {
+    formatter: function (value, isBackspace, caret) {
         if (this._formatter) {
-            return this._formatter.call(this, value, isBackspace);
+            return this._formatter.call(this, value, isBackspace, caret);
         }
         var formatter = this.props.formatter;
 
         if (typeof formatter === 'string') {
             formatter = this.formatters[formatter] || formatter;
             if (typeof formatter === 'function') {
-                return (this._formatter = formatter).call(this, value, isBackspace);
+                return (this._formatter = formatter).call(this, value, isBackspace, caret);
             } else {
                 return (this._formatter = makeFormatter(formatter, createValidator(this.props.validator, this.props.loader))).call(this, value, isBackspace);
             }
         } else if (typeof formatter === 'function') {
-            return (this._formatter = formatter).call(this, value, isBackspace);
+            return (this._formatter = formatter).call(this, value, isBackspace, caret);
         }
         return value;
     },
@@ -217,7 +211,6 @@ var RestrictedMixin = {
             this.props.onKeyDown.call(this, e);
         }
         var pos = e.target.selectionStart, end = e.target.selectionEnd, value = (this.state.value || '');
-
         if (e.key === 'Enter') {
             this.props.onValid(this.state.hasValidValue, {
                 isValid: this.state.hasValidValue,
@@ -244,37 +237,56 @@ var RestrictedMixin = {
             this._value(value, back, pos + value.length);
             return;
         }
+        if (e.key !== 'Unidentified') {
+            return;
+        }
+       /* if (e.key === 'Shift'){
+            this._shift = true;
+            return
+        }
+*/
         if (pos < value.length) {
             e.preventDefault();
             e.stopPropagation();
             var nvalue = value.split('');
-            nvalue.splice(pos, Math.max(end -pos, 1), String.fromCharCode(e.keyCode) );
+            var char = String.fromCharCode(e.keyCode);
+            if (!e.shiftKey){
+                char = char.toLowerCase();
+            }
+            nvalue.splice(pos, Math.max(end - pos, 1), char);
             this._value(nvalue.join(''), false, pos);
         }
     },
     _value(str, isBackspace, caret){
-        var value = this.formatter(str, isBackspace) || {isValid: false};
+        var value = this.formatter(str, isBackspace, caret) || {isValid: false};
+
         this.props.onValid(value.isValid, value);
         this.props.handleChange(value.value);
-        if (caret != null) {
+        if (caret != null && typeof value.position === 'number') {
             if (isBackspace) {
                 caret += value.position - 1;
-            } else {
-                caret += value.position + 1;
+            }
+            else {
+                caret = value.position;
             }
         }
         this.setState({
             value: value.value,
             hasValue: value.value.length !== 0,
             hasValidValue: value.isValid
-        }, caret ? function () {
-            this.getDOMNode().setSelectionRange(caret, caret);
-        } : null);
+        }, function () {
+            var input = React.findDOMNode(this.refs.input);
+            if (!input)return;
+
+            if (caret != null)
+                input && input.setSelectionRange(caret, caret);
+
+        });
 
     },
     handleValueChange(e){
         this.props.onChange.call(this, e);
-        this._value(e.target.value, false, e.target.selectionEnd);
+        this._value(e.target.value, false);
     }
 };
 

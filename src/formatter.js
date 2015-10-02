@@ -54,6 +54,14 @@ function pad(delim, padding) {
 function defaultValidator(value, regex) {
     return regex.test(value);
 }
+function findCharPosAfter(value, char, pos) {
+    for (var i = pos, l = value.length; i < l; i++) {
+        if (value[i] === char) {
+            return i + 1;
+        }
+    }
+    return value.length;
+}
 function makeFormatter(format, validator) {
     validator = validator || defaultValidator;
     var parts;
@@ -124,10 +132,9 @@ function makeFormatter(format, validator) {
         }
     }
     var re = new RegExp('^' + pattern), vre = new RegExp('^' + validPattern + '$', 'g');
-    return function makeFormatter$formatter(input, isBackward) {
+    return function makeFormatter$formatter(input, isBackward, end) {
         vre.lastIndex = re.index = re.lastIndex = 0;
-        var idx = 0, d = 0, p;
-        var parts = re.exec(input);
+        var idx = 0, d = 0, p, parts = re.exec(input), position = end || 0;
         parts.shift();
         //remove delimeters
 
@@ -141,8 +148,9 @@ function makeFormatter(format, validator) {
                 break;
         }
         var incr = handlers.length;
-        var value = '', done = false, isPlaceholder = false;
+        var value = '', done = false;
         for (var i = 0, l = incr * 3; i < l; i += 3, d++) {
+
             /*if (parts[i] == '' && parts[i + 1] == null) {
              break;
              }*/
@@ -153,9 +161,13 @@ function makeFormatter(format, validator) {
                 break;
             }
         }
+        if (!isBackward && end){
+            position = findCharPosAfter(value, input[end], end);
+        }
         return {
             isValid: validator(value, vre),
-            value: value
+            value,
+            position
         }
     }
 }

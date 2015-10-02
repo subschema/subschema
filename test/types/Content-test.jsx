@@ -94,7 +94,7 @@ describe('Content', function () {
         expect(node.tagName).toBe('P');
         expect(node.className).toBe('stuff');
     });
-    it.only('should render nested content', function () {
+    it('should render nested content', function () {
         var title = {
 
             type: 'h3',
@@ -104,6 +104,25 @@ describe('Content', function () {
         };
 
         var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}/>, true);
+
+        var node = React.findDOMNode(root);
+        var str = node.innerHTML;
+        console.log('str', str);
+    });
+    it('should render nested content with children', function () {
+        var title = {
+
+            type: 'h3',
+            content: ['hello', {children:true}],
+            className: 'panel-title clearfix'
+
+        };
+
+        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}>
+                <div>What</div>
+
+            </Content>
+            , true);
 
         var node = React.findDOMNode(root);
         var str = node.innerHTML;

@@ -49,8 +49,12 @@ module.exports = {
     },
     data: {
         "mm/yy": '02/22',
-        "ccard": '1234 4567 8901 2345',
-        "formatter": "033"
+        "ccard": '4111 1111 1111 1111',
+        "usphone":"1 (555) 123-4567",
+        "capitalize":"Hello world",
+        "title":"Hello World",
+        "###":"123",
+        "uszip":"22202"
     },
     errors: {
         ccard: [{
