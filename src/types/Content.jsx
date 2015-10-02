@@ -15,14 +15,14 @@ var Content = React.createClass({
         }
     },
     renderChildren(props, children){
-        if (!(this.props.children && props.children)) {
+        if (!(children && props.children)) {
             return null;
         }
-        if (!(this.props.children && props.children)) {
+        if (!(children && props.children)) {
             return null;
         }
         if (props.children === true) {
-            return this.props.children;
+            return children;
         }
         var toChildren;
         if (tu.isString(props.children) || tu.isArray(props.children)) {
@@ -59,11 +59,17 @@ var Content = React.createClass({
 
             });
         }
+        if(content.content){
+            return <Content {...content.content} key={'content-content'} valueManager={this.props.valueManager}
+                                   loader={this.props.loader}>
+                {this.renderChildren(content.content, children)}
+            </Content>
+        }
 
         return <Content {...props} key={'content-ft-'+prefix} content={content}
                                    valueManager={this.props.valueManager}
                                    loader={this.props.loader}>
-            {this.renderChildren(props, children)}
+            {this.renderChildren(content, children)}
         </Content>
     },
 

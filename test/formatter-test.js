@@ -206,4 +206,29 @@ describe('should create a formatter from a a pattern', function () {
         });
     });
 
+    describe.only('## ## ##', function () {
+
+        var pattern = formatter('## ## ##'), result;
+
+        it('should position increment', function () {
+            result = pattern('11 22 33', false, 3);
+            expect(result.value).toBe('11 22 33');
+            expect(result.position).toBe(4);
+        });
+        it('should not position increment', function () {
+            result = pattern('11 22 33', false, 1);
+            expect(result.value).toBe('11 22 33');
+            expect(result.position).toBe(2);
+        });
+        it('should position increment 2 to 3', function () {
+            result = pattern('11 22 33', false, 2);
+            expect(result.value).toBe('11 22 33');
+            expect(result.position).toBe(3);
+        });
+        it('should position increment 5 to 6', function () {
+            result = pattern('11 22 33', false, 5);
+            expect(result.value).toBe('11 22 33');
+            expect(result.position).toBe(6);
+        });
+    });
 });
