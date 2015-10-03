@@ -6,7 +6,7 @@ var Restricted = require('../../src/types/Restricted.jsx');
 function change(node, value) {
     Simulate.change(node, {target: {value}});
 }
-describe('Checkbox', function () {
+describe('Restricted', function () {
     this.timeout(30000);
     var Form = require('subschema').Form;
 
@@ -44,7 +44,8 @@ describe('Checkbox', function () {
 
             change(input, '1/');
             expect(inputEl.value).toBe('01/');
-
+        });
+        it('enters 1/1', function(){
             change(input, '1/1');
             expect(inputEl.value).toBe('01/201');
 
@@ -75,7 +76,13 @@ describe('Checkbox', function () {
         it('enters 13', function(){
 
             change(input, '13');
-            expect(inputEl.value).toBe('01/');
+            expect(inputEl.value).toBe('01/203');
+
+        });
+        it('enters 133', function(){
+
+            change(input, '133');
+            expect(inputEl.value).toBe('01/33');
 
         });
     });

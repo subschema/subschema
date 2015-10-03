@@ -25,24 +25,32 @@ function defaultValidator(value, regex) {
 var dd_yyyy = makeFormatter('##/####');
 function shortDate(value, isBackspace, caret) {
     var ref = dd_yyyy(value, isBackspace, caret),
-        parts = ref.value.split('/', 2),
+        parts = /(\d{1,2})([^\d]+?)?(\d{0,4})?/.exec(value),
         position = ref.position,
         str = '',
-        [mm, last] = parts;
+        [whole, mm, delim, last] = parts,
+        mmInt = parseInt(mm || '0', 10);
+
     //invalid month, best guess
-    if (parseInt(mm, 10) > 12) {
-        str = '0' + mm[0] + '/';
-    } else if (!isBackspace) {
-        //otherwise
-        if (!last && mm.length === 1 && parseInt(mm, 10) > 1) {
-            str += '0' + mm + '/';
+
+    if (!isBackspace) {
+        //13->01/3
+        if (parseInt(mm, 10) > 12) {
+            str = '0' + mm[0] + '/';
+            last = mm[1] + (last == null ? '' : last);
+        } else
+        //11->11/
+        if (delim) {
+            str = (mmInt < 10 ? '0' + mmInt : mmInt) + '/';
+        } else if (mmInt > 9) {
+            str = mmInt + '/';
+        } else if (mmInt > 1) {
+            str = '0' + mmInt + '/';
         } else if (mm.length === 2) {
             str = mm + '/';
-            position = str.length;
-        } else if (last) {
-            str += '0' + mm + '/';
         } else {
             str = mm;
+
         }
 
         if (last) {
@@ -240,17 +248,17 @@ var RestrictedMixin = {
         if (e.key !== 'Unidentified') {
             return;
         }
-       /* if (e.key === 'Shift'){
-            this._shift = true;
-            return
-        }
-*/
+        /* if (e.key === 'Shift'){
+         this._shift = true;
+         return
+         }
+         */
         if (pos < value.length) {
             e.preventDefault();
             e.stopPropagation();
             var nvalue = value.split('');
             var char = String.fromCharCode(e.keyCode);
-            if (!e.shiftKey){
+            if (!e.shiftKey) {
                 char = char.toLowerCase();
             }
             nvalue.splice(pos, Math.max(end - pos, 1), char);

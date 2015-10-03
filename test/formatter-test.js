@@ -206,7 +206,7 @@ describe('should create a formatter from a a pattern', function () {
         });
     });
 
-    describe.only('## ## ##', function () {
+    describe('## ## ##', function () {
 
         var pattern = formatter('## ## ##'), result;
 
