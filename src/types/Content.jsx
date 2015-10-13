@@ -6,7 +6,7 @@ var DOM = React.DOM || {};
 var map = require('lodash/collection/map');
 var isObject = require('lodash/lang/isObject');
 var tu = require('../tutils');
-
+var defaults = require('lodash/object/defaults');
 var Content = React.createClass({
     getDefaultProps(){
         return {
@@ -59,9 +59,9 @@ var Content = React.createClass({
 
             });
         }
-        if(content.content){
+        if (content.content) {
             return <Content {...content.content} key={'content-content'} valueManager={this.props.valueManager}
-                                   loader={this.props.loader}>
+                                                 loader={this.props.loader}>
                 {this.renderChildren(content.content, children)}
             </Content>
         }
@@ -81,6 +81,7 @@ var Content = React.createClass({
         }
         if (type === 'Content') {
             type = 'span';
+            props.type = type;
         }
         if (content.content) {
             var {...rest} = content;
@@ -89,6 +90,12 @@ var Content = React.createClass({
         } else if (tu.isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');
+        } else if (tu.isArray(content)) {
+            props.type = type;
+            children = this.renderChild(content, props, 'arr', children);
+        }else if (content.content === false){
+            props = defaults(content, props);
+            type = props.type;
         }
 
         if (React.DOM[type]) {

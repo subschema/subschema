@@ -127,5 +127,46 @@ describe('Content', function () {
         var node = React.findDOMNode(root);
         var str = node.innerHTML;
         console.log('str', str);
-    })
+    });
+    it('should render content stuff', function(){
+        var content = [
+            {
+                "className": "clz-left",
+                "content": [
+                    {
+                        "type": "h1",
+                        "content": "Heading stuff"
+                    },
+                    {
+                        "type": "p",
+                        "content": "Super special content"
+                    },
+                    {
+                        "type": "button",
+                        "className": "btn btn-primary",
+                        "content":"Activate"
+                    }
+                ]
+            },
+            {
+                "className": "clz-right",
+                "content": [
+                    {
+                        "type": "img",
+                        "className": "super-img",
+                        "src": "about:blank",
+                        "content":false
+                    }
+                ]
+            }
+        ]
+
+        var root = into( <Content content={content} className='panel panel-default'  valueManager={ValueManager()} loader={loader}>
+            </Content>
+            , true);
+
+        var node = React.findDOMNode(root);
+        var str = node.innerHTML;
+        console.log('str', str);
+    });
 });
