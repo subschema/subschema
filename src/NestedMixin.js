@@ -99,7 +99,8 @@ var NestedMixin = {
     },
     makeFieldset(f, i) {
         var Template = this.template(f.template || 'FieldSetTemplate');
-        return <Template key={'f' + i} field={f} legend={f.legend} loader={this.props.loader} valueManager={this.props.valueManager}>
+        return <Template key={'f' + i} field={f} legend={f.legend} loader={this.props.loader}
+                         valueManager={this.props.valueManager}>
             {this.makeFields(f.fields)}
         </Template>
     },
@@ -163,7 +164,27 @@ var NestedMixin = {
 
     renderSchema() {
         return this.schema.fieldsets.map(this.makeFieldset, this);
+    },
+
+    render() {
+
+        var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;
+
+        var sb = submitButton || this.schema.submitButton;
+        var Template = this.template(template);
+        return <Template ref="form" onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
+                         className={this.props.className}
+            {...props}
+                         loader={this.props.loader}
+                         valueManager={this.props.valueManager}
+            >
+            {this.schema && this.schema.schema ? this.renderSchema(this) : null}
+            {sb ?
+                <button type="submit" className='btn btn-primary' dangerouslySetInnerHTML={{__html: sb}}/> : null}
+            {this.props.children}
+        </Template>
     }
+
 }
 NestedMixin.normalizeSchema = normalizeSchema;
 NestedMixin.extractSchema = extractSchema;
