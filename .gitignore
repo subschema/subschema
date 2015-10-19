@@ -1,6 +1,7 @@
 .build
-npm-debug.log
+npm-debug.log*
 node_modules
 .idea
 dist
 .DS_Store
+
