@@ -37,7 +37,7 @@ function renderChild(content, props, prefix) {
         });
     }
 
-    return <Content key={'conent-ft-'+prefix}  {...props} content={content}/>
+    return <Content key={'content-ft-'+prefix}  {...props} content={content}/>
 }
 
 
