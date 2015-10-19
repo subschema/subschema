@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require('../react');
-var ContentWrapper = require('./ContentWrapper.jsx');
+var DefaultContentWrapper = require('./ContentWrapper.jsx');
 var DOM = React.DOM || {};
 var map = require('lodash/collection/map');
 var isObject = require('lodash/lang/isObject');
@@ -43,6 +43,7 @@ var Content = React.createClass({
             return null;
         }
         if (tu.isString(content)) {
+            var ContentWrapper = this.props.loader  && this.props.loader.loadType('ContentWrapper') || DefaultContentWrapper;
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}
                                               valueManager={this.props.valueManager} loader={this.props.loader}/>
         }
