@@ -6,11 +6,28 @@ var DateInput = React.createClass({
     statics: {
         inputClassName: Constants.inputClassName
     },
+    asInputValue(){
+        if (this.state.value == null) {
+            return '';
+        }
+        var value = new Date(this.state.value).toISOString().substring(0, 10);
+ /*       var timezoneOffset = value.getTimezoneOffset() * 60 * 1000;
+        var localDate = new Date(value.getTime() - timezoneOffset);
+
+        return localDate.toISOString().replace('Z', '');*/
+        return value;
+    },
+    handleDateChange(e){
+        this.props.onChange(e);
+        var value = this.valueFromEvt(e);
+
+        this.props.handleChange(new Date(value).getTime());
+    },
     render() {
         var {onBlur,onValueChange,onChange, className, fieldAttrs, ...props} = this.props;
-        return <input onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
+        return <input onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
                       className={css.forField(this)} type="date"
-                      value={this.state.value}
+                      value={this.asInputValue()}
             {...props}
             {...fieldAttrs}
             />
