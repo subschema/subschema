@@ -67,9 +67,7 @@ var api = {
         if (t instanceof Date) {
             return new Date(t.getTime());
         }
-        var {...ret} = t;
-
-        return ret;
+        return api.extend({}, t);
     },
     debounce: function (fn, to) {
         var ti;
@@ -87,6 +85,12 @@ var api = {
     },
     emptyCheck: function (v) {
         return v != null && v.length > 0;
+    },
+    uppercase: function (v) {
+        return v.toUpperCase();
+    },
+    titlelize: function (value) {
+        return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, api.uppercase);
     },
     push: Function.apply.bind(Array.prototype.push)
 }
