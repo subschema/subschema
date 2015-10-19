@@ -153,9 +153,7 @@ var Editor = React.createClass({
             return field.title;
         }
         //Add spaces
-        return this.props.name.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => {
-            return s.toUpperCase();
-        });
+        return tu.titlelize(this.props.name);
     },
     handleValid: function (valid) {
         this.setState({valid})
