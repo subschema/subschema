@@ -3,6 +3,7 @@ var React = require('./react');
 var tu = require('./tutils');
 var EMPTY_ARR = [];
 var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
+var Conditional = require('./Conditional.jsx');
 /**
  * Safe chained function
  *
@@ -158,8 +159,7 @@ var Editor = React.createClass({
     handleValid: function (valid) {
         this.setState({valid})
     },
-    render() {
-        var {field,  onValueChange,  conditional, template, onValidate, ...props} = this.props;
+    renderContent(field, onValueChange, template, onValidate, props){
         var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
@@ -184,10 +184,10 @@ var Editor = React.createClass({
 
                                onValidate={this.handleValidate}/>;
         }
-        /*if (onValid) {
-         onValid = applyFuncs(this.handleValid, onValid);
-         }*/
-        //errMessage, errorClassName, name, fieldClass, title, help
+        if (!title) {
+            title = '';
+        }
+
         return Template ?
             <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
@@ -198,6 +198,19 @@ var Editor = React.createClass({
             </Template> :
             child;
 
+    },
+    render(){
+        var {field,  onValueChange,  conditional, template, onValidate, ...props} = this.props;
+        if (conditional == null || conditional === false) {
+            return this.renderContent(field, onValueChange, template, onValidate, props);
+        }
+        if (typeof conditional === 'string') {
+            conditional = {operator: conditional};
+        }
+        return (<Conditional {...conditional} valueManager={props.valueManager} loader={props.loader}>
+            {this.renderContent(field, onValueChange, template, onValidate, props)}
+        </Conditional>);
     }
+
 });
 module.exports = Editor;

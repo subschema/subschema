@@ -35,7 +35,7 @@ describe('Lazy', function () {
         var vm = ValueManager({test: 2});
 
         var root = into(<Editor loader={loader} valueManager={vm} field={{type:'Text', title:'hello', template:false}}
-                                path="test"/>, true);
+                                path="test"/>, false);
 
         var input = React.findDOMNode(TestUtils.scryRenderedDOMComponentsWithTag(root, 'span')[0]);
         expect(input.classList.contains('lazy-loading-type')).toBe(true);

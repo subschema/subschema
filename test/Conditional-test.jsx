@@ -14,7 +14,7 @@ function notByType(node, type) {
 function byType(node, type) {
     return TestUtils.findRenderedComponentWithType(node, type);
 }
-describe.only('Conditional', function () {
+describe('Conditional', function () {
     this.timeout(30000);
 
     function into(node, debug) {
@@ -59,7 +59,7 @@ describe.only('Conditional', function () {
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
-       byType(cond, Hello);
+        byType(cond, Hello);
         vm.update('hot', 'cold');
         notByType(cond, Hello);
 
@@ -100,7 +100,7 @@ describe.only('Conditional', function () {
         notByType(cond, Hello);
 
     })
-    it ('should render children or not', function(){
+    it('should render children or not', function () {
         var vm = ValueManager();
         var cond = into(<Conditional animate={false} path='hot'
                                      valueManager={vm}><Hello/></Conditional>, false);
@@ -114,52 +114,36 @@ describe.only('Conditional', function () {
 
     });
     describe('operators', function () {
-        var cond, vm;
+        /**
+         * Test the operator.
+         * if even position than false, odd position than true.
+         */
         each({
-            '==': 0,
-            '===': 0,
-            '!=': 1,
-            '!==': '',
-            '>': -1,
-            '>=': 0,
-            '<': 1,
-            '<=': 0
+            '==': [0, 1, 0, 2],
+            '===': [0, 1],
+            '!=': [1, ''],
+            '!==': ['', 0],
+            '>': [-1, 0],
+            '>=': [0, 1],
+            '<': [1, 0],
+            '<=': [0, -1]
 
         }, function (v, k) {
-            it('should "' + k + '" be "true" with value "' + v + '"', function () {
-                vm = ValueManager({
+            it('should "' + k + '" work', function () {
+                var valueManager = ValueManager({
                     hot: 0
                 });
 
-                cond = into(<Conditional template={Hello} animate={false} value={0} operator={k} path='hot'
-                                         valueManager={vm}/>, false);
-                vm.update('hot', v)
-                byType(cond, Hello);
-            })
-        });
-        each({
-            '==': 1,
-            '===': 1,
-            '!=': '',
-            '!==': 0,
-            '>': 0,
-            '>=': 1,
-            '<': 0,
-            '<=': -1
-
-        }, function (v, k) {
-            it('should "' + k + '" be "false" with value "' + v + '"', function () {
-                vm = ValueManager({
-                    hot: 0
+                var cond = into(<Conditional template={Hello} animate={false} value={0} operator={k} path='hot'
+                                             valueManager={valueManager}/>, false);
+                each(v, function (nv, i) {
+                    valueManager.update('hot', nv);
+                    ((i + 1) % 2 ? byType : notByType)(cond, Hello);
+                    valueManager.update('hot', 0);
                 });
-
-                cond = into(<Conditional template={Hello} animate={false} value={0} operator={k} path='hot'
-                                         valueManager={vm}/>, false);
-                vm.update('hot', v)
-                notByType(cond, Hello);
             })
         });
 
-    })
+    });
 });
 
