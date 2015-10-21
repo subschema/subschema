@@ -26,6 +26,10 @@ var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.conca
         loadProcessor: load('Processor'),
         listProcessors: list('Processor'),
 
+        addOperator: add('Operator'),
+        loadOperator: load('Operator'),
+        listOperators: list('Operator'),
+
         addLoader(loader){
             if (tu.isArray(loader)) {
                 return loader.map(function (v) {

@@ -5,25 +5,25 @@ var CSSTransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
 var opFactory = (function opFactory$factory(scope) {
-    var eq = function (compare) {
-        return this.props.value == compare
-    }, eqeq = function (compare) {
-        return this.props.value === compare
-    }, ne = function (compare) {
-        return this.props.value != compare
-    }, neeq = function (compare) {
-        return this.props.value !== compare
-    }, gt = function (compare) {
-        return this.props.value > compare
-    }, gteq = function (compare) {
-        return this.props.value >= compare
-    }, lt = function (compare) {
-        return this.props.value < compare
-    }, lteq = function (compare) {
-        return this.props.value <= compare
-    }, truthy = function (compare) {
+    var eq = function (compare, value) {
+        return value == compare
+    }, eqeq = function (compare, value)  {
+        return value === compare
+    }, ne = function (compare, value)  {
+        return value != compare
+    }, neeq = function (compare, value)  {
+        return value !== compare
+    }, gt = function (compare, value)  {
+        return value > compare
+    }, gteq = function (compare, value)  {
+        return value >= compare
+    }, lt = function (compare, value)  {
+        return value < compare
+    }, lteq = function (compare, value)  {
+        return value <= compare
+    }, truthy = function (compare)  {
         return !!compare;
-    }, falsey = function (compare) {
+    }, falsey = function (compare)  {
         return !compare;
     };
     return (operator)=> {
@@ -162,12 +162,12 @@ var Conditional = React.createClass({
         }
     },
     handleValue(value){
-        var matched = this.evaluate(value);
+        var matched = this.evaluate(value, this.props.value);
         this.setState({matched});
     },
     compile(operator){
         if (operator instanceof RegExp) {
-            return (compare)=>operator.test(compare);
+            return (compare, value) =>operator.test(compare, value) ;
         }
         if (typeof operator === 'function') {
             return operator;
@@ -178,14 +178,14 @@ var Conditional = React.createClass({
                 if (os[3] != null) {
                     operator = new RegExp(os[3], os[4]);
                     if (os[2] == null) {
-                        return (compare)=> operator.test(compare);
+                        return (compare, value) => operator.test(compare, value) ;
                     } else {
-                        return (compare) => !operator.test(compare);
+                        return (compare, value)  => !operator.test(compare, value) ;
                     }
                 }
                 return opFactory(operator);
             } else {
-                return this.props.loader.loadOperator(operator);
+                return this.props.loader.loadOperator(operator)(this.props);
             }
         }
 
@@ -209,7 +209,7 @@ var Conditional = React.createClass({
     },
     render()
     {
-        if (this.props.animate === false) {
+        if (!this.props.animate) {
             return this.renderContent();
         }
 
