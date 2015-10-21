@@ -11,16 +11,12 @@ var DateInput = React.createClass({
             return '';
         }
         var value = new Date(this.state.value).toISOString().substring(0, 10);
- /*       var timezoneOffset = value.getTimezoneOffset() * 60 * 1000;
-        var localDate = new Date(value.getTime() - timezoneOffset);
 
-        return localDate.toISOString().replace('Z', '');*/
         return value;
     },
     handleDateChange(e){
         this.props.onChange(e);
         var value = this.valueFromEvt(e);
-
         this.props.handleChange(new Date(value).getTime());
     },
     render() {

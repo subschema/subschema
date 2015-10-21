@@ -159,7 +159,7 @@ var Editor = React.createClass({
         this.setState({valid})
     },
     render() {
-        var {field,  onValueChange,   template, onValidate, ...props} = this.props;
+        var {field,  onValueChange,  conditional, template, onValidate, ...props} = this.props;
         var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
