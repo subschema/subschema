@@ -126,7 +126,9 @@ describe('Conditional', function () {
             '>': [-1, 0],
             '>=': [0, 1],
             '<': [1, 0],
-            '<=': [0, -1]
+            '<=': [0, -1],
+            'truthy': [1, 0, true, false, '1', ''],
+            'falsey': [0, 1, false, true, '', '1']
 
         }, function (v, k) {
             it('should "' + k + '" work', function () {

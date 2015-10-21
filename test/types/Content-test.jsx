@@ -20,7 +20,7 @@ describe('Content', function () {
 
     it('should do simple subsitution', function () {
         var vm = ValueManager({test: 2});
-        var root = into(<Content key='t1' content='your value is {test}' valueManager={vm} path="test"/>, true);
+        var root = into(<Content key='t1' content='your value is {test}' valueManager={vm} path="test"/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is 2');
@@ -29,7 +29,7 @@ describe('Content', function () {
     it('should do simple subsitution escape html in values', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var vm = ValueManager({what});
-        var root = into(<Content key='t2' content='your value is {what}' valueManager={vm} path="test"/>, true);
+        var root = into(<Content key='t2' content='your value is {what}' valueManager={vm} path="test"/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -40,7 +40,7 @@ describe('Content', function () {
         var more = 1;
         var vm = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>, true);
+        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -52,7 +52,7 @@ describe('Content', function () {
         var more = 1;
         var vm = ValueManager({what, more});
         var content = {h3: 'your value is {what}', div: 'is more'};
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>, true);
+        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -69,7 +69,7 @@ describe('Content', function () {
                 content: ['is more']
             }
         };
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test" loader={loader}/>, true);
+        var root = into(<Content key='t2' content={content} valueManager={vm} path="test" loader={loader}/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -86,7 +86,7 @@ describe('Content', function () {
             }
         };
         var root = into(<Content key='t2' type='p' className='stuff' content={''} valueManager={vm} path="test"
-                                 loader={loader}/>, true);
+                                 loader={loader}/>);
         var node = React.findDOMNode(root);
         var str = node.innerHTML;
         expect(str).toBe('');
@@ -103,11 +103,9 @@ describe('Content', function () {
 
         };
 
-        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}/>, true);
+        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}/>);
 
         var node = React.findDOMNode(root);
-        var str = node.innerHTML;
-        console.log('str', str);
     });
     it('should render nested content with children', function () {
         var title = {
@@ -122,11 +120,10 @@ describe('Content', function () {
                 <div>What</div>
 
             </Content>
-            , true);
+            );
 
         var node = React.findDOMNode(root);
         var str = node.innerHTML;
-        console.log('str', str);
     });
     it('should render content stuff', function(){
         var content = [
@@ -163,10 +160,9 @@ describe('Content', function () {
 
         var root = into( <Content content={content} className='panel panel-default'  valueManager={ValueManager()} loader={loader}>
             </Content>
-            , true);
+            );
 
         var node = React.findDOMNode(root);
         var str = node.innerHTML;
-        console.log('str', str);
     });
 });

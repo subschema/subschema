@@ -160,7 +160,7 @@ var Editor = React.createClass({
         this.setState({valid})
     },
     renderContent(field, onValueChange, template, onValidate, props){
-        var {type,fieldClass, editorClass, errorClassName, ...rfield} = field;
+        var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var Component = this.props.loader.loadType(type),
@@ -201,13 +201,14 @@ var Editor = React.createClass({
     },
     render(){
         var {field,  onValueChange,  conditional, template, onValidate, ...props} = this.props;
+        conditional = conditional || field.conditional;
         if (conditional == null || conditional === false) {
             return this.renderContent(field, onValueChange, template, onValidate, props);
         }
         if (typeof conditional === 'string') {
             conditional = {operator: conditional};
         }
-        return (<Conditional {...conditional} valueManager={props.valueManager} loader={props.loader}>
+        return (<Conditional {...conditional} path={props.path} field={field} valueManager={props.valueManager} loader={props.loader}>
             {this.renderContent(field, onValueChange, template, onValidate, props)}
         </Conditional>);
     }

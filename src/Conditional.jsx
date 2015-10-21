@@ -2,7 +2,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var CSSTransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-var opRe = /^(==|===|!=|!==|>=|>|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
+var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
 var opFactory = (function opFactory$factory(scope) {
     var eq = function (compare) {
@@ -21,9 +21,17 @@ var opFactory = (function opFactory$factory(scope) {
         return this.props.value < compare
     }, lteq = function (compare) {
         return this.props.value <= compare
+    }, truthy = function (compare) {
+        return !!compare;
+    }, falsey = function (compare) {
+        return !compare;
     };
     return (operator)=> {
         switch (operator) {
+            case 'truthy':
+                return truthy;
+            case 'falsey':
+                return falsey;
             case '==':
                 return eq;
             case '===':
@@ -113,7 +121,10 @@ var Conditional = React.createClass({
 
     listeners(){
         var {listen, error,path} = this.props;
-        if (!error && listen !== false) {
+        if (listen === false) {
+            return;
+        }
+        if (listen || error == null) {
             this._handleProps({}, this.props);
             return {
                 [listen == null || listen === true ? path : this.createKey(listen)]: this.handleValue
@@ -125,7 +136,7 @@ var Conditional = React.createClass({
         if (error) {
             this._handleProps({}, this.props);
             return {
-                [error === true ? path : this.createKey(error)]: this.handleValue
+                [error === true ? path : error]: this.handleValue
             }
         }
     },
