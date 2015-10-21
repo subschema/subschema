@@ -69,13 +69,15 @@ var ValueManagerListenerMixin = {
     createKey(key){
         return _key(this.props.path, key);
     },
-    registerErrorHandler(key, func){
-        var props = this.props, handler = props.valueManager.addErrorListener(this.createKey(key), invoke(this, func), this, true);
+    registerErrorHandler(key, func, init){
+        if (init == null) init = true;
+        var props = this.props, handler = props.valueManager.addErrorListener(this.createKey(key), invoke(this, func), this, init);
         this._componentListeners.push(handler);
         return handler;
     },
-    registerHandler(key, func){
-        var props = this.props, handler = props.valueManager.addListener(this.createKey(key), invoke(this, func), this, true);
+    registerHandler(key, func, init){
+        if (init == null) init = true;
+        var props = this.props, handler = props.valueManager.addListener(this.createKey(key), invoke(this, func), this, init);
         this._componentListeners.push(handler);
         return handler;
     },
@@ -91,10 +93,12 @@ var ValueManagerListenerMixin = {
         }
 
         Object.keys(errorListeners || {}).forEach(function onComponentErrorListener$map(key) {
-            this.registerErrorHandler(key, errorListeners[key]);
+            var args = [key].concat(errorListeners[key])
+            this.registerErrorHandler.apply(null, args);
         }, this);
         Object.keys(listeners || {}).forEach(function onComponentListener$map(key) {
-            this.registerHandler(key, listeners[key]);
+            var args = [key].concat(listeners[key]);
+            this.registerHandler.apply(null, args);
         }, this);
     },
     componentWillUnmount(){

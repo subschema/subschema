@@ -7,23 +7,23 @@ var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 var opFactory = (function opFactory$factory(scope) {
     var eq = function (compare, value) {
         return value == compare
-    }, eqeq = function (compare, value)  {
+    }, eqeq = function (compare, value) {
         return value === compare
-    }, ne = function (compare, value)  {
+    }, ne = function (compare, value) {
         return value != compare
-    }, neeq = function (compare, value)  {
+    }, neeq = function (compare, value) {
         return value !== compare
-    }, gt = function (compare, value)  {
+    }, gt = function (compare, value) {
         return value > compare
-    }, gteq = function (compare, value)  {
+    }, gteq = function (compare, value) {
         return value >= compare
-    }, lt = function (compare, value)  {
+    }, lt = function (compare, value) {
         return value < compare
-    }, lteq = function (compare, value)  {
+    }, lteq = function (compare, value) {
         return value <= compare
-    }, truthy = function (compare)  {
+    }, truthy = function (compare) {
         return !!compare;
-    }, falsey = function (compare)  {
+    }, falsey = function (compare) {
         return !compare;
     };
     return (operator)=> {
@@ -61,8 +61,8 @@ var Conditional = React.createClass({
     mixins: [require('./ValueManagerListenerMixin')],
     propTypes: {
         /**
-         * The value to listen to can if not given, than
-         * it will be a compare against not null.
+         * The value  to use too compare against  if not given, than
+         * it will be a compare against null.
          */
         value: PropTypes.any,
         /**
@@ -118,7 +118,6 @@ var Conditional = React.createClass({
             animate: false
         }
     },
-
     listeners(){
         var {listen, error,path} = this.props;
         if (listen === false) {
@@ -126,10 +125,17 @@ var Conditional = React.createClass({
         }
         if (listen || error == null) {
             this._handleProps({}, this.props);
+            var key = listen == null || listen === true ? path : listen;
+            this._key = '@' + key.replace(/\./g, '_');
             return {
-                [listen == null || listen === true ? path : this.createKey(listen)]: this.handleValue
+                [key]: this.handleValue,
+                [this._key]: [this.handleMatch, false]
+
             }
         }
+    },
+    handleMatch(value){
+        this.setState({matched: value});
     },
     errorListeners(){
         var {error, path} = this.props;
@@ -158,7 +164,7 @@ var Conditional = React.createClass({
         }
         if (oldProps.operator != props.operator) {
             this.evaluate = this.compile(props.operator);
-            this.handleValue(this.state && this.state.value);
+            //  this.handleValue(this.state && this.state.value);
         }
     },
     handleValue(value){
@@ -167,7 +173,7 @@ var Conditional = React.createClass({
     },
     compile(operator){
         if (operator instanceof RegExp) {
-            return (compare, value) =>operator.test(compare, value) ;
+            return (compare, value) =>operator.test(compare, value);
         }
         if (typeof operator === 'function') {
             return operator;
@@ -178,9 +184,9 @@ var Conditional = React.createClass({
                 if (os[3] != null) {
                     operator = new RegExp(os[3], os[4]);
                     if (os[2] == null) {
-                        return (compare, value) => operator.test(compare, value) ;
+                        return (compare, value) => operator.test(compare);
                     } else {
-                        return (compare, value)  => !operator.test(compare, value) ;
+                        return (compare, value) => !operator.test(compare);
                     }
                 }
                 return opFactory(operator);
@@ -193,15 +199,18 @@ var Conditional = React.createClass({
     },
     renderTemplate(){
         var Template = this.Template;
-        return Template ? <Template key='true-conditional' loader={this.props.loader}
-                                    valueManager={this.props.valueManager}>{this.props.children}</Template> : this.props.children;
+        var {value,  template, falseTemplate, operator, animate, ...props} = this.props;
+        return Template ?
+            <Template key='true-conditional' {...props}
+                      listen={this._key}>{this.props.children}</Template> : this.props.children;
     },
     renderFalseTemplate()
     {
         var FalseTemplate = this.FalseTemplate;
-        return FalseTemplate ? <FalseTemplate loader={this.props.loader}
-                                              key='false-conditional'
-                                              valueManager={this.props.valueManager}>{this.props.children}</FalseTemplate> : null;
+        var {value, listen, error, template, falseTemplate, operator, animate, ...props} = this.props;
+        return FalseTemplate ? <FalseTemplate
+            key='false-conditional' {...props}
+            >{this.props.children}</FalseTemplate> : null;
     },
     renderContent(){
         return this.state.matched ? this.renderTemplate() : this.renderFalseTemplate();

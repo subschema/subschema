@@ -208,7 +208,7 @@ var Editor = React.createClass({
         if (typeof conditional === 'string') {
             conditional = {operator: conditional};
         }
-        return (<Conditional {...conditional} path={props.path} field={field} valueManager={props.valueManager} loader={props.loader}>
+        return (<Conditional {...conditional} path={this.props.path} field={field} valueManager={props.valueManager} loader={props.loader}>
             {this.renderContent(field, onValueChange, template, onValidate, props)}
         </Conditional>);
     }

@@ -35,7 +35,7 @@ var ContentWrapper = React.createClass({
                 var state = {};
                 state[key] = value;
                 this.setState(state);
-            }, this, true);
+            });
         });
 
         return fmt;
