@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "src/index.jsx",
   "browser": "dist/subschema.js",
@@ -18,7 +18,7 @@
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
     "postinstall": "node bin/postinstall.js",
-    "prepublish":"NODE_ENV=production npm run test && webpack --config ./webpack.config.js -p",
+    "prepublish": "NODE_ENV=production npm run test && webpack --config ./webpack.config.js -p",
     "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
