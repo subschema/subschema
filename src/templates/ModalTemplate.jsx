@@ -12,10 +12,11 @@ var ModalTemplate = React.createClass({
         var {title, buttons, path,value, children, ...rest} = this.props;
 
         return <div className="modal" style={{display:'block'}}>
-            <div className="modal-dialog">
+            <div className="modal-backdrop fade in"></div>
+            <div className="modal-dialog"  role="document" style={{zIndex:2000}}>
                 <div className="modal-content">
                     <div className='modal-header'>
-                        <button onClick={this.handleClose} className='close' name={path} value={value}
+                        <button onClick={this.handleClose} className='close' name={this.props.dismiss} value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         {title ? <Content type='h4'  {...rest} content={title}/> : null }
                     </div>
