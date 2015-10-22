@@ -14,7 +14,7 @@
 
 var React = require("react");
 
-var CSSCore = require("react/lib/CSSCore");
+var CSS = require("../css");
 var ReactTransitionEvents = require("react/lib/ReactTransitionEvents");
 
 var onlyChild = require("react/lib/onlyChild");
@@ -60,8 +60,8 @@ var EventCSSTransitionGroupChild = React.createClass({
                 clearTimeout(noEventTimeout);
             }
 
-            CSSCore.removeClass(node, className);
-            CSSCore.removeClass(node, activeClassName);
+            CSS.removeClass(node, className);
+            CSS.removeClass(node, activeClassName);
 
             ReactTransitionEvents.removeEndEventListener(node, endListener);
 
@@ -74,7 +74,7 @@ var EventCSSTransitionGroupChild = React.createClass({
 
         ReactTransitionEvents.addEndEventListener(node, endListener);
 
-        CSSCore.addClass(node, className);
+        CSS.addClass(node, className);
 
         // Need to do this to actually trigger a transition.
         this.queueClass(activeClassName);
@@ -95,7 +95,7 @@ var EventCSSTransitionGroupChild = React.createClass({
     flushClassNameQueue: function () {
         if (this.isMounted()) {
             this.classNameQueue.forEach(
-                CSSCore.addClass.bind(CSSCore, this.getDOMNode())
+                CSS.addClass.bind(CSS, this.getDOMNode())
             );
         }
         this.classNameQueue.length = 0;

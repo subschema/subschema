@@ -276,7 +276,7 @@ var Autocomplete = React.createClass({
         var p = this.getProcessor();
         var value = p.value(o);
         if (this.props.handleChange.call(this.props, value) !== false) {
-            var input = p.format(value);
+            var input = p.format(o);
             this.setState({
                 suggestions: [],
                 showing: false,

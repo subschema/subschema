@@ -1,7 +1,8 @@
 "use strict";
 var React = require('react');
 var PropTypes = React.PropTypes;
-var CSSTransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+require('react/addons')
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
 var opFactory = (function opFactory$factory(scope) {

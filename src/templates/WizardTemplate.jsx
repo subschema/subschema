@@ -7,8 +7,9 @@ var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 //var TimeoutTransitionGroup = require('../transition/TimeoutTransitionGroup.jsx');
 var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx')
-var CSSCore = require("react/lib/CSSCore");
 var LoaderMixin = require('../LoaderMixin');
+var cssUtil = require('../css');
+
 
 function donner(done) {
     done();
@@ -199,10 +200,10 @@ var WizardTemplate = React.createClass({
 
     },
     handleEnter(){
-        CSSCore.addClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
+        cssUtil.addClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
     },
     handleLeave(done){
-        CSSCore.removeClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
+        cssUtil.removeClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
         done();
     },
     renderProgress(fieldsets){
