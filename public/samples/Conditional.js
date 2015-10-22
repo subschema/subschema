@@ -14,15 +14,17 @@ module.exports = {
             },
             "showAddress": {
                 "type": "Checkbox",
-                "title": "Show Address"
+                "title": "Show Address",
+                "help":"Click this to toggle the address"
+
             },
             "address": {
                 type: "Object",
                 title: false,
                 conditional: {
-                    listen: "..showAddress",
-                    operator: "truthy",
-                    error: 'address'
+                    listen: "showAddress",
+                    operator: "truthy"/*,
+                    error: 'address'*/
                 },
                 fields: "street, city, state, zip",
                 subSchema: {

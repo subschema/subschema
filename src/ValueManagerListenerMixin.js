@@ -24,7 +24,12 @@ var warnings = require('react/lib/warning');
  */
 
 function remove(v) {
-    v && v.remove();
+    if (v) {
+        console.log('removing ', v);
+        v.remove();
+    } else {
+        console.log('could not remove ', v);
+    }
 }
 function _key(path, key) {
     if (!key) {
@@ -77,12 +82,19 @@ var ValueManagerListenerMixin = {
     },
     registerHandler(key, func, init){
         if (init == null) init = true;
-        var props = this.props, handler = props.valueManager.addListener(this.createKey(key), invoke(this, func), this, init);
+        key = this.createKey(key)
+        console.log('adding key ', key, ' to ', this.constructor.displayName);
+        var props = this.props, handler = props.valueManager.addListener(key, invoke(this, func), this, init);
         this._componentListeners.push(handler);
         return handler;
     },
-
-    componentWillMount(){
+    _unlisten(){
+        if (this._componentListeners) {
+            this._componentListeners.forEach(remove);
+            this._componentListeners.length = 0;
+        }
+    },
+    _listen(){
         var errorListeners = this.errorListeners, listeners = this.listeners;
         this._componentListeners = [];
         if (typeof errorListeners === 'function') {
@@ -91,19 +103,25 @@ var ValueManagerListenerMixin = {
         if (typeof listeners === 'function') {
             listeners = listeners();
         }
-
-        Object.keys(errorListeners || {}).forEach(function onComponentErrorListener$map(key) {
-            var args = [key].concat(errorListeners[key])
-            this.registerErrorHandler.apply(null, args);
-        }, this);
-        Object.keys(listeners || {}).forEach(function onComponentListener$map(key) {
-            var args = [key].concat(listeners[key]);
-            this.registerHandler.apply(null, args);
-        }, this);
+        if (errorListeners) {
+            Object.keys(errorListeners).forEach(function onComponentErrorListener$map(key) {
+                var args = [key].concat(errorListeners[key])
+                this.registerErrorHandler.apply(this, args);
+            }, this);
+        }
+        if (listeners) {
+            Object.keys(listeners).forEach(function onComponentListener$map(key) {
+                var args = [key].concat(listeners[key]);
+                this.registerHandler.apply(this, args);
+            }, this);
+        }
+    },
+    componentWillMount(){
+        this._unlisten();
+        this._listen();
     },
     componentWillUnmount(){
-        this._componentListeners.forEach(remove);
-        this._componentListeners.length = 0;
+        this._unlisten();
     }
 };
 module.exports = ValueManagerListenerMixin;

@@ -5,7 +5,7 @@ var Content = require('../types/Content.jsx')
 var ModalTemplate = React.createClass({
     handleClose(e){
         e && e.preventDefault();
-        this.props.valueManager.update(this.props.listen, false);
+        this.props.valueManager.update(this.props.dismiss, false);
     },
     render(){
         var {title, path,value, children, ...rest} = this.props;

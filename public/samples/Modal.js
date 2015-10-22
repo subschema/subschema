@@ -12,18 +12,22 @@ module.exports = {
                 dataType: 'email',
                 validators: ['required', 'email']
             },
-            "showAddress": {
+            "showAddressModal": {
                 "type": "Checkbox",
-                "title": "Edit Address"
+                "title": "Edit Address",
+                "help":"Click the checkbox to see the modal"
             },
-            "address": {
+            "home": {
                 type: "Object",
                 title: false,
                 conditional: {
-                    listen: "showAddress",
+                    listen: "showAddressModal",
                     operator: "truthy",
-                    template:'ModalTemplate'
+                    template:'ModalTemplate',
+                    dismiss:'showAddressModal',
+                    title:"See the modal?"
                 },
+
                 fields: "street, city, state, zip",
                 subSchema: {
                     street: {type: 'Text', validators: ['required']},
@@ -41,7 +45,7 @@ module.exports = {
         },
         "fieldsets": [{
             "legend": "Name",
-            "fields": ["title", "name", "email", "showAddress", "address"],
+            "fields": ["title", "name", "email", "showAddressModal", "home"],
             buttons: [
                 {
                     label: "Submit",

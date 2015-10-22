@@ -482,7 +482,8 @@ Props:
              * 'something registed with the loader'
         
         * error  (optional - string) - The error path to listen to.   This path is evaluated slighty differntly, always absolute.   
-        
+        * dismiss (optional - string) - This will be set to false, given to make the current conditional false.   Set this for dismissing modals.  If 
+          not provided, the template will recieve a dismiss property with the current key substituting '.' with '_' and prepended with an @
 
 See the [example](http://jspears.github.io/subschema/#/Conditional)
 
