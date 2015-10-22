@@ -108,7 +108,7 @@ var SampleItem = React.createClass({
                                         <div className="panel-body">
 
                                             <Form ref="form" schema={schema}
-                                                  key="form"
+                                                  key={'form-'+file}
                                                   valueManager={this.vm}
                                                   onSubmit={this.handleSubmit}
                                                   onValidate={this.handleErrors}
