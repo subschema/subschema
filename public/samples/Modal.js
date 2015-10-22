@@ -25,7 +25,13 @@ module.exports = {
                     operator: "truthy",
                     template:'ModalTemplate',
                     dismiss:'showAddressModal',
-                    title:"See the modal?"
+                    title:"See the modal?",
+                    buttons: [
+                        {
+                            label: "Close",
+                            className: 'btn btn-primary pull-right'
+                        }
+                    ]
                 },
 
                 fields: "street, city, state, zip",
