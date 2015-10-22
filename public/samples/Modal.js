@@ -17,7 +17,7 @@ module.exports = {
                 "title": "Edit Address",
                 "help":"Click the checkbox to see the modal"
             },
-            "home": {
+            "address": {
                 type: "Object",
                 title: false,
                 conditional: {
@@ -29,6 +29,7 @@ module.exports = {
                     buttons: [
                         {
                             label: "Close",
+                            action:'close',
                             className: 'btn btn-primary pull-right'
                         }
                     ]
@@ -51,7 +52,7 @@ module.exports = {
         },
         "fieldsets": [{
             "legend": "Name",
-            "fields": ["title", "name", "email", "showAddressModal", "home"],
+            "fields": ["title", "name", "email", "showAddressModal", "address"],
             buttons: [
                 {
                     label: "Submit",

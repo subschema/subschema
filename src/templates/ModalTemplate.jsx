@@ -8,12 +8,17 @@ var ModalTemplate = React.createClass({
         e && e.preventDefault();
         this.props.valueManager.update(this.props.dismiss, false);
     },
+    handleBtnClose(e, action){
+        if (action === 'close') {
+            this.handleClose(e);
+        }
+    },
     render(){
         var {title, buttons, path,value, children, ...rest} = this.props;
 
         return <div className="modal" style={{display:'block'}}>
             <div className="modal-backdrop fade in"></div>
-            <div className="modal-dialog"  role="document" style={{zIndex:2000}}>
+            <div className="modal-dialog" role="document" style={{zIndex:2000}}>
                 <div className="modal-content">
                     <div className='modal-header'>
                         <button onClick={this.handleClose} className='close' name={this.props.dismiss} value={value}
@@ -24,7 +29,7 @@ var ModalTemplate = React.createClass({
                         {children}
                     </div>
                     <div className="modal-footer">
-                        { buttons ? <Buttons buttons={buttons} onClick={this.handleClose}/> : null }
+                        { buttons ? <Buttons buttons={buttons} onClick={this.handleBtnClose}/> : null }
                     </div>
                 </div>
             </div>
