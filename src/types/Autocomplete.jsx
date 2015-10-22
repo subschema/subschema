@@ -151,6 +151,7 @@ var Autocomplete = React.createClass({
      */
         hide(selectValue) {
         var {selected, input, suggestions, focus} = this.state, i = 0, l, options, found = false;
+        suggestions = suggestions || [];
         if (selectValue) {
 
 
@@ -231,7 +232,8 @@ var Autocomplete = React.createClass({
         }
     },
     handleDocumentEnter(e){
-        if (e.keyCode === 13 && this.state.suggestions.length) {
+
+        if (e.keyCode === 13 && this.state.suggestions && this.state.suggestions.length) {
             e.preventDefault();
             e.stopPropagation();
             this.hide(true);
@@ -302,7 +304,7 @@ var Autocomplete = React.createClass({
                 this.onSelect(suggestions[0]);
             } else {
                 this.setState({
-                    suggestions: suggestions,
+                    suggestions: suggestions || [],
                     showing: true,
                     input: value
                 });
@@ -315,7 +317,7 @@ var Autocomplete = React.createClass({
             this.props.onKeyUp.call(this, e);
         }
         var focus = this.state.focus, s = this.state.suggestions;
-        if (s.length) {
+        if (s && s.length) {
             var update = false;
             switch (e.key || e.keyCode) {
                 case 'Up':
@@ -340,8 +342,8 @@ var Autocomplete = React.createClass({
                         e.preventDefault();
                         e.stopPropagation();
                     }
-                    if (this.state.suggestions.length) {
-                        this.handleSuggestionClick(this.state.suggestions[Math.max(this.state.focus, 0)]);
+                    if (s.length) {
+                        this.handleSuggestionClick(s[Math.max(this.state.focus, 0)]);
                         this.setState({suggestions: [], showing: false, focus: -1});
 
                         return;
@@ -358,7 +360,7 @@ var Autocomplete = React.createClass({
     },
 
     renderSuggestions: function () {
-        var suggestions = this.state.suggestions;
+        var suggestions = this.state.suggestions || [];
         if (this.state.showing === false || suggestions.length === 0) {
 
             return null;
@@ -395,8 +397,9 @@ var Autocomplete = React.createClass({
         });
     },
     handleBlur: function (event) {
-        if (this.state.suggestions.length === 1 && !this.state.selected) {
-            this.handleSuggestionClick(this.state.suggestions[Math.max(0, this.state.focus)]);
+        var suggestions = this.state.suggestions || [];
+        if (suggestions.length === 1 && !this.state.selected) {
+            this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);
         }
         this.props.onValidate(event);
         this.props.onBlur(event);
@@ -445,7 +448,7 @@ var Autocomplete = React.createClass({
             />;
     },
     render: function () {
-        var suggestions = this.state.suggestions;
+        var suggestions = this.state.suggestions || [];
         var {onChange,onPaste, children, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp,  ...props} = this.props;
         props.onChange = this.handleChange;
         props.onPaste = this.handlePaste;
