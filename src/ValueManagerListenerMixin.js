@@ -25,10 +25,7 @@ var warnings = require('react/lib/warning');
 
 function remove(v) {
     if (v) {
-        console.log('removing ', v);
         v.remove();
-    } else {
-        console.log('could not remove ', v);
     }
 }
 function _key(path, key) {
@@ -83,7 +80,6 @@ var ValueManagerListenerMixin = {
     registerHandler(key, func, init){
         if (init == null) init = true;
         key = this.createKey(key)
-        console.log('adding key ', key, ' to ', this.constructor.displayName);
         var props = this.props, handler = props.valueManager.addListener(key, invoke(this, func), this, init);
         this._componentListeners.push(handler);
         return handler;

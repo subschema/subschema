@@ -58,7 +58,7 @@ var opFactory = (function opFactory$factory(scope) {
 }());
 
 var Conditional = React.createClass({
-    displayName:'Conditional',
+    displayName: 'Conditional',
     mixins: [require('./ValueManagerListenerMixin')],
     propTypes: {
         /**
@@ -105,24 +105,8 @@ var Conditional = React.createClass({
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
     },
-    componentWillMount(){
-        console.log('Conditional#componentWillMount ',  arguments);
-    },
-    componentWillUpdate(nextProps, nextState){
-        console.log('Conditional#componentWillUpdate ',  arguments);
-
-    },
-    componentDidUpdate(prevProps, prevState){
-        console.log('Conditional#componentDidUpdate ', arguments);
-    },
     componentWillReceiveProps(props, oldProps){
-        //this._listen();
-        console.log('componentWillReceiveProps Conditional ', props, oldProps);
         this._handleProps(this.props, props);
-    },
-    componentWillUnmount(){
-        console.log('componentWillUnmount Conditional');
-
     },
 
     getInitialState(){
@@ -219,7 +203,7 @@ var Conditional = React.createClass({
         var {value,  template, falseTemplate, operator, animate,children, ...props} = this.props;
         return Template ?
             <Template key='true-conditional' dismiss={this._key} {...props}
-                      >{this.props.children}</Template> : <span key='true-conditional-no-template'>{children}</span>;
+                >{this.props.children}</Template> : <span key='true-conditional-no-template'>{children}</span>;
     },
     renderFalseTemplate()
     {

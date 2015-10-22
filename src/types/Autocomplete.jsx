@@ -231,7 +231,6 @@ var Autocomplete = React.createClass({
         }
     },
     handleDocumentEnter(e){
-//        console.log('keyUp', e.key);
         if (e.keyCode === 13 && this.state.suggestions.length) {
             e.preventDefault();
             e.stopPropagation();

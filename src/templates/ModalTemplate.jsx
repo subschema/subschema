@@ -15,9 +15,9 @@ var ModalTemplate = React.createClass({
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className='modal-header'>
-                        <button onClick={this.handleClose} className='modal-close' name={path} value={value}
+                        <button onClick={this.handleClose} className='close' name={path} value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {title ? <Content type='h4' className='modal-header' {...rest} content={title}/> : null }
+                        {title ? <Content type='h4'  {...rest} content={title}/> : null }
                     </div>
                     <div className='modal-body clearfix'>
                         {children}
