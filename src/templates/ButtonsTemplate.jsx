@@ -1,12 +1,12 @@
 var React = require('../react');
 var tu = require('../tutils');
-
+var style = require('./ButtonsTemplate-style');
 var ButtonsTemplate = React.createClass({
     mixins: [require('../LoaderMixin')],
     getDefaultProps(){
         return {
-            buttonsClass: 'btn-group',
-            buttonClass: 'btn',
+            buttonsClass: style.buttonsClass,
+            buttonClass: style.buttonClass,
             buttonTemplate: 'ButtonTemplate',
             buttons: [{
                 action: 'submit',
@@ -37,7 +37,7 @@ var ButtonsTemplate = React.createClass({
     },
 
     render(){
-        return <div className="form-group">
+        return <div className={style.formGroup}>
             <div className={this.props.buttonsClass}>
                 {this.makeButtons().map((b, i)=> {
                     var Template = b.template;

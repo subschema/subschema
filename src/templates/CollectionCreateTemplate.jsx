@@ -12,17 +12,17 @@ var CollectionCreateTemplate = React.createClass({
             title = {
                 type: 'h3',
                 content: title,
-                className: 'panel-title clearfix'
+                className: style.panelTitle
             }
         }
-        return (<div className="panel panel-default">
+        return (<div className={style.panel}>
 
 
-            <Content content={title} type='div' className='panel-heading' valueManager={this.props.valueManager}
+            <Content content={title} type='div' className={style.panelHeading} valueManager={this.props.valueManager}
                      loader={this.props.loader}/>
 
-            <div className="panel-body">
-                <div className="form-group">
+            <div className={style.panelBody}>
+                <div className={style.group}>
                     <Editor ref="itemEditor" field={this.props.field} value={this.props.value}
                             valueManager={this.valueManager}
                             name={this.props.name}

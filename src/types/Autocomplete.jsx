@@ -7,6 +7,7 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var Dom = require('../Dom');
+var style = require('./Autocomplete-style');
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
@@ -31,8 +32,8 @@ var Autocomplete = React.createClass({
         return {
             country: 'US',
             locale: 'en_US',
-            foundCls: 'found',
-            notFoundCls: 'notfound',
+            foundCls: style.found,
+            notFoundCls:style.notFound,
             useshowing: true,
             minLength: 1,
             maxInputLength: 200,
@@ -369,7 +370,7 @@ var Autocomplete = React.createClass({
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
         var CompleteItem = this.template('itemTemplate');
-        return <ul className="list-group">
+        return <ul className={style.listGroup}>
             {suggestions.map((item, i) => <CompleteItem
                 key={item.val}
                 focus={focus === i}
@@ -455,7 +456,7 @@ var Autocomplete = React.createClass({
         props.onKeyDown = this.handleKeyUp;
         props.onBlur = this.handleBlur;
         return <div
-            className={ 'autocomplete '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
+            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
             {this.createInput(props)}
             {this.renderSuggestions()}
         </div>

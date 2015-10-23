@@ -3,6 +3,7 @@ var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var css = require('../css');
+var style = require('./List-style');
 var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 require('../styles/transitions.less');
 var ListInput = React.createClass({
@@ -55,7 +56,7 @@ var ListInput = React.createClass({
                 if (!(v)) {
                     return null;
                 }
-                return <span className="brf-value list-group-item-text">{v[labelKey] || ''}</span>;
+                return <span className={style.item}>{v[labelKey] || ''}</span>;
             }
         }
         return function (v) {

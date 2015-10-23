@@ -1,6 +1,7 @@
 var React = require('../react');
 var css = require('../css');
 var Content = require('../types/Content.jsx')
+var style = require('./EditorTemplate-style');
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
     componentWillMount(){
@@ -18,14 +19,14 @@ var EditorTemplate = React.createClass({
         var {name, title, help, errorClassName, message, fieldClass, loader, valueManager, children} = this.props;
         var error = this.state.error;
         return (<div
-            className={"form-group field-name " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
-            <Content content={title} type="label" className="col-sm-2 control-label" htmlFor={name}
+            className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
+            <Content content={title} type="label" className={style.label} htmlFor={name}
                      valueManager={valueManager} loader={loader}/>
 
             <div className="col-sm-10">
                 {children}
                 <Content content={error ? error : help} key='error-block' type='p'
-                         className={error ?'error-block help-block' : 'help-block'}
+                         className={error ? style.error : style.help}
                          valueManager={valueManager} loader={loader}/>
             </div>
         </div>);

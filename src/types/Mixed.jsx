@@ -3,6 +3,7 @@ var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var Constants = require('../Constants');
 var css = require('../css');
+var style = require('./Mixed-style');
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     statics: {},
@@ -56,8 +57,8 @@ var MixedInput = React.createClass({
                 return null;
             }
 
-            return <span><h4 className="brf-key list-group-item-heading">{v.key}</h4>{labelKey ? <span
-                className="brf-value list-group-item-text">{ v.value[labelKey]}</span> : null}</span>;
+            return <span><h4 className={style.item}>{v.key}</h4>{labelKey ? <span
+                className={style.itemInner}>{ v.value[labelKey]}</span> : null}</span>;
         }
 
     },
@@ -94,9 +95,9 @@ var MixedInput = React.createClass({
                     fields: ['key', 'value'],
                     buttons: {
                         onClick: this.handleBtnGroup,
-                        buttonsClass: 'btn-group pull-right',
-                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                            , {label: 'Save', action: action, buttonClass: 'btn-primary btn'}]
+                        buttonsClass: style.buttonsClass,
+                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass:style.buttonCancel}
+                            , {label: 'Save', action: action, buttonClass: style.buttonSave}]
                     }
                 }]
             };
