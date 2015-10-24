@@ -49,17 +49,28 @@ var Content = React.createClass({
         }
 
         if (Array.isArray(content)) {
+            //TODO - check if we need to flatten this.
             return map(content, (c, key)=> {
+                //prevent children from being wrapped.
+                if (c.children === true){
+                    return children;
+                }
                 if (c.content) {
-                    return <Content {...c} key={'content-'+prefix+'-'+key} valueManager={this.props.valueManager}
-                                           loader={this.props.loader}>
-                        {this.renderChildren(c, children)}
-                    </Content>
+                    if (typeof c.content !== 'string') {
+                        return <Content {...c} key={'content-'+prefix+'-'+key} valueManager={this.props.valueManager}
+                                               loader={this.props.loader}>
+                            {this.renderChildren(c, children)}
+                        </Content>
+                    }else{
+                        return this.renderChild(c.content, props, prefix + '-s-' + key, children);
+                    }
                 }
                 return this.renderChild(c, {}, prefix + '-a-' + key, children);
 
             });
         }
+
+
         if (content.content) {
             return <Content {...content.content} key={'content-content'} valueManager={this.props.valueManager}
                                                  loader={this.props.loader}>
@@ -87,7 +98,11 @@ var Content = React.createClass({
         if (content.content) {
             var {...rest} = content;
             delete rest.content;
-            children = this.renderChild(content.content, rest, 'dom', children)
+/*            if (typeof content.content === 'string'){
+                children = [this.renderChild(content.content, rest, 'dom')].concat(children);
+            }else {*/
+                children = this.renderChild(content.content, rest, 'dom', children)
+           // }
         } else if (tu.isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');

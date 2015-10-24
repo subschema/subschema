@@ -1,3 +1,4 @@
+"use strict";
 var React = require('react');
 var SampleMgr = require('./SampleMgr.jsx');
 var Subschema = require('subschema')
@@ -74,12 +75,18 @@ var SampleItem = React.createClass({
         var content = this.state.content;
         this.updateVM(value, content);
     },
-    handleSubmit(){
+    handleSubmit(e, action){
+        e && e.preventDefault();
         alert('submit called');
     },
     handleErrors(){
     },
-
+    handleBtn(e, action, component){
+        if (action === 'cancel'){
+            e && e.preventDefault();
+        }
+        alert('button was clicked '+action);
+    },
     render () {
         var schema = this.state.schema;
         var { description, title, setup, setupTxt, props, data, errors, teardown} = (this.state || {}).content || {};
@@ -110,6 +117,7 @@ var SampleItem = React.createClass({
                                             <Form ref="form" schema={schema}
                                                   key="form"
                                                   valueManager={this.vm}
+                                                  onButtonClick={this.handleBtn}
                                                   onSubmit={this.handleSubmit}
                                                   onValidate={this.handleErrors}
                                                 {...props}

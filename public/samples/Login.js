@@ -1,9 +1,10 @@
 module.exports = {
-    description: 'This is a very basic login form. But it shows both email validation and multi field validation',
+    description: 'This is a very basic login form. But it shows both email validation and multi field validation.\n It also shows nested fieldsets',
     schema: {
         schema: {
             username: {
                 type: 'Text',
+                title:'Email',
                 help: 'Please enter your email address',
                 validators: ['required', 'email']
             },
@@ -16,7 +17,10 @@ module.exports = {
                 validators: [{type: 'match', field: 'password', message: 'Passwords do not match'}]
             }
         },
-        fieldsets: [{legend: 'Login Form', fields: ['username', 'password', 'confirmPassword']}],
+        fieldsets: [{
+            legend: 'Login',
+            fields: ['username', 'password', 'confirmPassword']
+        }],
         submitButton: 'Login'
     },
     data: {},

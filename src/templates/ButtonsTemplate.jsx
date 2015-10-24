@@ -20,7 +20,7 @@ var ButtonsTemplate = React.createClass({
     },
 
     makeButtons(){
-        var onClick = this.props.onClick;
+        var onClick = this.props.onButtonClick || this.props.onClick ;
         return this.props.buttons.map((b)=> {
             onClick = b.onClick || onClick;
             var btn = tu.isString(b) ? {
