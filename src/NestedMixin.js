@@ -163,7 +163,7 @@ var NestedMixin = {
 
         return tu.unique(fields).map((f, i) => {
             f = tu.isString(f) ? f : f && f.name || 'field-' + i;
-            var ref = tu.isString(f) ? tu.clone(schema[f]) : f;
+            var ref = tu.isString(f) ? tu.clone(schema[f]) : f, mappedFields = fieldMap[f];
             if (tu.isString(ref)) {
                 ref = {
                     type: ref
@@ -177,9 +177,14 @@ var NestedMixin = {
                     ref.type = 'Text';
                 }
             }
-            if (!ref.fields && fieldMap[f]) {
-                ref.fields = fieldMap[f];
+            if (mappedFields || ref.fields || ref.fieldsets) {
+                var {fieldsets, fields, ...rest} = ref;
+                rest.fieldsets = normalizeFieldsets(fieldsets, fields || mappedFields);
+                ref = rest;
             }
+            /*            if (!(ref.fields || ref.fieldsets) && fieldMap[f]) {
+             ref.fieldsets = {fields: fieldMap[f]};
+             }*/
             return this.addEditor(ref, f);
         });
     },
