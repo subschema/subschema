@@ -20,7 +20,7 @@ var api = {
     /**
      * Determines the classes for a field.
      * Takes a react node as the first argument.
-     * @param {ReactElement} node - node to create for.
+     * @param {Reactnode} node - node to create for.
      * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
      */
     forField: function (node) {
@@ -53,15 +53,15 @@ var api = {
         }
         return classes.join(' ');
     },
-    addClass: function (element, className) {
+    addClass: function (node, className) {
         if (className) {
-            if (element.classList) {
-                element.classList.add(className);
-            } else if (!api.hasClass(element, className)) {
-                element.className = element.className + ' ' + className;
+            if (node.classList) {
+                node.classList.add(className);
+            } else if (!api.hasClass(node, className)) {
+                node.className = node.className + ' ' + className;
             }
         }
-        return element;
+        return node;
     },
     hasClass: function (node, className) {
         if (node.classList) {
@@ -81,7 +81,7 @@ var api = {
                 node.className = parts.join(' ');
             }
         }
-        return element;
+        return node;
     }
 }
 module.exports = api;

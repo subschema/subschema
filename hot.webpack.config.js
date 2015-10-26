@@ -1,6 +1,6 @@
 var path = require('path');
-
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var join = path.join.bind(path, __dirname);
+//var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
@@ -14,11 +14,11 @@ module.exports = {
 
         'webpack-dev-server/client?http://localhost:' + 8084,
         'webpack/hot/only-dev-server',
-        path.join(__dirname, 'public/app.jsx')
+        join('public/app.jsx')
     ],
 
     devServer: {
-        contentBase: path.join(__dirname, "public"),
+        contentBase: join("public"),
         info: true, //  --no-info option
         hot: true,
         inline: true,
@@ -26,7 +26,7 @@ module.exports = {
     },
 
     output: {
-        path: path.join(__dirname, ".hot"),
+        path: join(".hot"),
 
         filename: 'app.js',
         chunkFilename: '[id].chunk.js',
@@ -43,8 +43,8 @@ module.exports = {
                 exclude: /node_modules/,
                 //do this to prevent babel fromt tanslating everything.
                 include: [
-                    path.join(__dirname, 'src'),
-                    path.join(__dirname, 'public')
+                    join('src'),
+                    join('public')
                 ],
                 loaders: ['react-hot', 'babel-loader?stage=0&externalHelpers&optional=runtime']
             },
@@ -53,8 +53,8 @@ module.exports = {
                 exclude: [
                     /tcl\.js/,
                     /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|react-highlight))/,
-                    path.join(__dirname, 'src'),
-                    path.join(__dirname, 'public'),
+                    join('src'),
+                    join('public'),
 
                 ],
                 loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
@@ -69,11 +69,11 @@ module.exports = {
             {
                 test: /\.css$/,
                // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
-                loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.less$/,
-                loader: 'style!css?modules!less-loader'
+                loaders: ['style','css','less']
             }
         ]
     },
@@ -82,9 +82,10 @@ module.exports = {
         require('postcss-color-rebeccapurple')
     ],
     resolve: {
+        extensions:['','.js','.jsx'],
         alias: {
-            'subschema': path.join(__dirname, 'src/index.jsx'),
-            'react': path.join(__dirname, '/node_modules/react')
+            'subschema': join('src/index.jsx'),
+            'react': join('/node_modules/react')
         }
     },
 
@@ -92,7 +93,7 @@ module.exports = {
 
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-        new ExtractTextPlugin('style.css', {allChunks: true}),
+   //     new ExtractTextPlugin('style.css', {allChunks: true}),
 
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')

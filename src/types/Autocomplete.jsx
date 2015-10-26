@@ -7,7 +7,7 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var Dom = require('../Dom');
-var style = require('./Autocomplete-style');
+var style = require('./Autocomplete-style.js');
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
