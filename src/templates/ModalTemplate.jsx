@@ -3,6 +3,7 @@ var React = require('../react');
 
 var Buttons = require('./ButtonsTemplate.jsx');
 var Content = require('../types/Content.jsx')
+import styles from '../styles/modal.css';
 var ModalTemplate = React.createClass({
     handleClose(e){
         e && e.preventDefault();
@@ -15,8 +16,8 @@ var ModalTemplate = React.createClass({
     },
     render(){
         var {title, buttons, path,value, children, ...rest} = this.props;
-
-        return <div className="modal" style={{display:'block'}}>
+        var className = `modal ${styles.overlay}`;
+        return <div className={className} style={{display:'block'}}>
             <div className="modal-backdrop fade in"></div>
             <div className="modal-dialog" role="document" style={{zIndex:2000}}>
                 <div className="modal-content">

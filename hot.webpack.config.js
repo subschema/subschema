@@ -1,5 +1,6 @@
 var path = require('path');
 
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
@@ -50,13 +51,15 @@ module.exports = {
             {
                 test: /\.js(x)?$/,
                 exclude: [
+                    /tcl\.js/,
                     /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|react-highlight))/,
                     path.join(__dirname, 'src'),
-                    path.join(__dirname, 'public')
+                    path.join(__dirname, 'public'),
+
                 ],
                 loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
             },
-            {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
+            {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
@@ -65,18 +68,22 @@ module.exports = {
             // or any other compile-to-css language
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader!' + AUTOPREFIXER_LOADER
+               // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
+                loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
             },
             {
                 test: /\.less$/,
-                loader: 'style!css!less-loader'
+                loader: 'style!css?modules!less-loader'
             }
         ]
     },
-
+    postcss: [
+        require('autoprefixer'),
+        require('postcss-color-rebeccapurple')
+    ],
     resolve: {
         alias: {
-            'subschema':path.join( __dirname, 'src/index.jsx'),
+            'subschema': path.join(__dirname, 'src/index.jsx'),
             'react': path.join(__dirname, '/node_modules/react')
         }
     },
@@ -85,6 +92,7 @@ module.exports = {
 
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin('style.css', {allChunks: true}),
 
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
