@@ -1,3 +1,5 @@
+"use strict";
+
 var React = require('./react');
 var NestedMixin = require('./NestedMixin');
 var ValueManager = require('./ValueManager');
@@ -12,7 +14,6 @@ var Form = React.createClass({
             noValidate: false
         }
     },
-
 
     handleSubmit(e){
         e && e.preventDefault();

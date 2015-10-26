@@ -4,10 +4,22 @@ module.exports = {
         "schema": {
             "title": {"type": "Select", "options": ["Mr", "Mrs", "Ms"]},
             "name": {type: "Text", validators: ['required']},
-            "age":{type:'Number'}
+            "age": {type: 'Number'}
 
         },
-        "fieldsets": [{"legend": "Name", "fields": ["title", "name","age"]}]
+        "fieldsets": [
+            {
+                "legend": "Name",
+                "fields": "title, name, age",
+                buttons: [{
+                    label: 'Cancel',
+                    action: 'cancel',
+                    buttonClass: 'btn'
+                }, {
+                    label: 'Submit', action: 'submit',
+                    buttonClass: 'btn btn-primary'
+                }]
+            }]
     },
     data: {
         title: 'Mrs',

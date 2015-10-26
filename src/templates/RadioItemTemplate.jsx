@@ -1,17 +1,19 @@
 var React = require('../react');
+var Content = require('../types/Content.jsx');
 var RadioItemTemplate = React.createClass({
 
     render(){
-        var {label, labelHTML, id} = this.props;
+        var {label, labelHTML, checked, checkedClass, id} = this.props;
 
 
-        label = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : label;
+        label = labelHTML ? labelHTML : label;
+        checkedClass = checkedClass || '';
+        label = typeof label === 'string' ? [{children: true}, label] : label;
 
-        return (<div className="radio">
-            <label>
+        return (<div className={"radio "+(checked ? checkedClass : '')}>
+            <Content type='label' content={label}>
                 {this.props.children}
-                {label}
-            </label>
+            </Content>
         </div>);
     }
 });

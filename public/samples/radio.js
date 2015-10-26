@@ -17,9 +17,11 @@ module.exports = {
                         label: "Option 3"
                     }
                 ],
+                checkedClass:'checked',
                 type: 'Radio'
             },
             radio2: {
+                checkedClass:'checked',
                 options: ['Sterling', 'Lana', 'Cyril', 'Cheryl', 'Pam'],
                 type: 'Radio'
             },

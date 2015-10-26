@@ -1,9 +1,12 @@
+"use strict";
 var React = require('./react');
 var tu = require('./tutils');
+var toArray = tu.toArray;
 var Editor = require('./Editor');
 var ValueManager = require('./ValueManager');
 var LoaderMixin = require('./LoaderMixin');
 var warning = require("react/lib/warning");
+var map = require('lodash/collection/map');
 var noTypeInfo;
 if ("production" !== process.env.NODE_ENV) {
     noTypeInfo = function (f) {
@@ -27,11 +30,45 @@ function extractSchema(props) {
     }
     return props.schema
 }
+function normalizeFieldsets(fieldsets, fields) {
+    if (!(fieldsets || fields)) return [];
+    //fields trump fieldsets
+    if (fields) {
+        fields = toArray(fields);
+        return {
+            fields
+        }
+    }
+    //otherwise recurse
+    return toArray(fieldsets).map((f)=> {
+        if (f.fields) {
+            var {fields, ...rest} = f;
+            rest.fields = toArray(fields);
+            return rest;
+        } else if (f.fieldsets) {
+            var {fieldsets, ...rest} = f;
+            rest.fieldsets = normalizeFieldsets(fieldsets);
+            return rest;
+        } else if (tu.isString(f) || tu.isArray(f)) {
+            return {
+                fields: toArray(f)
+            }
+        } else if (f.fieldsets) {
+            var {fieldsets, ...rest} = f;
+            rest.fieldsets = normalizeFieldsets(fieldsets);
+            f.fieldsets = normalizeFieldsets(f.fieldsets);
+            return rest;
+        } else {
+            console.log('do not know what %s this is ', fieldset);
+        }
+    });
+}
 
 function normalizeSchema(oschema, loader) {
     if (oschema == null) {
         return {};
     }
+
     if (tu.isString(oschema)) {
         var loaded = loader.loadSchema(oschema);
         return normalizeSchema(loaded, loader);
@@ -45,32 +82,12 @@ function normalizeSchema(oschema, loader) {
             schema: oschema
         }, loader);
     }
-    //make a copy of the schema.
     var {fields, fieldsets, ...schema} = oschema;
 
-    if (fieldsets) {
-        schema.fieldsets = tu.toArray(fieldsets).map((fieldset)=> {
-            if (fieldset.fields) {
-                var {fields, ...rest} = fieldset;
-                rest.fields = tu.toArray(fields);
-                return rest;
-            } else if (tu.isString(fieldset)) {
-                return {
-                    fields: tu.toArray(fieldset)
-                }
-            } else if (tu.isArray(fieldset)) {
-                return {
-                    fields: tu.toArray(fieldset)
-                }
-            } else {
-                console.log('do not know what %s this is ', fieldset);
-            }
-        });
-    } else if (fields) {
-        schema.fieldsets = [{fields: tu.toArray(fields)}]
-    } else {
-        schema.fieldsets = [{fields: Object.keys(schema.schema)}];
+    if (!(fields || fieldsets)) {
+        fieldsets = [{fields: Object.keys(schema.schema)}];
     }
+    schema.fieldsets = normalizeFieldsets(fieldsets, fields);
     return schema;
 }
 
@@ -97,11 +114,16 @@ var NestedMixin = {
     componentWillReceiveProps(newProps){
         this.schema = normalizeSchema(extractSchema(newProps), this.props.loader);
     },
+
     makeFieldset(f, i) {
         var Template = this.template(f.template || 'FieldSetTemplate');
-        return <Template key={'f' + i} field={f} legend={f.legend} loader={this.props.loader}
+        return <Template key={'f' + i} field={f} legend={f.legend}
+                         loader={this.props.loader}
+                         onButtonClick={this.props.onButtonClick}
+                         fields={f.fields}
+                         schema={this.schema.schema}
                          valueManager={this.props.valueManager}>
-            {this.makeFields(f.fields)}
+            {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
         </Template>
     },
 
@@ -128,7 +150,7 @@ var NestedMixin = {
     makeFields(fields) {
         var fieldMap = {}, schema = this.schema.schema;
 
-        fields = tu.toArray(fields).map((v) => {
+        fields = toArray(fields).map((v) => {
             return v.split('.', 2);
         }).map((v) => {
             var f = v[0];
@@ -163,7 +185,7 @@ var NestedMixin = {
     },
 
     renderSchema() {
-        return this.schema.fieldsets.map(this.makeFieldset, this);
+        return map(this.schema.fieldsets, this.makeFieldset);
     },
 
     render() {

@@ -84,7 +84,7 @@ var Editor = React.createClass({
     },
     componentWillMount(){
         var validators = this.props.field.validators;
-        this.validators = validators ? validators.map(initValidators, this.props.loader) : EMPTY_ARR;
+        this.validators = validators ? tu.toArray(validators).map(initValidators, this.props.loader) : EMPTY_ARR;
         this.props.valueManager.addListener(this.props.path, this.handleChange, this, true);
         this.props.valueManager.addValidateListener(this.props.path, this._validate, this);
 

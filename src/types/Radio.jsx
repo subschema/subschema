@@ -6,11 +6,6 @@ var css = require('../css');
 var RadioInput = React.createClass({
     displayName: 'Radio',
     mixins: [BasicFieldMixin,LoaderMixin],
-    statics: {
-        subSchema: {
-            options: 'OptionSchema'
-        }
-    },
     getDefaultProps() {
         return {
             title: '',
@@ -64,18 +59,19 @@ var RadioInput = React.createClass({
                 label,
                 labelHTML,
                 onChange,
+                checkedClass:this.props.checkedClass,
                 checked: this._compare(value, val)
             }
         });
     },
     render()
     {
-        var {name,itemTemplate,path, value, dataType,options, field} = this.props;
+        var {name,itemTemplate,path, checkedClass, value, dataType,options, field} = this.props;
 
         var RadioItemTemplate = this.template(itemTemplate);
         var options = this.makeOptions(options);
         return <div className={css.forField(this)}>{options.map((option, index)=> {
-            return <RadioItemTemplate  {...option} key={option.path}>
+            return <RadioItemTemplate checkedClass={checkedClass} {...option} key={option.path}>
                 <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
