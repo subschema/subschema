@@ -1,3 +1,5 @@
+"use strict";
+
 var util = require('./tutils');
 function addClasses(classes, str) {
     if (str == null) {
@@ -14,7 +16,7 @@ function addClasses(classes, str) {
     }
 
 }
-module.exports = {
+var api = {
     /**
      * Determines the classes for a field.
      * Takes a react node as the first argument.
@@ -38,7 +40,7 @@ module.exports = {
         var classes = [];
         addClasses(classes, util.slice(arguments, 1));
         var field = node.props.field;
-        var className =  node.props.fieldClsName || node.props.fieldClassName || node.props.fieldClass;
+        var className = node.props.fieldClsName || node.props.fieldClassName || node.props.fieldClass;
 
         if (className) {
             addClasses(classes, className);
@@ -50,5 +52,36 @@ module.exports = {
             addClasses.call(node, classes, field.fieldCls);
         }
         return classes.join(' ');
+    },
+    addClass: function (element, className) {
+        if (className) {
+            if (element.classList) {
+                element.classList.add(className);
+            } else if (!api.hasClass(element, className)) {
+                element.className = element.className + ' ' + className;
+            }
+        }
+        return element;
+    },
+    hasClass: function (node, className) {
+        if (node.classList) {
+            return !!className && node.classList.contains(className);
+        }
+        return node.className.split(/\s+?/).indexOf(className) > -1;
+    },
+    removeClass: function (node, className) {
+        if (className) {
+            if (node.classList) {
+                node.classList.remove(className);
+            } else {
+                var parts = node.className.split(/\s+?/), idx;
+                while ((idx = parts.indexOf(className)) > -1) {
+                    parts.splice(idx, 1)
+                }
+                node.className = parts.join(' ');
+            }
+        }
+        return element;
     }
 }
+module.exports = api;

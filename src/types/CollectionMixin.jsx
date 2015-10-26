@@ -6,6 +6,7 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 require('../styles/transitions.less');
+var style = require('./CollectionMixin-style');
 var CollectionMixin = {
     statics: {
         listClassName: Constants.listClassName,
@@ -158,9 +159,9 @@ var CollectionMixin = {
             return null;
         }
         var Template = this.template('buttonTemplate');
-        return <Template ref="addBtn" key="addBtn" buttonClass='btn btn-xs btn-default btn-add' label="Add"
-                         iconClassName="icon-add" onClick={this.handleAddBtn}><i
-            className="icon-add"/>
+        return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
+                          onClick={this.handleAddBtn}><i
+            className={style.iconAdd}/>
         </Template>
 
     }

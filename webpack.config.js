@@ -6,7 +6,7 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
 function config(filename, externals, alias) {
     return {
-        devtool: 'source-map',
+        devtool: 'eval',
         entry: {
             subschema: './src/index.jsx'
         },
@@ -43,14 +43,14 @@ function config(filename, externals, alias) {
                     //do this to prevent babel fromt tanslating everything.
                     includes: [
                         '~/node_modules/react',
-                        '~/node_modules/react-router',
-                        '~/node_modules/react-bootstrap',
+                       // '~/node_modules/react-router',
+                       // '~/node_modules/react-bootstrap',
                         '~/node_modules/subschema-builder'
 
                     ],
                     loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
                 },
-                {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
+                {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
                 {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
                 {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
                 {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
@@ -63,7 +63,7 @@ function config(filename, externals, alias) {
                 },
                 {
                     test: /\.less$/,
-                    loader: 'style!css!less-loader'
+                    loader: 'style!css!less-loader!' + AUTOPREFIXER_LOADER
                 }
             ]
         },
