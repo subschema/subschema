@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 var path = require('path');
 var extend = require('lodash/object/extend');
 var webpack = require('webpack');

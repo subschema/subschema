@@ -43,7 +43,7 @@ var Content = React.createClass({
             return null;
         }
         if (tu.isString(content)) {
-            var ContentWrapper = this.props.loader  && this.props.loader.loadType('ContentWrapper') || DefaultContentWrapper;
+            var ContentWrapper = this.props.loader && this.props.loader.loadType('ContentWrapper') || DefaultContentWrapper;
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}
                                               valueManager={this.props.valueManager} loader={this.props.loader}/>
         }
@@ -52,7 +52,7 @@ var Content = React.createClass({
             //TODO - check if we need to flatten this.
             return map(content, (c, key)=> {
                 //prevent children from being wrapped.
-                if (c.children === true){
+                if (c.children === true) {
                     return children;
                 }
                 if (c.content) {
@@ -61,7 +61,7 @@ var Content = React.createClass({
                                                loader={this.props.loader}>
                             {this.renderChildren(c, children)}
                         </Content>
-                    }else{
+                    } else {
                         return this.renderChild(c.content, props, prefix + '-s-' + key, children);
                     }
                 }
@@ -87,29 +87,29 @@ var Content = React.createClass({
 
     render()
     {
-        var {type, content, children, valueManager, loader, context, ...props} = this.props, Ctype;
-        if (content == null || content === false) {
+        var {type, content, children, field, valueManager, loader, context, ...props} = this.props, Ctype;
+        if (field && field.content) {
+            content = field.content;
+        }
+        if (!content) {
             return null;
         }
         if (type === 'Content') {
             type = 'span';
             props.type = type;
         }
+
         if (content.content) {
             var {...rest} = content;
             delete rest.content;
-/*            if (typeof content.content === 'string'){
-                children = [this.renderChild(content.content, rest, 'dom')].concat(children);
-            }else {*/
-                children = this.renderChild(content.content, rest, 'dom', children)
-           // }
+            children = this.renderChild(content.content, rest, 'dom', children)
         } else if (tu.isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');
         } else if (tu.isArray(content)) {
             props.type = type;
             children = this.renderChild(content, props, 'arr', children);
-        }else if (content.content === false){
+        } else if (content.content === false) {
             props = defaults(content, props);
             type = props.type;
         }

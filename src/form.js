@@ -9,7 +9,7 @@ var Form = React.createClass({
     getDefaultProps() {
         return {
             template: 'FormTemplate',
-            onSubmit(){
+            onSubmit(e){
             },
             noValidate: false
         }

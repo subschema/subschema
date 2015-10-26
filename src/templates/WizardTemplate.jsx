@@ -236,7 +236,7 @@ var WizardTemplate = React.createClass({
                     <Form ref="form"
                           className={'compState w'+compState}
                           key={"form-"+compState}
-                          schema={{schema, fieldsets:fields}}
+                          schema={{schema, fields}}
                           onSubmit={this.handleSubmit}
                           valueManager={this.props.valueManager}>
                         {this.renderBtns(compState)}

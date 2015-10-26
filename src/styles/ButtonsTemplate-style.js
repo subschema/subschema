@@ -1,5 +1,5 @@
 module.exports = {
-    buttonsClass: 'btn-group',
+    buttonsClass: 'col-sm-offset-2 col-sm-10 btn-group',
     buttonClass: 'btn',
-    formGroup: "form-group col-sm-12"
+    formGroup: "form-group"
 }

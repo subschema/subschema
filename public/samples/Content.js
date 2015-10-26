@@ -8,6 +8,8 @@ module.exports = {
             'content':{
 
                 type:"Content",
+                title:false,
+                className:'col-sm-offset-2',
                 content:'{title} {..name} is {age}'
             }
 

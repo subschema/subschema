@@ -4,7 +4,7 @@ module.exports = {
         schema: {
             username: {
                 type: 'Text',
-                title:'Email',
+
                 help: 'Please enter your email address',
                 validators: ['required', 'email']
             },
@@ -19,9 +19,9 @@ module.exports = {
         },
         fieldsets: [{
             legend: 'Login',
-            fields: ['username', 'password', 'confirmPassword']
-        }],
-        submitButton: 'Login'
+            fields: ['username', 'password', 'confirmPassword'],
+            buttons:[{label:'Login',buttonClass:'btn btn-primary'}]
+        }]
     },
     data: {},
     errors: {

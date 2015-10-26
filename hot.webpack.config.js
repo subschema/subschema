@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 var path = require('path');
 var join = path.join.bind(path, __dirname);
 //var ExtractTextPlugin = require('extract-text-webpack-plugin');

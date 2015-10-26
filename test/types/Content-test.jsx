@@ -6,6 +6,7 @@ var loader = require('../../src/loader.js');
 var Text = require('../../src/types/Text.jsx');
 var Content = require('../../src/types/Content.jsx');
 var Editor = require('../../src/Editor');
+var Form = require('../../src/form.jsx');
 loader.addType('Test', React.createClass({
     displayName: 'Test',
     render(){
@@ -103,7 +104,8 @@ describe('Content', function () {
 
         };
 
-        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}/>);
+        var root = into(<Content content={title} className='panel panel-default' valueManager={ValueManager()}
+                                 loader={loader}/>);
 
         var node = React.findDOMNode(root);
     });
@@ -111,28 +113,29 @@ describe('Content', function () {
         var title = {
 
             type: 'h3',
-            content: ['hello', {children:true}],
+            content: ['hello', {children: true}],
             className: 'panel-title clearfix'
 
         };
 
-        var root = into( <Content content={title} className='panel panel-default'  valueManager={ValueManager()} loader={loader}>
+        var root = into(<Content content={title} className='panel panel-default' valueManager={ValueManager()}
+                                 loader={loader}>
                 <div>What</div>
 
             </Content>
-            );
+        );
 
         var node = React.findDOMNode(root);
         var str = node.innerHTML;
     });
-    it('should render content stuff', function(){
+    it('should render content stuff', function () {
         var content = [
             {
                 "className": "clz-left",
                 "content": [
                     {
                         "type": "h1",
-                        "content": "Heading stuff"
+                        "content": "Heading stuff {hello}"
                     },
                     {
                         "type": "p",
@@ -141,7 +144,7 @@ describe('Content', function () {
                     {
                         "type": "button",
                         "className": "btn btn-primary",
-                        "content":"Activate"
+                        "content": "Activate"
                     }
                 ]
             },
@@ -152,17 +155,87 @@ describe('Content', function () {
                         "type": "img",
                         "className": "super-img",
                         "src": "about:blank",
-                        "content":false
+                        "content": false
                     }
                 ]
             }
         ]
+        var node = React.renderToStaticMarkup(<Content content={content} className='panel panel-default'
+                                                       valueManager={ValueManager({hello:'Joe'})} loader={loader}/>);
 
-        var root = into( <Content content={content} className='panel panel-default'  valueManager={ValueManager()} loader={loader}>
-            </Content>
-            );
+        expect(node).toEqual('<span class="panel panel-default" type="span">' +
+            '<span class="clz-left" type="span">' +
+            '<span class="clz-left">Heading stuff Joe</span>' +
+            '<span class="clz-left">Super special content</span>' +
+            '<span class="clz-left">Activate</span>' +
+            '</span>' +
+            '<span class="clz-right" type="span">' +
+            '<img type="img" class="super-img" src="about:blank" content="false">' +
+            '</span>' +
+            '</span>');
+        console.log('string', node);
+    });
+    it('should render content stuff in a form', function () {
+        var content = [
+            {
+                "className": "clz-left",
+                "content": [
+                    {
+                        "type": "h1",
+                        "content": "Heading stuff {hello}"
+                    },
+                    {
+                        "type": "p",
+                        "content": "Super special content"
+                    },
+                    {
+                        "type": "button",
+                        "className": "btn btn-primary",
+                        "content": "Activate"
+                    }
+                ]
+            },
+            {
+                "className": "clz-right",
+                "content": [
+                    {
+                        "type": "img",
+                        "className": "super-img",
+                        "src": "about:blank",
+                        "content": false
+                    }
+                ]
+            }
+        ];
+        var schema = {
+            schema: {
+                'test': {
+                    type: "Content",
+                    template: false,
+                    title: false,
+                    content
+                }
+            }
+        }
+        var form = TestUtils.renderIntoDocument(<Form schema={schema} valueManager={ValueManager({hello:'Joe'})}
+                                                      loader={loader}/>);
+        var node = TestUtils.scryRenderedComponentsWithType(form, Content)[0];
+        var str = node.getDOMNode().innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');
 
-        var node = React.findDOMNode(root);
-        var str = node.innerHTML;
+      /*  expect(str).toEqual('<span type="span"><span  type="span">' +
+            '<span class="clz-left" type="span">' +
+            '<span class="clz-left">Heading stuff Joe</span>' +
+            '<span class="clz-left">Super special content</span>' +
+            '<span class="clz-left">Activate</span>' +
+            '</span>' +
+            '<span class="clz-right" type="span">' +
+            '<img type="img" class="super-img" src="about:blank" content="false">' +
+            '</span>' +
+            '</span></span>');
+*/
+        console.log('string', str);
+//        '<span class="clz-left" type="span"><span class="clz-left">Heading stuff Joe</span><span class="clz-left">Super special content</span><span class="clz-left">Activate</span></span><span class="clz-right" type="span"><img type="img" class="super-img" src="about:blank" content="false"></span>'
+ //       '<span class="clz-left" type="span"><span class="clz-left">Heading stuff Joe</span><span class="clz-left">Super special content</span><span class="clz-left">Activate</span></span><span class="clz-right" type="span"><img type="img" class="super-img" src="about:blank" content="false"></span>'
+
     });
 });

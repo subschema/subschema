@@ -7,6 +7,7 @@ var ValueManager = require('./ValueManager');
 var LoaderMixin = require('./LoaderMixin');
 var warning = require("react/lib/warning");
 var map = require('lodash/collection/map');
+var push = Function.apply.bind(Array.prototype.push);
 var noTypeInfo;
 if ("production" !== process.env.NODE_ENV) {
     noTypeInfo = function (f) {
@@ -31,37 +32,41 @@ function extractSchema(props) {
     return props.schema
 }
 function normalizeFieldsets(fieldsets, fields) {
-    if (!(fieldsets || fields)) return [];
+    if (!(fieldsets || fields)) return {};
+    fields = toArray(fields);
     //fields trump fieldsets
-    if (fields) {
-        fields = toArray(fields);
-        return {
-            fields
-        }
-    }
     //otherwise recurse
-    return toArray(fieldsets).map((f)=> {
+    fieldsets = toArray(fieldsets).map((f)=> {
         if (f.fields) {
-            var {fields, ...rest} = f;
-            rest.fields = toArray(fields);
+            var {...rest} = f;
+            rest.fields = toArray(rest.fields);
+            fields.push.apply(fields, rest.fields);
             return rest;
         } else if (f.fieldsets) {
             var {fieldsets, ...rest} = f;
-            rest.fieldsets = normalizeFieldsets(fieldsets);
+            rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
             return rest;
         } else if (tu.isString(f) || tu.isArray(f)) {
+            var processFields = toArray(f);
+            push(fields, processFields);
             return {
-                fields: toArray(f)
+                fields: processFields
             }
         } else if (f.fieldsets) {
             var {fieldsets, ...rest} = f;
-            rest.fieldsets = normalizeFieldsets(fieldsets);
-            f.fieldsets = normalizeFieldsets(f.fieldsets);
+            rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
             return rest;
         } else {
             console.log('do not know what %s this is ', fieldset);
         }
     });
+    if (fieldsets.length === 0) {
+        fieldsets = [{fields: fields}];
+    }
+    return {
+        fieldsets,
+        fields
+    }
 }
 
 function normalizeSchema(oschema, loader) {
@@ -83,11 +88,12 @@ function normalizeSchema(oschema, loader) {
         }, loader);
     }
     var {fields, fieldsets, ...schema} = oschema;
-
-    if (!(fields || fieldsets)) {
-        fieldsets = [{fields: Object.keys(schema.schema)}];
+    if (!(fieldsets || fields)) {
+        fields = Object.keys(schema.schema);
     }
-    schema.fieldsets = normalizeFieldsets(fieldsets, fields);
+    var {fieldsets, fields} = normalizeFieldsets(fieldsets, fields);
+    schema.fieldsets = fieldsets;
+    schema.fields = fields;
     return schema;
 }
 
@@ -195,19 +201,20 @@ var NestedMixin = {
 
     render() {
 
-        var {schema, subSchema,  fields, submitButton,  template, ...props} = this.props;
+        var {schema, subSchema, title, fields, submitButton,  template, ...props} = this.props;
 
-        var sb = submitButton || this.schema.submitButton;
         var Template = this.template(template);
-        return <Template ref="form" onValidate={this.handleValidate} onSubmit={this.handleSubmit} schema={this.schema}
+        return <Template ref="form" onValidate={this.handleValidate} schema={this.schema}
                          className={this.props.className}
+                         title={title === false ?'' : title}
+
             {...props}
+                         onSubmit={this.handleSubmit || this.props.onSubmit}
                          loader={this.props.loader}
                          valueManager={this.props.valueManager}
             >
             {this.schema && this.schema.schema ? this.renderSchema(this) : null}
-            {sb ?
-                <button type="submit" className='btn btn-primary' dangerouslySetInnerHTML={{__html: sb}}/> : null}
+
             {this.props.children}
         </Template>
     }
@@ -215,4 +222,5 @@ var NestedMixin = {
 }
 NestedMixin.normalizeSchema = normalizeSchema;
 NestedMixin.extractSchema = extractSchema;
+NestedMixin.normalizeFieldsets = normalizeFieldsets;
 module.exports = NestedMixin;

@@ -8,7 +8,7 @@ module.exports = function setup(Subschema) {
             var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
             return (<div
                 className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' +  fieldClass}>
-                <div className="">
+                <div className="col-sm-offset-1 col-sm-10">
                     {children}
                     <p className="help-block" ref="help">{message || help}</p>
                 </div>

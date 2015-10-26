@@ -18,7 +18,7 @@
     "karma": "karma start --no-single-run --colors --auto-watch",
     "docs": "node bin/docs.js",
     "postinstall": "node bin/postinstall.js",
-    "prepublish":"NODE_ENV=production npm run test && webpack --config ./webpack.config.js -p",
+    "prepublish": "NODE_ENV=production npm run test && webpack --config ./webpack.config.js -p",
     "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
@@ -39,6 +39,7 @@
     "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.21.0",
     "dmd": "^1.0.3",
+    "es6-promise": "^3.0.2",
     "expect": "^1.6.0",
     "express": "^4.12.3",
     "extract-text-webpack-plugin": "^0.8.2",
@@ -80,6 +81,5 @@
     "react": "*",
     "lodash": "*"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

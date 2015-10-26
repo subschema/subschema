@@ -18,18 +18,20 @@ var EditorTemplate = React.createClass({
     render(){
         var {name, title, help, errorClassName, message, fieldClass, loader, valueManager, children} = this.props;
         var error = this.state.error;
-        if (!title){ title = ''}
+        if (!title) {
+            title = ''
+        }
 
         return (<div
             className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
             <Content content={title} type="label" className={style.label} htmlFor={name}
                      valueManager={valueManager} loader={loader}/>
 
-            <div className={title ? "col-sm-10" : "col-sm-12"}>
+            <div className={title ? style.hasTitle : style.noTitle}>
                 {children}
-                <Content content={error ? error : help} key='error-block' type='p'
-                         className={error ? style.error : style.help}
-                         valueManager={valueManager} loader={loader}/>
+                {help === false ? null : <Content content={error ? error : help} key='error-block' type='p'
+                                                  className={error ? style.error : style.help}
+                                                  valueManager={valueManager} loader={loader}/>}
             </div>
         </div>);
     }
