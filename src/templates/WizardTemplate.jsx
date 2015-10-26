@@ -171,7 +171,7 @@ var WizardTemplate = React.createClass({
                 }
             }, this.state);
         }
-        return <ButtonsTemplate key={'btn-'+compState} buttons={buttons} onClick={this.handleBtn}/>
+        return <ButtonsTemplate key={'btn-'+compState} className='form-group col-sm-12 ' buttons={buttons} onClick={this.handleBtn}/>
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();

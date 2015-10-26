@@ -1,3 +1,4 @@
+require('./ListItemTemplate.less');
 module.exports = {
     moveUp: 'glyphicon glyphicon-chevron-up',
     moveDown: 'glyphicon glyphicon-chevron-down',
@@ -7,5 +8,6 @@ module.exports = {
     listGroupItem: 'list-group-item',
     hasError: 'has-error',
     help: "help-block",
-    buttonsClass: 'btn-group pull-right'
+    buttonsClass: 'btn-group'
+
 }
