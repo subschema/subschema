@@ -3,7 +3,7 @@ var React = require('../react');
 
 var Buttons = require('./ButtonsTemplate.jsx');
 var Content = require('../types/Content.jsx')
-import styles from '../styles/modal.css';
+var styles = require('../styles/ModalTemplate-style');
 var ModalTemplate = React.createClass({
     handleClose(e){
         e && e.preventDefault();

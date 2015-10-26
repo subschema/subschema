@@ -50,7 +50,7 @@ describe('validate-nested', function () {
         Simulate.blur(React.findDOMNode(n1));
         Simulate.focus(React.findDOMNode(n2));
     });
-    it.only('should not validate nested objects', function () {
+    it('should not validate nested objects', function () {
         var vm = ValueManager({}, {'nested.n2':[{message:'borked'}]});
         var form = into(<Form schema={schema} valueManager={vm}/>, true);
 
