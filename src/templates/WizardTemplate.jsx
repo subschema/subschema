@@ -227,7 +227,7 @@ var WizardTemplate = React.createClass({
 
         return (
             <div className="wizard-container" onKeyDown={this.handleKeyDown}>
-                {this.renderProgress(fieldsets)}
+                {this.renderProgress(fieldsets.fields)}
 
                 <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
                                          transitionLeave={true}
@@ -236,7 +236,7 @@ var WizardTemplate = React.createClass({
                     <Form ref="form"
                           className={'compState w'+compState}
                           key={"form-"+compState}
-                          schema={{schema, fields}}
+                          schema={{schema, fieldsets:fields}}
                           onSubmit={this.handleSubmit}
                           valueManager={this.props.valueManager}>
                         {this.renderBtns(compState)}

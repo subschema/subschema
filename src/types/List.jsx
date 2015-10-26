@@ -3,7 +3,7 @@ var Constants = require('../Constants');
 var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var css = require('../css');
-var style = require('./List-style');
+var style = require('../styles/List-style');
 var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 require('../styles/transitions.less');
 var ListInput = React.createClass({

@@ -6,7 +6,7 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 require('../styles/transitions.less');
-var style = require('./CollectionMixin-style');
+var style = require('../styles/CollectionMixin-style');
 var CollectionMixin = {
     statics: {
         listClassName: Constants.listClassName,

@@ -39,6 +39,7 @@ module.exports = {
             },
             address: {
                 type: 'Object',
+                title:false,
                 subSchema: {
                     'address': {
                         type: 'Text',

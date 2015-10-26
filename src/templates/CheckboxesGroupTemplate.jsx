@@ -1,5 +1,5 @@
 var React = require('../react');
-var style = require('./CheckboxesGroupTemplate-style');
+var style = require('../styles/CheckboxesGroupTemplate-style');
 var CheckboxesGroupTemplate = React.createClass({
     render(){
         return (<fieldset className={style.group}>

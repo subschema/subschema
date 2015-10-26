@@ -3,6 +3,7 @@ var tpath = require('../tutils').path;
 var Buttons = require('../templates/ButtonsTemplate.jsx');
 var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
 require('../styles/transitions.less');
+var style = require('../styles/ListItemTemplate-style');
 
 var ListItemTemplate = React.createClass({
     mixins: [require('./ListItemMixin')],

@@ -1,7 +1,7 @@
 var React = require('../react');
 var css = require('../css');
 var Content = require('../types/Content.jsx')
-var style = require('./EditorTemplate-style');
+var style = require('../styles/EditorTemplate-style');
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
     componentWillMount(){

@@ -12,10 +12,10 @@ module.exports = {
         });
     },
     loadType (type) {
-        return require.context("./types", true, /^\.\/.*\.js(x)?/)('./' + type + '.jsx');
+        return require.context("./types", true, /^\.\/.*(?!\-style)\.js(x)?/)('./' + type + '.jsx');
     },
     listTypes(){
-        return require.context("./types", true, /^\.\/.*\.js(x)?/).keys().map(function (k) {
+        return require.context("./types", true, /^\.\/.*(?!\-style)\.js(x)?/).keys().map(function (k) {
             return {
                 name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
                 path: k
