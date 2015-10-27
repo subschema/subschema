@@ -36,7 +36,7 @@ module.exports = {
                     },
                     zip: {
                         type: 'Text',
-                        validators: ['required', /^[0-9]{5}(-([0-9]{4}))?$/]
+                        validators: ['required', {type:'regexp', regexp:'/^[0-9]{5}(-([0-9]{4}))?$/'}]
                     }
                 }
             }

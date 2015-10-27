@@ -47,6 +47,7 @@ var SampleItem = React.createClass({
         var file = s.file;
         var state = this.state || {};
         var content = require('./samples/' + s.file);
+/*
         if (state.content !== content) {
             if (this._loaded) {
                 Subschema.loader.removeLoader(this._loaded);
@@ -54,10 +55,12 @@ var SampleItem = React.createClass({
             this._loaded = content.setup && content.setup(Subschema, this);
         }
 
+*/
 
         return {
             schema: content.schema,
             content,
+            setup:content.setup,
             file,
             sample: props.sample
         };
@@ -92,13 +95,6 @@ var SampleItem = React.createClass({
         var { description, title, setup, setupTxt, props, data, errors, teardown} = (this.state || {}).content || {};
 
         var file = this.state.file;
-        if (setup && !setupTxt) {
-            var tmp = setup.toString().replace(setupRe, '$1').replace(/__webpack_require__\(\d+?\)/g, 'require("subschema")').split('\n').map(function (v) {
-                return v.replace(/^	        /, '');
-            });
-            setupTxt = tmp.join('\n')
-        }
-
         title = title || file.replace(/\.js(x)?/, '');
         return (
             <div>
@@ -110,8 +106,8 @@ var SampleItem = React.createClass({
                     <div className="span10">
                         <div className="container-fluid">
                             <h4>Example:</h4>
-                            <Example valueManager={this.vm} schema={schema} props={props} setupTxt={setupTxt}
-                                     ref="example" key="example"/>
+                            <Example valueManager={this.vm} schema={schema} setup={setup} props={props} setupTxt={setupTxt}
+                                     ref="example" key={`example-${title}`}/>
                         </div>
 
                     </div>

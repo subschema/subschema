@@ -18,7 +18,7 @@ var WrappedForm = React.createClass({
         return <h1>hello</h1>
     }
 })
-var Example = React.createClass({
+var SampleExample = React.createClass({
     getInitialState(){
         return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors()};
     },
@@ -48,11 +48,14 @@ var Example = React.createClass({
     },
     render(){
         var {data, errors} = this.state;
-        var {schema, setupTxt, props} = this.props;
+        var {schema, setup, setupTxt, props} = this.props;
         var valProps = {
             schema: schema,
-            value: data ||{},
+            value: data || {},
             errors: errors
+        }, scope = {ReactDOM, React, Form: Subschema.Form, Subschema};
+        if (setup) {
+            setup(scope, valProps);
         }
         var propStr = [], vars = [];
         Object.keys(valProps).forEach(function (v) {
@@ -64,15 +67,16 @@ var Example = React.createClass({
         });
         var codeText = [vars.join('\n'),
             stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
-            'ReactDOM.render(form, mountNode)'
+            setupTxt,
+            'ReactDOM.render(form, mountNode);'
         ].join('\n');
         console.log('example', codeText);
         return <div className='sample-example-playground'>
             <Playground key='form' codeText={codeText} theme='monokai' collapsableCode={true} noRender={false}
-                        scope={{ReactDOM, React,Form:Subschema.Form, Subschema}}
+                        scope={scope}
                 />
         </div>
     }
 })
 
-module.exports = Example;
+module.exports = SampleExample;

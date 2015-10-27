@@ -1,5 +1,7 @@
+"use strict";
+
 module.exports = {
-    title:'Selection of Selections',
+    title: 'Selection of Selections',
     description: 'This shows how selects can be connected.\
      ',
     schema: {
@@ -7,12 +9,12 @@ module.exports = {
             'make': {
                 title: 'Make',
                 type: 'Select',
-                placeholder:'Select a make'
+                placeholder: 'Select a make'
             },
             'model': {
                 title: 'Model',
                 type: 'Select',
-                placeholder:'Select a model'
+                placeholder: 'Select a model'
             }
         },
         fieldsets: [{legend: 'Make And Model Linked Selects', fields: ['make', 'model']}]
@@ -21,6 +23,12 @@ module.exports = {
         make: 'audi',
         model: '4000'
     },
-    setup: require('./CarMake-setup.js'),
-    setupTxt: require('!!raw!../sample-loader!./CarMake-setup.js')
+    props: {
+        valueManager: true
+    },
+    setup: function (scope, props) {
+        props.valueManager = 'Subschema.ValueManager(' + JSON.stringify(props.value, null, '\t') + ')';
+        delete props.value;
+    },
+    setupTxt: require('!!raw!./CarMake-setup.js')
 }
