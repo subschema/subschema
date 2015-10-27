@@ -115,6 +115,7 @@ function ValueManager(value, errors) {
     this.listeners = [];
     this.errorListeners = [];
     this.validateListeners = [];
+    this.stateListeners = [];
     this.setValue(value || {});
     this.oldValue = tu.extend({}, this.value);
     this.setErrors(errors);
@@ -192,6 +193,18 @@ function ValueManager(value, errors) {
      * removes a submit listener;
      */
     this.removeSubmitListener = removeListener(this.submitListeners);
+
+    /**
+     * adds a submit listener.
+     * @param {String} [path] -  path to listen to.
+     * @param {Function} [ValueManagerListener] - the listener to look for.
+     * @param {Listener} [listener] - the listener returned from addListener();
+     */
+    this.addStateListener = addListener(this.stateListeners);
+    /**
+     * removes a submit listener;
+     */
+    this.removeStateListener = removeListener(this.stateListeners);
 }
 
 ValueManager.prototype = {
@@ -473,6 +486,27 @@ ValueManager.prototype = {
             this.validate(path);
         }, this);
         return errors;
+    },
+    /**
+     * Pretty much the same as update, except that it does not, store
+     * the values.  It just fires, listeners.
+     */
+    updateState(path, value){
+        return this.onChangeState(path, value) !== false;
+    },
+    onChangeState(path, value){
+        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
+        do {
+            if (this.stateListeners.some(v=> {
+                    if (v.path === pp) {
+                        return (v.listener.call(v.scope, value, path) === false);
+                    }
+                }, this) === true) {
+                return false
+            }
+            pp = tu.path(pp, parts[i]);
+        } while (i++ < l);
+        return true;
     }
 }
 

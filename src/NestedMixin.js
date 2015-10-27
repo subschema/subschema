@@ -114,13 +114,18 @@ var NestedMixin = {
     componentWillReceiveProps(newProps){
         this.updateProps(this.props, newProps);
     },
+
     updateProps(oldProps, newProps){
         this.schema = normalizeSchema(extractSchema(newProps), newProps.loader);
         if (oldProps.value !== newProps.value) {
             newProps.valueManager.setValue(newProps.value);
         }
+        if (this._listener) {
+            this._listener.remove();
+        }
     },
-    makeFieldset(f, i) {
+
+    makeFieldset(f, i){
         var Template = this.template(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f} legend={f.legend}
                          loader={this.props.loader}
@@ -133,10 +138,13 @@ var NestedMixin = {
     },
 
 
-    getValue(){
+    getValue()
+    {
         return this.props.valueManager.path(this.props.path);
-    },
-    addEditor(field, f){
+    }
+    ,
+    addEditor(field, f)
+    {
         if (field == null) {
             return null;
         }
@@ -151,8 +159,10 @@ var NestedMixin = {
                        name={f}
             {...tmpl}
                        valueManager={this.props.valueManager}/>
-    },
-    makeFields(fields) {
+    }
+    ,
+    makeFields(fields)
+    {
         var fieldMap = {}, schema = this.schema.schema;
 
         fields = toArray(fields).map((v) => {
@@ -192,13 +202,17 @@ var NestedMixin = {
              }*/
             return this.addEditor(ref, f);
         });
-    },
+    }
+    ,
 
-    renderSchema() {
+    renderSchema()
+    {
         return map(this.schema.fieldsets, this.makeFieldset);
-    },
+    }
+    ,
 
-    render() {
+    render()
+    {
 
         var {schema, subSchema, title, fields, submitButton,  template, ...props} = this.props;
 
