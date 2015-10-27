@@ -1,0 +1,11 @@
+require('./wizard.less');
+module.exports = {
+    namespace:'wizard-container',
+    buttons: 'form-group col-sm-12 ',
+    switchBack: 'wizardSwitchBack',
+    switch: 'wizardSwitch',
+    animating:'overflow-hidden',
+    transitionContainer:'slide-container',
+    componentState:'compState w'
+
+}

@@ -3,12 +3,11 @@ var React = require('../react')
 var Form = require('../form');
 var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');
-var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx');
 var LoaderMixin = require('../LoaderMixin');
 var cssUtil = require('../css');
-
+var style = require('../styles/WizardTemplate-style');
 
 function donner(done) {
     done();
@@ -170,7 +169,8 @@ var WizardTemplate = React.createClass({
                 }
             }, this.state);
         }
-        return <ButtonsTemplate key={'btn-'+compState} className='form-group col-sm-12 ' buttons={buttons} onClick={this.handleBtn}/>
+        return <ButtonsTemplate key={'btn-'+compState} className={style.buttons} buttons={buttons}
+                                onClick={this.handleBtn}/>
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();
@@ -199,10 +199,10 @@ var WizardTemplate = React.createClass({
 
     },
     handleEnter(){
-        this.setState({animating:true})
+        this.setState({animating: true})
     },
     handleLeave(done){
-        this.setState({animating:false})
+        this.setState({animating: false})
         done();
     },
     renderProgress(fieldsets){
@@ -222,18 +222,19 @@ var WizardTemplate = React.createClass({
             schema = tu.extend({}, this.schema.schema),
             compState = this.state.compState,
             fields = fieldsets[compState].fields,
-            transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
+            transition = compState < this.state.prevState ? style.switchBack : style.switch;
 
         return (
-            <div className={"wizard-container "+(this.state.animating ? 'overflow-hidden' : '') }onKeyDown={this.handleKeyDown}>
-                {this.renderProgress(fieldsets.fields)}
+            <div className={style.namespace+" "+(this.state.animating ? style.animating : '') }
+                 onKeyDown={this.handleKeyDown}>
+                {this.renderProgress(fieldsets)}
 
                 <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
                                          transitionLeave={true}
-                                         className='slide-container' onEnter={this.handleEnter}
+                                         className={style.transitionContainer} onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
                     <Form ref="form"
-                          className={'compState w'+compState}
+                          className={style.componentState+compState}
                           key={"form-"+compState}
                           schema={{schema, fields}}
                           onSubmit={this.handleSubmit}
