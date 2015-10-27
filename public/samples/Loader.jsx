@@ -3,7 +3,7 @@ module.exports = {
     It can be used to load Templates, Processors, Types, Schemas and Validators. Here we are demonstrating templates and schemas, but the same pattern applies to the other types\
     They all follow the same pattern.   Note the list`type` is optional, but useful for future introspection if needed\
     ',
-    schema: 'Contact',
+    schema: '\"Contact\"',
     data: {
         name: 'Robert Loblaw',
         primary: {
@@ -27,6 +27,8 @@ module.exports = {
     errors: {
         'primary.address': [{message: 'No Such Place'}]
     },
-    setup: require('./Loader-setup.jsx'),
-    setupTxt:require('!!raw!../sample-loader!./Loader-setup.jsx')
+    setup: function(context, props){
+        props.loader = '//Manually setup a loader\nSubschema.loaderFactory([Subschema.DefaultLoader])';
+    },
+    setupTxt:require('!!raw!./Loader-setup.jsx')
 }

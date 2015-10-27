@@ -5,7 +5,7 @@ var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');
 var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx');
 var LoaderMixin = require('../LoaderMixin');
 var cssUtil = require('../css');
 
@@ -199,10 +199,10 @@ var WizardTemplate = React.createClass({
 
     },
     handleEnter(){
-        cssUtil.addClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
+        this.setState({animating:true})
     },
     handleLeave(done){
-        cssUtil.removeClass(this.refs.anim.getDOMNode(), 'overflow-hidden');
+        this.setState({animating:false})
         done();
     },
     renderProgress(fieldsets){
@@ -225,13 +225,13 @@ var WizardTemplate = React.createClass({
             transition = compState < this.state.prevState ? 'wizardSwitchBack' : 'wizardSwitch';
 
         return (
-            <div className="wizard-container" onKeyDown={this.handleKeyDown}>
+            <div className={"wizard-container "+(this.state.animating ? 'overflow-hidden' : '') }onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets.fields)}
 
-                <ReactCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
+                <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
                                          transitionLeave={true}
-                                         className='slide-container' componentDidEnter={this.handleEnter}
-                                         componentDidLeave={this.handleLeave}>
+                                         className='slide-container' onEnter={this.handleEnter}
+                                         onDidLeave={this.handleLeave}>
                     <Form ref="form"
                           className={'compState w'+compState}
                           key={"form-"+compState}
@@ -240,7 +240,7 @@ var WizardTemplate = React.createClass({
                           valueManager={this.props.valueManager}>
                         {this.renderBtns(compState)}
                     </Form>
-                </ReactCSSTransitionGroup>
+                </EventCSSTransitionGroup>
             </div>
         );
     }

@@ -66,17 +66,18 @@ var SampleExample = React.createClass({
             propStr.push(v + '={' + v + '}');
         });
         var codeText = [vars.join('\n'),
-            stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
             setupTxt,
+            stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
             'ReactDOM.render(form, mountNode);'
         ].join('\n');
-        console.log('example', codeText);
+        console.log('example\n\n', codeText, '\n\n');
         return <div className='sample-example-playground'>
-            <Playground key='form' codeText={codeText} theme='monokai' collapsableCode={true} noRender={false}
+            <Playground key={'form-'+(data? 'data' :'no-data')} codeText={codeText} theme='monokai'
+                        collapsableCode={true} noRender={false}
                         scope={scope}
                 />
         </div>
     }
-})
+});
 
 module.exports = SampleExample;

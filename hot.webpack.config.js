@@ -86,8 +86,8 @@ module.exports = {
         extensions:['','.js','.jsx'],
         alias: {
             'subschema': join('src/index.jsx'),
-            'react': join('node_modules/react'),
-            'component-playground':join('node_modules/component-playground')
+            'react': join('node_modules/react')
+         //   'component-playground':join('node_modules/component-playground')
         }
     },
 

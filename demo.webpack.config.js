@@ -1,6 +1,6 @@
 require('es6-promise').polyfill();
 var path = require('path');
-
+var hot = require('./hot.web')
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +

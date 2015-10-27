@@ -59,6 +59,7 @@ module.exports = {
             }
 
         },
+        template:'WizardTemplate',
         fieldsets: [{
             legend: 'Account',
             fields: ['username', 'password', 'confirmPassword']

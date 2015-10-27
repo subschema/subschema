@@ -18,7 +18,7 @@ var WebpackSetup = React.createClass({
                     <div className="panel-body">
 
                         <Highlight lang="javascript">
-                            {require('!!raw!../sample-loader!./../samples/Loader-setup.jsx')}
+                            {require('!!raw!./../samples/Loader-setup.jsx')}
                         </Highlight>
                     </div>
                 </div>

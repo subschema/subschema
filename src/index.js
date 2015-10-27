@@ -7,3 +7,4 @@ module.exports.loader = require('./loader');
 module.exports.ValueManager = require('./ValueManager');
 module.exports.FieldValueMixin = require('./FieldValueMixin');
 module.exports.ValidatorLoader = require('./ValidatorLoader.js');
+module.exports.loaderFactory = require('./loaderFactory');

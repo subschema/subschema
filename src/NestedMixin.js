@@ -216,7 +216,7 @@ var NestedMixin = {
 
         var {schema, subSchema, title, fields, submitButton,  template, ...props} = this.props;
 
-        var Template = this.template(template);
+        var Template = this.template(schema.template || template);
         return <Template ref="form" onValidate={this.handleValidate} schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}

@@ -25,6 +25,8 @@ module.exports = {
     teardown(){
         require('subschema').loader.removeLoader(this._loader);
     },
-    setup: require('./Autocomplete-setup.js'),
-    setupTxt:require('!!raw!../sample-loader!./Autocomplete-setup.js')
+    setup: function(context, props){
+        props.loader = 'Subschema.loaderFactory([Subschema.DefaultLoader])';
+    },
+    setupTxt:require('!!raw!./Autocomplete-setup.js')
 }
