@@ -109,23 +109,6 @@ var SampleItem = React.createClass({
 
                     <div className="span10">
                         <div className="container-fluid">
-                            <div className="row-fluid">
-                                <div className="span12">
-                                    <div className="panel panel-default">
-                                        <div className="panel-body">
-
-                                            <Form ref="form" schema={schema}
-                                                  key={'form-'+file}
-                                                  valueManager={this.vm}
-                                                  onButtonClick={this.handleBtn}
-                                                  onSubmit={this.handleSubmit}
-                                                  onValidate={this.handleErrors}
-                                                {...props}
-                                                />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <h4>Example:</h4>
                             <Example valueManager={this.vm} schema={schema} props={props} setupTxt={setupTxt}
                                      ref="example" key="example"/>
