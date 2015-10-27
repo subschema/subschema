@@ -1,10 +1,10 @@
 var React = require('../react');
 var Editor = require('../Editor');
 var CreateItemMixin = require('../types/CreateItemMixin');
-var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
 var Content = require('../types/Content.jsx');
 var style = require('../styles/CollectionCreateTemplate-style');
-require('../styles/transitions.less');
 var CollectionCreateTemplate = React.createClass({
     mixins: [CreateItemMixin],
     render(){

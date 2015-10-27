@@ -53,7 +53,7 @@ module.exports = {
                 test: /\.js(x)?$/,
                 exclude: [
                     /tcl\.js/,
-                    /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|react-highlight))/,
+                    /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|component-playground|codemirror|react-))/,
                     join('src'),
                     join('public'),
 
@@ -86,12 +86,16 @@ module.exports = {
         extensions:['','.js','.jsx'],
         alias: {
             'subschema': join('src/index.jsx'),
-            'react': join('/node_modules/react')
+            'react': join('node_modules/react'),
+            'component-playground':join('node_modules/component-playground')
         }
     },
 
     plugins: [
-
+        new webpack.ProvidePlugin({
+            CodeMirror: "codemirror",
+            "window.CodeMirror": "codemirror"
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
    //     new ExtractTextPlugin('style.css', {allChunks: true}),

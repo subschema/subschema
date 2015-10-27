@@ -5,8 +5,7 @@ var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');
 var css = require('../styles/wizard.less');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
-//var TimeoutTransitionGroup = require('../transition/TimeoutTransitionGroup.jsx');
-var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx')
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var LoaderMixin = require('../LoaderMixin');
 var cssUtil = require('../css');
 
@@ -229,10 +228,10 @@ var WizardTemplate = React.createClass({
             <div className="wizard-container" onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets.fields)}
 
-                <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
+                <ReactCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
                                          transitionLeave={true}
-                                         className='slide-container' onEnter={this.handleEnter}
-                                         onDidLeave={this.handleLeave}>
+                                         className='slide-container' componentDidEnter={this.handleEnter}
+                                         componentDidLeave={this.handleLeave}>
                     <Form ref="form"
                           className={'compState w'+compState}
                           key={"form-"+compState}
@@ -241,7 +240,7 @@ var WizardTemplate = React.createClass({
                           valueManager={this.props.valueManager}>
                         {this.renderBtns(compState)}
                     </Form>
-                </EventCSSTransitionGroup>
+                </ReactCSSTransitionGroup>
             </div>
         );
     }

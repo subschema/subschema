@@ -4,8 +4,7 @@ var tu = require('../tutils');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var css = require('../css');
 var style = require('../styles/List-style');
-var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
-require('../styles/transitions.less');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
     getDefaultProps() {

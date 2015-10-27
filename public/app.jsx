@@ -1,6 +1,7 @@
-var Router = require('react-router');
 var React = require('react');
-var { Route,DefaultRoute } = Router;
+import { render } from 'react-dom'
+import { Router, IndexRoute, Route, Link } from 'react-router'
+
 require('./sample.less');
 
 var SampleItem = require('./SampleItem.jsx');
@@ -9,13 +10,13 @@ var App = require('./Sample.jsx');
 var Setup = require('./Setup.jsx');
 
 var routes = (
-    <Route handler={App}>
-        <DefaultRoute handler={Index}/>
-        <Route name="item" path=":sample" handler={SampleItem}/>
-        <Route name="setup" path="setup/:setup" handler={Setup}/>
-    </Route>
+    <Router>
+        <Route path='/' component={App}>
+            <IndexRoute component={Index}/>
+            <Route name="item" path=":sample" component={SampleItem}/>
+            <Route name="setup" path="setup/:setup" component={Setup}/>
+        </Route>
+    </Router>
 );
 
-Router.run(routes, function (Handler) {
-    React.render(<Handler/>, document.getElementById('content'));
-});
+render(routes, document.getElementById('content'));

@@ -5,7 +5,7 @@ var toArray = tu.toArray;
 var Editor = require('./Editor');
 var ValueManager = require('./ValueManager');
 var LoaderMixin = require('./LoaderMixin');
-var warning = require("react/lib/warning");
+var warning = require("fbjs/lib/warning");
 var map = require('lodash/collection/map');
 var push = Function.apply.bind(Array.prototype.push);
 var noTypeInfo;
@@ -109,18 +109,17 @@ var NestedMixin = {
 
     },
     componentWillMount(){
-        if (this.props.value) {
-            this.props.valueManager.setValue(this.props.value);
-        }
-        if (this.props.errors) {
-            this.props.valueManager.setErrors(this.props.errors);
-        }
-        this.schema = normalizeSchema(extractSchema(this.props), this.props.loader);
+        this.updateProps({}, this.props);
     },
     componentWillReceiveProps(newProps){
-        this.schema = normalizeSchema(extractSchema(newProps), this.props.loader);
+        this.updateProps(this.props, newProps);
     },
-
+    updateProps(oldProps, newProps){
+        this.schema = normalizeSchema(extractSchema(newProps), newProps.loader);
+        if (oldProps.value !== newProps.value) {
+            newProps.valueManager.setValue(newProps.value);
+        }
+    },
     makeFieldset(f, i) {
         var Template = this.template(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f} legend={f.legend}

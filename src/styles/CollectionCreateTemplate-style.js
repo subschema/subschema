@@ -1,3 +1,5 @@
+require('./transitions.less');
+
 module.exports = {
     panel: "panel panel-default",
     panelTitle: 'panel-title clearfix',

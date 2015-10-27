@@ -4,8 +4,7 @@ var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
-var ReactCSSTransitionGroup = require('react/addons').addons.CSSTransitionGroup;
-require('../styles/transitions.less');
+var ReactCSSTransitionGroup =  require('react-addons-css-transition-group');
 var style = require('../styles/CollectionMixin-style');
 var CollectionMixin = {
     statics: {

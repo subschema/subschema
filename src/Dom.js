@@ -1,4 +1,4 @@
-var EventListener = require('react/lib/EventListener');
+var EventListener = require('fbjs/lib/EventListener');
 var React = require('./react');
 module.exports = {
     EventListener,
