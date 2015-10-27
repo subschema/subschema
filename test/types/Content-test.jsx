@@ -77,15 +77,11 @@ describe('Content', function () {
         expect(node.tagName).toBe('SPAN');
 
     });
-    it('should render loaded an empty p', function () {
+    it('should render loaded an h3', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
         var vm = ValueManager({what, more});
-        var content = {
-            h3: 'your value is {what}', Test: {
-                content: ['is more']
-            }
-        };
+
         var root = into(<Content key='t2' type='p' className='stuff' content={''} valueManager={vm} path="test"
                                  loader={loader}/>);
         var node = React.findDOMNode(root);
@@ -173,7 +169,6 @@ describe('Content', function () {
             '<img type="img" class="super-img" src="about:blank" content="false">' +
             '</span>' +
             '</span>');
-        console.log('string', node);
     });
     it('should render content stuff in a form', function () {
         var content = [
@@ -222,20 +217,19 @@ describe('Content', function () {
         var node = TestUtils.scryRenderedComponentsWithType(form, Content)[0];
         var str = node.getDOMNode().innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');
 
-      /*  expect(str).toEqual('<span type="span"><span  type="span">' +
-            '<span class="clz-left" type="span">' +
-            '<span class="clz-left">Heading stuff Joe</span>' +
-            '<span class="clz-left">Super special content</span>' +
-            '<span class="clz-left">Activate</span>' +
-            '</span>' +
-            '<span class="clz-right" type="span">' +
-            '<img type="img" class="super-img" src="about:blank" content="false">' +
-            '</span>' +
-            '</span></span>');
-*/
-        console.log('string', str);
+        /*  expect(str).toEqual('<span type="span"><span  type="span">' +
+         '<span class="clz-left" type="span">' +
+         '<span class="clz-left">Heading stuff Joe</span>' +
+         '<span class="clz-left">Super special content</span>' +
+         '<span class="clz-left">Activate</span>' +
+         '</span>' +
+         '<span class="clz-right" type="span">' +
+         '<img type="img" class="super-img" src="about:blank" content="false">' +
+         '</span>' +
+         '</span></span>');
+         */
 //        '<span class="clz-left" type="span"><span class="clz-left">Heading stuff Joe</span><span class="clz-left">Super special content</span><span class="clz-left">Activate</span></span><span class="clz-right" type="span"><img type="img" class="super-img" src="about:blank" content="false"></span>'
- //       '<span class="clz-left" type="span"><span class="clz-left">Heading stuff Joe</span><span class="clz-left">Super special content</span><span class="clz-left">Activate</span></span><span class="clz-right" type="span"><img type="img" class="super-img" src="about:blank" content="false"></span>'
+        //       '<span class="clz-left" type="span"><span class="clz-left">Heading stuff Joe</span><span class="clz-left">Super special content</span><span class="clz-left">Activate</span></span><span class="clz-right" type="span"><img type="img" class="super-img" src="about:blank" content="false"></span>'
 
     });
 });

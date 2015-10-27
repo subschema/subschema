@@ -92,7 +92,7 @@ describe('NestedMixin', function () {
             console.log(JSON.stringify(fieldsets));
         });
 
-        it.only('should normalize nested fieldsets', function () {
+        it('should normalize nested fieldsets', function () {
             var inFieldsets = [{
                 fieldsets: [
                     {fields: 'a'},
@@ -102,11 +102,22 @@ describe('NestedMixin', function () {
             ];
             var {fieldsets, fields}  = NestedMixin.normalizeFieldsets(inFieldsets, []);
             expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
-            console.log(JSON.stringify(fieldsets, null, 3));
             expect(fieldsets[0].fieldsets[0].fields).toEqual(['a']);
             expect(fieldsets[0].fieldsets[1].fields).toEqual(['b']);
             expect(fieldsets[0].fieldsets[2].fields).toEqual(['c']);
-           // expect(fieldsets[1].fields).toEqual(['d', 'e', 'f']);
+        });
+        it('should normalize nested fieldsets with fieldsets', function () {
+            var inFieldsets = [{
+                fieldsets: [
+                    {fieldsets: [{fields: 'a'}]},
+                    {fieldsets: [{fields: 'b'}]},
+                    {fields: 'c'}]
+            }, 'd, e, f'
+            ];
+            var {fieldsets, fields}  = NestedMixin.normalizeFieldsets(inFieldsets, []);
+            expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+            expect(fieldsets[0].fieldsets[0].fieldsets[0].fields).toEqual(['a']);
+            expect(fieldsets[0].fieldsets[1].fieldsets[0].fields).toEqual(['b']);
         });
     });
 });

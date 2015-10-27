@@ -91,7 +91,7 @@ var Content = React.createClass({
         if (field && field.content) {
             content = field.content;
         }
-        if (!content) {
+        if (content == null || content === false) {
             return null;
         }
         if (type === 'Content') {
