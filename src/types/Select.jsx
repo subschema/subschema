@@ -37,11 +37,11 @@ var Select = React.createClass({
                         values.push(option.value);
                 }
             }
-            this.props.handleChange(values);
+            this.triggerChange(values);
             return
         }else if (this.props.placeholder){
             if (e.target.value === this.props.placeholder){
-                this.props.handleChange(null);
+                this.triggerChange(null);
                 return;
             }
         }

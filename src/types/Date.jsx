@@ -17,7 +17,7 @@ var DateInput = React.createClass({
     handleDateChange(e){
         this.props.onChange(e);
         var value = this.valueFromEvt(e);
-        this.props.handleChange(new Date(value).getTime());
+        this.triggerChange(new Date(value).getTime());
     },
     render() {
         var {onBlur,onValueChange,onChange, className, fieldAttrs, ...props} = this.props;

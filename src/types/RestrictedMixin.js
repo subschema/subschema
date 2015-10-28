@@ -269,7 +269,7 @@ var RestrictedMixin = {
         var value = this.formatter(str, isBackspace, caret) || {isValid: false};
 
         this.props.onValid(value.isValid, value);
-        this.props.handleChange(value.value);
+        this.triggerChange(value.value);
         if (caret != null && typeof value.position === 'number') {
             if (isBackspace) {
                 caret += value.position - 1;

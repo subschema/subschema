@@ -1,7 +1,7 @@
 var HandleFieldValueMixin = {
     handleChange(e) {
         this.props.onChange(e);
-        this.props.handleChange(this.valueFromEvt(e));
+        this.triggerChange(this.valueFromEvt(e));
     },
     handleValidate(e){
         this.props.onBlur.call(this, e);

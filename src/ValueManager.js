@@ -236,6 +236,7 @@ ValueManager.prototype = {
         this.validateListeners.length = 0;
         this.createListeners.length = 0;
         this.submitListeners.length = 0;
+        this.stateListeners.length = 0;
     }
     ,
     /**
@@ -491,13 +492,13 @@ ValueManager.prototype = {
      * Pretty much the same as update, except that it does not, store
      * the values.  It just fires, listeners.
      */
-    updateState(path, value){
+        updateState(path, value){
         return this.onChangeState(path, value) !== false;
     },
     onChangeState(path, value){
         var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
         do {
-            if (this.stateListeners.some(v=> {
+            if (this.stateListeners.some((v)=> {
                     if (v.path === pp) {
                         return (v.listener.call(v.scope, value, path) === false);
                     }

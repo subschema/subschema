@@ -38,7 +38,7 @@ var Checkboxes = React.createClass({
         } else {
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
-        this.props.handleChange(newValues);
+        this.triggerChange(newValues);
     },
 
 

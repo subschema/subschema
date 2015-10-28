@@ -15,7 +15,7 @@ module.exports = {
             "showAddressModal": {
                 "type": "Checkbox",
                 "title": "Edit Address",
-                "help":"Click the checkbox to see the modal"
+                "help": "Click the checkbox to see the modal"
             },
             "address": {
                 type: "Object",
@@ -23,16 +23,24 @@ module.exports = {
                 conditional: {
                     listen: "showAddressModal",
                     operator: "truthy",
-                    template:'ModalTemplate',
-                    dismiss:'showAddressModal',
-                    title:"See the modal?",
-                    buttons: [
-                        {
-                            label: "Close",
-                            action:'close',
-                            className: 'btn btn-primary pull-right'
-                        }
-                    ]
+                    template: 'ModalTemplate',
+                    dismiss: 'showAddressModal',
+                    title: "See the modal?",
+                    buttons: {
+                        buttonsClass:'pull-right btn-group',
+                        buttons: [
+                            {
+                                label: "Cancel",
+                                action: 'cancel',
+                                className: 'btn'
+                            },
+                            {
+                                label: "Save",
+                                action: 'submit',
+                                className: 'btn btn-primary'
+                            }
+                        ]
+                    }
                 },
 
                 fields: "street, city, state, zip",
@@ -45,7 +53,7 @@ module.exports = {
                     },
                     zip: {
                         type: 'Text',
-                        validators: ['required', {type:'regexp', regexp:'/^[0-9]{5}(-([0-9]{4}))?$/'}]
+                        validators: ['required', {type: 'regexp', regexp: '/^[0-9]{5}(-([0-9]{4}))?$/'}]
                     }
                 }
             }
@@ -54,6 +62,7 @@ module.exports = {
             "legend": "Name",
             "fields": ["title", "name", "email", "showAddressModal", "address"],
             buttons: [
+
                 {
                     label: "Submit",
                     className: 'btn btn-primary pull-right'

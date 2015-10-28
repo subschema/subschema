@@ -69,30 +69,31 @@ function invoke(obj, func) {
 }
 var ValueManagerListenerMixin = {
     createKey(key){
-        return _key(this.props.path, key);
+        return _key(this.__path, key);
     },
     registerErrorHandler(key, func, init){
         if (init == null) init = true;
-        var props = this.props, handler = props.valueManager.addErrorListener(this.createKey(key), invoke(this, func), this, init);
-        this._componentListeners.push(handler);
+        var handler = this.__valueManager.addErrorListener(this.createKey(key), invoke(this, func), this, init);
+        this.__componentListeners.push(handler);
         return handler;
     },
     registerHandler(key, func, init){
         if (init == null) init = true;
         key = this.createKey(key)
-        var props = this.props, handler = props.valueManager.addListener(key, invoke(this, func), this, init);
-        this._componentListeners.push(handler);
+        var handler = this.__valueManager.addListener(key, invoke(this, func), this, init);
+        this.__componentListeners.push(handler);
         return handler;
     },
     _unlisten(){
-        if (this._componentListeners) {
-            this._componentListeners.forEach(remove);
-            this._componentListeners.length = 0;
+        if (this.__componentListeners) {
+            this.__componentListeners.forEach(remove);
+            this.__componentListeners.length = 0;
         }
     },
     _listen(){
+        this._unlisten();
         var errorListeners = this.errorListeners, listeners = this.listeners;
-        this._componentListeners = [];
+        this.__componentListeners = [];
         if (typeof errorListeners === 'function') {
             errorListeners = errorListeners();
         }
@@ -113,11 +114,20 @@ var ValueManagerListenerMixin = {
         }
     },
     componentWillMount(){
-        this._unlisten();
+        this.__path = this.props.path;
+        this.__valueManager = this.props.valueManager;
         this._listen();
     },
     componentWillUnmount(){
         this._unlisten();
+    },
+    componentWillReceiveProps(props){
+        if (!props.valueManager || (props.valueManager === this.props.valueManager && props.path === this.props.path)) {
+            return;
+        }
+        this.__valueManager = props.valueManager;
+        this.__path = props.path;
+        this._listen();
     }
 };
 module.exports = ValueManagerListenerMixin;

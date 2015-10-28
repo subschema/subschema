@@ -1,35 +1,36 @@
+"use strict";
+var {FREEZE_OBJ} = require('./tutils');
 var BasicFieldMixin = {
     componentWillMount(){
-        if (!this.props.valueManager) {
-            return
-        }
-        if (this.props.value) {
-            this.props.valueManager.setValue(this.props.value);
-        }
-        if (this.props.errors) {
-            this.props.valueManager.setErrors(this.props.errors);
-        }
-        this.props.valueManager.addListener(this.props.path, this.setValue, this, true);
-        // this.props.valueManager.addListener(this.props.path, this.props.onValueChange, this);
+        this.subschemaPropUpdate(this.props, FREEZE_OBJ);
     },
     componentWillUnmount(){
-        if (!this.props.valueManager) {
-            return
+        if (this.__listener) {
+            this.__listener.remove();
         }
-        this.props.valueManager.removeListener(this.props.path, this.setValue, this);
-        // this.props.valueManager.removeListener(this.props.path, this.props.onValueChange);
+    },
+    componentWillReceiveProps(newProps){
+        this.subschemaPropUpdate(newProps, this.props);
+    },
+    subschemaPropUpdate(props, oldProps){
+        if (!props.valueManager || props.valueManager === oldProps.valueManager && props.path === oldProps.path) {
+            return;
+        }
+        if (this.__listener) {
+            this.__listener.remove();
+        }
+        this.__listener = props.valueManager.addListener(props.path, this.setValue, this, true);
+    },
+    triggerChange(value){
+        if (!this.props.valueManager) {
+            return this.props.onValueChange(value);
+        }
+        if (this.props.valueManager.update(this.props.path, value) !== false) {
+            return this.props.onValueChange(value);
+        }
     },
     getDefaultProps(){
         return {
-            handleChange(value){
-                if (!this.valueManager) {
-                    this.onValueChange(value);
-                    return;
-                }
-                if (this.valueManager.update(this.path, value) !== false) {
-                    this.onValueChange(value);
-                }
-            },
             onValueChange(value)
             {
             }

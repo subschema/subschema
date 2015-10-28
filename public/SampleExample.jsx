@@ -4,6 +4,7 @@ var ReactDOM = require('react-dom');
 var Highlight = require('./Highlight.jsx');
 var Playground = require('component-playground/src/components/playground.jsx');
 var Subschema = require('subschema');
+var ValueManager = Subschema.ValueManager;
 
 require("component-playground/demo/styles/syntax.css");
 require("component-playground/demo/styles/codemirror.css");
@@ -13,10 +14,37 @@ function stringify(name, obj) {
     var str = !obj ? 'null' : typeof obj === 'string' ? obj : JSON.stringify(obj, null, '\t');
     return `var ${name} = ${str};`;
 }
-var WrappedForm = React.createClass({
+
+var ValueManagerNode = React.createClass({
+    componentWillMount(){
+        this._setup({}, this.props)
+    },
+    componentWillReceiveProps(newProps, oldProps){
+        this._setup(oldProps, newProps);
+    },
+    _setup(old, newProps){
+        this._listener && this._listener.remove();
+        if (newProps.valueManager) {
+            this._listener = newProps.valueManager.addListener(null, this.update, this, true);
+        } else {
+            console.log('no valueManager');
+        }
+    },
+    update(value){
+        this.setState({value});
+    },
+    componentWillUnmount(){
+        this._listener && this._listener.remove();
+    },
     render(){
-        return <h1>hello</h1>
+        return <div>
+            <h3>Values:</h3>
+            <pre className='value-manager-node'>
+                {JSON.stringify(this.state ? this.state.value : null, null, '\t')}
+            </pre>
+        </div>
     }
+
 })
 var SampleExample = React.createClass({
     getInitialState(){
@@ -50,10 +78,21 @@ var SampleExample = React.createClass({
         var {data, errors} = this.state;
         var {schema, setup, setupTxt, props} = this.props;
         var valProps = {
-            schema: schema,
-            value: data || {},
-            errors: errors
-        }, scope = {ReactDOM, React, Form: Subschema.Form, Subschema};
+                schema: schema,
+                value: data || {},
+                errors: errors
+            }, valueManager = ValueManager(),
+            FormWrapper = function (props) {
+                var {...copy} = props;
+                if (props.valueManager) {
+                    valueManager.setValue(props.valueManager.getValue());
+                    copy.valueManager = valueManager;
+                } else {
+                    valueManager.setValue(copy.value);
+                    copy.valueManager = valueManager
+                }
+                return <Subschema.Form {...copy}/>;
+            }, scope = {ReactDOM, React, Form: FormWrapper, Subschema};
         if (setup) {
             setup(scope, valProps);
         }
@@ -65,7 +104,15 @@ var SampleExample = React.createClass({
             vars.push(stringify(v, valProps[v]));
             propStr.push(v + '={' + v + '}');
         });
-        var codeText = [vars.join('\n'),
+
+        var codeText = [
+            '//uncomment these if you are using outside of the editor',
+            '//"use strict";',
+            '//' + stringify('React', 'require("react")'),
+            '//' + stringify('ReactDOM', 'require("react-dom")'),
+            '//' + stringify('Subschema', 'require("subschema")'),
+            '//' + stringify('Form', 'Subschema.Form'),
+            vars.join('\n'),
             setupTxt,
             stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
             'ReactDOM.render(form, mountNode);'
@@ -76,6 +123,7 @@ var SampleExample = React.createClass({
                         collapsableCode={true} noRender={false}
                         scope={scope}
                 />
+            <ValueManagerNode valueManager={valueManager}/>
         </div>
     }
 });

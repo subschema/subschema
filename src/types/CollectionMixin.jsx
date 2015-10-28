@@ -76,7 +76,7 @@ var CollectionMixin = {
     },
 
     changeValue(newValue, oldValue) {
-        if (this.props.handleChange(this.unwrap(newValue)) !== false) {
+        if (this.triggerChange(this.unwrap(newValue)) !== false) {
 
             this.setState({
                 wrapped: newValue,

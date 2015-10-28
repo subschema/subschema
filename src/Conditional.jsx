@@ -105,7 +105,7 @@ var Conditional = React.createClass({
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
     },
-    componentWillReceiveProps(props, oldProps){
+    componentWillReceiveProps(props){
         this._handleProps(this.props, props);
     },
 

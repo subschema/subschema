@@ -8,8 +8,8 @@ var FormTemplate = React.createClass({
         }
     },
     render(){
-        var {children, className, ...props} = this.props;
-        return (<form {...props} className={className}>
+        var {children, name, fieldAttrs, encoding, className, action, method, onSubmit, ...props} = this.props;
+        return (<form name={name} action={action} method={method} onSubmit={onSubmit} className={className} {...fieldAttrs}>
             {children}
         </form>);
     }

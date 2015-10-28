@@ -1,23 +1,41 @@
 "use strict";
 var React = require('../react');
-
+var Children = React.Children;
 var Buttons = require('./ButtonsTemplate.jsx');
 var Content = require('../types/Content.jsx')
 var styles = require('../styles/ModalTemplate-style');
+var ValueManager = require('../ValueManager');
 var ModalTemplate = React.createClass({
+    componentWillMount(){
+        var {...value} = this.props.valueManager.path(this.props.path);
+        var copy = {
+            [this.props.path]: value
+        }
+        this.valueManager = ValueManager(copy, this.props.valueManager.getErrors());
+    },
     handleClose(e){
         e && e.preventDefault();
         this.props.valueManager.update(this.props.dismiss, false);
     },
     handleBtnClose(e, action){
-        if (action === 'close') {
-            this.handleClose(e);
+        switch (action) {
+            case 'submit':
+            {
+                this.props.valueManager.update(this.props.path, this.valueManager.path(this.props.path));
+            }
+            case 'close':
+            case 'cancel':
+                this.handleClose(e);
+                break;
         }
+
     },
     render(){
         var {title, buttons, path,value, children, ...rest} = this.props;
-        var className = `modal ${styles.overlay}`;
-        return <div className={className} style={{display:'block'}}>
+        var cloneProps = {
+            valueManager: this.valueManager
+        }
+        return <div className={`modal ${styles.overlay}`} style={{display:'block'}}>
             <div className="modal-backdrop fade in"></div>
             <div className="modal-dialog" role="document" style={{zIndex:2000}}>
                 <div className="modal-content">
@@ -27,7 +45,7 @@ var ModalTemplate = React.createClass({
                         {title ? <Content type='h4'  {...rest} content={title}/> : null }
                     </div>
                     <div className='modal-body clearfix'>
-                        {children}
+                        {Children.map(children, (element)=>React.cloneElement(element, cloneProps))}
                     </div>
                     <div className="modal-footer">
                         { buttons ? <Buttons buttons={buttons} onClick={this.handleBtnClose}/> : null }

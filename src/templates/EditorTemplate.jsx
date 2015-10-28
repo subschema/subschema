@@ -1,15 +1,34 @@
+"use strict";
 var React = require('../react');
+var Children = React.Children;
 var css = require('../css');
 var Content = require('../types/Content.jsx')
 var style = require('../styles/EditorTemplate-style');
+var {FREEZE_OBJ} = require('../tutils');
+function childrenValueManager(children, valueManager) {
+    var props = {valueManager};
+    return Children.map(children, (child)=>React.cloneElement(child, props));
+}
+
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
     componentWillMount(){
-        this.props.valueManager.addErrorListener(this.props.path, this.setError, this, true);
+        this._listen(this.props, FREEZE_OBJ);
     },
     componentWillUnmount(){
-        this.props.valueManager.removeErrorListener(this.props.path, this.setError);
+        this._errorListener && this._errorListener.remove();
     },
+    componentWillReceiveProps(newProps){
+        this._listen(newProps, this.props)
+    },
+    _listen(newProps, oldProps){
+        if ((newProps.path === oldProps.path && newProps.valueManager === oldProps.valueManager)) {
+            return;
+        }
+        this._errorListener && this._errorListener.remove();
+        this._errorListener = newProps.valueManager.addErrorListener(newProps.path, this.setError, this, true);
+    },
+
     setError(errors){
         this.setState({
             error: errors && errors[0].message
@@ -28,7 +47,7 @@ var EditorTemplate = React.createClass({
                      valueManager={valueManager} loader={loader}/>
 
             <div className={title ? style.hasTitle : style.noTitle}>
-                {children}
+                {childrenValueManager(children, this.props.valueManager)}
                 {help === false ? null : <Content content={error ? error : help} key='error-block' type='p'
                                                   className={error ? style.error : style.help}
                                                   valueManager={valueManager} loader={loader}/>}

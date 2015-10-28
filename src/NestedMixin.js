@@ -120,9 +120,6 @@ var NestedMixin = {
         if (oldProps.value !== newProps.value) {
             newProps.valueManager.setValue(newProps.value);
         }
-        if (this._listener) {
-            this._listener.remove();
-        }
     },
 
     makeFieldset(f, i){

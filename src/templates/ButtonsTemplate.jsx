@@ -19,9 +19,9 @@ var ButtonsTemplate = React.createClass({
         }
     },
 
-    makeButtons(){
-        var onClick = this.props.onButtonClick || this.props.onClick ;
-        return this.props.buttons.map((b)=> {
+    makeButtons(buttons){
+        var onClick = this.props.onButtonClick || this.props.onClick;
+        return buttons.map((b)=> {
             onClick = b.onClick || onClick;
             var btn = tu.isString(b) ? {
                 action: b,
@@ -37,11 +37,17 @@ var ButtonsTemplate = React.createClass({
     },
 
     render(){
+        var {buttons,buttonsClass} = this.props;
+        if (buttons.buttons) {
+            buttonsClass = buttons.buttonsClass || buttonsClass;
+            buttons = buttons.buttons
+        }
         return <div className={style.formGroup}>
-            <div className={this.props.buttonsClass}>
-                {this.makeButtons().map((b, i)=> {
+            <div className={buttonsClass}>
+                {this.makeButtons(buttons).map((b, i)=> {
                     var Template = b.template;
-                    return <Template key={"btn-"+i} {...b} loader={this.props.loader} valueManager={this.props.valueManager}/>
+                    return <Template key={"btn-"+i} {...b} loader={this.props.loader}
+                                     valueManager={this.props.valueManager}/>
                 })}
             </div>
         </div>

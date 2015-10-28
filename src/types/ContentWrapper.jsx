@@ -48,15 +48,16 @@ var ContentWrapper = React.createClass({
         }
     },
     componentWillReceiveProps(props){
-        if (props.content !== this.props.content) {
-            this.rebuildValue(props.content);
+        if (props.content === this.props.content && props.valueManager === this.props.valueManager){
+            return;
         }
+        this.rebuildValue(props.content);
     },
     componentWillMount(){
         this.rebuildValue(this.props.content);
     },
     rebuildValue(content){
-        this._componentListeners.forEach((v)=>v.remove());
+        this._unlisten();
         this._value = this.substitute(content);
     },
     render(){

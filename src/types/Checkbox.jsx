@@ -8,7 +8,7 @@ var Checkbox = React.createClass({
     },
     doChange: function (e) {
         var hasProp = 'value' in this.props;
-        this.props.handleChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
+        this.triggerChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
     },
     render() {
         var {onValueChange, onChange,value, type, dataType, checkedClass, fieldAttrs, className, onBlur, ...props} = this.props;

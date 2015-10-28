@@ -14,7 +14,6 @@ var FieldSetTemplate = React.createClass({
     },
     render(){
         var {legend, buttons, className, ...rest} = this.props.field || {};
-
         return legend ?
             <fieldset className={className}>
                 <legend>{legend}</legend>

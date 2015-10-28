@@ -3,8 +3,8 @@ var React = require('../react');
 var ObjectTemplate = React.createClass({
     render(){
 
-        var {children, ...props} = this.props;
-        return (<div {...props}>
+        var {children, className, fieldAttrs, ...props} = this.props;
+        return (<div className={className} {...fieldAttrs}>
             {children}
         </div>);
     }

@@ -1,9 +1,10 @@
 "use strict";
 var React = require('./react');
 var tu = require('./tutils');
-var EMPTY_ARR = [];
+var {FREEZE_OBJ, FREEZE_ARR} = tu;
 var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
 var Conditional = require('./Conditional.jsx');
+
 /**
  * Safe chained function
  *
@@ -84,14 +85,26 @@ var Editor = React.createClass({
     },
     componentWillMount(){
         var validators = this.props.field.validators;
-        this.validators = validators ? tu.toArray(validators).map(initValidators, this.props.loader) : EMPTY_ARR;
-        this.props.valueManager.addListener(this.props.path, this.handleChange, this, true);
-        this.props.valueManager.addValidateListener(this.props.path, this._validate, this);
-
+        this.validators = validators ? tu.toArray(validators).map(initValidators, this.props.loader) : FREEZE_ARR;
+        this._listen(this.props, FREEZE_OBJ);
     },
     componentWillUnmount(){
-        this.props.valueManager.removeListener(this.props.path, this.handleChange);
-        this.props.valueManager.removeValidateListener(this.props.path, this._validate);
+        this._unlisten();
+    },
+    componentWillReceiveProps(newProps){
+        this._listen(newProps, this.props);
+    },
+    _listen(newProps, oldProps){
+        if (newProps.valueManager === oldProps.valueManager && newProps.path === oldProps.path) {
+            return;
+        }
+        this._unlisten();
+        this._listener = newProps.valueManager.addListener(newProps.path, this.handleChange, this, true);
+        this._validateListener = newProps.valueManager.addValidateListener(newProps.path, this._validate, this);
+    },
+    _unlisten(){
+        if (this._listener) this._listener.remove();
+        if (this._validateListener)  this._validateListener.remove();
     },
     handleValidate(value, component, e) {
         this.state.hasValidated = true;
@@ -208,7 +221,8 @@ var Editor = React.createClass({
         if (typeof conditional === 'string') {
             conditional = {operator: conditional};
         }
-        return (<Conditional {...conditional} path={this.props.path} field={field} valueManager={props.valueManager} loader={props.loader}>
+        return (<Conditional {...conditional} path={this.props.path} field={field} valueManager={props.valueManager}
+                                              loader={props.loader}>
             {this.renderContent(field, onValueChange, template, onValidate, props)}
         </Conditional>);
     }

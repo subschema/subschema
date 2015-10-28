@@ -1,5 +1,7 @@
 "use strict";
 var api = {
+    FREEZE_OBJ:Object.freeze({}),
+    FREEZE_ARR:Object.freeze([]),
     template: require('lodash/string/template'),
     extend: require('lodash/object/extend'),
     isFunction: require('lodash/lang/isFunction'),

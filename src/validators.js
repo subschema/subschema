@@ -55,7 +55,7 @@ module.exports = (function (_) {
             if (value === null || value === undefined || value === '') return;
 
             //Create RegExp from string if it's valid
-            if ('string' === typeof options.regexp) options.regexp = new RegExp(options.regexp, options.flags);
+            if ('string' === typeof options.regexp) options.regexp = new RegExp(options.regexp.replace(/^\/(.*)\/$/, '$1'), options.flags);
 
             if ((options.match) ? !options.regexp.test(value) : options.regexp.test(value)) return err;
         };
