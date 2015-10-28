@@ -8,7 +8,7 @@ var ObjectType = require('../src/types/Object.jsx');
 var TextInput = require('../src/types/Text.jsx');
 var Form = require('subschema').Form;
 var ValueManager = require('../src/ValueManager');
-
+var loaderFactory = require('../src/loaderFactory');
 var NestedMixin = require('../src/NestedMixin');
 
 function into(node, debug) {
@@ -68,6 +68,62 @@ describe('NestedMixin', function () {
         Simulate.focus(React.findDOMNode(n1));
         Simulate.blur(React.findDOMNode(n1));
         Simulate.focus(React.findDOMNode(n2));
+    });
+    describe('normalizeSchema', function () {
+        var loader = loaderFactory();
+        loader.addSchema({
+            Address: {
+                schema: {
+                    address: 'Text',
+                    city: 'Text',
+                    state: {
+                        type: 'Select',
+                        options: ['CA', 'FL', 'VA', 'IL']
+                    },
+                    zipCode: {
+                        type: 'Text',
+                        dataType: 'number'
+                    }
+                },
+                fields: ['address', 'city', 'state', 'zipCode']
+            },
+            Contact: {
+                schema: {
+                    name: 'Text',
+                    primary: {
+                        type: 'ToggleObject',
+                        subSchema: 'Address',
+                        template: 'SimpleTemplate'
+                    },
+                    otherAddresses: {
+                        canEdit: true,
+                        canReorder: true,
+                        canDelete: true,
+                        canAdd: true,
+                        type: 'List',
+                        labelKey: 'address',
+                        itemType: {
+                            type: 'Object',
+                            subSchema: 'Address'
+                        }
+                    }
+                },
+                fields: ['name', 'primary', 'otherAddresses']
+            }
+        });
+        /*it('should normalize with loaders')
+        {
+            var result = NestedMixin.normalizeSchema('Contact', loader);
+            expect(result.fields, 'name', 'primary', 'otherAddresss');
+            console.log(JSON.stringify(result, null, '\t'));
+        }*/
+        it.only('should normalize with subSchema with loaders')
+        {
+            var result = NestedMixin.normalizeSchema({subSchema:'Contact'}, loader);
+            expect(result.fields, 'name', 'primary', 'otherAddresss');
+            console.log(JSON.stringify(result, null, '\t'));
+        }
+
     });
 
     describe('should normailize fields and fieldsets', function () {

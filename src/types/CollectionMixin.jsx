@@ -144,7 +144,7 @@ var CollectionMixin = {
                             ref="addEdit"
                             value={this.state.editValue}
                             title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
-                            submitButton={label}
+                            loader={this.props.loader}
                             onCancel={this.handleCancelAdd}
                             onSubmit={handler}/>)
     },

@@ -88,18 +88,20 @@ var MixedInput = React.createClass({
                 type: 'Object',
                 name: this.props.field.name,
                 subSchema: {
-                    key: keyType,
-                    value: this.props.field.valueType || this.props.valueType
-                },
-                fieldsets: [{
-                    fields: ['key', 'value'],
-                    buttons: {
-                        onClick: this.handleBtnGroup,
-                        buttonsClass: style.buttonsClass,
-                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass:style.buttonCancel}
-                            , {label: 'Save', action: action, buttonClass: style.buttonSave}]
-                    }
-                }]
+                    schema: {
+                        key: keyType,
+                        value: this.props.field.valueType || this.props.valueType
+                    },
+                    fieldsets: [{
+                        fields: ['key', 'value'],
+                        buttons: {
+                            onClick: this.handleBtnGroup,
+                            buttonsClass: style.buttonsClass,
+                            buttons: [{label: 'Cancel', action: 'cancel', buttonClass: style.buttonCancel}
+                                , {label: 'Save', action: action, buttonClass: style.buttonSave}]
+                        }
+                    }]
+                }
             };
 
         if (!keyType.type) {

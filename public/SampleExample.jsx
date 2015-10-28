@@ -115,6 +115,7 @@ var SampleExample = React.createClass({
             vars.join('\n'),
             setupTxt,
             stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
+            '// You can do this or render it in an existing application',
             'ReactDOM.render(form, mountNode);'
         ].join('\n');
         console.log('example\n\n', codeText, '\n\n');

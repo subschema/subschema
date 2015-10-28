@@ -29,7 +29,7 @@ function extractSchema(props) {
             schema: subSchema
         }
     }
-    return props.schema
+    return props;
 }
 function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
@@ -69,7 +69,7 @@ function normalizeFieldsets(fieldsets, fields) {
     }
 }
 
-function normalizeSchema(oschema, loader) {
+function normalizeSchema(oschema, loader, fs, f) {
     if (oschema == null) {
         return {};
     }
@@ -78,8 +78,12 @@ function normalizeSchema(oschema, loader) {
         var loaded = loader.loadSchema(oschema);
         return normalizeSchema(loaded, loader);
     } else if (tu.isString(oschema.schema)) {
-        var {schema, ...rest} = oschema;
-        rest.schema = loader.loadSchema(schema);
+
+        var schema = loader.loadSchema(oschema.schema);
+        return normalizeSchema(schema, loader);
+    } else if (oschema.subSchema) {
+        var {subSchema, ...rest} = oschema;
+        rest.schema = subSchema;
         return normalizeSchema(rest, loader);
     }
     if (!oschema.schema) {
@@ -88,6 +92,12 @@ function normalizeSchema(oschema, loader) {
         }, loader);
     }
     var {fields, fieldsets, ...schema} = oschema;
+    if (fs) {
+        fieldsets = fs;
+    }
+    if (f) {
+        fields = f;
+    }
     if (!(fieldsets || fields)) {
         fields = Object.keys(schema.schema);
     }
@@ -116,7 +126,9 @@ var NestedMixin = {
     },
 
     updateProps(oldProps, newProps){
-        this.schema = normalizeSchema(extractSchema(newProps), newProps.loader);
+        var field = newProps.field || newProps;
+        this.schema = normalizeSchema(field.subSchema || field.schema, newProps.loader, field.fields, field.fieldsets);
+        console.log('schema', JSON.stringify(this.schema, null, '\t'));
         if (oldProps.value !== newProps.value) {
             newProps.valueManager.setValue(newProps.value);
         }
@@ -145,16 +157,11 @@ var NestedMixin = {
         if (field == null) {
             return null;
         }
-        var {path, loader, ...props} = this.props;
-        var tmpl = {}, path = tu.path(path, f);
-        if (field.template) {
-            tmpl['template'] = field.template;
-        }
-        return <Editor ref={f} key={'key-' + f} path={path}
+        return <Editor ref={f} key={'key-' + f} path={tu.path(this.props.path, f)}
                        field={field}
-                       loader={loader}
+                       loader={this.props.loader}
                        name={f}
-            {...tmpl}
+                       template={field.template}
                        valueManager={this.props.valueManager}/>
     }
     ,
@@ -162,12 +169,10 @@ var NestedMixin = {
     {
         var fieldMap = {}, schema = this.schema.schema;
 
-        fields = toArray(fields).map((v) => {
-            return v.split('.', 2);
-        }).map((v) => {
-            var f = v[0];
-            if (v.length > 1) {
-                (fieldMap[f] || (fieldMap[f] = [])).push(v[1]);
+        fields = toArray(fields).map((field) => {
+            var [f, rest] = field.split('.', 2);
+            if (rest) {
+                (fieldMap[f] || (fieldMap[f] = [])).push(rest);
             }
             return f;
         });
@@ -194,19 +199,14 @@ var NestedMixin = {
                 rest.fieldsets = normalizeFieldsets(fieldsets, fields || mappedFields);
                 ref = rest;
             }
-            /*            if (!(ref.fields || ref.fieldsets) && fieldMap[f]) {
-             ref.fieldsets = {fields: fieldMap[f]};
-             }*/
             return this.addEditor(ref, f);
         });
-    }
-    ,
+    },
 
     renderSchema()
     {
         return map(this.schema.fieldsets, this.makeFieldset);
-    }
-    ,
+    },
 
     render()
     {
@@ -223,7 +223,7 @@ var NestedMixin = {
                          loader={this.props.loader}
                          valueManager={this.props.valueManager}
             >
-            {this.schema && this.schema.schema ? this.renderSchema(this) : null}
+            {this.schema && this.schema.schema ? this.renderSchema() : null}
 
             {this.props.children}
         </Template>

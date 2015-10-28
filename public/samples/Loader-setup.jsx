@@ -1,4 +1,3 @@
-
 loader.addTemplate('SimpleTemplate', React.createClass({
     displayName: 'SimpleTemplate',
     render(){
@@ -37,9 +36,9 @@ loader.addType('ToggleObject', React.createClass({
         };
 
         return <div className="form-group">
-            <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
+            <legend onClick={this.handleToggle}>Click to toggle [{this.state.toggled ? 'v' : '^'}]</legend>
             <div style={style}>
-                <ObjectType ref="val" {...this.props}/>
+                <ObjectType {...this.props}/>
             </div>
         </div>;
 
@@ -48,16 +47,19 @@ loader.addType('ToggleObject', React.createClass({
 
 loader.addSchema({
     Address: {
-        address: 'Text',
-        city: 'Text',
-        state: {
-            type: 'Select',
-            options: ['CA', 'FL', 'VA', 'IL']
+        schema: {
+            address: 'Text',
+            city: 'Text',
+            state: {
+                type: 'Select',
+                options: ['CA', 'FL', 'VA', 'IL']
+            },
+            zipCode: {
+                type: 'Text',
+                dataType: 'number'
+            }
         },
-        zipCode: {
-            type: 'Text',
-            dataType: 'number'
-        }
+        fields:['address', 'city', 'state', 'zipCode']
     },
     Contact: {
         schema: {
