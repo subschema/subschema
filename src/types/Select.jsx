@@ -55,14 +55,9 @@ var Select = React.createClass({
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
         var placeholder = this.props.placeholder;
-        if (placeholder || (!multiple && !!hasValue)) {
-            //fixes a bug in react where selecting null, does not select null.
-            var selected = {};
-            if (!hasValue) {
-                selected.selected = true;
-                selected.value = null;
-            }
-            ret.unshift(<option key={'null-' + opts.length} {...selected}>
+        if (placeholder) {
+
+            ret.unshift(<option key={'null-' + opts.length}>
                 {placeholder}</option>);
         }
         return ret;
