@@ -47,7 +47,7 @@ var Select = React.createClass({
         }
 
 
-        this.props.handleChange(e.target.value);
+        this.triggerChange(e.target.value);
     },
     renderOptions(value){
         var props = this.props, multiple = props.multiple, opts = props.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {

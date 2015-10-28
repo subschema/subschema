@@ -20,17 +20,6 @@ if ("production" !== process.env.NODE_ENV) {
     }
 }
 
-function extractSchema(props) {
-    if (props.subSchema) {
-        var {fields, fieldsets, subSchema } = props
-        return {
-            fields,
-            fieldsets,
-            schema: subSchema
-        }
-    }
-    return props;
-}
 function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
     fields = toArray(fields);
@@ -231,6 +220,5 @@ var NestedMixin = {
 
 }
 NestedMixin.normalizeSchema = normalizeSchema;
-NestedMixin.extractSchema = extractSchema;
 NestedMixin.normalizeFieldsets = normalizeFieldsets;
 module.exports = NestedMixin;

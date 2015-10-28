@@ -44,7 +44,7 @@ var WizardTemplate = React.createClass({
         this.assignSchema(props);
     },
     assignSchema(props){
-        this.schema = NestedMixin.normalizeSchema(NestedMixin.extractSchema(props), props.loader);
+        this.schema = NestedMixin.normalizeSchema(props.schema || props.subSchema, props.loader);
     },
     next(){
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
