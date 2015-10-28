@@ -1,4 +1,13 @@
 var React = require('react');
+var example = JSON.stringify({
+        schema: {
+            'field': {}
+        },
+        fieldsets: [{
+            fields: []
+        }]
+    },
+    null, '\t');
 var SchemaDoc = React.createClass({
     render(){
         return (<div>
@@ -9,17 +18,9 @@ var SchemaDoc = React.createClass({
                     The subschema schema was borrowed from backbone-forms. It seems reasonable enough, though I don't
                     guarantee compatibilty.
                 </p>
-
-                <div className="panel">
-                    <div className="panel-heading">
-                        <h3>Writing Schema</h3>
-                    </div>
-                    <div className="panel-body">
-                        I am going to write a doc to describe how to write schema.   If you feel like doing so, please
-                        send a pull request
-                    </div>
-                </div>
-
+                <pre>
+                    {example}
+                </pre>
             </fieldset>
         </div>);
     }
