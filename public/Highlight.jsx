@@ -4,9 +4,9 @@ var HighlightExt = React.createClass({
         var lang = this.props.lang;
         if (lang === 'html') lang = 'xml';
 
-        return <div languages={[ lang]} className={lang}>
+        return <pre languages={[ lang]} className={lang}>
             {this.props.children}
-        </div>
+        </pre>
     }
 });
 

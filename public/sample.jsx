@@ -65,22 +65,18 @@ var Sample = React.createClass({
                         <h3>Develop</h3>
 
                         <div className="list-group left-nav">
-                            <Link to="setup"
+                            <Link to="setup/webpack"
                                   className={setupCls('webpack', setup)}
-                                  key='webpack'
-                                  params={{setup: 'webpack'}}>Webpack</Link>
-                            <Link to="setup"
+                                  key='webpack'>Webpack</Link>
+                            <Link to="setup/loader"
                                   className={setupCls('loader', setup)}
-                                  key='loader'
-                                  params={{setup: 'loader'}}>Loaders</Link>
-                            <Link to="setup"
+                                  key='loader'>Loaders</Link>
+                            <Link to="setup/schema"
                                   className={setupCls('schema', setup)}
-                                  key='schema'
-                                  params={{setup: 'schema'}}>Schema Builder</Link>
-                            <Link to="setup"
-                                  className={setupCls('schema', setup)}
-                                  key='example'
-                                  params={{setup: 'example'}}>Simple Example</Link>
+                                  key='schema'>Schema</Link>
+                            <Link to="setup/example"
+                                  className={setupCls('example', setup)}
+                                  key='example'>Simple Example</Link>
                         </div>
                     </div>
                     <div className="col-md-10">

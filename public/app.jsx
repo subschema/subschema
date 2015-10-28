@@ -6,15 +6,15 @@ require('./sample.less');
 
 var SampleItem = require('./SampleItem.jsx');
 var Index = require('./Index.jsx');
-var App = require('./Sample.jsx');
+var Sample = require('./Sample.jsx');
 var Setup = require('./Setup.jsx');
 
 var routes = (
     <Router>
-        <Route path='/' component={App}>
+        <Route path='/' component={Sample}>
             <IndexRoute component={Index}/>
-            <Route name="item" path=":sample" component={SampleItem}/>
             <Route name="setup" path="setup/:setup" component={Setup}/>
+            <Route name="item" path=":sample" component={SampleItem}/>
         </Route>
     </Router>
 );
