@@ -165,7 +165,7 @@ describe('Content', function () {
             '<span class="clz-left">Activate</span>' +
             '</span>' +
             '<span class="clz-right" type="span">' +
-            '<img type="img" class="super-img" src="about:blank" content="false">' +
+            '<img type="img" class="super-img" src="about:blank" content="false"/>' +
             '</span>' +
             '</span>');
     });

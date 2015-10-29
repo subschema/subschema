@@ -38,9 +38,11 @@ function byTags(node, tag) {
 function filterProp(node, property, value) {
     node = Array.isArray(node) ? node : [node];
     return node.filter((n)=> {
-        if (property in n.props) {
+        var props =  (n instanceof Element) ? n.attributes : n.props;
+        if (property in props) {
             if (value === null) return true;
-            return n.props[property] === value;
+
+            return props[property] === value;
         }
         return false;
     })
