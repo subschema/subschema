@@ -8,6 +8,8 @@ var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var Dom = require('../Dom');
 var style = require('../styles/Autocomplete-style.js');
+var PropTypes = require('../PropTypes');
+
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {
@@ -139,8 +141,6 @@ var Autocomplete = React.createClass({
             input,
             showing: false,
             suggestions: []
-        }, function () {
-//            refs && refs.input && refs.input.getDOMNode().setSelectionRange(length, length);
         });
     },
     /**
@@ -256,7 +256,7 @@ var Autocomplete = React.createClass({
     handleDocumentClick(e) {
         // If the click originated from within this component
         // don't do anything.
-        if (Dom.isNodeInRoot(e.target, React.findDOMNode(this))) {
+        if (Dom.isNodeInRoot(e.target, this)) {
             return;
         }
 

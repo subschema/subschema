@@ -5,10 +5,10 @@ var Highlight = require('./Highlight.jsx');
 var Playground = require('component-playground/src/components/playground.jsx');
 var Subschema = require('subschema');
 var ValueManager = Subschema.ValueManager;
-
 require("component-playground/demo/styles/syntax.css");
 require("component-playground/demo/styles/codemirror.css");
-require('codemirror/mode/javascript/javascript.js')
+require('codemirror/mode/javascript/javascript.js');
+
 function stringify(name, obj) {
 
     var str = !obj ? 'null' : typeof obj === 'string' ? obj : JSON.stringify(obj, null, '\t');
@@ -69,12 +69,17 @@ var SampleExample = React.createClass({
         this.addListeners(props.valueManager);
     },
     setValue(data){
+        console.log('setValue');
         this.setState({data});
     },
     setErrors(errors){
         this.setState({errors});
     },
+    shouldComponentUpdate(){
+        return false;
+    },
     render(){
+        console.log('render sample');
         var {data, errors} = this.state;
         var {schema, setup, setupTxt, props} = this.props;
         var valProps = {
@@ -92,7 +97,7 @@ var SampleExample = React.createClass({
                     copy.valueManager = valueManager
                 }
                 return <Subschema.Form {...copy}/>;
-            }, scope = {ReactDOM, React, Form: FormWrapper, Subschema};
+            }, scope = {React, ReactDOM, Form: FormWrapper, Subschema};
         if (setup) {
             setup(scope, valProps);
         }
@@ -104,25 +109,27 @@ var SampleExample = React.createClass({
             vars.push(stringify(v, valProps[v]));
             propStr.push(v + '={' + v + '}');
         });
-
         var codeText = [
+            '(function () {',
             '//uncomment these if you are using outside of the editor',
             '//"use strict";',
             '//' + stringify('React', 'require("react")'),
-            '//' + stringify('ReactDOM', 'require("react-dom")'),
             '//' + stringify('Subschema', 'require("subschema")'),
             '//' + stringify('Form', 'Subschema.Form'),
             vars.join('\n'),
             setupTxt,
-            stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
+            //stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
             '// You can do this or render it in an existing application',
-            'ReactDOM.render(form, mountNode);'
+            'return <Form ' + (propStr.join(' ')) + '/>',
+            '}())'
         ].join('\n');
-        console.log('example\n\n', codeText, '\n\n');
+    //    console.log('example\n\n', codeText, '\n\n');
         return <div className='sample-example-playground'>
-            <Playground key={'form-'+(data? 'data' :'no-data')} codeText={codeText} theme='monokai'
-                        collapsableCode={true} noRender={false}
+            <Playground key={'form-'+(data? 'data' :'no-data')}
+                        codeText={codeText} theme='monokai'
+                        collapsableCode={true}
                         scope={scope}
+
                 />
             <ValueManagerNode valueManager={valueManager}/>
         </div>

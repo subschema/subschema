@@ -1,8 +1,12 @@
-var React = require('../react'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+var React = require('../react'),
+    PropTypes = React.PropTypes,
+    FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
 
 var TextInput = React.createClass({
     mixins: [FieldMixin],
+    propTypes:{
+    },
     statics: {
         inputClassName: Constants.inputClassName
     },

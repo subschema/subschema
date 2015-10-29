@@ -1,5 +1,8 @@
+"use strict";
+
 var EventListener = require('fbjs/lib/EventListener');
-var React = require('./react');
+var ReactDOM = require('react-dom');
+
 module.exports = {
     EventListener,
     ownerDocument,
@@ -20,7 +23,7 @@ function listen(node, event, func) {
  * @returns {HTMLElement}
  */
 function ownerDocument(componentOrElement) {
-    var elem = React.findDOMNode(componentOrElement);
+    var elem = ReactDOM.findDOMNode(componentOrElement);
     return elem && elem.ownerDocument || document;
 }
 /**
@@ -32,6 +35,10 @@ function ownerDocument(componentOrElement) {
  * @returns {boolean}
  */
 function isNodeInRoot(node, root) {
+    node = ReactDOM.findDOMNode(node), root = ReactDOM.findDOMNode(root);
+    _isNodeInRoot(node, root);
+}
+function _isNodeInRoot(node, root){
     while (node) {
         if (node === root) {
             return true;

@@ -1,11 +1,10 @@
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
+var {React, into,TestUtils,expect, Simulate} = require('./support');
+
 var Wizard = require('../src/templates/WizardTemplate.jsx');
 var ValueManager = require('../src/ValueManager');
 var Sample = require('../public/samples/Wizard');
 var Form = require('subschema').Form;
-var Simulate = React.addons.TestUtils.Simulate;
+
 describe('Wizard', function () {
     this.timeout(30000);
 

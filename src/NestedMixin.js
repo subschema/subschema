@@ -13,7 +13,7 @@ if ("production" !== process.env.NODE_ENV) {
     noTypeInfo = function (f) {
         ("production" !== process.env.NODE_ENV ? warning(
             false,
-            'subschema: tried to instatiate a field without any type info probable a typo %s', f) : null);
+            'subschema: tried to create a field  "%s"  without any type info likely a typo', f) : null);
     };
 } else {
     noTypeInfo = function () {
@@ -114,7 +114,6 @@ var NestedMixin = {
     updateProps(oldProps, newProps){
         var field = newProps.field || newProps;
         this.schema = normalizeSchema(field.subSchema || field.schema, newProps.loader, field.fields, field.fieldsets);
-        console.log('schema', JSON.stringify(this.schema, null, '\t'));
         if (oldProps.value !== newProps.value) {
             newProps.valueManager.setValue(newProps.value);
         }

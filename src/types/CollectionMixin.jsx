@@ -4,7 +4,7 @@ var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
-var ReactCSSTransitionGroup =  require('react-addons-css-transition-group');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var style = require('../styles/CollectionMixin-style');
 var CollectionMixin = {
     statics: {
@@ -100,13 +100,13 @@ var CollectionMixin = {
     },
     handleEditValue(e, nv) {
         e && e.preventDefault();
-        var value = this.state.wrapped,  editPid = this.state.editPid;
+        var value = this.state.wrapped, editPid = this.state.editPid;
 
         var newValue = value.map(function (v, i) {
             if (v.id === editPid) {
                 return {
-                    id:editPid,
-                    value:nv
+                    id: editPid,
+                    value: nv
                 };
             }
             return v;
@@ -159,7 +159,7 @@ var CollectionMixin = {
         }
         var Template = this.template('buttonTemplate');
         return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
-                          onClick={this.handleAddBtn}><i
+                         onClick={this.handleAddBtn}><i
             className={style.iconAdd}/>
         </Template>
 
@@ -173,8 +173,12 @@ var CollectionMixin = {
             return null;
         }
         var {showAdd, showEdit} = this.state;
-        return <ReactCSSTransitionGroup transitionName="transition_height" transitionAppear={true} transitionLeave={true}>{showAdd || showEdit ?
-             showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
+        return <ReactCSSTransitionGroup transitionName="transition_height"
+                                        transitionAppearTimeout={1100}
+                                        transitionEnterTimeout={1100}
+                                        transitionLeaveTimeout={1100}
+                                        transitionAppear={true} transitionLeave={true}>{showAdd || showEdit ?
+            showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
             : this.renderAddBtn()}</ReactCSSTransitionGroup>;
     }
 }

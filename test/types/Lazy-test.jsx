@@ -1,14 +1,10 @@
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
+var {React, into,TestUtils,expect, Simulate} = require('../support');
+
 var expect = require('expect');
 var ValueManager = require('../../src/ValueManager');
 var loader = require('../../src/loader.js');
 var Text = require('../../src/types/Text.jsx');
 var Editor = require('../../src/Editor');
-
-function into(node, debug) {
-    return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-}
 
 describe.skip('Lazy', function () {
     this.timeout(3000);

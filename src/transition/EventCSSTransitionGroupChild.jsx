@@ -47,7 +47,7 @@ var EventCSSTransitionGroupChild = React.createClass({
     displayName: 'EventCSSTransitionGroupChild',
 
     transition: function (animationType, finishCallback) {
-        var node = this.getDOMNode();
+        var node = ReactDOM.findDOMNode(this);
         var className = this.props.name + '-' + animationType;
         var activeClassName = className + '-active';
         var noEventTimeout = null;

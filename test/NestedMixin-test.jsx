@@ -1,18 +1,17 @@
 "use strict";
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
-var Simulate = React.addons.TestUtils.Simulate;
+var {React, into,TestUtils,expect, findNode, Simulate} = require('./support');
+
 var Editor = require('../src/Editor');
 var ObjectType = require('../src/types/Object.jsx');
 var TextInput = require('../src/types/Text.jsx');
-var Form = require('subschema').Form;
 var ValueManager = require('../src/ValueManager');
 var loaderFactory = require('../src/loaderFactory');
 var NestedMixin = require('../src/NestedMixin');
+var Form = require('subschema').Form;
+
 
 function into(node, debug) {
-    return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
+    return debug ? ReactDOM.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
 }
 describe('NestedMixin', function () {
 
@@ -48,9 +47,9 @@ describe('NestedMixin', function () {
         expect(n2).toExist();
         expect(n3).toExist();
         expect(test).toExist();
-        Simulate.focus(React.findDOMNode(n1));
-        Simulate.blur(React.findDOMNode(n1));
-        Simulate.focus(React.findDOMNode(n2));
+        Simulate.focus(findNode(n1));
+        Simulate.blur(findNode(n1));
+        Simulate.focus(findNode(n2));
     });
     it('should not validate nested objects', function () {
         var vm = ValueManager({}, {'nested.n2': [{message: 'borked'}]});
@@ -65,9 +64,9 @@ describe('NestedMixin', function () {
         expect(n2).toExist();
         expect(n3).toExist();
         expect(test).toExist();
-        Simulate.focus(React.findDOMNode(n1));
-        Simulate.blur(React.findDOMNode(n1));
-        Simulate.focus(React.findDOMNode(n2));
+        Simulate.focus(findNode(n1));
+        Simulate.blur(findNode(n1));
+        Simulate.focus(findNode(n2));
     });
     describe('normalizeSchema', function () {
         var loader = loaderFactory();
@@ -112,14 +111,14 @@ describe('NestedMixin', function () {
             }
         });
         /*it('should normalize with loaders')
+         {
+         var result = NestedMixin.normalizeSchema('Contact', loader);
+         expect(result.fields, 'name', 'primary', 'otherAddresss');
+         console.log(JSON.stringify(result, null, '\t'));
+         }*/
+        it('should normalize with subSchema with loaders')
         {
-            var result = NestedMixin.normalizeSchema('Contact', loader);
-            expect(result.fields, 'name', 'primary', 'otherAddresss');
-            console.log(JSON.stringify(result, null, '\t'));
-        }*/
-        it.only('should normalize with subSchema with loaders')
-        {
-            var result = NestedMixin.normalizeSchema({subSchema:'Contact'}, loader);
+            var result = NestedMixin.normalizeSchema({subSchema: 'Contact'}, loader);
             expect(result.fields, 'name', 'primary', 'otherAddresss');
             console.log(JSON.stringify(result, null, '\t'));
         }

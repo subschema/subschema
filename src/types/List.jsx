@@ -109,6 +109,9 @@ var ListInput = React.createClass({
             return (<div className={css.forField(this, 'list-editor')}>
                 {this.renderAdd()}
                 <ReactCSSTransitionGroup component="ul" transitionName="transition_scale"
+                                         transitionAppearTimeout={1200}
+                                         transitionLeaveTimeout={1200}
+                                         transitionEnterTimeout={1200}
                                          className={css.forField(this, ListInput.inputListClassName)}
                                          transitionAppear={true} transitionLeave={true}>
                     {values.map((v, i) => {

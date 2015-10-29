@@ -1,19 +1,11 @@
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
-var Simulate = React.addons.TestUtils.Simulate;
+var {React, ReactDOM, into,TestUtils,expect, Simulate, change} = require('../support');
+
 var Restricted = require('../../src/types/Restricted.jsx');
-function change(node, value) {
-    Simulate.change(node, {target: {value}});
-}
+
+
 describe('Restricted', function () {
     this.timeout(30000);
     var Form = require('subschema').Form;
-
-    function into(node) {
-        //return React.render(node, document.getElementsByTagName('body')[0]);
-        return TestUtils.renderIntoDocument(node);
-    }
 
     it('should create a restricted input', function () {
 
@@ -21,11 +13,12 @@ describe('Restricted', function () {
         expect(root).toExist();
 
     });
+
     describe('mm20YY', function () {
         var root = into(<Restricted formatter="mm20YY"/>);
         expect(root).toExist();
         var input = TestUtils.scryRenderedDOMComponentsWithTag(root, 'input')[0];
-        var inputEl = React.findDOMNode(input);
+        var inputEl = ReactDOM.findDOMNode(input);
 
         it('enters 2/16', function () {
             change(input, '2');

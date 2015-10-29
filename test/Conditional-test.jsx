@@ -1,25 +1,14 @@
 "use strict";
+var {React, into,TestUtils,expect, Simulate, byType, notByType} = require('./support');
 
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
-var Simulate = React.addons.TestUtils.Simulate;
 var ValueManager = require('../src/ValueManager');
 var each = require('lodash/collection/each');
 var Conditional = require('../src/Conditional.jsx');
-function notByType(node, type) {
-    var ret = TestUtils.scryRenderedComponentsWithType(node, type);
-    expect(ret[0]).toNotExist();
-}
-function byType(node, type) {
-    return TestUtils.findRenderedComponentWithType(node, type);
-}
+
+
+
 describe('Conditional', function () {
     this.timeout(30000);
-
-    function into(node, debug) {
-        return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-    }
 
     var Hello = React.createClass({
         displayName: 'Test',

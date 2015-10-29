@@ -2,9 +2,22 @@
 
 var React = require('./react');
 var NestedMixin = require('./NestedMixin');
+var PropTypes = require('./PropTypes');
 var ValueManager = require('./ValueManager');
+var _set = require('lodash/object/set');
 var Form = React.createClass({
     displayName: 'Form',
+    propTypes: {
+        schema: PropTypes.schema.isRequired,
+        loader: PropTypes.loader,
+        valueManager: PropTypes.valueManager,
+        template: PropTypes.template,
+        method: PropTypes.string,
+        action: PropTypes.string,
+        enctype: PropTypes.string,
+        onSubmit: PropTypes.event,
+        noValidate: PropTypes.bool
+    },
     mixins: [NestedMixin],
     getDefaultProps() {
         return {
@@ -19,28 +32,14 @@ var Form = React.createClass({
         if (this.props.path) {
             p.unshift(this.props.path);
         }
-        this._listener = this.props.valueManager.addStateListener(p.join('.'), this.handleState, this, false);
+        this._stateListener = this.props.valueManager.addStateListener(p.join('.'), this.handleState, this, false);
     },
     componentWillUnmount(){
-        this._listener.remove();
+        this._stateListener.remove();
     },
     handleState(value, path){
-        var parts = path.split('.'), root = this.schema[parts.shift()];
-
-        do {
-            var key = parts.shift();
-            if (parts.length) {
-                if (root[key] == null) {
-                    root = (root[key] = {});
-                } else {
-                    root = root[key];
-                }
-            } else {
-                root[key] = value;
-            }
-        } while (parts.length);
-        this.schema = NestedMixin.normalizeSchema(this.schema, this.props.loader);
-        this.setState({'_now': Date.now()});
+        _set(this, path, value);
+        this.forceUpdate();
     },
     handleSubmit(e){
         e && e.preventDefault();

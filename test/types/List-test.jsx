@@ -1,49 +1,14 @@
+var {React, into,findNode, TestUtils,expect, Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
+
+
+var Form = require('subschema').Form;
+var Buttons = require('../../src/templates/ButtonsTemplate.jsx');
+var Button = require('../../src/templates/ButtonTemplate.jsx');
+var ListTemplate = require('../../src/templates/ListItemTemplate.jsx');
+var CreateTemplate = require('../../src/templates/CollectionCreateTemplate.jsx');
+
 describe('List', function () {
-    var React = require('react/addons');
-    var TestUtils = require('react/lib/ReactTestUtils');
-    var expect = require('expect');
-    var Form = require('subschema').Form;
-    var Simulate = React.addons.TestUtils.Simulate;
-    var Buttons = require('../../src/templates/ButtonsTemplate.jsx');
-    var Button = require('../../src/templates/ButtonTemplate.jsx');
-    var ListTemplate = require('../../src/templates/ListItemTemplate.jsx');
-    var CreateTemplate = require('../../src/templates/CollectionCreateTemplate.jsx');
     this.timeout(50000);
-    function into(node, attach) {
-        return attach ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-    }
-
-    function click(node) {
-        Simulate.click(node.getDOMNode ? node.getDOMNode() : node);
-    }
-
-    function byTag(node, tag) {
-        return TestUtils.findRenderedDOMComponentWithTag(node, tag);
-    }
-
-    function byTags(node, tag) {
-        return TestUtils.scryRenderedDOMComponentsWithTag(node, tag);
-    }
-
-    function filterProp(node, property, value) {
-        node = Array.isArray(node) ? node : [node];
-        return node.filter((n)=> {
-            if (property in n.props) {
-                if (value === null) return true;
-                return n.props[property] === value;
-            }
-            return false;
-        })
-    }
-
-    function byComponent(node, comp) {
-        return TestUtils.scryRenderedComponentsWithType(node, comp)[0];
-    }
-
-    function byComponents(node, comp) {
-        return TestUtils.scryRenderedComponentsWithType(node, comp);
-    }
-
     function add(root, c) {
         var refs = root.refs.tasks.refs.field.refs;
         var addBtn = TestUtils.scryRenderedComponentsWithType(root, Button)[0];
@@ -139,7 +104,7 @@ describe('List', function () {
         click(li.refs.edit);
         var edit = byComponent(root, CreateTemplate);
         var input = byTag(edit, 'input');
-        expect(input.getDOMNode().value).toBe('one');
+        expect(findNode(input).value).toBe('one');
 
     });
     it('should render a list with data is not editable', function () {

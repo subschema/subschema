@@ -1,4 +1,5 @@
 var React = require('../react');
+var ReactDOM = require('react-dom');
 var FieldValueMixin = require('../FieldValueMixin');
 var css = require('../css');
 var Constants = require('../Constants')
@@ -283,7 +284,7 @@ var RestrictedMixin = {
             hasValue: value.value.length !== 0,
             hasValidValue: value.isValid
         }, function () {
-            var input = React.findDOMNode(this.refs.input);
+            var input = ReactDOM.findDOMNode(this.refs.input);
             if (!input)return;
 
             if (caret != null)

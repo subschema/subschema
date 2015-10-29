@@ -13,7 +13,7 @@ var ButtonsTemplate = React.createClass({
                 label: 'Submit',
                 template: 'Button'
             }],
-            onClick: function (event, action, btn, value) {
+            onButtonClick: function (event, action, btn, value) {
 
             }
         }

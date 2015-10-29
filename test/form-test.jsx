@@ -1,15 +1,11 @@
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
-var Simulate = React.addons.TestUtils.Simulate;
+"use strict";
+var {React, into,TestUtils,expect, Simulate, byType, notByType} = require('./support');
+
 var EditorTemplate = require('../src/templates/EditorTemplate.jsx');
+
 describe('form', function () {
     this.timeout(30000);
     var Form = require('subschema').Form;
-
-    function into(node, debug) {
-        return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-    }
     it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
         var value = {}, schema = {
             schema: {

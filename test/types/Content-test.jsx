@@ -1,28 +1,27 @@
-var React = require('react/addons');
-var TestUtils = require('react/lib/ReactTestUtils');
-var expect = require('expect');
+var {React,findNode, into,TestUtils,expect, Simulate} = require('../support');
+var ReactServer = require('react-dom/server');
 var ValueManager = require('../../src/ValueManager');
 var loader = require('../../src/loader.js');
 var Text = require('../../src/types/Text.jsx');
 var Content = require('../../src/types/Content.jsx');
 var Editor = require('../../src/Editor');
 var Form = require('../../src/form.jsx');
-loader.addType('Test', React.createClass({
-    displayName: 'Test',
-    render(){
-        return <div><span>hello</span>{this.props.children}</div>
-    }
-}));
-function into(node, debug) {
-    return debug ? React.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-}
+
 
 describe('Content', function () {
+    before(function () {
+        loader.addType('Test', React.createClass({
+            displayName: 'Test',
+            render(){
+                return <div><span>hello</span>{this.props.children}</div>
+            }
+        }));
+    });
 
     it('should do simple subsitution', function () {
         var vm = ValueManager({test: 2});
         var root = into(<Content key='t1' content='your value is {test}' valueManager={vm} path="test"/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is 2');
         expect(node.tagName).toBe('SPAN');
@@ -31,7 +30,7 @@ describe('Content', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var vm = ValueManager({what});
         var root = into(<Content key='t2' content='your value is {what}' valueManager={vm} path="test"/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
         expect(node.tagName).toBe('SPAN');
@@ -42,7 +41,7 @@ describe('Content', function () {
         var vm = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
         var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
         expect(node.tagName).toBe('SPAN');
@@ -54,7 +53,7 @@ describe('Content', function () {
         var vm = ValueManager({what, more});
         var content = {h3: 'your value is {what}', div: 'is more'};
         var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
         expect(node.tagName).toBe('SPAN');
@@ -71,7 +70,7 @@ describe('Content', function () {
             }
         };
         var root = into(<Content key='t2' content={content} valueManager={vm} path="test" loader={loader}/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
         expect(node.tagName).toBe('SPAN');
@@ -84,7 +83,7 @@ describe('Content', function () {
 
         var root = into(<Content key='t2' type='p' className='stuff' content={''} valueManager={vm} path="test"
                                  loader={loader}/>);
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML;
         expect(str).toBe('');
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -103,7 +102,7 @@ describe('Content', function () {
         var root = into(<Content content={title} className='panel panel-default' valueManager={ValueManager()}
                                  loader={loader}/>);
 
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
     });
     it('should render nested content with children', function () {
         var title = {
@@ -121,7 +120,7 @@ describe('Content', function () {
             </Content>
         );
 
-        var node = React.findDOMNode(root);
+        var node = findNode(root);
         var str = node.innerHTML;
     });
     it('should render content stuff', function () {
@@ -156,7 +155,7 @@ describe('Content', function () {
                 ]
             }
         ]
-        var node = React.renderToStaticMarkup(<Content content={content} className='panel panel-default'
+        var node = ReactServer.renderToStaticMarkup(<Content content={content} className='panel panel-default'
                                                        valueManager={ValueManager({hello:'Joe'})} loader={loader}/>);
 
         expect(node).toEqual('<span class="panel panel-default" type="span">' +
@@ -214,8 +213,8 @@ describe('Content', function () {
         }
         var form = TestUtils.renderIntoDocument(<Form schema={schema} valueManager={ValueManager({hello:'Joe'})}
                                                       loader={loader}/>);
-        var node = TestUtils.scryRenderedComponentsWithType(form, Content)[0];
-        var str = node.getDOMNode().innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');
+        var node = findNode(TestUtils.scryRenderedComponentsWithType(form, Content)[0]);
+        var str = node.innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');
 
         /*  expect(str).toEqual('<span type="span"><span  type="span">' +
          '<span class="clz-left" type="span">' +
