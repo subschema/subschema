@@ -64,12 +64,9 @@ function normalizeSchema(oschema, loader, fs, f) {
     }
 
     if (tu.isString(oschema)) {
-        var loaded = loader.loadSchema(oschema);
-        return normalizeSchema(loaded, loader);
+        return normalizeSchema(loader.loadSchema(oschema), loader, fs, f);
     } else if (tu.isString(oschema.schema)) {
-
-        var schema = loader.loadSchema(oschema.schema);
-        return normalizeSchema(schema, loader);
+        return normalizeSchema(loader.loadSchema(oschema.schema), loader, fs, f);
     } else if (oschema.subSchema) {
         var {subSchema, ...rest} = oschema;
         rest.schema = subSchema;

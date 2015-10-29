@@ -41,29 +41,30 @@ var CAR_MAKES_AND_MODELS = {
             'Corvair', 'Corvette', 'Cruze', 'Nova', 'SS', 'Vega', 'Volt']
     }
 };
+
+var fields = schema.fieldsets[0].fields;
 /**
  * Assign the options.
  */
 schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key) {
+    fields.push(key);
+    var current = CAR_MAKES_AND_MODELS[key];
+    //setup the key values of them all.
+    schema.schema[key] = {
+        title: 'Models of '+current.name,
+        conditional: {
+            listen: 'make',
+            value: key,
+            operator: '==='
+        },
+        type: 'Select',
+        options: current.models
+    }
+    /**
+     * Return the makes
+     */
     return {
-        label: CAR_MAKES_AND_MODELS[key].name,
+        label: current.name,
         val: key
     }
 });
-/**
- * Use a valuemanager, this one is from the parent.
- * So sorry about the magic.   You can create ValueManager
- * var vm = Subschema.ValueManager();
- */
-valueManager.addListener('make', function (car) {
-    var selected = car && CAR_MAKES_AND_MODELS[car], options = [], placeholder = 'Select a make first';
-    if (selected) {
-        options = selected.models;
-        placeholder = 'Please select a model of ' + selected.name;
-    }
-    //Change the state of the form and it will rerender.  Otherwise... it won't.
-    valueManager.updateState('schema.model.options', options);
-    valueManager.updateState('schema.model.placeholder', placeholder);
-
-}, null, true);
-
