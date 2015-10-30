@@ -44,27 +44,35 @@ var CAR_MAKES_AND_MODELS = {
 
 var fields = schema.fieldsets[0].fields;
 /**
- * Assign the options.
+ * Create the schema programatically.
  */
 schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key) {
     fields.push(key);
-    var current = CAR_MAKES_AND_MODELS[key];
+    var {name, models} = CAR_MAKES_AND_MODELS[key];
     //setup the key values of them all.
     schema.schema[key] = {
-        title: 'Models of '+current.name,
+        title: 'Model',
         conditional: {
+            //This is the value to listen to trigger the conditional
             listen: 'make',
+            //This is the value to compare the make's value to
             value: key,
-            operator: '==='
+            //Strict equals operator
+            operator: '===',
+            //We want the conditional to update the 'model' path.  This is a bit
+            // experimental at the time, but may be the future of how to handle these
+            // situations.
+            path: 'model'
         },
         type: 'Select',
-        options: current.models
+        placeholder:'Select a model of '+name,
+        options: models
     }
     /**
      * Return the makes
      */
     return {
-        label: current.name,
+        label: name,
         val: key
     }
 });

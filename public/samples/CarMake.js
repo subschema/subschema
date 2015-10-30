@@ -10,13 +10,22 @@ module.exports = {
                 title: 'Make',
                 type: 'Select',
                 placeholder: 'Select a make'
+            },
+            'model': {
+                title: 'Model',
+                type: 'Select',
+                placeholder: 'Select a make first',
+                conditional:{
+                    'listen':'make',
+                    'operator':'falsey'
+                }
             }
         },
         fieldsets: [{legend: 'Make And Model Linked Selects', fields: ['make', 'model']}]
     },
     data: {
         make: 'audi',
-        audi: '4000'
+        model: '4000'
     },
     props: {
         valueManager: true

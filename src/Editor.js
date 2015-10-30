@@ -213,15 +213,17 @@ var Editor = React.createClass({
 
     },
     render(){
-        var {field,  onValueChange,  conditional, template, onValidate, ...props} = this.props;
+        var {field,  onValueChange, path, conditional, template, onValidate, ...props} = this.props;
         conditional = conditional || field.conditional;
         if (conditional == null || conditional === false) {
+            props.path = path;
             return this.renderContent(field, onValueChange, template, onValidate, props);
         }
         if (typeof conditional === 'string') {
             conditional = {operator: conditional};
         }
-        return (<Conditional {...conditional} path={this.props.path} field={field} valueManager={props.valueManager}
+        props.path = conditional.path  || path;
+        return (<Conditional  path={this.props.path} {...conditional} field={field} valueManager={props.valueManager}
                                               loader={props.loader}>
             {this.renderContent(field, onValueChange, template, onValidate, props)}
         </Conditional>);
