@@ -8,7 +8,7 @@ var Index = React.createClass({
                 <p>This is app shows how to use Subschema</p>
 
                 <p>Wherever it shows expand you can click to see the code that geneated the form, and you can edit
-                    the code in place,seeing the result immediately.
+                    the code in place,seeing the result immediately.</p>
 
                 <p>You can see how it works by loading errors and data, from the buttons up top</p>
 
