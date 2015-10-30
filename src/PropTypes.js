@@ -109,11 +109,11 @@ api.options = api.oneOfType([
     }))
 ]);
 
-api.schema = api.shape({
+api.schema = api.oneOfType([api.string, api.shape({
     fields: api.arrayString,
     fieldsets: api.oneOfType([api.arrayString, api.fieldset, api.arrayOf(api.fieldset)]),
     schema: api.object,
-});
+})]);
 var events = {
     onValidate: api.event,
     onFocus: api.event,

@@ -3,4 +3,4 @@
 var loader = require('./loader');
 loader.addLoader(require('./ValidatorLoader'));
 loader.addLoader(require('./DefaultLoader.jsx'));
-module.exports = require('./form');
+module.exports = require('./form.js');

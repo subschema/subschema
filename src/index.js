@@ -1,4 +1,4 @@
-module.exports.Form = require('./form');
+module.exports.Form = require('./form.js');
 module.exports.NestedMixin = require('./NestedMixin');
 module.exports.Editor = require('./Editor');
 module.exports.validators = require('./validators');

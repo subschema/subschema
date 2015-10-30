@@ -1,5 +1,5 @@
-var index = require('./index');
+var index = require('./index.js');
 index.DefaultLoader = require('./DefaultLoader.jsx');
 index.loader.addLoader(index.DefaultLoader);
-index.form = require('./form.jsx');
+index.Form = require('./form.jsx');
 module.exports = index;
