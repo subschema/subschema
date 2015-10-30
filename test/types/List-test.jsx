@@ -17,8 +17,7 @@ describe('List', function () {
         var create = TestUtils.scryRenderedComponentsWithType(root, CreateTemplate)[0];
         var input = byTag(create, 'input');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-
-        var btns = filterProp(byTags(create, 'button'), 'action', 'save');
+        var btns = filterProp(TestUtils.scryRenderedComponentsWithType(create, Button), 'action', 'save');
         click(btns[0]);
 
         var value = root.getValue();
@@ -32,7 +31,7 @@ describe('List', function () {
         Simulate.click(tasks['tasks_' + c].refs.edit);
         var input = tasks.addEdit.refs.itemEditor.refs.field.refs.value.refs.field.refs.input;
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        var btns = filterProp(byTags(tasks.addEdit, 'button'), 'action', 'edit');
+        var btns = filterProp(TestUtils.scryRenderedComponentsWithType(tasks.addEdit, Button), 'action', 'edit')
         click(btns[0]);
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);

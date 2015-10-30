@@ -28,6 +28,12 @@ var Form = React.createClass({
         }
     },
     componentWillMount(){
+        if (this.props.value){
+            this.props.valueManager.setValue(this.props.value);
+        }
+        if (this.props.errors){
+            this.props.valueManager.setErrors(this.props.errors);
+        }
         var p = ['schema'];
         if (this.props.path) {
             p.unshift(this.props.path);

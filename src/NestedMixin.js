@@ -1,5 +1,6 @@
 "use strict";
 var React = require('./react');
+var PropTypes = require('./PropTypes');
 var tu = require('./tutils');
 var toArray = tu.toArray;
 var Editor = require('./Editor');
