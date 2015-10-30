@@ -28,10 +28,10 @@ var Form = React.createClass({
         }
     },
     componentWillMount(){
-        if (this.props.value){
+        if (this.props.value) {
             this.props.valueManager.setValue(this.props.value);
         }
-        if (this.props.errors){
+        if (this.props.errors) {
             this.props.valueManager.setErrors(this.props.errors);
         }
         var p = ['schema'];
@@ -39,6 +39,14 @@ var Form = React.createClass({
             p.unshift(this.props.path);
         }
         this._stateListener = this.props.valueManager.addStateListener(p.join('.'), this.handleState, this, false);
+    },
+    componentWillReceiveProps(newProps){
+        if (this.props.value !== newProps.value) {
+            this.props.valueManager.setValue(newProps.value);
+        }
+        if (this.props.errors !== newProps.errors) {
+            this.props.valueManager.setErrors(newProps.errors);
+        }
     },
     componentWillUnmount(){
         this._stateListener.remove();

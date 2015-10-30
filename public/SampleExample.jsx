@@ -69,14 +69,10 @@ var SampleExample = React.createClass({
         this.addListeners(props.valueManager);
     },
     setValue(data){
-        console.log('setValue');
         this.setState({data});
     },
     setErrors(errors){
         this.setState({errors});
-    },
-    shouldComponentUpdate(){
-        return false;
     },
     render(){
         console.log('render sample');
