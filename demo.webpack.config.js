@@ -1,7 +1,7 @@
 require('es6-promise').polyfill();
 var path = require('path');
-var hot = require('./hot.web')
 var webpack = require('webpack');
+var join = path.join.bind(path, __dirname);
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
@@ -13,7 +13,7 @@ module.exports = {
         app: './public/app.jsx'
     },
 	output:{
-        path: path.join(__dirname, '../subschema-gh-pages'),
+        path: path.join(__dirname, '../subschema-demo'),
         filename: 'app.[hash].js'
     },
 	target:"web",
@@ -25,19 +25,12 @@ module.exports = {
         loaders: [
             {
                 test: /\.js(x)?$/,
-                excludes: /node_modules/,
-                //do this to prevent babel fromt tanslating everything.
-                includes: [
-                    '~/node_modules/react',
-                    '~/node_modules/react-router',
-                    '~/node_modules/react-bootstrap',
-                    '~/node_modules/subschema-builder',
-                    '~/node_modules/react-highlight'
-
+                exclude: [
+                    /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|component-playground|codemirror|react-))/
                 ],
-                loaders: ['babel-loader?stage=0']
+                loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
             },
-            {test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
+            {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
@@ -46,28 +39,37 @@ module.exports = {
             // or any other compile-to-css language
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader!' + AUTOPREFIXER_LOADER
+                // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
+                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.less$/,
-                loader: 'style!css!less-loader'
+                loaders: ['style','css','less']
             }
         ]
     },
 
+    postcss: [
+        require('autoprefixer'),
+        require('postcss-color-rebeccapurple')
+    ],
     resolve: {
+        extensions:['','.js','.jsx'],
         alias: {
-            'subschema':path.join( __dirname, 'src/index.jsx'),
-            'react': path.join(__dirname, '/node_modules/react')
+            'subschema': join('src/index.jsx'),
+            'react': join('node_modules/react')
+            //   'component-playground':join('node_modules/component-playground')
         }
     },
 
     plugins: [
-
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
+        new webpack.ProvidePlugin({
+            CodeMirror: "codemirror",
+            "window.CodeMirror": "codemirror"
         }),
-		//new webpack.optimize.DedupePlugin(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }),
         function () {
             this.plugin("done", function (stats) {
                 stats = stats.toJson();

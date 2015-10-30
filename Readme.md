@@ -9,7 +9,7 @@ from [backbone-forms](https://github.com/powmedia/backbone-forms).
 [![Build Status](https://travis-ci.org/jspears/subschema.svg?branch=master)](https://travis-ci.org/jspears/subschema)
 
 ###Example
-You can see examples at [jspears.github.io/subschema](http://jspears.github.io/subschema/)
+You can see examples at [subschema.github.io/subschema-demo](http://subschema.github.io/subschema-demo/)
 
 ###Install
 ```sh
