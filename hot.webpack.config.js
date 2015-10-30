@@ -52,11 +52,9 @@ module.exports = {
             {
                 test: /\.js(x)?$/,
                 exclude: [
-                    /tcl\.js/,
                     /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|component-playground|codemirror|react-))/,
                     join('src'),
                     join('public'),
-
                 ],
                 loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
             },

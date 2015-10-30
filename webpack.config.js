@@ -44,12 +44,14 @@ function config(filename, externals, alias) {
                     //do this to prevent babel fromt tanslating everything.
                     includes: [
                         '~/node_modules/react',
+                        '~/node_modules/react-dom',
+                        '~/node_modules/fbjs',
                        // '~/node_modules/react-router',
                        // '~/node_modules/react-bootstrap',
                         '~/node_modules/subschema-builder'
 
                     ],
-                    loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
+                    loaders: ['babel-loader?stage=0&externalHelpers']
                 },
                 {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
                 {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
