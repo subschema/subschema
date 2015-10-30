@@ -17,6 +17,7 @@ var MixedInput = React.createClass({
 
             onValidate() {
             }
+
         }
     },
     cloneVal(value){
@@ -85,23 +86,18 @@ var MixedInput = React.createClass({
             } : kt || {},
             validators = keyType.validators || (keyType.validators = []),
             item = {
-                type: 'Object',
-                name: this.props.field.name,
-                subSchema: {
-                    schema: {
-                        key: keyType,
-                        value: this.props.field.valueType || this.props.valueType
-                    },
-                    fieldsets: [{
-                        fields: ['key', 'value'],
-                        buttons: {
-                            onClick: this.handleBtnGroup,
-                            buttonsClass: style.buttonsClass,
-                            buttons: [{label: 'Cancel', action: 'cancel', buttonClass: style.buttonCancel}
-                                , {label: 'Save', action: action, buttonClass: style.buttonSave}]
-                        }
-                    }]
-                }
+                schema: {
+                    key: keyType,
+                    value: this.props.field.valueType || this.props.valueType
+                },
+                fieldsets: [{
+                    fields: ['key', 'value'],
+                    buttons: {
+                        buttonsClass: style.buttonsClass,
+                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass: style.buttonCancel}
+                            , {label: 'Save', action: action, buttonClass: style.buttonSave}]
+                    }
+                }]
             };
 
         if (!keyType.type) {
@@ -111,6 +107,10 @@ var MixedInput = React.createClass({
         validators.unshift('required', this.uniqueCheck);
 
         return item;
+    },
+    resolve(data){
+        var {key, value} = data;
+        return {[key]:value}
     },
     render() {
         var {name,  itemType, errors, canReorder, canDelete, canEdit, canAdd, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {

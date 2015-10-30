@@ -58,7 +58,7 @@ var Sample = React.createClass({
                     </div>
                 </nav>
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-2 col-sm-3 col-xs-12">
                         <h3>Examples</h3>
                         <SampleNav activeSample={params.sample} samples={SampleMgr.getAll()}/>
 
@@ -79,7 +79,7 @@ var Sample = React.createClass({
                                   key='example'>Simple Example</Link>
                         </div>
                     </div>
-                    <div className="col-md-10">
+                    <div className="col-md-10 col-sm-9 col-xs-12">
                         {React.cloneElement(this.props.children, params)}
                     </div>
                 </div>

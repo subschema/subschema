@@ -1,6 +1,11 @@
 "use strict";
-var {FREEZE_OBJ} = require('./tutils');
+var {FREEZE_OBJ} = require('./tutils'), PropTypes = require('./PropTypes');
+
 var BasicFieldMixin = {
+    contextTypes: {
+        valueManager: PropTypes.valueManager
+    },
+
     componentWillMount(){
         this.subschemaPropUpdate(this.props, FREEZE_OBJ);
     },
@@ -13,19 +18,19 @@ var BasicFieldMixin = {
         this.subschemaPropUpdate(newProps, this.props);
     },
     subschemaPropUpdate(props, oldProps){
-        if (!props.valueManager || props.valueManager === oldProps.valueManager && props.path === oldProps.path) {
+        if (props.path === oldProps.path) {
             return;
         }
         if (this.__listener) {
             this.__listener.remove();
         }
-        this.__listener = props.valueManager.addListener(props.path, this.setValue, this, true);
+        this.__listener = this.context.valueManager.addListener(props.path, this.setValue, this, true);
     },
     triggerChange(value){
-        if (!this.props.valueManager) {
+        if (!this.context.valueManager) {
             return this.props.onValueChange(value);
         }
-        if (this.props.valueManager.update(this.props.path, value) !== false) {
+        if (this.context.valueManager.update(this.props.path, value) !== false) {
             return this.props.onValueChange(value);
         }
     },

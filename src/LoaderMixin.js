@@ -1,15 +1,15 @@
-var  util = require('./tutils'), loader = require('./loader');
+var  util = require('./tutils'), loader = require('./loader'), PropTypes = require('./PropTypes');
+
 var LoaderMixin = {
-    getDefaultProps(){
-        return {
-            loader: loader
-        }
+    contextTypes: {
+        loader: PropTypes.loader
     },
+
     template(template){
         template = arguments.length ? template : 'template';
         template = (this.props.field && (template in this.props.field)) ? this.props.field[template] : (template in this.props) ? this.props[template] : template;
         if (util.isString(template)) {
-            return this.props.loader.loadTemplate(template, this.props);
+            return this.context.loader.loadTemplate(template, this.props);
         }
         return template === false ? null : template;
     }
@@ -18,7 +18,7 @@ var LoaderMixin = {
         processor = arguments.length ? processor : 'processor';
         processor = (this.props.field && (processor in this.props.field)) ? this.props.field[processor] : (processor in this.props) ? this.props[processor] : processor;
         if (util.isString(processor)) {
-            return this.props.loader.loadProcessor(processor, this.props);
+            return this.context.loader.loadProcessor(processor, this.props);
         }
         return processor === false ? null : processor;
     }

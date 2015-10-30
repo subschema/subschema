@@ -4,7 +4,7 @@ var tu = require('./tutils');
 var {FREEZE_OBJ, FREEZE_ARR} = tu;
 var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
 var Conditional = require('./Conditional.jsx');
-
+var PropTypes = require('./PropTypes');
 /**
  * Safe chained function
  *
@@ -60,6 +60,10 @@ function initValidators(v) {
 var Editor = React.createClass({
     displayName: 'Editor',
     mixins: [require('./LoaderMixin')],
+    contextTypes: {
+        valueManager: PropTypes.valueManager
+    },
+
     getDefaultProps() {
         return {
             field: {
@@ -85,7 +89,7 @@ var Editor = React.createClass({
     },
     componentWillMount(){
         var validators = this.props.field.validators;
-        this.validators = validators ? tu.toArray(validators).map(initValidators, this.props.loader) : FREEZE_ARR;
+        this.validators = validators ? tu.toArray(validators).map(initValidators, this.context.loader) : FREEZE_ARR;
         this._listen(this.props, FREEZE_OBJ);
     },
     componentWillUnmount(){
@@ -95,12 +99,12 @@ var Editor = React.createClass({
         this._listen(newProps, this.props);
     },
     _listen(newProps, oldProps){
-        if (newProps.valueManager === oldProps.valueManager && newProps.path === oldProps.path) {
+        if (newProps.path === oldProps.path) {
             return;
         }
         this._unlisten();
-        this._listener = newProps.valueManager.addListener(newProps.path, this.handleChange, this, true);
-        this._validateListener = newProps.valueManager.addValidateListener(newProps.path, this._validate, this);
+        this._listener = this.context.valueManager.addListener(newProps.path, this.handleChange, this, true);
+        this._validateListener =  this.context.valueManager.addValidateListener(newProps.path, this._validate, this);
     },
     _unlisten(){
         if (this._listener) this._listener.remove();
@@ -127,7 +131,7 @@ var Editor = React.createClass({
         }
     },
     getValue(){
-        return this.props.valueManager.path(this.props.path);
+        return  this.context.valueManager.path(this.props.path);
     },
 
     /**
@@ -138,7 +142,7 @@ var Editor = React.createClass({
         value = arguments.length === 0 ? this.getValue() : value;
         errors = errors || this.getErrorMessages(value);
 
-        this.props.valueManager.updateErrors(this.props.path, errors, value);
+        this.context.valueManager.updateErrors(this.props.path, errors, value);
         this.setState({
             hasValidated: true
         });
@@ -148,7 +152,7 @@ var Editor = React.createClass({
         this.validate(this.getValue());
     },
     getErrorMessages(value){
-        var vm = this.props.valueManager;
+        var vm = this.context.valueManager;
 
         value = arguments.length === 0 ? this.getValue() : value;
         var msgs = this.validators.map((v)=> {
@@ -176,7 +180,7 @@ var Editor = React.createClass({
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
-        var Component = this.props.loader.loadType(type),
+        var Component = this.context.loader.loadType(type),
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
         var Template;
@@ -187,7 +191,7 @@ var Editor = React.createClass({
         }
         var child;
         if (hasPromise && Component instanceof Promise) {
-            var Lazy = this.props.loader.loadType('LazyType');
+            var Lazy = this.context.loader.loadType('LazyType');
             child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
                           onValidate={this.handleValidate} promise={Component}/>
@@ -223,8 +227,7 @@ var Editor = React.createClass({
             conditional = {operator: conditional};
         }
         props.path = conditional.path  || path;
-        return (<Conditional  path={this.props.path} {...conditional} field={field} valueManager={props.valueManager}
-                                              loader={props.loader}>
+        return (<Conditional  path={this.props.path} {...conditional} field={field} >
             {this.renderContent(field, onValueChange, template, onValidate, props)}
         </Conditional>);
     }

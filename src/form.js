@@ -5,8 +5,29 @@ var NestedMixin = require('./NestedMixin');
 var PropTypes = require('./PropTypes');
 var ValueManager = require('./ValueManager');
 var _set = require('lodash/object/set');
+var FormInner = React.createClass({
+    mixins: [NestedMixin]
+});
 var Form = React.createClass({
     displayName: 'Form',
+    childContextTypes: {
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
+    },
+
+    getChildContext() {
+        var {valueManager, loader, value, errors} = this.props;
+        if (loader == null) {
+            loader = require('./loader');
+        }
+        if (valueManager === null) {
+            valueManager = ValueManager(value, errors);
+        }
+        return {
+            valueManager, loader
+        };
+    },
+
     propTypes: {
         schema: PropTypes.schema.isRequired,
         loader: PropTypes.loader,
@@ -18,7 +39,7 @@ var Form = React.createClass({
         onSubmit: PropTypes.event,
         noValidate: PropTypes.bool
     },
-    mixins: [NestedMixin],
+//    mixins: [NestedMixin],
     getDefaultProps() {
         return {
             template: 'FormTemplate',
@@ -67,6 +88,12 @@ var Form = React.createClass({
     },
     setErrors(errors){
         this.props.valueManager.setErrors(errors);
+    },
+    render(){
+
+        var {valueManager, loader, ...props} = this.props;
+        return <FormInner {...props} onSubmit={this.handleSubmit}/>
     }
+
 });
 module.exports = Form;

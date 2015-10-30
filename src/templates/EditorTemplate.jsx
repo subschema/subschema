@@ -5,6 +5,7 @@ var css = require('../css');
 var Content = require('../types/Content.jsx')
 var style = require('../styles/EditorTemplate-style');
 var {FREEZE_OBJ} = require('../tutils');
+var PropTypes = require('../PropTypes');
 function childrenValueManager(children, valueManager) {
     var props = {valueManager};
     return Children.map(children, (child)=>React.cloneElement(child, props));
@@ -12,6 +13,9 @@ function childrenValueManager(children, valueManager) {
 
 var EditorTemplate = React.createClass({
     displayName: 'EditorTemplate',
+    contextTypes: {
+        valueManager: PropTypes.valueManager
+    },
     componentWillMount(){
         this._listen(this.props, FREEZE_OBJ);
     },
@@ -21,12 +25,15 @@ var EditorTemplate = React.createClass({
     componentWillReceiveProps(newProps){
         this._listen(newProps, this.props)
     },
+    getInitialState(){
+        return {};
+    },
     _listen(newProps, oldProps){
-        if ((newProps.path === oldProps.path && newProps.valueManager === oldProps.valueManager)) {
+        if ((newProps.path === oldProps.path )) {
             return;
         }
         this._errorListener && this._errorListener.remove();
-        this._errorListener = newProps.valueManager.addErrorListener(newProps.path, this.setError, this, true);
+        this._errorListener = this.context.valueManager.addErrorListener(newProps.path, this.setError, this, true);
     },
 
     setError(errors){
@@ -35,7 +42,7 @@ var EditorTemplate = React.createClass({
         });
     },
     render(){
-        var {name, title, help, errorClassName, message, fieldClass, loader, valueManager, children} = this.props;
+        var {name, title, help, errorClassName, message, fieldClass,  children} = this.props;
         var error = this.state.error;
         if (!title) {
             title = ''
@@ -43,14 +50,12 @@ var EditorTemplate = React.createClass({
 
         return (<div
             className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  css.forEditor(this)}>
-            <Content content={title} type="label" className={style.label} htmlFor={name}
-                     valueManager={valueManager} loader={loader}/>
+            <Content content={title} type="label" className={style.label} htmlFor={name}/>
 
             <div className={title ? style.hasTitle : style.noTitle}>
-                {childrenValueManager(children, this.props.valueManager)}
+                {children}
                 {help === false ? null : <Content content={error ? error : help} key='error-block' type='p'
-                                                  className={error ? style.error : style.help}
-                                                  valueManager={valueManager} loader={loader}/>}
+                                                  className={error ? style.error : style.help}/>}
             </div>
         </div>);
     }

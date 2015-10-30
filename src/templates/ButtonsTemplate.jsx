@@ -3,6 +3,7 @@ var tu = require('../tutils');
 var style = require('../styles/ButtonsTemplate-style');
 var ButtonsTemplate = React.createClass({
     mixins: [require('../LoaderMixin')],
+
     getDefaultProps(){
         return {
             buttonsClass: style.buttonsClass,
@@ -31,7 +32,7 @@ var ButtonsTemplate = React.createClass({
             if (this.props.buttonClass) {
                 btn.buttonClass = (btn.buttonClass || '') + ' ' + this.props.buttonClass;
             }
-            btn.template = this.props.loader.loadTemplate(b.template || this.props.buttonTemplate);
+            btn.template = this.context.loader.loadTemplate(b.template || this.props.buttonTemplate);
             return btn;
         })
     },
@@ -46,8 +47,7 @@ var ButtonsTemplate = React.createClass({
             <div className={buttonsClass}>
                 {this.makeButtons(buttons).map((b, i)=> {
                     var Template = b.template;
-                    return <Template key={"btn-"+i} {...b} loader={this.props.loader}
-                                     valueManager={this.props.valueManager}/>
+                    return <Template key={"btn-"+i} {...b}/>
                 })}
             </div>
         </div>

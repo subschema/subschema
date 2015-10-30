@@ -7,7 +7,12 @@ var map = require('lodash/collection/map');
 var isObject = require('lodash/lang/isObject');
 var tu = require('../tutils');
 var defaults = require('lodash/object/defaults');
+var PropTypes =require('../PropTypes');
 var Content = React.createClass({
+    contextTypes: {
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
+    },
     getDefaultProps(){
         return {
             type: 'span',
@@ -43,9 +48,8 @@ var Content = React.createClass({
             return null;
         }
         if (tu.isString(content)) {
-            var ContentWrapper = this.props.loader && this.props.loader.loadType('ContentWrapper') || DefaultContentWrapper;
-            return <ContentWrapper {...props} key={'content-'+prefix} content={content}
-                                              valueManager={this.props.valueManager} loader={this.props.loader}/>
+            var ContentWrapper = this.context.loader.loadType('ContentWrapper') || DefaultContentWrapper;
+            return <ContentWrapper {...props} key={'content-'+prefix} content={content}/>
         }
 
         if (Array.isArray(content)) {
@@ -57,8 +61,7 @@ var Content = React.createClass({
                 }
                 if (c.content) {
                     if (typeof c.content !== 'string') {
-                        return <Content {...c} key={'content-'+prefix+'-'+key} valueManager={this.props.valueManager}
-                                               loader={this.props.loader}>
+                        return <Content {...c} key={'content-'+prefix+'-'+key}>
                             {this.renderChildren(c, children)}
                         </Content>
                     } else {
@@ -72,22 +75,19 @@ var Content = React.createClass({
 
 
         if (content.content) {
-            return <Content {...content.content} key={'content-content'} valueManager={this.props.valueManager}
-                                                 loader={this.props.loader}>
+            return <Content {...content.content} key={'content-content'}>
                 {this.renderChildren(content.content, children)}
             </Content>
         }
 
-        return <Content {...props} key={'content-ft-'+prefix} content={content}
-                                   valueManager={this.props.valueManager}
-                                   loader={this.props.loader}>
+        return <Content {...props} key={'content-ft-'+prefix} content={content}>
             {this.renderChildren(content, children)}
         </Content>
     },
 
     render()
     {
-        var {type, content, children, field, valueManager, loader, context, ...props} = this.props, Ctype;
+        var {type, content, children, field, context, ...props} = this.props, Ctype;
         if (field && field.content) {
             content = field.content;
         }
@@ -118,11 +118,9 @@ var Content = React.createClass({
             return React.createElement(type, props, children);
         }
 
-        if (loader) {
-            Ctype = loader.loadType(type);
-        }
+        Ctype = this.context.loader.loadType(type);
 
-        return <Ctype {...props} valueManager={valueManager} loader={loader}>
+        return <Ctype {...props} >
             {children}
         </Ctype>
     }

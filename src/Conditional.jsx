@@ -152,7 +152,7 @@ var Conditional = React.createClass({
         if (oldProps.template != props.template) {
             if (props.template !== false) {
                 if (typeof props.template === 'string') {
-                    this.Template = props.loader.loadTemplate(props.template);
+                    this.Template = this.context.loader.loadTemplate(props.template);
                 } else {
                     this.Template = props.template;
                 }
@@ -160,7 +160,7 @@ var Conditional = React.createClass({
         }
         if (oldProps.falseTemplate != props.falseTemplate) {
             if (typeof props.falseTemplate === 'string') {
-                this.FalseTemplate = props.loader.loadTemplate(props.falseTemplate);
+                this.FalseTemplate = this.context.loader.loadTemplate(props.falseTemplate);
             }
         }
         if (oldProps.operator != props.operator) {
@@ -192,7 +192,7 @@ var Conditional = React.createClass({
                 }
                 return opFactory(operator);
             } else {
-                return this.props.loader.loadOperator(operator)(this.props);
+                return this.context.loader.loadOperator(operator)(this.props);
             }
         }
 

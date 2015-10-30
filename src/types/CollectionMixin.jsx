@@ -6,6 +6,10 @@ var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var style = require('../styles/CollectionMixin-style');
+var NewChildContext = require('../NewChildContext.jsx');
+var tu = require('../tutils');
+var ObjectType = require('./Object.jsx');
+
 var CollectionMixin = {
     statics: {
         listClassName: Constants.listClassName,
@@ -124,6 +128,12 @@ var CollectionMixin = {
         this.changeValue(values, oval);
 
     },
+    handleBtnClick(e, action){
+        e && e.preventDefault();
+        if (action === 'save'){
+            this.props.onSubmit(e);
+        }
+    },
     renderAddEditTemplate(edit, create) {
         var handler, label = ''
         if (edit) {
@@ -135,24 +145,19 @@ var CollectionMixin = {
         } else {
             return null;
         }
-        var CreateTemplate = this.template('createTemplate');
         var title = this.props.title || '';
+        var path = tu.path(this.props.path, this.state.editPid)
         return (
-            <CreateTemplate key="addEdit" editPid={this.state.editPid} field={this.getTemplateItem()}
-                            valueManager={this.props.valueManager}
-                            name={this.props.name}
-                            ref="addEdit"
-                            value={this.state.editValue}
+            <NewChildContext {...this.context} path={path} resolve={this.resolve} >
+                <ObjectType key="addEdit" template={this.props.createTemplate}
+                            path={path}
+                            schema={this.getTemplateItem()}
                             title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
-                            loader={this.props.loader}
-                            onCancel={this.handleCancelAdd}
-                            onSubmit={handler}/>)
+
+                    />
+            </NewChildContext>)
     },
-    /* return <div className="clearfix">
-     <button className="btn btn-xs pull-right btn-default" ref="addBtn" onClick={this.handleAddBtn}><i
-     className="icon-add"/>Add
-     </button>
-     </div>*/
+
     renderAddBtn() {
         if (!this.props.field.canAdd) {
             return null;

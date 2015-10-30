@@ -432,9 +432,9 @@ var Autocomplete = React.createClass({
                 }
             });
         }
-        var {valueManager,inputType, type, ...cprops} = props;
+        var {inputType, type, ...cprops} = props;
         if (inputType) {
-            var Input = this.props.loader.loadType(inputType);
+            var Input = this.context.loader.loadType(inputType);
             return <Input {...cprops} ref="input" value={this.state.input}/>
         }
 

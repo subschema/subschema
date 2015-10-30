@@ -4,7 +4,7 @@ var SimpleTemplate = React.createClass({
         var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
         return (<div className="form-group">
             <label for={name}>{title}</label>
-            {this.props.children}
+            {children}
         </div>);
     }
 });

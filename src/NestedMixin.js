@@ -101,9 +101,12 @@ var NestedMixin = {
             path: null,
 
             schema: {},
-            valueManager: ValueManager()
         }
 
+    },
+    contextTypes: {
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
     },
     componentWillMount(){
         this.updateProps({}, this.props);
@@ -116,7 +119,7 @@ var NestedMixin = {
         var field = newProps.field || newProps;
         this.schema = normalizeSchema(field.subSchema || field.schema, newProps.loader, field.fields, field.fieldsets);
         if (oldProps.value !== newProps.value) {
-            newProps.valueManager.setValue(newProps.value);
+            this.context.valueManager.setValue(newProps.value);
         }
     },
 

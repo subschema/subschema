@@ -4,13 +4,11 @@ var LoaderMixin = require('../LoaderMixin');
 var tu = require('../tutils');
 var Constants = require('../Constants');
 var css = require('../css');
+var PropTypes = require('../PropTypes');
 
 var Checkboxes = React.createClass({
     statics: {
-        inputClassName: Constants.inputCheckboxesClassName,
-        subSchema: {
-            options: 'OptionSchema'
-        }
+        inputClassName: Constants.inputCheckboxesClassNam
     },
     mixins: [BasicFieldMixin, LoaderMixin],
     getDefaultProps() {
@@ -19,6 +17,7 @@ var Checkboxes = React.createClass({
             name: '',
             placeholder: '',
             dataType: this.dataType,
+            options:PropTypes.options,
             itemTemplate: 'CheckboxesTemplate',
             groupTemplate: 'CheckboxesGroupTemplate',
             onValidate(){

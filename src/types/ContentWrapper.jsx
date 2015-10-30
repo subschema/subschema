@@ -11,7 +11,7 @@ var ContentWrapper = React.createClass({
         }
     },
     componentWillReceiveProps(props){
-        if (props.content === this.props.content && props.valueManager === this.props.valueManager) {
+        if (props.content === this.props.content) {
             return;
         }
         this.rebuildValue(props.content);
@@ -27,8 +27,8 @@ var ContentWrapper = React.createClass({
                 __html: this.currentContent()
             };
             return React.createElement(type, props);
-        } else if (this.props.loader) {
-            Type = this.props.loader.loadType(type);
+        } else if (this.context.loader) {
+            Type = this.context.loader.loadType(type);
         }
         return <Type {...props}>
             <span key='content' dangerouslySetInnerHTML={{ __html: this.currentContent()}}/>

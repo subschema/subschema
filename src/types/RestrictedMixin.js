@@ -120,6 +120,10 @@ var RestrictedMixin = {
     statics: {
         inputClassName: Constants.inputClassName
     },
+    contextTypes: {
+        loader: PropTypes.loader
+    },
+
     getInitialState(){
         var value = this.props.value ? this.formatter(this.props.value) : {
             isValid: false,
@@ -205,7 +209,7 @@ var RestrictedMixin = {
             if (typeof formatter === 'function') {
                 return (this._formatter = formatter).call(this, value, isBackspace, caret);
             } else {
-                return (this._formatter = makeFormatter(formatter, createValidator(this.props.validator, this.props.loader))).call(this, value, isBackspace);
+                return (this._formatter = makeFormatter(formatter, createValidator(this.props.validator, this.context.loader))).call(this, value, isBackspace);
             }
         } else if (typeof formatter === 'function') {
             return (this._formatter = formatter).call(this, value, isBackspace, caret);

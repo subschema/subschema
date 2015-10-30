@@ -44,7 +44,7 @@ var WizardTemplate = React.createClass({
         this.assignSchema(props);
     },
     assignSchema(props){
-        this.schema = NestedMixin.normalizeSchema(props.schema || props.subSchema, props.loader);
+        this.schema = NestedMixin.normalizeSchema(props.schema || props.subSchema, this.context.loader);
     },
     next(){
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
@@ -77,7 +77,7 @@ var WizardTemplate = React.createClass({
         this.setNavState(resp == null ? pos : resp);
     },
     _validate(done){
-        this.props.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
+        this.context.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
     },
 
     setNavState(next) {
@@ -116,7 +116,7 @@ var WizardTemplate = React.createClass({
         this._validate((errors)=> {
             if (!errors && this.props.onDone((submit)=> {
                     if (submit !== false) {
-                        this.props.onSubmit(e, errors, this.props.valueManager.getValue());
+                        this.props.onSubmit(e, errors, this.context.valueManager.getValue());
                     }
                 }, e, this.schema.fieldsets[this.state.compState]) === false) {
                 return;
@@ -209,11 +209,11 @@ var WizardTemplate = React.createClass({
         if (this.props.wizardProgressTemplate === false) {
             return null;
         }
-        var Template = this.props.loader.loadTemplate(this.props.wizardProgressTemplate);
+        var Template = this.context.loader.loadTemplate(this.props.wizardProgressTemplate);
         if (!Template) {
             return null;
         }
-        return <Template fieldsets={fieldsets} valueManager={this.props.valueManager} index={this.state.compState}
+        return <Template fieldsets={fieldsets} index={this.state.compState}
                          onClick={this.handleOnClick}/>
     },
     render() {
@@ -238,7 +238,7 @@ var WizardTemplate = React.createClass({
                           key={"form-"+compState}
                           schema={{schema, fields}}
                           onSubmit={this.handleSubmit}
-                          valueManager={this.props.valueManager}>
+                          valueManager={this.context.valueManager}>
                         {this.renderBtns(compState)}
                     </Form>
                 </EventCSSTransitionGroup>

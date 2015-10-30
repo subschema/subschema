@@ -6,11 +6,11 @@ var FieldSetTemplate = React.createClass({
             return null;
         }
         if (buttons.buttons) {
-            return <ButtonsTemplate ref="buttons" loader={this.props.loader} onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                                    valueManager={this.props.valueManager} {...buttons}/>
+            return <ButtonsTemplate ref="buttons" onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
+                {...buttons}/>
         }
-        return <ButtonsTemplate ref="buttons" loader={this.props.loader} onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                                valueManager={this.props.valueManager} buttons={buttons}/>
+        return <ButtonsTemplate ref="buttons" onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
+                                buttons={buttons}/>
     },
     render(){
         var {legend, buttons, className, ...rest} = this.props.field || {};
