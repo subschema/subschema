@@ -6,7 +6,7 @@
   "browser": "dist/subschema.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jspears/subschema"
+    "url": "https://github.com/subschema/subschema"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

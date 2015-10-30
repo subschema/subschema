@@ -110,22 +110,16 @@ describe('NestedMixin', function () {
                 fields: ['name', 'primary', 'otherAddresses']
             }
         });
-        /*it('should normalize with loaders')
-         {
-         var result = NestedMixin.normalizeSchema('Contact', loader);
-         expect(result.fields, 'name', 'primary', 'otherAddresss');
-         console.log(JSON.stringify(result, null, '\t'));
-         }*/
-        it('should normalize with subSchema with loaders')
-        {
+
+        it('should normalize with subSchema with loaders', function () {
+
             var result = NestedMixin.normalizeSchema({subSchema: 'Contact'}, loader);
             expect(result.fields, 'name', 'primary', 'otherAddresss');
-            console.log(JSON.stringify(result, null, '\t'));
-        }
+        });
 
     });
 
-    describe('should normailize fields and fieldsets', function () {
+    describe('should normalize fields and fieldsets', function () {
         it('should normilize fieldsets', function () {
             var inFieldsets = [{
                 fields: ['a', 'b', 'c']

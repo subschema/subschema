@@ -6,7 +6,9 @@ var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;
 var expect = require('expect');
 
-
+function prettyLog(result) {
+    console.log(JSON.stringify(result, null, '\t'));
+}
 function into(node, debug) {
     if (debug === true) {
         debug = document.createElement('div');
@@ -38,7 +40,7 @@ function byTags(node, tag) {
 function filterProp(node, property, value) {
     node = Array.isArray(node) ? node : [node];
     return node.filter((n)=> {
-        var props =  (n instanceof Element) ? n.attributes : n.props;
+        var props = (n instanceof Element) ? n.attributes : n.props;
         if (property in props) {
             if (value === null) return true;
 
@@ -58,11 +60,12 @@ function byComponents(node, comp) {
     return TestUtils.scryRenderedComponentsWithType(node, comp);
 }
 
-function findNode(n){
+function findNode(n) {
     return ReactDOM.findDOMNode(n);
 }
 
 module.exports = {
+    prettyLog,
     findNode,
     React,
     ReactDOM,
