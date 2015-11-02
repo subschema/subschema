@@ -38,6 +38,13 @@ api.template.isRequired = function api$template$isRequired() {
     return api.string.isRequired.apply(api.string, arguments);
 }
 
+api.path = function api$path(){
+    return api.string.apply(api, arguments);
+}
+api.path.isRequired = function ap$path$isRequired(){
+    return api.string.isRequired.apply(api.string, arguments);
+}
+
 api.loader = api.shape({
     loadTemplate: api.func,
     loadType: api.func,

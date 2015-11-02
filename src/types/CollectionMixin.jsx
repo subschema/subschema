@@ -19,7 +19,11 @@ var EditChildContext = React.createClass({
         loader: PropTypes.loader,
         path: PropTypes.string.isRequired,
         childPath: PropTypes.string.isRequired,
-        value: PropTypes.object
+        value: PropTypes.object,
+        canEdit: PropTypes.bool,
+        canReorder: PropTypes.bool,
+        canDelete: PropTypes.bool,
+        canAdd: PropTypes.bool
     },
     childContextTypes: {
         valueManager: PropTypes.valueManager,
@@ -137,36 +141,6 @@ var CollectionMixin = {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false, editValue: null});
     },
-    /*  handleAddValue(e, value) {
-     e && e.preventDefault();
-     this.addValue(value);
-     },
-     handleEditValue(e, nv) {
-     e && e.preventDefault();
-     var value = this.state.wrapped, editPid = this.state.editPid;
-
-     var newValue = value.map(function (v, i) {
-     if (v.id === editPid) {
-     return {
-     id: editPid,
-     value: nv
-     };
-     }
-     return v;
-     });
-     this.changeValue(newValue, value);
-
-     },*/
-
-    addValue(newValue) {
-        var values = this.state.wrapped || [], oval = values && values.concat();
-        values.push({
-            id: newValue.key || values.length,
-            value: newValue
-        });
-        this.changeValue(values, oval);
-
-    },
     handleBtnClick(e, action){
 
         if (action !== 'submit') {
@@ -175,7 +149,7 @@ var CollectionMixin = {
                 showAdd: false,
                 showEdit: false,
                 editValue: null,
-                editPid:null
+                editPid: null
             });
         }
 
@@ -187,7 +161,7 @@ var CollectionMixin = {
                 showAdd: false,
                 showEdit: false,
                 editValue: null,
-                editPid:null
+                editPid: null
             });
         }
     },
@@ -221,11 +195,10 @@ var CollectionMixin = {
         }
         var Template = this.template('buttonTemplate');
         return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
-                         onClick={this.handleAddBtn}><i    className={style.iconAdd}/>
+                         onClick={this.handleAddBtn}><i className={style.iconAdd}/>
         </Template>
 
-    }
-    ,
+    },
 
     renderAdd()
     {

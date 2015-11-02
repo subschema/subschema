@@ -4,7 +4,7 @@ var tu = require('../tutils');
 var Constants = require('../Constants');
 var css = require('../css');
 var style = require('../styles/Mixed-style');
-var map = require('lodash/collection/map');
+var _get = require('lodash/object/get');
 
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
@@ -22,18 +22,15 @@ var MixedInput = React.createClass({
 
         }
     },
-    cloneVal(value){
-        return value
-    },
+
     unwrap(value) {
         var ret = {}
         if (value == null) {
             return ret;
         }
-        /* value.forEach(function (v) {
-         v = v.value;
-         ret[v.key] = v.value;
-         });*/
+        value.forEach(function (v) {
+            ret[v.key] = v.value;
+        });
         return ret;
     },
 
@@ -46,7 +43,7 @@ var MixedInput = React.createClass({
             }
 
             return <span><h4 className={style.item}>{v.key}</h4>{labelKey ? <span
-                className={style.itemInner}>{ v.value[labelKey]}</span> : null}</span>;
+                className={style.itemInner}>{ _get(v.value, labelKey, '')}</span> : null}</span>;
         }
 
     },

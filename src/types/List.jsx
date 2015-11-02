@@ -8,34 +8,26 @@ var css = require('../css');
 var style = require('../styles/List-style');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var _get = require('lodash/object/get');
+var map = require('lodash/collection/map');
+var PropTypes = require('../PropTypes');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
+    propTypes:{
+      'labelKey':PropTypes.path
+    },
     getDefaultProps() {
         return {
 
             title: '',
             placeholder: '',
-            itemType: 'Text',
-            onValidate() {
-            },
+            onValidate() {},
             itemTemplate: 'ListItemTemplate',
             collectionCreateTemplate: this.collectionCreateTemplate
-
         }
     },
 
     unwrap(value) {
-        var ret = (value || []).map(function (v, i) {
-            return v && v.value && v.value.value;
-        });
-        return ret;
-    },
-
-
-    cloneVal(val){
-        return {
-            value: tu.clone(val)
-        }
+        return map(value, 'value');
     },
     newValue(){
         return {
@@ -47,7 +39,7 @@ var ListInput = React.createClass({
         else if (this.props.labelKey) {
             var labelKey = this.props.labelKey;
             return function (v) {
-                return <span className={style.item}>{_get(v, labelKey, '')}</span>;
+                return <span className={style.item}>{_get(v.value, labelKey, '')}</span>;
             }
         }
         return function (v) {
