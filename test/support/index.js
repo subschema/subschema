@@ -37,6 +37,19 @@ function byTag(node, tag) {
 function byTags(node, tag) {
     return TestUtils.scryRenderedDOMComponentsWithTag(node, tag);
 }
+function byName(root, name){
+    var all = TestUtils.findAllInRenderedTree(root, function (inst) {
+        if (!TestUtils.isDOMComponent(inst)){
+            return false;
+        }
+        var inode = findNode(inst);
+        return inode.name === name;
+    });
+    if (all.length !== 1) {
+        throw new Error('Did not find exactly one match for name:' + name);
+    }
+    return all[0];
+}
 
 function filterProp(node, property, value) {
     node = Array.isArray(node) ? node : [node];
@@ -101,6 +114,7 @@ module.exports = {
     into,
     expect,
     click,
+    byName,
     byTags,
     byTag,
     byType,

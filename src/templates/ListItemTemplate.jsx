@@ -1,7 +1,7 @@
 var React = require('../react');
 var tpath = require('../tutils').path;
 var Buttons = require('../templates/ButtonsTemplate.jsx');
-var ReactCSSTransitionGroup =  require('react-addons-css-transition-group');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var style = require('../styles/ListItemTemplate-style');
 
 var ListItemTemplate = React.createClass({
@@ -10,12 +10,8 @@ var ListItemTemplate = React.createClass({
     renderField(){
         var field = this.props.field, content = this.props.itemToString(this.props.value);
 
-        if (field.canEdit) {
-            return <a className={style.itemValue} ref="edit" key="edit" onClick={this.handleEdit}
-                      path={tpath(this.props.path, this.props.pos)}>{content}</a>;
-        } else {
-            return <span className={style.itemValue} key="content">{content}</span>;
-        }
+        return <span className={style.itemValue} path={tpath(this.props.path, this.props.value.key)}
+                     onClick={field.canEdit ? this.handleEdit : null} key="content">{content}</span>;
     },
     buttons(pos, last, canReorder, canDelete){
         var buttons = [];

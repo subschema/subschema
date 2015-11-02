@@ -9,10 +9,6 @@ var loaderFactory = require('../src/loaderFactory');
 var NestedMixin = require('../src/NestedMixin');
 var Form = require('subschema').Form;
 
-
-function into(node, debug) {
-    return debug ? ReactDOM.render(node, document.getElementsByTagName('body')[0]) : TestUtils.renderIntoDocument(node);
-}
 describe('NestedMixin', function () {
 
     var schema = {
@@ -36,7 +32,7 @@ describe('NestedMixin', function () {
         }
     }
     it('should not other objects', function () {
-        var form = into(<Form schema={schema}/>, true);
+        var form = into(<Form schema={schema}/>);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
         var [n1,n2,n3] = TestUtils.scryRenderedComponentsWithType(obj, TextInput);
@@ -53,7 +49,7 @@ describe('NestedMixin', function () {
     });
     it('should not validate nested objects', function () {
         var vm = ValueManager({}, {'nested.n2': [{message: 'borked'}]});
-        var form = into(<Form schema={schema} valueManager={vm}/>, true);
+        var form = into(<Form schema={schema} valueManager={vm}/>);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
         var [n1,n2,n3] = TestUtils.scryRenderedComponentsWithType(obj, TextInput);

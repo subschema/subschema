@@ -1,16 +1,16 @@
-var {React, into,findNode, byTags, TestUtils,expect, Simulate} = require('../support');
+var {React, into,intoWithContext, findNode, byTags, TestUtils,expect, Simulate} = require('../support');
 
 var Radio = require('../../src/types/Radio.jsx');
 var ValueManager = require('../../src/ValueManager');
-
+var loader = require('../../src/index.jsx').loader;
 describe('Radio', function () {
     this.timeout(30000);
 
     it('should create a radios', function () {
         var vm = ValueManager({test: 2});
 
-        var root = into(<Radio options={ [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"
-                               valueManager={vm}/>, false);
+        var root =intoWithContext(<Radio options={ [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"/>, {valueManager: vm, loader});
+
         var inputs = byTags(root, 'input');
         expect(inputs.length).toEqual(2);
 

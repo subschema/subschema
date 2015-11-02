@@ -17,9 +17,7 @@ var EditChildContext = React.createClass({
     propTypes: {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
-        path: PropTypes.string.isRequired,
-        childPath: PropTypes.string.isRequired,
-
+        path: PropTypes.string.isRequired
     },
     childContextTypes: {
         valueManager: PropTypes.valueManager,

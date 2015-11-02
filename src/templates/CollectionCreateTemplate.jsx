@@ -1,6 +1,6 @@
 var React = require('../react');
 var Editor = require('../Editor');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+//var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var Content = require('../types/Content.jsx');
 var style = require('../styles/CollectionCreateTemplate-style');
 var CollectionCreateTemplate = React.createClass({
