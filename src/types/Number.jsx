@@ -6,18 +6,27 @@ var Number = React.createClass({
     statics: {
         inputClassName: Constants.inputClassName
     },
-    handleChange(e) {
+    handleChange(e){
+
         var value = e.target.value;
-        this.props.onChange(e);
+//        this.props.onChange(e);
         //Not a valid number but valid to become a number
-        if (noRe.test(value)) {
-            this.setValue(value);
+        if (value === '') {
+            this.triggerChange(null);
+        } else if (noRe.test(value)) {
+            if (/\.$/.test(value)) {
+                this.triggerChange(parseFloat(value))
+                this.setValue(value);
+            } else {
+                this.setValue(value);
+            }
         } else
         //check if real actual numbers.
-        if (numRe
-                .test(value)) {
+        if (numRe.test(value)) {
             this.triggerChange(parseFloat(value))
         } else {
+            this.setState({value: this.state.value || ''});
+            this.forceUpdate();
             return false;
         }
     },
