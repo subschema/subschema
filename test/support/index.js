@@ -60,7 +60,9 @@ function byComponent(node, comp) {
 function byComponents(node, comp) {
     return TestUtils.scryRenderedComponentsWithType(node, comp);
 }
-
+function byClass(node, className){
+    return TestUtils.scryRenderedDOMComponentsWithClass(node, className);
+}
 function findNode(n) {
     return ReactDOM.findDOMNode(n);
 }
@@ -104,6 +106,7 @@ module.exports = {
     byType,
     notByType,
     filterProp,
+    byClass,
     byComponent,
     byComponents,
     change

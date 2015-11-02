@@ -40,7 +40,7 @@ describe('Content', function () {
         var more = 1;
         var valueManager = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
-        var root = intoWithContext(<Content key='t2' content={content} valueManager={vm} path="test"/>, {valueManager, loader});
+        var root = intoWithContext(<Content key='t2' content={content}  path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');

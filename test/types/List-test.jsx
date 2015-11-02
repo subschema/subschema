@@ -1,13 +1,13 @@
-var {React, into,findNode, TestUtils,expect, Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
+var {React, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
 
 
 var Form = require('subschema').Form;
 var Buttons = require('../../src/templates/ButtonsTemplate.jsx');
 var Button = require('../../src/templates/ButtonTemplate.jsx');
-var ListTemplate = require('../../src/templates/ListItemTemplate.jsx');
+var ListItemTemplate = require('../../src/templates/ListItemTemplate.jsx');
 var CreateTemplate = require('../../src/templates/CollectionCreateTemplate.jsx');
 
-describe('List', function () {
+describe.only('List', function () {
     this.timeout(50000);
     function add(root, c) {
         var refs = root.refs.tasks.refs.field.refs;
@@ -41,12 +41,11 @@ describe('List', function () {
 
     var Todos = require('../../public/samples/Todos'), Schema = Todos.schema;
     it('should render a list', function () {
-        var root = into(<Form schema={Schema}/>);
+        var root = into(<Form schema={Schema}/>, true);
         expect(root).toExist();
-        expect(root.refs.tasks).toExist();
-        expect(root.refs.tasks.refs.field.refs.tasks_0).toNotExist();
-        expect(root.refs.tasks.refs.field.refs.tasks_1).toNotExist();
-        expect(root.refs.tasks.refs.field.refs.tasks_2).toNotExist();
+        var tasks = byComponents(root, ListItemTemplate);
+        expect(tasks.length).toEqual(0);
+
     });
     it('should render a list with data the canAdd', function () {
         var data = {
@@ -58,9 +57,10 @@ describe('List', function () {
         };
         var root = into(<Form schema={Schema} value={data}/>);
         expect(root).toExist();
-        expect(root.refs.tasks).toExist();
-        expect(root.refs.tasks.refs.field.refs.addBtn).toExist();
-        var tasks = byComponents(root, ListTemplate);
+        var addBtn = byClass(root, 'btn-add')[0];
+        expect(addBtn).toExist();
+
+        var tasks = byComponents(root, ListItemTemplate);
 
         expect(tasks[0].refs.buttons.refs.upBtn).toNotExist();
         expect(tasks[0].refs.buttons.refs.deleteBtn).toExist();
@@ -75,7 +75,7 @@ describe('List', function () {
 
 
     });
-    it('should render a list with data without canAdd', function () {
+    it.only('should render a list with data without canAdd', function () {
         var schema = {
             schema: {
                 tasks: {
@@ -94,12 +94,14 @@ describe('List', function () {
             ]
         }
         var root = into(<Form schema={schema} value={data}/>);
-        var tasks = root.refs.tasks.refs.field.refs
-        expect(tasks.addBtn).toNotExist();
-        expect(tasks.tasks_0).toExist();
-        expect(tasks.tasks_1).toExist();
-        expect(tasks.tasks_2).toExist();
-        var li = byComponents(root, ListTemplate)[0];
+        var tasks = byComponents(root, ListItemTemplate);
+        var addBtn = byClass(root, 'btn-add')[0];
+
+        expect(addBtn).toNotExist();
+        expect(tasks[0]).toExist();
+        expect(tasks[1]).toExist();
+        expect(tasks[2]).toExist();
+        var li = byComponents(root, ListItemTemplate)[0];
         click(li.refs.edit);
         var edit = byComponent(root, CreateTemplate);
         var input = byTag(edit, 'input');
@@ -124,7 +126,7 @@ describe('List', function () {
         var root = into(<Form schema={schema} value={data}/>);
 
         expect(root.refs.tasks.refs.field.refs.addBtn).toNotExist();
-        var tasks = byComponents(root, ListTemplate);
+        var tasks = byComponents(root, ListItemTemplate);
         expect(tasks.length).toBe(3);
         tasks.forEach(function (task) {
             task = task.refs.buttons.refs;

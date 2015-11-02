@@ -18,7 +18,7 @@ var Form = React.createClass({
     getChildContext() {
         var {valueManager, loader, value, errors} = this.props;
         if (loader == null) {
-            loader = require('./loader');
+            loader = require('./loader.js');
         }
         if (valueManager === null) {
             valueManager = ValueManager(value, errors);

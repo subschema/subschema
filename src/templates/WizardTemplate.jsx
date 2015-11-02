@@ -1,6 +1,6 @@
 'use strict'
 var React = require('../react')
-var Form = require('../form');
+var ObjectType = require('../types/Object.jsx');
 var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
@@ -233,14 +233,13 @@ var WizardTemplate = React.createClass({
                                          transitionLeave={true}
                                          className={style.transitionContainer} onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
-                    <Form ref="form"
+                    <ObjectType ref="form"
                           className={style.componentState+compState}
                           key={"form-"+compState}
                           schema={{schema, fields}}
-                          onSubmit={this.handleSubmit}
-                          valueManager={this.context.valueManager}>
+                          onSubmit={this.handleSubmit}>
                         {this.renderBtns(compState)}
-                    </Form>
+                    </ObjectType>
                 </EventCSSTransitionGroup>
             </div>
         );
