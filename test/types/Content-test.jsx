@@ -1,4 +1,4 @@
-var {React,findNode, into,TestUtils,expect, Simulate} = require('../support');
+var {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} = require('../support');
 var ReactServer = require('react-dom/server');
 var ValueManager = require('../../src/ValueManager');
 var loader = require('../../src/loader.js');
@@ -19,8 +19,8 @@ describe('Content', function () {
     });
 
     it('should do simple subsitution', function () {
-        var vm = ValueManager({test: 2});
-        var root = into(<Content key='t1' content='your value is {test}' valueManager={vm} path="test"/>);
+        var valueManager = ValueManager({test: 2});
+        var root = intoWithContext(<Content key='t1' content='your value is {test}' path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is 2');
@@ -28,8 +28,8 @@ describe('Content', function () {
     });
     it('should do simple subsitution escape html in values', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
-        var vm = ValueManager({what});
-        var root = into(<Content key='t2' content='your value is {what}' valueManager={vm} path="test"/>);
+        var valueManager = ValueManager({what});
+        var root = intoWithContext(<Content key='t2' content='your value is {what}' path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -38,9 +38,9 @@ describe('Content', function () {
     it('should render an array of content', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
-        var vm = ValueManager({what, more});
+        var valueManager = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
+        var root = intoWithContext(<Content key='t2' content={content} valueManager={vm} path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -50,9 +50,9 @@ describe('Content', function () {
     it('should render an object of content', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
-        var vm = ValueManager({what, more});
+        var valueManager = ValueManager({what, more});
         var content = {h3: 'your value is {what}', div: 'is more'};
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test"/>);
+        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -63,13 +63,13 @@ describe('Content', function () {
     it('should render loaded types', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
-        var vm = ValueManager({what, more});
+        var valueManager = ValueManager({what, more});
         var content = {
             h3: 'your value is {what}', Test: {
                 content: ['is more']
             }
         };
-        var root = into(<Content key='t2' content={content} valueManager={vm} path="test" loader={loader}/>);
+        var root = intoWithContext(<Content key='t2' content={content} path="test" />, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -79,10 +79,10 @@ describe('Content', function () {
     it('should render loaded an h3', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var more = 1;
-        var vm = ValueManager({what, more});
+        var valueManager = ValueManager({what, more});
 
-        var root = into(<Content key='t2' type='p' className='stuff' content={''} valueManager={vm} path="test"
-                                 loader={loader}/>);
+        var root = intoWithContext(<Content key='t2' type='p' className='stuff' content={''}
+                                            path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML;
         expect(str).toBe('');
@@ -99,8 +99,10 @@ describe('Content', function () {
 
         };
 
-        var root = into(<Content content={title} className='panel panel-default' valueManager={ValueManager()}
-                                 loader={loader}/>);
+        var root = intoWithContext(<Content content={title} className='panel panel-default'/>, {
+            loader,
+            valueManager: ValueManager()
+        });
 
         var node = findNode(root);
     });
@@ -113,11 +115,9 @@ describe('Content', function () {
 
         };
 
-        var root = into(<Content content={title} className='panel panel-default' valueManager={ValueManager()}
-                                 loader={loader}>
+        var root = intoWithContext(<Content content={title} className='panel panel-default'>
                 <div>What</div>
-
-            </Content>
+            </Content>, {loader, valueManager: ValueManager()}
         );
 
         var node = findNode(root);
@@ -155,8 +155,10 @@ describe('Content', function () {
                 ]
             }
         ]
-        var node = ReactServer.renderToStaticMarkup(<Content content={content} className='panel panel-default'
-                                                       valueManager={ValueManager({hello:'Joe'})} loader={loader}/>);
+        var valueManager = ValueManager({hello:'Joe'});
+        var Context = context({valueManager, loader});
+        var node = ReactServer.renderToStaticMarkup(<Context><Content content={content} className='panel panel-default'
+                                                             /></Context>);
 
         expect(node).toEqual('<span class="panel panel-default" type="span">' +
             '<span class="clz-left" type="span">' +
@@ -211,6 +213,7 @@ describe('Content', function () {
                 }
             }
         }
+
         var form = TestUtils.renderIntoDocument(<Form schema={schema} valueManager={ValueManager({hello:'Joe'})}
                                                       loader={loader}/>);
         var node = findNode(TestUtils.scryRenderedComponentsWithType(form, Content)[0]);

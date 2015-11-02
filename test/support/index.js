@@ -5,6 +5,7 @@ var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;
 var expect = require('expect');
+var PropTypes = require('../../src/PropTypes');
 
 function prettyLog(result) {
     console.log(JSON.stringify(result, null, '\t'));
@@ -63,8 +64,32 @@ function byComponents(node, comp) {
 function findNode(n) {
     return ReactDOM.findDOMNode(n);
 }
+function context(ctx){
+    var childContextTypes = {
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
+    };
+
+    var Context = React.createClass({
+        childContextTypes,
+        getChildContext() {
+            return ctx
+        },
+        render(){
+            return this.props.children;
+        }
+    });
+    return Context;
+}
+function intoWithContext(child, ctx, debug) {
+    var Context = context(ctx)
+    return into(<Context>{child}</Context>, debug);
+}
+
 
 module.exports = {
+    context,
+    intoWithContext,
     prettyLog,
     findNode,
     React,

@@ -1,5 +1,5 @@
 "use strict";
-var {React, into,TestUtils,expect, findNode, Simulate} = require('./support');
+var {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} = require('./support');
 
 var Editor = require('../src/Editor');
 var ObjectType = require('../src/types/Object.jsx');

@@ -45,7 +45,8 @@ var Form = React.createClass({
             template: 'FormTemplate',
             onSubmit(e){
             },
-            noValidate: false
+            noValidate: false,
+            valueManager: ValueManager()
         }
     },
     componentWillMount(){
@@ -76,6 +77,9 @@ var Form = React.createClass({
         _set(this, path, value);
         this.forceUpdate();
     },
+    getValue(){
+      return this.props.valueManager.getValue();
+    },
     handleSubmit(e){
         e && e.preventDefault();
         var vm = this.props.valueManager;
@@ -92,7 +96,7 @@ var Form = React.createClass({
     render(){
 
         var {valueManager, loader, ...props} = this.props;
-        return <FormInner {...props} onSubmit={this.handleSubmit}/>
+        return <FormInner ref="form" {...props} onSubmit={this.handleSubmit}/>
     }
 
 });

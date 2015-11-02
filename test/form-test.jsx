@@ -1,5 +1,5 @@
 "use strict";
-var {React, into,TestUtils,expect, Simulate, byType, notByType} = require('./support');
+var {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} = require('./support');
 
 var EditorTemplate = require('../src/templates/EditorTemplate.jsx');
 
@@ -17,10 +17,9 @@ describe('form', function () {
         }, errors = {};
 
         var root = into(<Form value={value} schema={schema} errors={errors}/>);
-        var input = root.refs.name.refs.field.refs.input,
-            field = root.refs.name;
-        Simulate.blur(input);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+        var input = byTag(edit, 'input');
+        Simulate.blur(input);
 
         expect(edit.state.error).toNotExist();
 
@@ -69,7 +68,8 @@ describe('form', function () {
         }}}/>);
 
         expect(root).toExist();
-        expect(root.refs.name.refs.field).toExist();
+        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+        expect(edit).toExist();
     });
     it('should create a form with a schema and value', function () {
 
@@ -78,8 +78,10 @@ describe('form', function () {
         }}}/>);
 
         expect(root).toExist();
-        expect(root.refs.name.refs.field).toExist();
-        expect(root.refs.name.refs.field.getValue()).toEqual('Joe');
+        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+
+        expect(edit).toExist();
+        expect(edit).toEqual('Joe');
         expect(root.getValue().name).toEqual('Joe');
     });
 
@@ -109,8 +111,9 @@ describe('form', function () {
         }, errors = {};
 
         var root = into(<Form value={value} schema={schema} errors={errors}/>);
-        Simulate.blur(root.refs.name.refs.field.refs.input);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+        var input = byTag(edit, 'input');
+        Simulate.blur(input);
         expect(edit.state.error).toEqual('Required');
     });
 
@@ -214,7 +217,6 @@ describe('form', function () {
          expect(res['test.stuff'][0].message).toEqual('Required');*/
 
     });
-
 
 
 })

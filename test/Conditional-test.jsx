@@ -1,10 +1,10 @@
 "use strict";
-var {React, into,TestUtils,expect, Simulate, byType, notByType} = require('./support');
+var {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} = require('./support');
 
 var ValueManager = require('../src/ValueManager');
 var each = require('lodash/collection/each');
 var Conditional = require('../src/Conditional.jsx');
-
+var PropTypes = require('../src/PropTypes');
 
 
 describe('Conditional', function () {
@@ -43,8 +43,8 @@ describe('Conditional', function () {
     }
     it('should render conditional with regex', function () {
         var vm = ValueManager();
-        var cond = into(<Conditional template={Hello} animate={false} path='hot' operator={/stuff/}
-                                     valueManager={vm}/>, false);
+        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
+                                                operator={/stuff/}/>, {valueManager: vm}, false);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -55,8 +55,8 @@ describe('Conditional', function () {
     });
     it('should render conditional with negated regex', function () {
         var vm = ValueManager();
-        var cond = into(<Conditional template={Hello} animate={false} path='hot' operator={'!/stuff/i'}
-                                     valueManager={vm}/>, false);
+        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
+                                                operator={'!/stuff/i'}/>, {valueManager: vm}, false);
         expect(cond).toExist();
         byType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -67,8 +67,8 @@ describe('Conditional', function () {
     })
     it('should render conditional with str regex', function () {
         var vm = ValueManager();
-        var cond = into(<Conditional template={Hello} animate={false} path='hot' operator={'/stuff/i'}
-                                     valueManager={vm}/>, false);
+        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot' operator={'/stuff/i'}
+            />, {valueManager: vm}, false);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -79,8 +79,8 @@ describe('Conditional', function () {
     })
     it('should render conditional with null', function () {
         var vm = ValueManager();
-        var cond = into(<Conditional template={Hello} animate={false} path='hot'
-                                     valueManager={vm}/>, false);
+        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
+            />, {valueManager: vm}, false);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -91,8 +91,8 @@ describe('Conditional', function () {
     })
     it('should render children or not', function () {
         var vm = ValueManager();
-        var cond = into(<Conditional animate={false} path='hot'
-                                     valueManager={vm}><Hello/></Conditional>, false);
+        var cond = intoWithContext(<Conditional animate={false} path='hot'
+            ><Hello/></Conditional>, {valueManager: vm}, false);
 
         expect(cond).toExist();
         notByType(cond, Hello);
@@ -125,8 +125,9 @@ describe('Conditional', function () {
                     hot: 0
                 });
 
-                var cond = into(<Conditional template={Hello} animate={false} value={0} operator={k} path='hot'
-                                             valueManager={valueManager}/>, false);
+                var cond = intoWithContext(<Conditional template={Hello} animate={false} value={0} operator={k}
+                                                        path='hot'
+                    />, {valueManager}, false);
                 each(v, function (nv, i) {
                     valueManager.update('hot', nv);
                     ((i + 1) % 2 ? byType : notByType)(cond, Hello);
