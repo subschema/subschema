@@ -12,15 +12,16 @@ var map = require('lodash/collection/map');
 var PropTypes = require('../PropTypes');
 var ListInput = React.createClass({
     mixins: [CollectionMixin],
-    propTypes:{
-      'labelKey':PropTypes.path
+    propTypes: {
+        itemType: PropTypes.type,
     },
     getDefaultProps() {
         return {
 
             title: '',
             placeholder: '',
-            onValidate() {},
+            onValidate() {
+            },
             itemTemplate: 'ListItemTemplate',
             collectionCreateTemplate: this.collectionCreateTemplate
         }
@@ -48,28 +49,14 @@ var ListInput = React.createClass({
     },
 
     getTemplateItem(){
-        var action = this.state.editPid != null ? 'edit' : 'save';
         var value = tu.isString(this.props.itemType) ? {
             type: this.props.itemType
-        } : this.props.itemType;
+        } : this.props.itemType || {};
         value.title = false;
         return {
-            schema: {
-                value,
-                key: {title: false, template: false, type: 'Hidden'}
-            },
-            fieldsets: [{
-                fields: ['value', 'key'],
-                buttons: {
-                    buttonsClass: 'btn-group pull-right',
-                    buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                        , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
-                }
-            }]
-
+            value,
+            key: {title: false, template: false, type: 'Hidden'}
         };
-
-
     }
 });
 module.exports = ListInput;

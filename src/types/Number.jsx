@@ -16,9 +16,9 @@ var Number = React.createClass({
         //check if real actual numbers.
         if (numRe
                 .test(value)) {
-            if (this.props.valueManager.update(this.props.path, parseFloat(value)) !== false) {
-                this.props.onValueChange(value);
-            }
+            this.triggerChange(parseFloat(value))
+        } else {
+            return false;
         }
     },
     handleValidate(e){

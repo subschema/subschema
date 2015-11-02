@@ -1,9 +1,12 @@
+"use strict";
 var React = require('../react');
 var ReactDOM = require('react-dom');
 var FieldValueMixin = require('../FieldValueMixin');
 var css = require('../css');
 var Constants = require('../Constants')
 var makeFormatter = require('../formatter');
+var PropTypes = require('../PropTypes');
+
 function ret(op) {
     return op;
 }

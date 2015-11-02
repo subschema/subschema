@@ -117,7 +117,7 @@ var NestedMixin = {
 
     updateProps(oldProps, newProps){
         var field = newProps.field || newProps;
-        this.schema = normalizeSchema(field.subSchema || field.schema, newProps.loader, field.fields, field.fieldsets);
+        this.schema = normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
         if (oldProps.value !== newProps.value) {
             this.context.valueManager.setValue(newProps.value);
         }
@@ -126,11 +126,9 @@ var NestedMixin = {
     makeFieldset(f, i){
         var Template = this.template(f.template || 'FieldSetTemplate');
         return <Template key={'f' + i} field={f} legend={f.legend}
-                         loader={this.props.loader}
                          onButtonClick={this.props.onButtonClick}
                          fields={f.fields}
-                         schema={this.schema.schema}
-                         valueManager={this.props.valueManager}>
+                         schema={this.schema.schema}>
             {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
         </Template>
     },
@@ -138,7 +136,7 @@ var NestedMixin = {
 
     getValue()
     {
-        return this.props.valueManager.path(this.props.path);
+        return this.context.valueManager.path(this.props.path);
     }
     ,
     addEditor(field, f)
@@ -148,10 +146,9 @@ var NestedMixin = {
         }
         return <Editor ref={f} key={'key-' + f} path={tu.path(this.props.path, f)}
                        field={field}
-                       loader={this.props.loader}
                        name={f}
                        template={field.template}
-                       valueManager={this.props.valueManager}/>
+            />
     }
     ,
     makeFields(fields)
@@ -206,11 +203,8 @@ var NestedMixin = {
         return <Template ref="form" onValidate={this.handleValidate} schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}
-
             {...props}
                          onSubmit={this.handleSubmit || this.props.onSubmit}
-                         loader={this.props.loader}
-                         valueManager={this.props.valueManager}
             >
             {this.schema && this.schema.schema ? this.renderSchema() : null}
 

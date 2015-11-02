@@ -66,34 +66,22 @@ var MixedInput = React.createClass({
         return {}
     },
     getTemplateItem(){
-        var kt = this.props.field.keyType,
-            action = this.state.editPid != null ? 'edit' : 'save',
+        var kt = this.props.field.keyType || this.props.keyType,
             keyType = tu.isString(kt) ? {
                 type: kt
             } : kt || {},
-            validators = keyType.validators || (keyType.validators = []),
-            item = {
-                schema: {
-                    key: keyType,
-                    value: this.props.field.valueType || this.props.valueType
-                },
-                fieldsets: [{
-                    fields: ['key', 'value'],
-                    buttons: {
-                        buttonsClass: style.buttonsClass,
-                        buttons: [{label: 'Cancel', action: 'cancel', buttonType: 'a', buttonClass: style.buttonCancel}
-                            , {label: 'Save', action: 'submit', type: 'submit', buttonClass: style.buttonSave}]
-                    }
-                }]
+            schema = {
+                key: keyType,
+                value: this.props.field.valueType || this.props.valueType
             };
 
         if (!keyType.type) {
             keyType.type = this.props.keyType;
         }
 
-        validators.unshift('required', this.uniqueCheck);
+        (keyType.validators || (keyType.validators = [])).unshift('required', this.uniqueCheck);
 
-        return item;
+        return schema;
     },
 
 });

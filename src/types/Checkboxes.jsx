@@ -11,13 +11,18 @@ var Checkboxes = React.createClass({
         inputClassName: Constants.inputCheckboxesClassNam
     },
     mixins: [BasicFieldMixin, LoaderMixin],
+    propTypes:{
+        options:PropTypes.options,
+        itemTemplate:PropTypes.template,
+        groupTemplate:PropTypes.template
+    },
     getDefaultProps() {
         return {
             title: '',
             name: '',
             placeholder: '',
             dataType: this.dataType,
-            options:PropTypes.options,
+            options:[],
             itemTemplate: 'CheckboxesTemplate',
             groupTemplate: 'CheckboxesGroupTemplate',
             onValidate(){

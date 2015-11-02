@@ -5,6 +5,7 @@ var {FREEZE_OBJ, FREEZE_ARR} = tu;
 var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
 var Conditional = require('./Conditional.jsx');
 var PropTypes = require('./PropTypes');
+var Template = require('./Template.jsx');
 /**
  * Safe chained function
  *
@@ -183,12 +184,6 @@ var Editor = React.createClass({
         var Component = this.context.loader.loadType(type),
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
-        var Template;
-        if (template === false || field.template === false || type === 'Hidden') {
-            Template = null;
-        } else {
-            Template = this.template();
-        }
         var child;
         if (hasPromise && Component instanceof Promise) {
             var Lazy = this.context.loader.loadType('LazyType');
@@ -204,17 +199,20 @@ var Editor = React.createClass({
         if (!title) {
             title = '';
         }
+        var template=  this.props.template
+        if (template === false || field.template === false || type === 'Hidden') {
+            template = null;
+        }else if (field.template != null){
+            template = field.template;
+        }
 
-        return Template ?
-            <Template field={rfield} {...props} fieldClass={fieldClass} title={title}
+        return <Template template={template} field={rfield} {...props} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
                       help={!this.state.valid && (props.help || rfield.help)}
                       onValidate={this.handleValidate}
                 >
                 {child}
-            </Template> :
-            child;
-
+            </Template>
     },
     render(){
         var {field,  onValueChange, path, conditional, template, onValidate, ...props} = this.props;

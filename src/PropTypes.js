@@ -31,17 +31,11 @@ api.arrayString.isRequired = function api$arrayString$isRequired() {
     return arrayString.isRequired.apply(arrayString, arguments);
 }
 
-api.template = function api$template() {
-    return api.string.apply(api, arguments);
-};
-api.template.isRequired = function api$template$isRequired() {
-    return api.string.isRequired.apply(api.string, arguments);
-}
 
-api.path = function api$path(){
+api.path = function api$path() {
     return api.string.apply(api, arguments);
 }
-api.path.isRequired = function ap$path$isRequired(){
+api.path.isRequired = function ap$path$isRequired() {
     return api.string.isRequired.apply(api.string, arguments);
 }
 
@@ -121,6 +115,18 @@ api.schema = api.oneOfType([api.string, api.shape({
     fieldsets: api.oneOfType([api.arrayString, api.fieldset, api.arrayOf(api.fieldset)]),
     schema: api.object,
 })]);
+
+
+api.template = api.oneOfType([api.string, api.shape({
+    template: api.oneOfType([api.string, api.bool]),
+    content: api.content,
+    className: api.className
+
+})]);
+
+api.type = api.oneOfType([api.string, api.object])
+
+
 var events = {
     onValidate: api.event,
     onFocus: api.event,

@@ -2,5 +2,5 @@
 // This will load the default templates. I am expecting several bug reports about this.
 var loader = require('./loader');
 loader.addLoader(require('./ValidatorLoader'));
-loader.addLoader(require('./DefaultLoader.jsx'));
+loader.addLoader(require('./DefaultLoader'));
 module.exports = require('./form.js');
