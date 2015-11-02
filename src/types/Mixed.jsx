@@ -4,6 +4,8 @@ var tu = require('../tutils');
 var Constants = require('../Constants');
 var css = require('../css');
 var style = require('../styles/Mixed-style');
+var map = require('lodash/collection/map');
+
 var MixedInput = React.createClass({
     mixins: [CollectionMixin],
     statics: {},
@@ -28,28 +30,13 @@ var MixedInput = React.createClass({
         if (value == null) {
             return ret;
         }
-        value.forEach(function (v) {
-            v = v.value;
-            ret[v.key] = v.value;
-        });
+        /* value.forEach(function (v) {
+         v = v.value;
+         ret[v.key] = v.value;
+         });*/
         return ret;
     },
 
-    wrap(prop){
-        var value = prop && prop.value || {};
-        var wrapped = Object.keys(value).map(function (k) {
-            return {
-                id: k,
-                value: {
-                    key: k,
-                    value: value[k]
-                }
-            }
-        });
-        return {
-            wrapped
-        };
-    },
     itemToString(){
         if (this.props.itemToString) return this.props.itemToString;
         var labelKey = this.props.field.labelKey;
@@ -78,6 +65,9 @@ var MixedInput = React.createClass({
         }
         return null;
     },
+    newValue(){
+        return {}
+    },
     getTemplateItem(){
         var kt = this.props.field.keyType,
             action = this.state.editPid != null ? 'edit' : 'save',
@@ -94,8 +84,8 @@ var MixedInput = React.createClass({
                     fields: ['key', 'value'],
                     buttons: {
                         buttonsClass: style.buttonsClass,
-                        buttons: [{label: 'Cancel', action: 'cancel', buttonClass: style.buttonCancel}
-                            , {label: 'Save', action: action, buttonClass: style.buttonSave}]
+                        buttons: [{label: 'Cancel', action: 'cancel', buttonType: 'a', buttonClass: style.buttonCancel}
+                            , {label: 'Save', action: 'submit', type: 'submit', buttonClass: style.buttonSave}]
                     }
                 }]
             };
@@ -108,39 +98,6 @@ var MixedInput = React.createClass({
 
         return item;
     },
-    resolve(data){
-        var {key, value} = data;
-        return {[key]:value}
-    },
-    render() {
-        var {name,  itemType, errors, canReorder, canDelete, canEdit, canAdd, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
-            type: itemType || 'Text',
-            name: name
-        } : itemType, ListItemTemplate = this.template('itemTemplate'), values = this.state.wrapped || [], length = values.length;
-        item.canReorder = canReorder;
-        item.canDelete = canDelete;
-        item.canEdit = canEdit;
-        var itemToString = this.itemToString();
-        return (<div className={css.forField(this, 'list-editor')}>
-            {this.renderAdd()}
-            <ul>
-                {values.map((v, i) => {
-                    var path = tu.path(path, v.id);
-                    return <ListItemTemplate key={path} pos={i} path={path}
-                                             onMoveUp={this.handleMoveUp}
-                                             onMoveDown={this.handleMoveDown} onDelete={this.handleDelete}
-                                             onEdit={this.handleEdit}
-
-                                             field={item}
-                                             pid={v.id}
-                                             itemToString={itemToString}
-                                             value={v.value} errors={errors} last={i + 1 === length}>
-                        {this.props.inline && this.state.editPid === v.id ? this.renderAddEditTemplate(v, false) : null}
-                    </ListItemTemplate>
-                })}
-            </ul>
-        </div>);
-    }
 
 });
 

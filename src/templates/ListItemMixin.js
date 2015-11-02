@@ -35,12 +35,8 @@ var ListItemMixin = {
     handleEdit(e) {
         e.preventDefault();
         var val = this.props.value;
-        if (this.props.valueProp) {
-            val = {};
-            val[this.props.valueProp] = this.props.value;
-        }
 
-        this.props.onEdit(this.props.pos, val, this.props.pid);
+        this.props.onEdit(this.props.pos, val.value, this.props.pid);
     }
 }
 module.exports = ListItemMixin;

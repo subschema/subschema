@@ -2,7 +2,6 @@ var React = require('react');
 var Children = React.Children;
 var PropTypes = require('./PropTypes');
 var ValueManager = require('./ValueManager');
-
 var NewChildContext = React.createClass({
     propTypes: {
         valueManager: PropTypes.valueManager,
@@ -24,10 +23,8 @@ var NewChildContext = React.createClass({
     getChildContext: function () {
         var parentValueManager = this.props.valueManager;
         var {loader,path} = this.props;
-        var {...value} = parentValueManager.path(path);
-        var valueManager = this.valueManager = ValueManager({
-            [path]: value
-        }, parentValueManager.getErrors());
+        var {...value} = this.props.value || parentValueManager.path(path);
+        var valueManager = this.valueManager = ValueManager(value, parentValueManager.getErrors());
         this._submit = parentValueManager.addSubmitListener(null, this.handleSubmit, this, false);
         return {valueManager, parentValueManager, loader};
     },
@@ -36,7 +33,7 @@ var NewChildContext = React.createClass({
     },
     handleSubmit(e){
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
-        var value = this.props.resolve(this.valueManager.path(this.props.path)), errors = this.valueManager.getErrors();
+        var value = this.props.resolve(this.valueManager.getValue()), errors = this.valueManager.getErrors();
 
         if (this.props.onSubmit) {
             if (this.props.onSubmit(e, errors, value, this.props.path) !== false) {
