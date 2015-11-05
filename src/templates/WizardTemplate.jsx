@@ -7,7 +7,7 @@ var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx');
 var LoaderMixin = require('../LoaderMixin');
 var cssUtil = require('../css');
-var style = require('../styles/WizardTemplate-style');
+var style = require('subschema-styles/WizardTemplate-style');
 
 function donner(done) {
     done();
@@ -152,13 +152,13 @@ var WizardTemplate = React.createClass({
                 buttons.push({
                     label: 'Done',
                     action: 'submit',
-                    buttonClass: 'btn-primary'
+                    buttonClass: style.done
                 });
             } else {
                 buttons.push({
                     label: 'Next',
                     action: 'next',
-                    buttonClass: 'btn-primary'
+                    buttonClass: style.next
                 });
             }
         }
@@ -234,10 +234,10 @@ var WizardTemplate = React.createClass({
                                          className={style.transitionContainer} onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
                     <ObjectType ref="form"
-                          className={style.componentState+compState}
-                          key={"form-"+compState}
-                          schema={{schema, fields}}
-                          onSubmit={this.handleSubmit}>
+                                className={style.componentState+compState}
+                                key={"form-"+compState}
+                                schema={{schema, fields}}
+                                onSubmit={this.handleSubmit}>
                         {this.renderBtns(compState)}
                     </ObjectType>
                 </EventCSSTransitionGroup>

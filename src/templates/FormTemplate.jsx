@@ -1,10 +1,11 @@
-var React = require('../react');
 "use strict";
+var React = require('../react');
+var styles = require('subschema-styles/FormTemplate-style');
 
 var FormTemplate = React.createClass({
     getDefaultProps(){
         return {
-            className: 'form-horizontal'
+            className: styles.formClass
         }
     },
     render(){

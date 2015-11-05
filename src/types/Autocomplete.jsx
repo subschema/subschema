@@ -2,12 +2,11 @@
 
 var React = require('../react');
 var tu = require('../tutils');
-var autocompleteLess = require('../styles/autocomplete.less');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var css = require('../css');
 var Dom = require('../Dom');
-var style = require('../styles/Autocomplete-style.js');
+var style = require('subschema-styles/Autocomplete-style');
 var PropTypes = require('../PropTypes');
 var Template = require('../Template.jsx');
 

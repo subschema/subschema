@@ -5,7 +5,7 @@ var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
-function config(filename, externals, alias) {
+function config(filename, externals) {
     return {
         devtool: 'eval',
         entry: {
@@ -30,7 +30,9 @@ function config(filename, externals, alias) {
         },
         externals: externals,
         resolve: {
-            alias: alias
+            alias: {
+                'subschema-styles': path.join(__dirname, 'src/styles')
+            }
         },
         stats: {
             colors: true,
@@ -46,8 +48,8 @@ function config(filename, externals, alias) {
                         '~/node_modules/react',
                         '~/node_modules/react-dom',
                         '~/node_modules/fbjs',
-                       // '~/node_modules/react-router',
-                       // '~/node_modules/react-bootstrap',
+                        // '~/node_modules/react-router',
+                        // '~/node_modules/react-bootstrap',
                         '~/node_modules/subschema-builder'
 
                     ],
@@ -100,13 +102,6 @@ var configs = [
 
             'react': 'React',
             'react/addons': 'React',
-        }/*, {
-            'react/lib/CSSCore': path.join(__dirname, 'node_modules/react/lib/CSSCore'),
-            'react/lib/Object.assign': path.join(__dirname, 'node_modules/react/lib/Object.assign'),
-            'react/lib/ReactTransitionEvents': path.join(__dirname, 'node_modules/react/lib/ReactTransitionEvents'),
-         //   'react/lib/ReactTransitionGroup': path.join(__dirname, 'node_modules/react/lib/ReactTransitionGroup'),
-            'react/lib/onlyChild': path.join(__dirname, 'node_modules/react/lib/onlyChild'),
-            'react/lib/warning': path.join(__dirname, 'node_modules/react/lib/warning')
-        }*/
+        }
     )]
 module.exports = configs;

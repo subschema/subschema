@@ -1,12 +1,12 @@
 var React = require('react');
-var WizardProgressLess = require('../styles/wizard-progress.less');
+var styles = require('subschema-styles/WizardProgressTemplate-style');
 var WizardProgressTemplate = React.createClass({
     getDefaultProps(){
         return {
             index: 0,
-            done: 'progtrckr-done',
-            todo: 'progtrckr-todo',
-            doing: 'progtrckr-doing',
+            done: styles.done,
+            todo: styles.todo,
+            doing: styles.doing,
             fieldsets: [],
             onClick(e){
             }
@@ -26,7 +26,7 @@ var WizardProgressTemplate = React.createClass({
 
     },
     render(){
-        return <ol className="progtrckr">{
+        return <ol className={styles.namespace}>{
             this.props.fieldsets.map((s, i) =>
                     <li value={i} key={'li'+i}
                         className={this.getStyle(i)}

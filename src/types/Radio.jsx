@@ -1,3 +1,5 @@
+"use strict";
+
 var React = require('../react');
 var tu = require('../tutils');
 var BasicFieldMixin = require('../BasicFieldMixin');

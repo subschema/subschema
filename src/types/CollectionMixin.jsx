@@ -4,13 +4,12 @@ var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-var style = require('../styles/CollectionMixin-style');
 var NewChildContext = require('../NewChildContext.jsx');
 var tu = require('../tutils');
 var ObjectType = require('./Object.jsx');
 var PropTypes = require('../PropTypes');
 var map = require('lodash/collection/map');
+var style = require('subschema-styles/CollectionMixin-style');
 var css = require('../css');
 
 var EditChildContext = React.createClass({

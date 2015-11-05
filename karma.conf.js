@@ -1,4 +1,5 @@
-var webpack = require('webpack'), path = require('path');
+var webpack = require('webpack'), path = require('path'), join = path.join.bind(path, __dirname);
+;
 
 module.exports = function (config) {
     config.set({
@@ -10,7 +11,7 @@ module.exports = function (config) {
             'test/index.js' //just load this file
         ],
         preprocessors: {
-            'test/*': ['webpack','sourcemap'] //preprocess with webpack and our sourcemap loader
+            'test/*': ['webpack', 'sourcemap'] //preprocess with webpack and our sourcemap loader
         },
         reporters: ['dots'], //report results in this format
 
@@ -27,8 +28,8 @@ module.exports = function (config) {
                 loaders: [
                     {
                         test: /\.js(x)?$/,
-                        excludes:/node_modules/,
-                        includes:[
+                        excludes: /node_modules/,
+                        includes: [
                             '~/node_modules/react',
                             '~/node_modules/react-router',
                             '~/node_modules/react-bootstrap',
@@ -46,8 +47,8 @@ module.exports = function (config) {
 
             resolve: {
                 alias: {
-                    'subschema': path.join(__dirname, 'src/index.jsx')
-
+                    'subschema': join('src/index.jsx'),
+                    'subschema-styles': join('src/styles')
                 }
             },
 

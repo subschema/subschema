@@ -1,3 +1,4 @@
+"use strict";
 var React = require('../react'),
     PropTypes = React.PropTypes,
     FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');

@@ -84,6 +84,7 @@ var SampleExample = React.createClass({
                 errors: errors
             }, valueManager = ValueManager(),
             FormWrapper = function (props) {
+
                 var {...copy} = props;
                 if (props.valueManager) {
                     valueManager.setValue(props.valueManager.getValue());
@@ -114,8 +115,6 @@ var SampleExample = React.createClass({
             '//' + stringify('Form', 'Subschema.Form'),
             vars.join('\n'),
             setupTxt,
-            //stringify('form', '<Form ' + (propStr.join(' ')) + '/>'),
-            '// You can do this or render it in an existing application',
             'return <Form ' + (propStr.join(' ')) + '/>',
             '}())'
         ].join('\n');

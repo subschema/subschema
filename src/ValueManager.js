@@ -508,6 +508,9 @@ ValueManager.prototype = {
             pp = tu.path(pp, parts[i]);
         } while (i++ < l);
         return true;
+    },
+    copy(){
+        return new ValueManager(this.getValue(), this.getErrors());
     }
 }
 

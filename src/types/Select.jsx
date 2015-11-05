@@ -1,3 +1,5 @@
+"use strict";
+
 var React = require('../react'), util = require('../tutils'),
     FieldMixin = require('../FieldMixin'), Constants = require('../Constants'),
     css = require('../css')

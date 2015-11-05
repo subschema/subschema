@@ -3,7 +3,7 @@ var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var Constants = require('../Constants');
 var css = require('../css');
-var style = require('../styles/Mixed-style');
+var style = require('subschema-styles/Mixed-style');
 var _get = require('lodash/object/get');
 
 var MixedInput = React.createClass({

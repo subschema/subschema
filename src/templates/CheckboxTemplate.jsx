@@ -1,6 +1,6 @@
 var React = require('../react');
 var Content = require('../types/Content.jsx');
-var style = require('../styles/CheckboxTemplate-style');
+var style = require('subschema-styles/CheckboxTemplate-style');
 var CheckboxTemplate = React.createClass({
     render(){
         return (<div className={style.checkbox}>

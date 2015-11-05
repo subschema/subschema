@@ -1,5 +1,7 @@
+"use strict";
 var React = require('../react');
 var Content = require('../types/Content.jsx');
+var styles = require('subschema-styles/RadioItemTemplate-style');
 var RadioItemTemplate = React.createClass({
 
     render(){
@@ -10,7 +12,7 @@ var RadioItemTemplate = React.createClass({
         checkedClass = checkedClass || '';
         label = typeof label === 'string' ? [{children: true}, label] : label;
 
-        return (<div className={"radio "+(checked ? checkedClass : '')}>
+        return (<div className={styles.namespace+' '+(checked ? checkedClass || styles.checked : styles.unchecked)}>
             <Content type='label' content={label}>
                 {this.props.children}
             </Content>

@@ -67,12 +67,12 @@ module.exports = {
             // or any other compile-to-css language
             {
                 test: /\.css$/,
-               // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
+                // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
                 loader: 'style-loader!css-loader'
             },
             {
                 test: /\.less$/,
-                loaders: ['style','css','less']
+                loaders: ['style', 'css', 'less']
             }
         ]
     },
@@ -81,11 +81,12 @@ module.exports = {
         require('postcss-color-rebeccapurple')
     ],
     resolve: {
-        extensions:['','.js','.jsx'],
+        extensions: ['', '.js', '.jsx'],
         alias: {
             'subschema': join('src/index.jsx'),
-            'react': join('node_modules/react')
-         //   'component-playground':join('node_modules/component-playground')
+            'react': join('node_modules/react'),
+            'subschema-styles': join('src/styles')
+            //   'component-playground':join('node_modules/component-playground')
         }
     },
 
@@ -96,7 +97,7 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-   //     new ExtractTextPlugin('style.css', {allChunks: true}),
+        //     new ExtractTextPlugin('style.css', {allChunks: true}),
 
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')

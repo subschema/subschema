@@ -1,5 +1,5 @@
 var React = require('../react');
-var style = require('../styles/AutocompleteItemTemplate-style');
+var style = require('subschema-styles/AutocompleteItemTemplate-style');
 var AutocompleteItemTemplate = React.createClass({
     getDefaultProps () {
         return {

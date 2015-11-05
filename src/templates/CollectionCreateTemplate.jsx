@@ -1,7 +1,7 @@
 var React = require('../react');
 var Editor = require('../Editor');
 var Content = require('../types/Content.jsx');
-var style = require('../styles/CollectionCreateTemplate-style');
+var style = require('subschema-styles/CollectionCreateTemplate-style');
 var CollectionCreateTemplate = React.createClass({
     render(){
         var title = this.props.title;

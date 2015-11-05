@@ -1,6 +1,6 @@
 var React = require('../react');
 var tu = require('../tutils');
-var style = require('../styles/ButtonsTemplate-style');
+var style = require('subschema-styles/ButtonsTemplate-style');
 var ButtonsTemplate = React.createClass({
     mixins: [require('../LoaderMixin')],
 

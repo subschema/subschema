@@ -3,7 +3,7 @@ var React = require('../react');
 var Children = React.Children;
 var css = require('../css');
 var Content = require('../types/Content.jsx')
-var style = require('../styles/EditorTemplate-style');
+var style = require('subschema-styles/EditorTemplate-style');
 var {FREEZE_OBJ} = require('../tutils');
 var PropTypes = require('../PropTypes');
 function childrenValueManager(children, valueManager) {
