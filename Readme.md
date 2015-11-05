@@ -233,8 +233,12 @@ validation and value management it should regitster itself with the value manage
 ```jsx
 
 var MyType = React.createClass({
+   contextTypes: {
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
+   },
    componentWillMount(){
-     this._listener = this.props.valueManager.addListener(this.props.path, this.onUpdate, this, true);
+     this._listener = this.context.valueManager.addListener(this.props.path, this.onUpdate, this, true);
    },
    componenWillUnmount(){
      this._listener.remove();
@@ -246,7 +250,7 @@ var MyType = React.createClass({
    // this will update value manager when your component changes something.  onUpdate will set the state
    // of the component so don't do it here unless you want double state changes.
    update(value){
-    this.props.valueManager.update(this.props.path, value);
+    this.context.valueManager.update(this.props.path, value);
    },
    //you know what to do.
    render(){
