@@ -2,6 +2,7 @@ var webpack = require('webpack'), path = require('path'), join = path.join.bind(
 
 module.exports = function (config) {
     config.set({
+
         browserNoActivityTimeout: 20000,
         browsers: ['Chrome'], //run in Chrome
         singleRun: true, //just run once by default
@@ -24,11 +25,17 @@ module.exports = function (config) {
                 reasons: true
             },
             module: {
+
                 loaders: [
                     {
                         test: /\.js(x)?$/,
-                        includes: [
-                           join('test')
+                        include: [
+                           join('test'),
+                           join('public')
+
+                        ],
+                        exclude:[
+                            join('dist/subschema-noreact.js')
                         ],
                         loader: 'babel-loader'
                     },

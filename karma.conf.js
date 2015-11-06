@@ -28,8 +28,10 @@ module.exports = function (config) {
                 loaders: [
                     {
                         test: /\.js(x)?$/,
-                        excludes: /node_modules/,
-                        includes: [
+                        exclude: /node_modules/,
+                        include: [
+                            join('src'),
+                            join('test'),
                             '~/node_modules/react',
                             '~/node_modules/react-router',
                             '~/node_modules/react-bootstrap',
