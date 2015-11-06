@@ -2,8 +2,9 @@
   "name": "subschema",
   "version": "0.21.0",
   "description": "Backbone Forms like declaritive forms for react",
-  "main": "src/index.jsx",
+  "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
+  "web": "dist/subschema-noreact.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/subschema/subschema"
@@ -21,7 +22,7 @@
     "compile": "NODE_ENV=production webpack --config ./webpack.config.js -p --verbose",
     "docs": "node bin/docs.js",
     "postinstall": "node bin/postinstall.js",
-    "prepublish": "NODE_ENV=production npm run test && NODE_ENV=production webpack --config ./webpack.config.js -p && npm run test-dist",
+    "prepublish": "NODE_ENV=production npm run test && NODE_ENV=production webpack --config ./webpack.config.js -p && npm run test-dist && node ./scripts/test-node.js",
     "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
@@ -77,6 +78,7 @@
     "react-hot-loader": "^1.3.0",
     "react-router": "^1.0.0-rc3",
     "source-map": "^0.5.3",
+    "source-map-support": "^0.3.3",
     "strip-loader": "^0.1.0",
     "style-loader": "^0.13.0",
     "supports-color": "^3.1.2",

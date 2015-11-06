@@ -5,9 +5,48 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
 
-function config(filename, externals) {
-    return {
-        devtool:'source-map',
+
+function config(filename, externals, extract) {
+    var loaders = [
+        {
+            test: /\.js(x)?$/,
+            excludes: /node_modules/,
+            //do this to prevent babel fromt tanslating everything.
+            loader: 'babel-loader?stage=0'
+        },
+        {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
+        {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
+        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
+        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
+        //       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=image/svg+xml"},
+        // Optionally extract less files
+        // or any other compile-to-css language
+
+        {
+            test: /\.js(x)?$/,
+            exclude: /node_modules/,
+            loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
+        }
+    ];
+    var plugins = [
+        new webpack.optimize.DedupePlugin(),
+
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production'),
+            "window": 'window || __fakeWindow'
+        }),
+        function () {
+            this.plugin("done", function (stats) {
+                stats = stats.toJson();
+                console.error(JSON.stringify({
+                    assetsByChunkName: stats.assetsByChunkName
+                }));
+            });
+        }
+    ];
+
+    var conf = {
+        devtool: 'source-map',
         entry: {
             subschema: './src/index.jsx'
         },
@@ -21,7 +60,7 @@ function config(filename, externals) {
         output: {
             path: path.join(__dirname, "dist"),
             filename: filename,
-            sourceMapFilename:'[file].map',
+            sourceMapFilename: '[file].map',
             libraryTarget: 'umd',
             library: 'Subschema',
             pathinfo: false
@@ -39,55 +78,40 @@ function config(filename, externals) {
             reasons: true
         },
         module: {
-            loaders: [
-                {
-                    test: /\.js(x)?$/,
-                    excludes: /node_modules/,
-                    //do this to prevent babel fromt tanslating everything.
-                    loader: 'babel-loader?stage=0'
-                },
-                {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
-                {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
-                {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/octet-stream"},
-                {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
-                //       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=image/svg+xml"},
-                // Optionally extract less files
-                // or any other compile-to-css language
-                {
-                    test: /\.css$/,
-                    loader: 'style-loader!css-loader!' + AUTOPREFIXER_LOADER
-                },
-                {
-                    test: /\.less$/,
-                    loader: 'style!css!less-loader!' + AUTOPREFIXER_LOADER
-                },
-                {
-                    test: /\.js(x)?$/,
-                    exclude: /node_modules/,
-                    loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
-                }
-            ]
+            loaders: loaders
         },
 
 
-        plugins: [
-            new webpack.optimize.DedupePlugin(),
-            new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}),
-
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            }),
-            function () {
-                this.plugin("done", function (stats) {
-                    stats = stats.toJson();
-                    console.error(JSON.stringify({
-                        assetsByChunkName: stats.assetsByChunkName
-                    }));
-                });
-            }
-        ]
+        plugins: plugins
     }
-
+    if (extract) {
+        conf.target = 'node';
+        var ExtractTextPlugin = require("extract-text-webpack-plugin");
+        loaders.push({
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!' + AUTOPREFIXER_LOADER)
+            },
+            {
+                test: /\.less$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css!less-loader!' + AUTOPREFIXER_LOADER)
+            });
+        plugins.unshift(new webpack.DefinePlugin({
+                "window": '{}'
+            })
+        )
+        plugins.unshift(new ExtractTextPlugin("subschema.css"))
+    } else {
+        loaders.push({
+                test: /\.css$/,
+                loader: 'style-loader!css-loader!' + AUTOPREFIXER_LOADER
+            },
+            {
+                test: /\.less$/,
+                loader: 'style!css!less-loader!' + AUTOPREFIXER_LOADER
+            });
+        plugins.unshift(new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
+    }
+    return conf;
 };
 
 var configs = [
@@ -125,5 +149,39 @@ var configs = [
                 "amd": "fbjs"
             }
         }]
+    ),
+    config('subschema-server.js',
+        [{
+            "react": {
+                root: "React",
+                commonjs2: "react",
+                commonjs: "react",
+                amd: "react"
+            },
+            './React': {
+                root: "React",
+                commonjs2: "react",
+                commonjs: "react",
+                amd: "react"
+            },
+            "react-dom": {
+                root: "ReactDom",
+                commonjs2: "react-dom",
+                commonjs: "react-dom",
+                amd: "react-dom"
+            },
+            "react-addons-css-transition-group": {
+                "root": "ReactCSSTransitionGroup",
+                "commonjs2": "react-addons-css-transition-group",
+                "commonjs": "react-addons-css-transition-group",
+                "amd": "react-addons-css-transition-group"
+            },
+            "fbjs": {
+                "root": "fbjs",
+                "commonjs2": "fbjs",
+                "commonjs": "fbjs",
+                "amd": "fbjs"
+            }
+        }], true
     )];
 module.exports = configs;

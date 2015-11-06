@@ -2,7 +2,6 @@
 var React = require('./React');
 var tu = require('./tutils');
 var {FREEZE_OBJ, FREEZE_ARR} = tu;
-var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
 var Conditional = require('./Conditional.jsx');
 var PropTypes = require('./PropTypes');
 var Template = require('./Template.jsx');
@@ -186,7 +185,7 @@ var Editor = React.createClass({
             title = this.title(),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
         var child;
-        if (hasPromise && Component instanceof Promise) {
+        if (Component instanceof Promise) {
             var Lazy = this.context.loader.loadType('LazyType');
             child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 

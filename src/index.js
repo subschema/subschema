@@ -6,4 +6,5 @@ context.keys().forEach(function (key) {
 });
 api.templates = require('./templates/index.js');
 api.types = require('./types/index.js');
+api.styles = require('./styles/index.js');
 module.exports = api;
