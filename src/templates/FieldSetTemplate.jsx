@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var ButtonsTemplate = require('./ButtonsTemplate.jsx');
 var FieldSetTemplate = React.createClass({
     renderButtons(buttons){

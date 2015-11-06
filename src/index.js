@@ -1,10 +1,9 @@
-module.exports.Form = require('./form.js');
-module.exports.NestedMixin = require('./NestedMixin');
-module.exports.Editor = require('./Editor');
-module.exports.validators = require('./validators');
-module.exports.util = require('./tutils');
-module.exports.loader = require('./loader');
-module.exports.ValueManager = require('./ValueManager');
-module.exports.FieldValueMixin = require('./FieldValueMixin');
-module.exports.ValidatorLoader = require('./ValidatorLoader.js');
-module.exports.loaderFactory = require('./loaderFactory');
+var context = require.context('.', false, /^(?!.*(index).js(x)?$).*\.js(x)?$/), api = {}; //make sure you have your directory and regex test set correctly!
+context.keys().forEach(function (key) {
+    var k = key.replace(/^\.\/(.*)\.js(x)?$/, '$1');
+    if (/index/.test(k)) return;
+    api[k] = context(key);
+});
+api.templates = require('./templates/index.js');
+api.types = require('./types/index.js');
+module.exports = api;

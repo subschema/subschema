@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var Editor = require('../Editor');
 var Constants = require('../Constants');
 var ValueManager = require('../ValueManager');

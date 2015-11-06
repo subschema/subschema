@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var tpath = require('../tutils').path;
 var Buttons = require('../templates/ButtonsTemplate.jsx');
 var style = require('subschema-styles/ListItemTemplate-style');

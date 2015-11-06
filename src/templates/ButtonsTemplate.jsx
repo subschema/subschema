@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var tu = require('../tutils');
 var style = require('subschema-styles/ButtonsTemplate-style');
 var ButtonsTemplate = React.createClass({

@@ -1,6 +1,6 @@
 "use strict";
 
-var React = require('../react');
+var React = require('../React');
 var DefaultContentWrapper = require('./ContentWrapper.jsx');
 var DOM = React.DOM || {};
 var map = require('lodash/collection/map');

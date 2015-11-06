@@ -28,7 +28,7 @@ module.exports = {
                 exclude: [
                     /node_modules\/(?!(react-router|react-bootstrap|subschema-builder|component-playground|codemirror|react-))/
                 ],
-                loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
+                loaders: ['babel-loader?stage=0']
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},

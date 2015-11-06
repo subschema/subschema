@@ -1,10 +1,7 @@
-var {React, into,TestUtils,expect, Simulate} = require('../support');
+import {React, into,TestUtils,expect, Simulate} from '../support';
+import {ValueManager, loader, Editor, types} from 'subschema';
 
-var expect = require('expect');
-var ValueManager = require('../../src/ValueManager');
-var loader = require('../../src/loader.js');
-var Text = require('../../src/types/Text.jsx');
-var Editor = require('../../src/Editor');
+var Text = types.Text;
 
 describe.skip('Lazy', function () {
     this.timeout(3000);
@@ -42,7 +39,7 @@ describe.skip('Lazy', function () {
                 var text = TestUtils.scryRenderedComponentsWithType(root, Text)[0];
                 expect(text).toExist();
                 expect(React.findDOMNode(text).value).toBe('2');
-            }catch(e){
+            } catch (e) {
                 done(e);
                 return;
             }

@@ -1,7 +1,7 @@
 "use strict";
 
 var expect = require('expect');
-var PT = require('../src/PropTypes');
+var PT = require('subschema').PropTypes;
 describe('PropTypes', function () {
 
     it('should enumerate proptypes to names', function () {

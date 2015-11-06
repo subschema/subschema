@@ -47,7 +47,7 @@ module.exports = {
                     join('src'),
                     join('public')
                 ],
-                loaders: ['react-hot', 'babel-loader?stage=0&externalHelpers&optional=runtime']
+                loaders: ['react-hot', 'babel-loader?stage=0']
             },
             {
                 test: /\.js(x)?$/,
@@ -56,7 +56,7 @@ module.exports = {
                     join('src'),
                     join('public'),
                 ],
-                loaders: ['babel-loader?stage=0&externalHelpers&optional=runtime']
+                loaders: ['babel-loader?stage=0']
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},

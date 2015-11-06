@@ -1,11 +1,7 @@
 "use strict";
-var {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} = require('./support');
-
-var ValueManager = require('../src/ValueManager');
-var each = require('lodash/collection/each');
-var Conditional = require('../src/Conditional.jsx');
-var PropTypes = require('../src/PropTypes');
-
+import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from './support';
+import each from 'lodash/collection/each';
+import {ValueManager, Conditional, loader} from 'subschema';
 
 describe('Conditional', function () {
     this.timeout(30000);
@@ -44,7 +40,7 @@ describe('Conditional', function () {
     it('should render conditional with regex', function () {
         var vm = ValueManager();
         var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
-                                                operator={/stuff/}/>, {valueManager: vm}, false);
+                                                operator={/stuff/}/>, {valueManager: vm, loader: loader}, false);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');

@@ -1,6 +1,5 @@
 require('es6-promise').polyfill();
 var path = require('path');
-var extend = require('lodash/object/extend');
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
@@ -18,10 +17,6 @@ function config(filename, externals) {
             inline: true,
             port: 8084
         },
-        resolve: {
-            // Allow require('./blah') to require blah.jsx
-            extensions: ['', '.js', '.jsx']
-        },
         output: {
             path: path.join(__dirname, "dist"),
             filename: filename,
@@ -30,8 +25,10 @@ function config(filename, externals) {
         },
         externals: externals,
         resolve: {
+            extensions: ['', '.js', '.jsx'],
             alias: {
-                'subschema-styles': path.join(__dirname, 'src/styles')
+                'subschema-styles': path.join(__dirname, 'src/styles'),
+                'fbjs': path.join(__dirname, 'node_modules/fbjs')
             }
         },
         stats: {
@@ -44,16 +41,7 @@ function config(filename, externals) {
                     test: /\.js(x)?$/,
                     excludes: /node_modules/,
                     //do this to prevent babel fromt tanslating everything.
-                    includes: [
-                        '~/node_modules/react',
-                        '~/node_modules/react-dom',
-                        '~/node_modules/fbjs',
-                        // '~/node_modules/react-router',
-                        // '~/node_modules/react-bootstrap',
-                        '~/node_modules/subschema-builder'
-
-                    ],
-                    loaders: ['babel-loader?stage=0&externalHelpers']
+                    loaders: ['babel-loader?stage=0']
                 },
                 {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
                 {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -75,6 +63,12 @@ function config(filename, externals) {
 
 
         plugins: [
+         //   new webpack.optimize.DedupePlugin(),
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                }
+            }),
 
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
@@ -94,14 +88,38 @@ function config(filename, externals) {
 
 var configs = [
     config('subschema.js'),
-
     config('subschema-noreact.js',
-        {
-            //don't bundle the 'react' npm package with our bundle.js
-            //but get it from a global 'React' variable
-
-            'react': 'React',
-            'react/addons': 'React',
-        }
-    )]
+        [{
+            "react": {
+                root: "React",
+                commonjs2: "react",
+                commonjs: "react",
+                amd: "react"
+            },
+            './React':{
+                root:"React",
+                commonjs2: "react",
+                commonjs: "react",
+                amd: "react"
+            },
+            "react-dom": {
+                root: "ReactDom",
+                commonjs2: "react-dom",
+                commonjs: "react-dom",
+                amd: "react-dom"
+            },
+            "react-addons-css-transition-group": {
+                "root": "ReactCSSTransitionGroup",
+                "commonjs2": "react-addons-css-transition-group",
+                "commonjs": "react-addons-css-transition-group",
+                "amd": "react-addons-css-transition-group"
+            },
+            "fbjs": {
+                "root": "fbjs",
+                "commonjs2": "fbjs",
+                "commonjs": "fbjs",
+                "amd": "fbjs"
+            }
+        }]
+    )];
 module.exports = configs;

@@ -1,11 +1,9 @@
 "use strict";
-var {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} = require('./support');
-
-var EditorTemplate = require('../src/templates/EditorTemplate.jsx');
+import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} from './support';
+import {loader,Form, templates} from 'subschema';
+var {EditorTemplate} = templates;
 
 describe('form', function () {
-    this.timeout(30000);
-    var Form = require('subschema').Form;
     it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
         var value = {}, schema = {
             schema: {
@@ -16,7 +14,7 @@ describe('form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors}/>);
+        var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
         Simulate.blur(input);
@@ -56,7 +54,7 @@ describe('form', function () {
         expect(edit.state.error).toNotExist();
         done();
     });
-    //This should give a warning.  and it does, but it makes debuuging harder so let's skip it and leave it for
+    //This should give a warning. and it does, but it makes debuuging harder so let's skip it and leave it for
     // documentation sake.
     it.skip('should create a form', function () {
 

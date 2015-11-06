@@ -1,13 +1,11 @@
 "use strict";
 
-var React = require('./react');
-var NestedMixin = require('./NestedMixin');
+var React = require('./React');
 var PropTypes = require('./PropTypes');
 var ValueManager = require('./ValueManager');
+var ObjectType = require('./types/Object.jsx');
 var _set = require('lodash/object/set');
-var FormInner = React.createClass({
-    mixins: [NestedMixin]
-});
+
 var Form = React.createClass({
     displayName: 'Form',
     childContextTypes: {
@@ -95,8 +93,8 @@ var Form = React.createClass({
     },
     render(){
 
-        var {valueManager, loader, ...props} = this.props;
-        return <FormInner ref="form" {...props} onSubmit={this.handleSubmit}/>
+        var {valueManager, onSubmit, loader, ...props} = this.props;
+        return <ObjectType {...props} onSubmit={this.handleSubmit}/>
     }
 
 });

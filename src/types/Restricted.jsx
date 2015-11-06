@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var FieldValueMixin = require('../FieldValueMixin');
 var css = require('../css');
 var Constants = require('../Constants')

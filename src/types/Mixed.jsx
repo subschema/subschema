@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var CollectionMixin = require('./CollectionMixin.jsx');
 var tu = require('../tutils');
 var Constants = require('../Constants');

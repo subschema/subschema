@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var util = require('../tutils');
 var ItemToStringTemplate = React.createClass({
 

@@ -1,9 +1,6 @@
-var formatter = require('../src/formatter');
-
-var expect = require('expect');
+import {formatter} from 'subschema';
+import expect from 'expect';
 describe('should create a formatter from a a pattern', function () {
-
-    this.timeout(20000);
     describe('1 (###) ###-####', function(){
         var pattern = formatter('1 (###) ###-####'), result;
         it('should format correctly as typed', function(){

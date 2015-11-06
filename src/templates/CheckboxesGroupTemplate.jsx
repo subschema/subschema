@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var style = require('subschema-styles/CheckboxesGroupTemplate-style');
 var CheckboxesGroupTemplate = React.createClass({
     render(){

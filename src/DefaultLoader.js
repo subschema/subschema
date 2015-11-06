@@ -1,27 +1,44 @@
+"use strict";
+
+var templates = {},
+    types = {},
+    templateContext = require.context("./templates", true, /^\.\/.*\.js(x)?/),
+    typeContext = require.context("./types", true, /^\.\/.*(?!\-style)\.js(x)?/);
+
+templateContext.keys().forEach(function (path) {
+    var name = path.replace(/.*\/(.*)\.js(x?)/, '$1');
+    templates[name] = {
+        name: name,
+        path: path,
+        template: templateContext(path)
+    }
+});
+
+typeContext.keys().forEach(function (path) {
+    var name = path.replace(/.*\/(.*)\.js(x?)/, '$1');
+    types[name] = {
+        name: name,
+        path: path,
+        type: typeContext(path)
+    }
+})
+
+
 module.exports = {
     loadTemplate (template) {
-        return require.context("./templates", true, /^\.\/.*\.js(x)?/)('./' + template + '.jsx');
+        return templates[template] && templates[template].template;
     },
     listTemplates(){
-
-        return require.context("./templates", true, /^\.\/.*Template\.js(x)?/).keys().map(function (k) {
-            return {
-                name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
-                path: k
-            }
+        return Object.keys(templates).map(function (key) {
+            return templates[key]
         });
     },
     loadType (type) {
-        return require.context("./types", true, /^\.\/.*(?!\-style)\.js(x)?/)('./' + type + '.jsx');
+        return types[type] && types[type].type;
     },
     listTypes(){
-        return require.context("./types", true, /^\.\/.*(?!(\-style|Mixin))\.js(x)?/).keys().map(function (k) {
-            return {
-                name: k.replace(/.*\/(.*)\.js(x?)/, '$1'),
-                path: k
-            }
-        }).filter(function (v) {
-            return !/Mixin$/.test(v.name);
+        return Object.keys(types).map(function (key) {
+            return types[key]
         });
     }
 }

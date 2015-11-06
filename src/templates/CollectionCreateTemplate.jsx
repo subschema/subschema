@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var Editor = require('../Editor');
 var Content = require('../types/Content.jsx');
 var style = require('subschema-styles/CollectionCreateTemplate-style');

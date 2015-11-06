@@ -1,5 +1,5 @@
 "use strict";
-var React = require('./react');
+var React = require('./React');
 var tu = require('./tutils');
 var {FREEZE_OBJ, FREEZE_ARR} = tu;
 var hasPromise = (window && window.Promise || global && global.Promise) !== void(0);
@@ -177,7 +177,8 @@ var Editor = React.createClass({
     handleValid: function (valid) {
         this.setState({valid})
     },
-    renderContent(field, onValueChange, template, onValidate, props){
+    render(){
+        var {field, onValueChange, template, onValidate, propsfield, onValueChange, template, onValidate, ...props} = this.props;
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
 
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
@@ -206,29 +207,13 @@ var Editor = React.createClass({
             template = field.template;
         }
 
-        return <Template template={template} field={rfield} {...props} fieldClass={fieldClass} title={title}
+        return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass} title={title}
                       errorClassName={errorClassName}
                       help={!this.state.valid && (props.help || rfield.help)}
                       onValidate={this.handleValidate}
                 >
                 {child}
             </Template>
-    },
-    render(){
-        var {field,  onValueChange, path, conditional, template, onValidate, ...props} = this.props;
-        conditional = conditional || field.conditional;
-        if (conditional == null || conditional === false) {
-            props.path = path;
-            return this.renderContent(field, onValueChange, template, onValidate, props);
-        }
-        if (typeof conditional === 'string') {
-            conditional = {operator: conditional};
-        }
-        props.path = conditional.path  || path;
-        return (<Conditional  path={this.props.path} {...conditional} field={field} >
-            {this.renderContent(field, onValueChange, template, onValidate, props)}
-        </Conditional>);
     }
-
 });
 module.exports = Editor;

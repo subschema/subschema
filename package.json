@@ -13,12 +13,15 @@
   },
   "scripts": {
     "test": "karma start --single-run --browsers Firefox",
+    "test-dist":"karma start ./karma.dist.noreact.conf.js --single-run --browsers Firefox",
     "start": "webpack-dev-server --config ./hot.webpack.config",
     "hot": "node webpack-server.js",
     "karma": "karma start --no-single-run --colors --auto-watch",
+    "karma-dist": "karma start ./karma.dist.noreact.conf.js --no-single-run --colors --auto-watch",
+    "compile":"NODE_ENV=production webpack --config ./webpack.config.js -p --verbose",
     "docs": "node bin/docs.js",
     "postinstall": "node bin/postinstall.js",
-    "prepublish": "NODE_ENV=production npm run test && webpack --config ./webpack.config.js -p",
+    "prepublish": "NODE_ENV=production npm run test && NODE_ENV=production webpack --config ./webpack.config.js -p && npm run test-dist",
     "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
@@ -34,9 +37,10 @@
     "autoprefixer-loader": "^3.1.0",
     "babel-core": "^5.8.33",
     "babel-loader": "^5.3.3",
+    "babel-plugin-dev-expression": "^0.1.0",
     "babel-runtime": "^5.8.29",
     "codemirror": "^5.8.0",
-    "component-playground": "git+https://github.com/FormidableLabs/component-playground.git",
+    "component-playground": "^1.0.3",
     "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.21.0",
     "dmd": "^1.0.3",

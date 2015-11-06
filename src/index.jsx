@@ -1,5 +1,4 @@
-var index = require('./index.js');
-index.DefaultLoader = require('./DefaultLoader.js');
-index.loader.addLoader(index.DefaultLoader);
-index.Form = require('./form.jsx');
-module.exports = index;
+var api = require('./index.js');
+api.loader.addLoader(require('./ValidatorLoader'));
+api.loader.addLoader(require('./DefaultLoader'));
+module.exports = api;

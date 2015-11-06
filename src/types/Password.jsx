@@ -1,5 +1,5 @@
 "use strict";
-var React = require('../react'), FieldMixin = require('../FieldMixin'),
+var React = require('../React'), FieldMixin = require('../FieldMixin'),
     Constants = require('../Constants'),
     css = require('../css');
 ;

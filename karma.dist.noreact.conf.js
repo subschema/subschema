@@ -1,5 +1,4 @@
 var webpack = require('webpack'), path = require('path'), join = path.join.bind(path, __dirname);
-;
 
 module.exports = function (config) {
     config.set({
@@ -28,15 +27,10 @@ module.exports = function (config) {
                 loaders: [
                     {
                         test: /\.js(x)?$/,
-                        excludes: /node_modules/,
                         includes: [
-                            '~/node_modules/react',
-                            '~/node_modules/react-router',
-                            '~/node_modules/react-bootstrap',
-                            '~/node_modules/subschema-builder'
-
+                           join('test')
                         ],
-                        loader: 'babel-loader?stage=0'
+                        loader: 'babel-loader'
                     },
                     {
                         test: /\.less$/,
@@ -44,12 +38,9 @@ module.exports = function (config) {
                     }
                 ]
             },
-
             resolve: {
-                extensions: ['', '.js', '.jsx'],
                 alias: {
-                    'subschema': join('src/index.jsx'),
-                    'subschema-styles': join('src/styles')
+                    'subschema': path.join(__dirname, 'dist/subschema-noreact.js')
                 }
             },
 

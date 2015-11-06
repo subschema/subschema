@@ -1,24 +1,19 @@
 var {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
 
-
-var Form = require('subschema').Form;
-var Buttons = require('../../src/templates/ButtonsTemplate.jsx');
-var Button = require('../../src/templates/ButtonTemplate.jsx');
-var ListItemTemplate = require('../../src/templates/ListItemTemplate.jsx');
-var CreateTemplate = require('../../src/templates/CollectionCreateTemplate.jsx');
+var {templates, Form} = require('subschema');
+var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
 
 describe('List', function () {
-    this.timeout(50000);
     function add(root, c) {
-        var allBtns = TestUtils.scryRenderedComponentsWithType(root, Button);
+        var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
         var addBtn = findNode(allBtns[0]);
 
         click(addBtn);
-        var create = byComponent(root, CreateTemplate);
+        var create = byComponent(root, CollectionCreateTemplate);
         var input = byName(create, 'value');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        var buttons = TestUtils.scryRenderedComponentsWithType(create, Button)
+        var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate)
         var btn = findNode(filterProp(buttons, 'action', 'submit')[0]);
         Simulate.submit(btn);
 
@@ -31,10 +26,10 @@ describe('List', function () {
     function edit(root, c) {
         var tasks = byComponents(root, ListItemTemplate);
         click(byTag(tasks[c], 'span'));
-        var createTemplate = byComponent(root, CreateTemplate)
+        var createTemplate = byComponent(root, CollectionCreateTemplate)
         var input = byName(createTemplate, 'value');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        var btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, Button), 'action', 'submit')
+        var btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, ButtonTemplate), 'action', 'submit')
         Simulate.submit(btns[0]);
         var value = root.getValue();
         expect(input.value).toEqual('Hello, world ' + c);
@@ -107,7 +102,7 @@ describe('List', function () {
 
 
         click(byTag(li, 'span'));
-        var edit = byComponent(root, CreateTemplate);
+        var edit = byComponent(root, CollectionCreateTemplate);
         var input = byName(edit, 'value');
         expect(findNode(input).value).toBe('one');
 
@@ -148,7 +143,7 @@ describe('List', function () {
             expect(task.downBtn).toNotExist();
         })
     });
-    //why does this not work when we run all
+    //why does this not work when we run all, but does work when we run it.only
     it.skip('should render a list without data and add values', function () {
         var schema = {
             schema: {
@@ -164,8 +159,8 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>, true);
-        var tasks =  byComponents(root, ListItemTemplate);
+        var root = into(<Form schema={schema} value={data}/>);
+        var tasks = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);
 
@@ -216,7 +211,6 @@ describe('List', function () {
         edit(root, 0);
     });
     it('should render edit a value with an error', function () {
-        var EditorTemplate = require('../../src/templates/EditorTemplate.jsx');
         var schema = {
             schema: {
                 tasks: {

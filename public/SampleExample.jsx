@@ -2,11 +2,10 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Highlight = require('./Highlight.jsx');
-var Playground = require('component-playground/src/components/playground.jsx');
+var Playground = require('component-playground/lib/components/playground.js');
 var Subschema = require('subschema');
 var ValueManager = Subschema.ValueManager;
-require("component-playground/demo/styles/syntax.css");
-require("component-playground/demo/styles/codemirror.css");
+
 require('codemirror/mode/javascript/javascript.js');
 
 function stringify(name, obj) {

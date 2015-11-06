@@ -1,7 +1,8 @@
-var React = require('./react');
+var React = require('./React');
 var Children = React.Children;
 var PropTypes = require('./PropTypes');
 var Content = require('./types/Content.jsx');
+var Conditional = require('./Conditional.jsx');
 /**
  * This meta template resolves templates, and allows
  * properties to be assigned to a a template object.
@@ -19,13 +20,11 @@ var Template = React.createClass({
     contextTypes: {
         loader: PropTypes.loader.isRequired
     },
-    render(){
-        var {template, children, ...rest} = this.props, more = {};
-
+    renderContent(rest, template, children){
         if (template == null || template === false) return children;
 
         if (typeof template === 'string') {
-            var Template = this.context.loader.loadTemplate(this.props.template);
+            var Template = this.context.loader.loadTemplate(template);
         } else if (typeof template.template === 'string') {
             var {template, ...more} = template;
             var Template = this.context.loader.loadTemplate(template.template);
@@ -39,6 +38,22 @@ var Template = React.createClass({
             {children}
         </Template>
 
+    },
+    render(){
+        var {field,  path, conditional, children, template,...props} = this.props;
+        conditional = conditional || field.conditional;
+        if (conditional == null || conditional === false) {
+            props.path = path;
+            props.field = field;
+            return this.renderContent(props, template, children);
+        }
+        if (typeof conditional === 'string') {
+            conditional = {operator: conditional};
+        }
+        props.path = conditional.path || path;
+        return (<Conditional path={this.props.path} {...conditional} field={field}>
+            {this.renderContent(props, template, children)}
+        </Conditional>);
     }
 });
 

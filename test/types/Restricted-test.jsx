@@ -1,6 +1,7 @@
-var {React, ReactDOM, into,TestUtils,expect, Simulate, change} = require('../support');
+import {React, ReactDOM, into,TestUtils,expect, Simulate, change} from '../support';
+import {types} from 'subschema';
 
-var Restricted = require('../../src/types/Restricted.jsx');
+var Restricted = types.Restricted;
 
 
 describe('Restricted', function () {
@@ -38,7 +39,7 @@ describe('Restricted', function () {
             change(input, '1/');
             expect(inputEl.value).toBe('01/');
         });
-        it('enters 1/1', function(){
+        it('enters 1/1', function () {
             change(input, '1/1');
             expect(inputEl.value).toBe('01/201');
 
@@ -46,7 +47,7 @@ describe('Restricted', function () {
             expect(inputEl.value).toBe('01/16');
         });
 
-        it('enters 01/2016', function(){
+        it('enters 01/2016', function () {
             change(input, '0');
             expect(inputEl.value).toBe('0');
 
@@ -66,13 +67,13 @@ describe('Restricted', function () {
             expect(inputEl.value).toBe('01/16');
 
         });
-        it('enters 13', function(){
+        it('enters 13', function () {
 
             change(input, '13');
             expect(inputEl.value).toBe('01/203');
 
         });
-        it('enters 133', function(){
+        it('enters 133', function () {
 
             change(input, '133');
             expect(inputEl.value).toBe('01/33');

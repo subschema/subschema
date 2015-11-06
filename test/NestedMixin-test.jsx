@@ -1,13 +1,9 @@
 "use strict";
-var {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} = require('./support');
+import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from './support';
+import {ValueManager,loaderFactory,NestedMixin, Form, types} from 'subschema';
 
-var Editor = require('../src/Editor');
-var ObjectType = require('../src/types/Object.jsx');
-var TextInput = require('../src/types/Text.jsx');
-var ValueManager = require('../src/ValueManager');
-var loaderFactory = require('../src/loaderFactory');
-var NestedMixin = require('../src/NestedMixin');
-var Form = require('subschema').Form;
+var ObjectType = types.Object
+var TextInput = types.Text;
 
 describe('NestedMixin', function () {
 

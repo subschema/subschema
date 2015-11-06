@@ -1,11 +1,8 @@
-var {React, into,TestUtils,expect, Simulate} = require('../support');
+import {React, into,TestUtils,expect, Simulate} from '../support';
+import {Form} from 'subschema';
 
 describe('Checkbox', function () {
-    this.timeout(30000);
-    var Form = require('subschema').Form;
-
     it('should create a form', function () {
-
         var root = into(<Form schema={{schema:{
             c1:'Checkbox',
             c2:{

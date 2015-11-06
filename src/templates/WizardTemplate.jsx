@@ -1,5 +1,5 @@
 'use strict'
-var React = require('../react')
+var React = require('../React')
 var ObjectType = require('../types/Object.jsx');
 var tu = require('../tutils');
 var NestedMixin = require('../NestedMixin');

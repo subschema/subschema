@@ -1,6 +1,6 @@
 "use strict";
 
-var React = require('../react'), Constants = require('../Constants'), css = require('../css'),
+var React = require('../React'), Constants = require('../Constants'), css = require('../css'),
     noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
 var Number = React.createClass({

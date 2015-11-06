@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var BasicFieldMixin = require('../BasicFieldMixin');
 var LoaderMixin = require('../LoaderMixin');
 var tu = require('../tutils');

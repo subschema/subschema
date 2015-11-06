@@ -1,5 +1,5 @@
 "use strict";
-var React = require('react');
+var React = require('./React');
 var PropTypes = React.PropTypes;
 var CSSTransitionGroup = require('react-addons-css-transition-group');
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;

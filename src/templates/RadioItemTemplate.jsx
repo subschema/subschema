@@ -1,5 +1,5 @@
 "use strict";
-var React = require('../react');
+var React = require('../React');
 var Content = require('../types/Content.jsx');
 var styles = require('subschema-styles/RadioItemTemplate-style');
 var RadioItemTemplate = React.createClass({

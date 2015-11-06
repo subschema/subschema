@@ -1,10 +1,8 @@
-var {React, findNode, into, intoWithContext, TestUtils,expect, Simulate} = require('../support');
-
-var Select = require('../../src/types/Select.jsx');
-var ValueManager = require('../../src/ValueManager');
+import {React, findNode, intoWithContext, TestUtils,expect, Simulate} from '../support';
+import {types, ValueManager} from 'subschema';
+var Select = types.Select;
 
 describe('Select', function () {
-    this.timeout(30000);
 
     it('should create a select', function () {
         var vm = ValueManager({test: 2});
@@ -32,7 +30,8 @@ describe('Select', function () {
     it('should create a multi select', function () {
         var vm = ValueManager({test: [2, 1]});
 
-        var root = intoWithContext(<Select multiple={true} options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"/>, {valueManager:vm});
+        var root = intoWithContext(<Select multiple={true} options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]}
+                                           path="test"/>, {valueManager: vm});
         var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'select');
         expect(inputs.length).toEqual(1);
         var select = inputs[0];

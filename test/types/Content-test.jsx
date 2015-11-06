@@ -1,12 +1,8 @@
-var {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} = require('../support');
-var ReactServer = require('react-dom/server');
-var ValueManager = require('../../src/ValueManager');
-var loader = require('../../src/loader.js');
-var Text = require('../../src/types/Text.jsx');
-var Content = require('../../src/types/Content.jsx');
-var Editor = require('../../src/Editor');
-var Form = require('../../src/form.jsx');
+import {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} from '../support';
+import ReactServer from 'react-dom/server';
+import {ValueManager, loader, types, Editor,Form} from 'subschema';
 
+var {Text, Content} = types;
 
 describe('Content', function () {
     before(function () {
@@ -20,7 +16,10 @@ describe('Content', function () {
 
     it('should do simple subsitution', function () {
         var valueManager = ValueManager({test: 2});
-        var root = intoWithContext(<Content key='t1' content='your value is {test}' path="test"/>, {valueManager, loader});
+        var root = intoWithContext(<Content key='t1' content='your value is {test}' path="test"/>, {
+            valueManager,
+            loader
+        });
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is 2');
@@ -29,7 +28,10 @@ describe('Content', function () {
     it('should do simple subsitution escape html in values', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var valueManager = ValueManager({what});
-        var root = intoWithContext(<Content key='t2' content='your value is {what}' path="test"/>, {valueManager, loader});
+        var root = intoWithContext(<Content key='t2' content='your value is {what}' path="test"/>, {
+            valueManager,
+            loader
+        });
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -40,7 +42,7 @@ describe('Content', function () {
         var more = 1;
         var valueManager = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
-        var root = intoWithContext(<Content key='t2' content={content}  path="test"/>, {valueManager, loader});
+        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -69,7 +71,7 @@ describe('Content', function () {
                 content: ['is more']
             }
         };
-        var root = intoWithContext(<Content key='t2' content={content} path="test" />, {valueManager, loader});
+        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {valueManager, loader});
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -155,10 +157,10 @@ describe('Content', function () {
                 ]
             }
         ]
-        var valueManager = ValueManager({hello:'Joe'});
+        var valueManager = ValueManager({hello: 'Joe'});
         var Context = context({valueManager, loader});
         var node = ReactServer.renderToStaticMarkup(<Context><Content content={content} className='panel panel-default'
-                                                             /></Context>);
+            /></Context>);
 
         expect(node).toEqual('<span class="panel panel-default" type="span">' +
             '<span class="clz-left" type="span">' +

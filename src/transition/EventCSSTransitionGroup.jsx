@@ -12,7 +12,7 @@
 
 'use strict';
 
-var React = require("react");
+var React = require("../React");
 
 var assign = React.__spread;
 

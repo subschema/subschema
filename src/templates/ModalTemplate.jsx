@@ -1,5 +1,5 @@
 "use strict";
-var React = require('../react');
+var React = require('../React');
 var Children = React.Children;
 var Buttons = require('./ButtonsTemplate.jsx');
 var Content = require('../types/Content.jsx')

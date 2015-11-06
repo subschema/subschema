@@ -1,5 +1,5 @@
 "use strict";
-var React = require('../react');
+var React = require('../React');
 var mixins = [require('../NestedMixin'), require('../BasicFieldMixin')];
 
 var ObjectInput = React.createClass({

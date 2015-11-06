@@ -1,4 +1,6 @@
-var expect = require('expect'), ValueManager = require('../src/ValueManager');
+import {ValueManager} from 'subschema';
+import expect from 'expect';
+
 describe('ValueManager', function () {
     this.timeout(20000);
     describe('value handling', function () {

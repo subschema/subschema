@@ -1,5 +1,5 @@
 "use strict";
-var React = require('../react'),
+var React = require('../React'),
     PropTypes = React.PropTypes,
     FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
 
@@ -13,7 +13,7 @@ var TextInput = React.createClass({
     },
     render() {
         var {onChange, onValueChange, onBlur, className, field, value, dataType, value, fieldAttrs, type, ...props} = this.props
-        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
+        return <input  onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
                       className={css.forField(this)}
 
                       value={this.state.value}

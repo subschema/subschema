@@ -1,4 +1,4 @@
-var React = require('../react');
+var React = require('../React');
 var ListInput = require('../types/List.jsx');
 var css = require('../css');
 var ListTemplate = React.createClass({

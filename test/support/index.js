@@ -1,11 +1,10 @@
 "use strict";
+import {React, PropTypes} from 'subschema';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
+import expect from 'expect';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;
-var expect = require('expect');
-var PropTypes = require('../../src/PropTypes');
 
 function prettyLog(result) {
     console.log(JSON.stringify(result, null, '\t'));
