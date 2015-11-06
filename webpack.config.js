@@ -4,9 +4,10 @@ var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
+
 function config(filename, externals) {
     return {
-        devtool: 'eval',
+        devtool:'source-map',
         entry: {
             subschema: './src/index.jsx'
         },
@@ -20,8 +21,10 @@ function config(filename, externals) {
         output: {
             path: path.join(__dirname, "dist"),
             filename: filename,
+            sourceMapFilename:'[file].map',
             libraryTarget: 'umd',
-            library: 'Subschema'
+            library: 'Subschema',
+            pathinfo: false
         },
         externals: externals,
         resolve: {
@@ -41,7 +44,7 @@ function config(filename, externals) {
                     test: /\.js(x)?$/,
                     excludes: /node_modules/,
                     //do this to prevent babel fromt tanslating everything.
-                    loaders: ['babel-loader?stage=0']
+                    loader: 'babel-loader?stage=0'
                 },
                 {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
                 {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -57,21 +60,22 @@ function config(filename, externals) {
                 {
                     test: /\.less$/,
                     loader: 'style!css!less-loader!' + AUTOPREFIXER_LOADER
+                },
+                {
+                    test: /\.js(x)?$/,
+                    exclude: /node_modules/,
+                    loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
                 }
             ]
         },
 
 
         plugins: [
-         //   new webpack.optimize.DedupePlugin(),
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false
-                }
-            }),
+            new webpack.optimize.DedupePlugin(),
+            new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}),
 
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+                'process.env.NODE_ENV': JSON.stringify('production')
             }),
             function () {
                 this.plugin("done", function (stats) {
@@ -96,8 +100,8 @@ var configs = [
                 commonjs: "react",
                 amd: "react"
             },
-            './React':{
-                root:"React",
+            './React': {
+                root: "React",
                 commonjs2: "react",
                 commonjs: "react",
                 amd: "react"
