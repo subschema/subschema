@@ -2,8 +2,8 @@
 
 var templates = {},
     types = {},
-    templateContext = require.context("./templates", true, /^\.\/.*\.js(x)?/),
-    typeContext = require.context("./types", true, /^\.\/.*(?!\-style)\.js(x)?/);
+    templateContext = require.context("./templates", true, /Template.js(x)?$/),
+    typeContext = require.context("./types", true,  /^(?!.*(index|Mixin)\.js(x)?$).*\.js(x)?$/);
 
 templateContext.keys().forEach(function (path) {
     var name = path.replace(/.*\/(.*)\.js(x?)/, '$1');
@@ -23,7 +23,7 @@ typeContext.keys().forEach(function (path) {
     }
 })
 
-
+console.log('Templates', Object.keys(templates), 'Types', Object.keys(types));
 module.exports = {
     loadTemplate (template) {
         return templates[template] && templates[template].template;

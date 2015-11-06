@@ -8,8 +8,6 @@ var css = require('../css');
 var Dom = require('../Dom');
 var style = require('subschema-styles/Autocomplete-style');
 var PropTypes = require('../PropTypes');
-var Template = require('../Template.jsx');
-
 var Autocomplete = React.createClass({
     mixins: [BasicFieldMixin, LoaderMixin],
     propTypes: {

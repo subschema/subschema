@@ -9,6 +9,7 @@ var LoaderMixin = require('./LoaderMixin');
 var warning = require("fbjs/lib/warning");
 var map = require('lodash/collection/map');
 var push = Function.apply.bind(Array.prototype.push);
+var Template = require('./Template.jsx');
 var noTypeInfo;
 if ("production" !== process.env.NODE_ENV) {
     noTypeInfo = function (f) {
@@ -124,8 +125,7 @@ var NestedMixin = {
     },
 
     makeFieldset(f, i){
-        var Template = this.template(f.template || 'FieldSetTemplate');
-        return <Template key={'f' + i} field={f} legend={f.legend}
+        return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} legend={f.legend}
                          onButtonClick={this.props.onButtonClick}
                          fields={f.fields}
                          schema={this.schema.schema}>
@@ -198,9 +198,7 @@ var NestedMixin = {
     {
 
         var {schema, subSchema, title, fields, submitButton,  template, ...props} = this.props;
-
-        var Template = this.template(schema.template || template);
-        return <Template ref="form" onValidate={this.handleValidate} schema={this.schema}
+        return <Template ref="form" template={schema.template || template} onValidate={this.handleValidate} schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}
             {...props}

@@ -2,6 +2,7 @@ var React = require('./React');
 var Children = React.Children;
 var PropTypes = require('./PropTypes');
 var Content = require('./types/Content.jsx');
+var {FREEZE_OBJ} = require('./tutils');
 var Conditional = require('./Conditional.jsx');
 /**
  * This meta template resolves templates, and allows
@@ -13,7 +14,7 @@ var Conditional = require('./Conditional.jsx');
  */
 var Template = React.createClass({
     propTypes: {
-        path: PropTypes.path.isRequired,
+        path: PropTypes.path,
         template: PropTypes.template,
         wrap: PropTypes.bool
     },
@@ -41,6 +42,7 @@ var Template = React.createClass({
     },
     render(){
         var {field,  path, conditional, children, template,...props} = this.props;
+        field = field || FREEZE_OBJ;
         conditional = conditional || field.conditional;
         if (conditional == null || conditional === false) {
             props.path = path;
