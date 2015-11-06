@@ -23,7 +23,7 @@ typeContext.keys().forEach(function (path) {
     }
 })
 
-console.log('Templates', Object.keys(templates), 'Types', Object.keys(types));
+//console.log('Templates', Object.keys(templates), 'Types', Object.keys(types));
 module.exports = {
     loadTemplate (template) {
         return templates[template] && templates[template].template;
