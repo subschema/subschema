@@ -4,6 +4,20 @@ Subschema 0.1x -> 0.2 Upgrade Guide
 ##Dependencies
  * now requires react-0.14, react-dom and fbjs
 
+##Webpack
+
+ * If you are using webpack to build subschema you will need to add an alias from
+ ```  
+  resolve: {
+        extensions:['','.js','.jsx'],
+        alias: {
+            'subschema': path.join(__dirname, 'node_modules/subschema/src/index.jsx'),
+            'subschema-styles':path.join(__dirname, 'node_modules/subschema/src/styles')
+        }
+    }
+```
+
+
 ## API Breakage
  * Components that use BasicFieldMixin (Perhaps Transitively) need to use this.triggerUpdate rather than this.props.handleChange.
  * valueManager and loader are now part of context instead of props.   This makes most things more convenient, (except testing) but 
