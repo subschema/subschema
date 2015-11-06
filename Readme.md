@@ -6,10 +6,10 @@ form field layouts.
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
-[![Build Status](https://travis-ci.org/jspears/subschema.svg?branch=master)](https://travis-ci.org/jspears/subschema)
+[![Build Status](https://travis-ci.org/subschema/subschema.svg?branch=master)](https://travis-ci.org/subschema/subschema)
 
 ###Example
-You can see examples at [subschema.github.io/subschema-demo](http://subschema.github.io/subschema-demo/)
+You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
 
 ###Install
 ```sh
@@ -494,7 +494,119 @@ See the [example](http://jspears.github.io/subschema/#/Conditional)
 
 
 ##Validators
-Validators are registered on a field as an array of strings
+Validators are registered on a field as an array of strings or with configuration.
+```js
+  
+  loader.addValidator('super', function(options){
+    return function super$validator(value, valueManager){
+        if (value !== 'super'){
+            return {
+                message:options.message || 'Not super?',
+                type:'ERROR';
+            }
+        }
+    }
+  });
+
+  var schema = {
+     schema:{
+        'validateme':{
+           type:'Text',
+           validators:['required', 'super']
+        },
+        'superv':{
+          type:'Text',
+          validators:[{type:'super', message:'This is not super'}]
+        }
+     }
+    fields:['validateme', 'superv']  
+  }
+
+```
+
+##Templates
+Templates are used in field definitions, fieldsets and other places.   A template
+is generally not very smart, and will be passed children.    If something needs to be
+smart then, it should be a Type.   
+
+Types by default will be wrapped an EditorTemplate.   You can install a new 
+EditorTemplate in the loader to change the default template for all fields.
+
+```js
+  loader.addTemplate('EditorTemplate', //YourTemplate)
+
+```
+
+Or you can identify a template per field.   If template is false than no template is used
+by the children are rendered.
+
+```js
+var schema = {
+      schema:{
+       'myfield':{
+         type:'Text',
+         template:'sometemplate'
+      },
+      'myotherfield':{
+         type:'Text',
+         template:{
+             template:'otherTemplate',
+             className:'stuff'
+         }
+      },
+   },
+   fieldsets:[{
+         legend:'Stuff',
+         fields:'myfield',
+         template:{
+            //using content instead of a registered template.
+            content:[ 'hello', {
+                 children:true
+            }],
+            //make it conditional on myotherfield equal 'is cool'
+            conditional:{
+               path:'myotherfield',
+               value:'is cool',
+               operator:'=='
+            }
+         }
+      }, {
+        fields:'myotherfield'
+      }]
+   
+   }
+}
+
+
+
+```
+
+##Fieldsets
+Fieldsets wrap sets of fields.   This allows for grouping of elements.  By Default the FieldSetTemplate template
+is used, and if a different FieldSetTemplate is defined in a  loader that will be used.
+
+Fieldsets can be nested within each other allowing for fine grained grouping of types.
+
+```js
+  var schema = {
+     schema:{
+       firstName:'Text',
+       lastName:'Text',
+       description:'Text'
+     },
+     fieldsets:[{
+        fieldsets:[{
+          fields:'firstName, lastName'
+        },
+        {
+         fields:['description']       
+        }        
+     }]
+  
+  }  
+
+```
+
 
 
 
