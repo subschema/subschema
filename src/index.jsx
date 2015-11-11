@@ -1,4 +1,5 @@
 var api = require('./index.js');
+api.DefaultLoader = require('./DefaultLoader');
 api.loader.addLoader(require('./ValidatorLoader'));
 api.loader.addLoader(require('./DefaultLoader'));
 api.templates = require('./templates/index.js');
