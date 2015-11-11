@@ -42,8 +42,12 @@ var Template = React.createClass({
     },
     render(){
         var {field,  path, conditional, children, template,...props} = this.props;
-        field = field || FREEZE_OBJ;
-        conditional = conditional || field.conditional;
+        if (field && field.conditional){
+            var {conditional, ...rest} = field;
+            field = props.field = rest;
+
+        }
+
         if (conditional == null || conditional === false) {
             props.path = path;
             props.field = field;
@@ -53,7 +57,7 @@ var Template = React.createClass({
             conditional = {operator: conditional};
         }
         props.path = conditional.path || path;
-        return (<Conditional path={this.props.path} {...conditional} field={field}>
+        return (<Conditional path={props.path} {...conditional} field={field}>
             {this.renderContent(props, template, children)}
         </Conditional>);
     }

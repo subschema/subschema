@@ -52,7 +52,6 @@
     "fbjs": "^0.4.0",
     "formatter.js": "^0.1.5",
     "highlight.js": "^8.5.0",
-    "history": "^1.12.6",
     "js-base64": "^2.1.9",
     "jsdoc-to-markdown": "^1.0.3",
     "json-loader": "^0.5.3",

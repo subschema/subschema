@@ -2,7 +2,6 @@
 var React = require('./React');
 var tu = require('./tutils');
 var {FREEZE_OBJ, FREEZE_ARR} = tu;
-var Conditional = require('./Conditional.jsx');
 var PropTypes = require('./PropTypes');
 var Template = require('./Template.jsx');
 /**
@@ -177,9 +176,10 @@ var Editor = React.createClass({
         this.setState({valid})
     },
     render(){
-        var {field, onValueChange, template, onValidate, propsfield, onValueChange, template, onValidate, ...props} = this.props;
+        var {field, onValueChange, template, onValidate, propsfield, conditional, onValueChange, template, onValidate, ...props} = this.props;
+        var pConditional = conditional;
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
-
+        conditional = conditional || pConditional;
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var Component = this.context.loader.loadType(type),
             title = this.title(),

@@ -197,8 +197,8 @@ var NestedMixin = {
 
     render()
     {
-
-        var {schema, subSchema, title, fields, submitButton,  template, ...props} = this.props;
+        //capture the things that should not fall through.
+        var {schema, subSchema, title, fields, submitButton, conditional, template, ...props} = this.props;
         return <Template ref="form" template={schema.template || template} onValidate={this.handleValidate} schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}

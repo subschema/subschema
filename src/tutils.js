@@ -12,19 +12,9 @@ var api = {
     isArray: require('lodash/lang/isArray'),
     isNumber: require('lodash/lang/isNumber'),
     find: require('lodash/collection/find'),
-    noop: function () {
-    },
-    unique: function (array) {
-        return array.filter(function (a, b, c) {
-            // keeps first occurrence
-            return c.indexOf(a) === b;
-        });
-    },
-    values: function (obj) {
-        return obj == null ? [] : this.isArray(obj) ? obj : Object.keys(obj).map(function (v, i) {
-            return obj[v];
-        });
-    },
+    unique:require('lodash/array/unique'),
+    noop: require('lodash/utility/noop'),
+    values:require('lodash/object/values'),
     path: function () {
         var args = api.slice(arguments), l = args.length, i = 0, j = 0, p;
         var ret = '';

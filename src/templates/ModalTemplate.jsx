@@ -77,7 +77,7 @@ var ModalTemplateWrapper = React.createClass({
     },
     render(){
         var {...context} = this.context;
-        var {...props} = this.props;
+        var {conditional, ...props} = this.props;
         return <NewChildContext {...context} path={props.path}>
             <ModalTemplate {...props}/>
         </NewChildContext>

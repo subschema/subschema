@@ -207,7 +207,7 @@ var Conditional = React.createClass({
     },
     renderFalseTemplate()
     {
-        var FalseTemplate = this.FalseTemplate;
+        var FalseTemplate = this.FalseTemplate ;
         var {value, listen, error, template, falseTemplate, operator, animate, ...props} = this.props;
         return FalseTemplate ? <FalseTemplate
             key='false-conditional' {...props}
