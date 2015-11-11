@@ -1,6 +1,5 @@
 "use strict";
 var React = require('../React');
-var ReactDOM = require('react-dom');
 var FieldValueMixin = require('../FieldValueMixin');
 var css = require('../css');
 var Constants = require('../Constants')
@@ -290,14 +289,7 @@ var RestrictedMixin = {
             value: value.value,
             hasValue: value.value.length !== 0,
             hasValidValue: value.isValid
-        }, function () {
-            var input = ReactDOM.findDOMNode(this.refs.input);
-            if (!input)return;
-
-            if (caret != null)
-                input && input.setSelectionRange(caret, caret);
-
-        });
+        }, this.handleSelectionRange);
 
     },
     handleValueChange(e){

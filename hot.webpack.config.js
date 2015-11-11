@@ -52,8 +52,9 @@ module.exports = {
             {
                 test: /\.js(x)?$/,
                 exclude: [
-                    /node_modules\/(?!(subschema-builder|component-playground|react-))/,
-                    /babel-core/,
+                   /node_modules\/(?!(subschema-builder|component-playground|react-))/,
+     //               /babel-core/,
+                    /codemirror/,
                     join('src'),
                     join('public'),
                 ],

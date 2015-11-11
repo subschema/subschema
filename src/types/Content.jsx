@@ -7,18 +7,16 @@ var map = require('lodash/collection/map');
 var isObject = require('lodash/lang/isObject');
 var tu = require('../tutils');
 var defaults = require('lodash/object/defaults');
-var PropTypes =require('../PropTypes');
+var PropTypes = require('../PropTypes');
 var Content = React.createClass({
+
     contextTypes: {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader
     },
-    getDefaultProps(){
-        return {
-            type: 'span',
-            content: ''
-        }
-    },
+    /*  getDefaultProps(){
+     return Content._defaultProps;
+     },*/
     renderChildren(props, children){
         if (!(children && props.children)) {
             return null;
@@ -94,9 +92,10 @@ var Content = React.createClass({
         if (content == null || content === false) {
             return null;
         }
-        if (type === 'Content') {
-            type = 'span';
-            props.type = type;
+        if (type === Content.displayName) {
+            //The real type when type == 'Content' not a great solution and will break if someone renames content.
+            // if they do they will need to change the display name;
+            props.type = type = Content.defaultProps.type;
         }
 
         if (content.content) {
@@ -114,7 +113,7 @@ var Content = React.createClass({
             type = props.type;
         }
 
-        if (React.DOM[type]) {
+        if (Content.Types[type]) {
             return React.createElement(type, props, children);
         }
 
@@ -125,4 +124,11 @@ var Content = React.createClass({
         </Ctype>
     }
 });
+//Expose for react-native subschema.
+Content.defaultProps = {
+    type: 'span',
+    content: ''
+}
+Content.displayName = 'Content';
+Content.Types = React.DOM || {}
 module.exports = Content;

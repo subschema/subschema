@@ -127,6 +127,7 @@ var NestedMixin = {
     makeFieldset(f, i){
         return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} legend={f.legend}
                          onButtonClick={this.props.onButtonClick}
+                         onSubmit={this.props.onSubmit}
                          fields={f.fields}
                          schema={this.schema.schema}>
             {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}

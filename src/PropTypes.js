@@ -1,6 +1,6 @@
 "use strict";
 
-var PropTypes = require('react').PropTypes;
+var PropTypes = require('./React').PropTypes;
 var extend = require('lodash/object/extend');
 var find = require('lodash/collection/find');
 var map = require('lodash/collection/map');
@@ -101,14 +101,26 @@ api.fieldset = api.shape({
     buttons: api.buttons,
     template: api.template
 });
-
+api.literal = api.oneOf(api.string, api.bool, api.number, api.instanceOf(Date))
 api.options = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
         label: api.string,
-        val: api.oneOf(api.string, api.bool, api.number, api.instanceOf(Date))
+        labelHTML:api.string,
+        val: api.value
     }))
 ]);
+
+api.optionsGroup = api.oneOfType([
+    api.arrayString,
+    api.arrayOf(api.shape({
+        options:api.options,
+        group:api.string,
+        label: api.string,
+        labelHTML:api.string,
+        val: api.literal
+    }))
+])
 
 api.schema = api.oneOfType([api.string, api.shape({
     fields: api.arrayString,

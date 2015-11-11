@@ -203,7 +203,7 @@ var Conditional = React.createClass({
         var {value,  template, falseTemplate, operator, animate,children, ...props} = this.props;
         return Template ?
             <Template key='true-conditional' dismiss={this._key} {...props}
-                >{this.props.children}</Template> : <span key='true-conditional-no-template'>{children}</span>;
+                >{this.props.children}</Template> : children;
     },
     renderFalseTemplate()
     {
@@ -211,7 +211,7 @@ var Conditional = React.createClass({
         var {value, listen, error, template, falseTemplate, operator, animate, ...props} = this.props;
         return FalseTemplate ? <FalseTemplate
             key='false-conditional' {...props}
-            >{this.props.children}</FalseTemplate> : <noscript key='empty-false'/>;
+            >{this.props.children}</FalseTemplate> : null;
     },
     renderContent(){
         return this.state.matched ? this.renderTemplate() : this.renderFalseTemplate();

@@ -1,5 +1,5 @@
 "use strict";
-var React = require('react');
+var React = require('../React');
 var DOM = React.DOM || {};
 var escape = require('lodash/string/escape');
 var loget = require('lodash/object/get');
@@ -18,6 +18,9 @@ var SubstituteMixin = {
     mixins: [require('../ValueManagerListenerMixin')],
 
     substitute(str) {
+        if (str == null){
+            str = '';
+        }
         var checks = {};
         var createKey = this.createKey;
 

@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('../React');
 var styles = require('subschema-styles/WizardProgressTemplate-style');
 var WizardProgressTemplate = React.createClass({
     getDefaultProps(){

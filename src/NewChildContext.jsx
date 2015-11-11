@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('./React');
 var Children = React.Children;
 var PropTypes = require('./PropTypes');
 var ValueManager = require('./ValueManager');
