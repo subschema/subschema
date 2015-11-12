@@ -133,6 +133,8 @@ loader.addType('ToggleType', React.createClass({
                                      }));
 
 ```
+See the [example](http://subschema.github.io/subschema/#/Loader)
+
 
 ## Schema Loader
 Sometimes it is useful to reuse an exisiting schema.   We got you covered, just register your schema
@@ -283,11 +285,12 @@ Subschema comes with a few built in types. You can create your own types as desc
 ###<a name="autocomplete"></a>Autocomplete
 Autocomplete is an autocompleter, it has an optional processor which will resolve against the loaders installed processors.   
 
-See the [example]("http://jspears.github.io/subschema/#/Autocomplete")
+See the [example](https://subschema.github.io/subschema/#/Autocomplete)
 
 
 ###<a name="checkbox"></a>Checkbox
 A checkbox component 
+See the [example](https://http://subschema.github.io/subschema/#/Checkboxes)
 
 ###<a name="content"></a>Content
 A Content component.  Will render safely as possible innerHTML.  It will also
@@ -313,13 +316,13 @@ A more sophisticated example using arrays and custom content.
 ```
 
 
-See the [example]("http://jspears.github.io/subschema/#/Content")
+See the [example]("http://subschema.github.io/subschema/#/Content")
 
 
 ###<a name="checkboxes"></a>Checkboxes
 Render an array of checkboxes.
 Has an itemTemplate, and groupTemplate property that can be set to change the decoration around each checkbox, or group of checkboxes respectively.
-See the [example]("http://jspears.github.io/subschema/#/Checkboxes")
+See the [example]("http://subschema.github.io/subschema/#/Checkboxes")
 
 
 
@@ -335,7 +338,7 @@ Barely a component, but oneday it will be made useful
 Hidden
 Render a hidden input field
 
-See the [example](http://jspears.github.io/subschema/#/Hidden)
+See the [example](http://subschema.github.io/subschema/#/Hidden)
 
 ###<a name="lazytype"></a>LazyType
 A wrapper that will lazily load when the loader returns a Promise from a loader.   This probably should not be used directly.
@@ -355,27 +358,28 @@ It has the following extra options
  * collectionCreateTemplate - Template for creating items.
  * itemType - The type of each item
 
-See the [example](http://jspears.github.io/subschema/#/Todos)
+See the [example](http://subschema.github.io/subschema/#/Todos)
 
 
 ###<a name="mixed"></a>Mixed
 Much like a list but uses the keys of the objects instead of indexes. 
 
-See the [example](http://jspears.github.io/subschema/#/Questionaire)
+See the [example](http://subschema.github.io/subschema/#/Questionaire)
 
 ###<a name="number"></a>Number
 A number type.  Probably better off using dataType=number.
 
+See the [example](http://subschema.github.io/subschema/#/Basic)
 
 ###<a name="object"></a>Object
 Renders an object key.   Wrapps said object in a fieldset by default. 
 
-See the [example](http://jspears.github.io/subschema/#/NestedForms)
+See the [example](http://subschema.github.io/subschema/#/NestedForms)
 
 ###<a name="password"></a>Password
 Password type.
 
-See the [example](http://jspears.github.io/subschema/#/Login)
+See the [example](http://subschema.github.io/subschema/#/Login)
 
 
 ###<a name="radio"></a>Radio
@@ -401,7 +405,7 @@ Renders radio groups. Options can be strings or
       
 ```
       
-See the [example](http://jspears.github.io/subschema/#/Radio)
+See the [example](http://subschema.github.io/subschema/#/Radio)
 
 
 
@@ -419,7 +423,7 @@ The formatter attribute can have the following
 * creditcard - Don't use its just an idea.  Real credit card numbers have all sorts of formats.
 * 1 (###) ### #### - It will restirced the \# in any format 
 
-See the [example](http://jspears.github.io/subschema/#/Restricted)
+See the [example](http://subschema.github.io/subschema/#/Restricted)
 
 
 ###<a name="select"></a>Select
@@ -428,12 +432,12 @@ A select component.  Uses the placeholder as the default value if set.   Tries t
 * options - An array of strings or {val, label} objects.
 * multiple - If set to true it will allow for multiple selection.
 
-See the [example](http://jspears.github.io/subschema/#/CarMake)
+See the [example](http://subschema.github.io/subschema/#/CarMake)
 
 ###<a name="text"></a>Text
 Text input the default and the workhorse.  
 
-See the [example](http://jspears.github.io/subschema/#/Basic)
+See the [example](http://subschema.github.io/subschema/#/Basic)
 
 ###<a name="textarea"></a>TextArea
 TextArea input pretty much same as text except its a textarea.
@@ -443,7 +447,7 @@ Templates are the decoration around form elements.   Templates handle the displa
 
 ###<a name="wizard"></a>WizardTemplate
 The wizard template is used to turn fieldsets into a wizard style entry.
-See the [example](http://jspears.github.io/subschema/#/Wizard)
+See the [example](http://subschema.github.io/subschema/#/Wizard)
 
 
 ##Conditional
@@ -489,7 +493,7 @@ Props:
         * dismiss (optional - string) - This will be set to false, given to make the current conditional false.   Set this for dismissing modals.  If 
           not provided, the template will recieve a dismiss property with the current key substituting '.' with '_' and prepended with an @
 
-See the [example](http://jspears.github.io/subschema/#/Conditional)
+See the [example](http://subschema.github.io/subschema/#/Conditional)
 
 
 
