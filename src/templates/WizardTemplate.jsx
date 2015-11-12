@@ -8,13 +8,16 @@ var EventCSSTransitionGroup = require('../transition/EventCSSTransitionGroup.jsx
 var LoaderMixin = require('../LoaderMixin');
 var cssUtil = require('../css');
 var style = require('subschema-styles/WizardTemplate-style');
-
+var PropTypes = require('../PropTypes');
 function donner(done) {
     done();
 }
 
 var WizardTemplate = React.createClass({
-    mixins: [LoaderMixin],
+    contextTypes:{
+        loader:PropTypes.loader,
+        valueManager:PropTypes.valueManager
+    },
     displayName: 'WizardTemplate',
     getDefaultProps(){
         return {
@@ -170,7 +173,7 @@ var WizardTemplate = React.createClass({
             }, this.state);
         }
         return <ButtonsTemplate key={'btn-'+compState} className={style.buttons} buttons={buttons}
-                                onClick={this.handleBtn}/>
+                                onButtonClick={this.handleBtn}/>
     },
     handleBtn(e, action, btn){
         e && e.preventDefault();
