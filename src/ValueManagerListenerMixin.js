@@ -1,6 +1,9 @@
 "use strict";
-var warnings = require('fbjs/lib/warning');
+
 var PropTypes = require('./PropTypes');
+function warning() {
+    console.log('warning', arguments);
+}
 /**
  *
  *  This Mixin is used to add error and value manager listeners.
@@ -127,7 +130,7 @@ var ValueManagerListenerMixin = {
         this._unlisten();
     },
     componentWillReceiveProps(props){
-        if ( props.path === this.props.path) {
+        if (props.path === this.props.path) {
             return;
         }
         this.__path = props.path;

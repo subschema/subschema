@@ -6,14 +6,13 @@ var toArray = tu.toArray;
 var Editor = require('./Editor');
 var ValueManager = require('./ValueManager');
 var LoaderMixin = require('./LoaderMixin');
-var warning = require("fbjs/lib/warning");
 var map = require('lodash/collection/map');
 var push = Function.apply.bind(Array.prototype.push);
 var Template = require('./Template.jsx');
 var noTypeInfo;
 if ("production" !== process.env.NODE_ENV) {
     noTypeInfo = function (f) {
-        ("production" !== process.env.NODE_ENV ? warning(
+        ("production" !== process.env.NODE_ENV ? console.log(
             false,
             'subschema: tried to create a field  "%s"  without any type info likely a typo', f) : null);
     };
