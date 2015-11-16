@@ -6,4 +6,5 @@ api.templates = require('./templates/index.js');
 api.types = require('./types/index.js');
 api.styles = require('./styles/index.js');
 api.Dom = require('./Dom');
+api.decorators = require('./decorators');
 module.exports = api;

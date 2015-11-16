@@ -1,8 +1,7 @@
 "use strict";
 var api = {
-    FREEZE_OBJ:Object.freeze({}),
-    FREEZE_ARR:Object.freeze([]),
-    template: require('lodash/string/template'),
+    FREEZE_OBJ: Object.freeze({}),
+    FREEZE_ARR: Object.freeze([]),
     extend: require('lodash/object/extend'),
     isFunction: require('lodash/lang/isFunction'),
     isString: require('lodash/lang/isString'),
@@ -12,9 +11,22 @@ var api = {
     isArray: require('lodash/lang/isArray'),
     isNumber: require('lodash/lang/isNumber'),
     find: require('lodash/collection/find'),
-    unique:require('lodash/array/unique'),
+    unique: require('lodash/array/unique'),
     noop: require('lodash/utility/noop'),
-    values:require('lodash/object/values'),
+    values: require('lodash/object/values'),
+    result: function result(scope, key) {
+        if (!key) {
+            return null;
+        }
+        if (typeof key === 'string') {
+            return result(scope, scope[key]);
+        }
+        if (typeof key === 'function') {
+            return key.call(scope);
+        }
+        return key;
+    },
+
     path: function () {
         var args = api.slice(arguments), l = args.length, i = 0, j = 0, p;
         var ret = '';

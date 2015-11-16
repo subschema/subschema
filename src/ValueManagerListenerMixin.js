@@ -127,7 +127,7 @@ var ValueManagerListenerMixin = {
             return;
         }
         this.__path = props.path;
-        this.__valueManager = context.__valueManager;
+        this.__valueManager = context.valueManager;
         if (this.__valueManager) {
             this._listen();
         }

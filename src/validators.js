@@ -13,7 +13,9 @@ module.exports = (function (_) {
         number: 'Must be a number',
         email: 'Invalid email address',
         url: 'Invalid URL',
-        match: _.template('Must match field "<%= field %>"')
+        match: function(field){
+            return 'Must match field "{}"'
+        }
     };
 
     validators.required = function (options) {
