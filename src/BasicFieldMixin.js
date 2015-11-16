@@ -27,7 +27,7 @@ var BasicFieldMixin = {
         this.__listener = this.context.valueManager.addListener(props.path, this.setValue, this, true);
     },
     triggerChange(value){
-        if (!this.context.valueManager) {
+        if (!(this.context.valueManager && this.props.path)) {
             return this.props.onValueChange(value);
         }
         if (this.context.valueManager.update(this.props.path, value) !== false) {

@@ -1,9 +1,7 @@
 "use strict";
 
 var PropTypes = require('./PropTypes');
-function warning() {
-    console.log('warning', arguments);
-}
+var warning = require('./warning');
 /**
  *
  *  This Mixin is used to add error and value manager listeners.
@@ -52,24 +50,23 @@ function _key(path, key) {
 function invoke(obj, func) {
     if (typeof func === 'function') return func;
     if (typeof obj[func] === 'function') return obj[func];
-    if (func == null) {
-        ("production" !== process.env.NODE_ENV ? warning(
-            false,
-            'Can not resolve %s to a function to be called with the event',
-            func
-        ) : null)
-    }
+    warning(
+        func == null,
+        'Can not resolve %s on %s to a function to be called with the event',
+        func, obj
+    )
     return function invoke$lazy() {
         if (typeof this[func] === 'function') {
             return this[func].apply(this, arguments);
         }
-        ("production" !== process.env.NODE_ENV ? warning(
+        warning(
             false,
             'Can not resolve %s to a function to be called with the event',
             func
-        ) : null);
+        );
     }
 }
+
 var ValueManagerListenerMixin = {
     contextTypes: {
         valueManager: PropTypes.valueManager,
@@ -87,8 +84,7 @@ var ValueManagerListenerMixin = {
     },
     registerHandler(key, func, init){
         if (init == null) init = true;
-        key = this.createKey(key)
-        var handler = this.__valueManager.addListener(key, invoke(this, func), this, init);
+        var handler = this.__valueManager.addListener(this.createKey(key), invoke(this, func), this, init);
         this.__componentListeners.push(handler);
         return handler;
     },
@@ -110,31 +106,31 @@ var ValueManagerListenerMixin = {
         }
         if (errorListeners) {
             Object.keys(errorListeners).forEach(function onComponentErrorListener$map(key) {
-                var args = [key].concat(errorListeners[key])
-                this.registerErrorHandler.apply(this, args);
+                this.registerErrorHandler.apply(this, [key].concat(errorListeners[key]));
             }, this);
         }
         if (listeners) {
             Object.keys(listeners).forEach(function onComponentListener$map(key) {
-                var args = [key].concat(listeners[key]);
-                this.registerHandler.apply(this, args);
+                this.registerHandler.apply(this, [key].concat(listeners[key]));
             }, this);
         }
     },
     componentWillMount(){
-        this.__path = this.props.path;
-        this.__valueManager = this.context.valueManager;
-        this._listen();
+        //is this wrong, it feels so right, and I really don't want to pollute the namespace.
+        this.componentWillReceiveProps(this.props, this.context);
     },
     componentWillUnmount(){
         this._unlisten();
     },
-    componentWillReceiveProps(props){
-        if (props.path === this.props.path) {
+    componentWillReceiveProps(props, context){
+        if (this.__path === props.path && this.__valueManager === context.valueManager) {
             return;
         }
         this.__path = props.path;
-        this._listen();
+        this.__valueManager = context.__valueManager;
+        if (this.__valueManager) {
+            this._listen();
+        }
     }
 };
 module.exports = ValueManagerListenerMixin;
