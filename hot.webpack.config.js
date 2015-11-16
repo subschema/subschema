@@ -42,7 +42,7 @@ module.exports = {
             {
                 test: /\.js(x)?$/,
                 exclude: /node_modules/,
-                //do this to prevent babel fromt tanslating everything.
+                //do this to prevent babel from translating everything.
                 include: [
                     join('src'),
                     join('public')
