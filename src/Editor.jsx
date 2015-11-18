@@ -4,37 +4,8 @@ var tu = require('./tutils');
 var {FREEZE_OBJ, FREEZE_ARR} = tu;
 var PropTypes = require('./PropTypes');
 var Template = require('./Template.jsx');
-/**
- * Safe chained function
- *
- * Will only create a new function if needed,
- * otherwise will pass back existing functions or null.
- *
- * @param {function} one
- * @param {function} two
- * @returns {function|null}
- */
-function applyFuncs(one, two) {
-    let hasOne = typeof one === 'function';
-    let hasTwo = typeof two === 'function';
-
-    if (!hasOne && !hasTwo) {
-        return null;
-    }
-    if (!hasOne) {
-        return two;
-    }
-    if (!hasTwo) {
-        return one;
-    }
-
-    return function chainedFunction() {
-        one.apply(this, arguments);
-        two.apply(this, arguments);
-    };
-}
-
-
+var applyFuncs = tu.applyFuncs;
+import {listen} from './decorators';
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
@@ -87,33 +58,20 @@ var Editor = React.createClass({
         this.refs.field.setValue(value);
     },
     componentWillMount(){
-        var validators = this.props.field.validators;
-        this.validators = validators ? tu.toArray(validators).map(initValidators, this.context.loader) : FREEZE_ARR;
-        this._listen(this.props, FREEZE_OBJ);
+        this.initValidators(this.props, this.context);
     },
-    componentWillUnmount(){
-        this._unlisten();
+    componentWillReceiveProps(newProps, newContext){
+        this.initValidators(newProps, newContext);
     },
-    componentWillReceiveProps(newProps){
-        this._listen(newProps, this.props);
-    },
-    _listen(newProps, oldProps){
-        if (newProps.path === oldProps.path) {
-            return;
-        }
-        this._unlisten();
-        this._listener = this.context.valueManager.addListener(newProps.path, this.handleChange, this, true);
-        this._validateListener =  this.context.valueManager.addValidateListener(newProps.path, this._validate, this);
-    },
-    _unlisten(){
-        if (this._listener) this._listener.remove();
-        if (this._validateListener)  this._validateListener.remove();
+    initValidators(props, context){
+        var validators = props.field.validators;
+        this.validators = validators ? tu.toArray(validators).map(initValidators, context.loader) : FREEZE_ARR;
     },
     handleValidate(value, component, e) {
         this.state.hasValidated = true;
         this.validate();
     },
-
+    @listen("value", ".", false)
     handleChange(newValue, oldValue, name) {
         var hasChanged = newValue != oldValue;
         if (!hasChanged) {
@@ -130,14 +88,14 @@ var Editor = React.createClass({
         }
     },
     getValue(){
-        return  this.context.valueManager.path(this.props.path);
+        return this.context.valueManager.path(this.props.path);
     },
 
     /**
      * Runs validation and updates empty fields.
      *
      */
-        validate(value, errors){
+    validate(value, errors){
         value = arguments.length === 0 ? this.getValue() : value;
         errors = errors || this.getErrorMessages(value);
 
@@ -147,6 +105,7 @@ var Editor = React.createClass({
         });
         return errors;
     },
+    @listen("error")
     _validate: function () {
         this.validate(this.getValue());
     },
@@ -199,20 +158,21 @@ var Editor = React.createClass({
         if (!title) {
             title = '';
         }
-        var template=  this.props.template
+        var template = this.props.template
         if (template === false || field.template === false || type === 'Hidden') {
             template = null;
-        }else if (field.template != null){
+        } else if (field.template != null) {
             template = field.template;
         }
 
-        return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass} title={title}
-                      errorClassName={errorClassName}
-                      help={!this.state.valid && (props.help || rfield.help)}
-                      onValidate={this.handleValidate}
-                >
-                {child}
-            </Template>
+        return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass}
+                         title={title}
+                         errorClassName={errorClassName}
+                         help={!this.state.valid && (props.help || rfield.help)}
+                         onValidate={this.handleValidate}
+        >
+            {child}
+        </Template>
     }
 });
 module.exports = Editor;

@@ -1,23 +1,21 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+import React from 'react';
+import Constants from '..';
+import {forField} from '../css';
+import field from '../decorators/field';
 
-
-var TextArea = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
+@field
+export default class TextArea extends React.Component {
+    static inputClassName = Constants.inputClassName;
     render() {
         var {fieldAttrs, value, onBlur, onChange, onValueChange, ...props} = this.props;
         return <textarea onBlur={this.handleValidate}
                          onChange={this.handleChange}
                          id={this.props.name}
-                         className={css.forField(this)}
+                         className={forField(this)}
                          value={this.state.value}
 
             {...props}
             {...fieldAttrs}
-            />
+        />
     }
-});
-
-module.exports = TextArea;
+}

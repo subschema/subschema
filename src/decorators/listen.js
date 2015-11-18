@@ -1,46 +1,33 @@
 "use strict";
-import {FREEZE_OBJ, FREEZE_ARR} from '../tutils';
-import {mapTypes, applyFuncs, componentWillMount, componentWillReceiveProps, componentWillUnmount} from '../listenUtil';
-import PropTypes from '../PropTypes';
-import map from 'lodash/collection/map';
 
+import {wrapTargetWithContextTypes} from '../listenUtil';
 
-export default function listen(listenTo = "value", path = ".", init = true) {
-    if (typeof listenTo !== 'string') {
-        var Target = listenTo;
-        var name = path;
-        var description = init;
-        listenTo = "value";
-        path = ".";
-        init = true;
-        listen$config(Target, name, description);
+/**
+ * This is a decorator that listens for events and fires them
+ *
+ *
+ *
+ * @param {MapTypes} [type=value] type - The type of listener to add.
+ * @param {string} path - The path to listener if empty then the name of the property is used as the path.
+ * @param {boolean} [init=true] - Init the function on componentWillMount.
+ * @returns {ListenDecorator}
+ */
+const DEFAULT_TYPE = 'value';
+const DEFAULT_PATH = '.';
+const DEFAULT_INIT = true;
+export default function listen(type = DEFAULT_TYPE, path = DEFAULT_PATH, init = DEFAULT_INIT) {
+    if (typeof type !== 'string') {
+        listen$config(DEFAULT_TYPE, DEFAULT_PATH, DEFAULT_INIT)(arguments[0], arguments[1], arguments[2]);
     } else {
-        return listen$config;
+        return listen$config(type, path, init);
     }
 
-
-    function listen$config(Target, name, description) {
-        var contextTypes = Target.constructor.contextTypes || (Target.constructor.contextTypes = {});
-
-        if (!contextTypes.valueManager) {
-            contextTypes.valueManager = PropTypes.valueManager;
+    function listen$config(type, path, init) {
+        return function listen$decorate(Target, name, description) {
+            return wrapTargetWithContextTypes(Target, function listen$config$init(addResult) {
+                addResult(type, path, description.value, init);
+            });
         }
-        //If the target has __listeners already then we will assume that this is ours.  We really
-        // should use a symbol for this, but then we would have to figure out how to reuse it.
-        // this is really pretty fast, 1 array can hold all the listener details.
-        if (!Target.__listeners) {
-            Target.__listeners = [];
-            Target.componentWillMount = applyFuncs(Target.componentWillMount, componentWillMount);
-            Target.componentWillUnmount = applyFuncs(Target.componentWillUnmount, componentWillUnmount);
-            Target.componentWillReceiveProps = applyFuncs(Target.componentWillReceiveProps, componentWillReceiveProps);
-        }
-
-        Target.__listeners.push({
-            method: mapTypes[listenTo],
-            listeners: {
-                [path]: [description.value, init]
-            },
-            handlers: FREEZE_ARR
-        });
     }
+
 }

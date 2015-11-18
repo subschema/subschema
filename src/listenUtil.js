@@ -1,16 +1,12 @@
 "use strict";
 
 import PropTypes from './PropTypes'
-import {each, result, FREEZE_ARR} from './tutils';
+import {each, extend, result, FREEZE_ARR} from './tutils';
 import warning from './warning';
 import map from 'lodash/collection/map';
 
+const DEFAULT_CONTEXT = {valueManager: PropTypes.valueManager};
 
-export function remove(v) {
-    if (v) {
-        v.remove();
-    }
-}
 export function resolveKey(path, key) {
     if (!key) {
         return path;
@@ -18,7 +14,7 @@ export function resolveKey(path, key) {
     if (key[0] != '.') {
         return key;
     }
-    var parts = path.split('.');
+    var parts = path ? path.split('.') : [];
     key = key.substring(1);
     while (key[0] === '.') {
         key = key.substring(1);
@@ -27,7 +23,7 @@ export function resolveKey(path, key) {
     if (key) {
         parts.push(key);
     }
-    return parts.join('.');
+    return parts.length === 0 ? null : parts.join('.');
 }
 
 export function invoke(obj, func) {
@@ -50,60 +46,119 @@ export function invoke(obj, func) {
     }
 }
 
-export function addResult(method, listeners, to) {
-    if (listeners) {
-        to.push({method, listeners, handlers: FREEZE_ARR});
-    }
-}
-
-export function register(valueManager, method, func, scope, init) {
-    return valueManager[method](func, scope || this, init == null ? true : init);
-}
-
 function __unlisten(itm) {
-    itm && itm.handlers.forEach(remove);
+    if (!(itm && itm.handler)) {
+        return;
+    }
+    itm.handler.remove();
 }
 function __unlistenAndListen(itm) {
     __unlisten(itm);
     __listen.call(this, itm);
 }
 function __listen(itm) {
-    var path = this.props.path, valueManager = this.context.valueManager;
-    itm.handlers = map(itm.listeners, function (func, key) {
-        var init = true;
-        if (Array.isArray(func)){
-            init = func[1];
-            func = func[0];
-        }
-        return valueManager[itm.method](resolveKey(path, key), func, this, init == null ? true : init);
-    }, this);
+    itm.handler = this.context.valueManager[itm.method](resolveKey(this.props.path, itm.path), itm.listener, itm.scope, itm.init);
+    return itm;
 }
 
-export function componentWillMount() {
-    this.__listeners.forEach(__listen, this);
-}
 export function componentWillUnmount() {
-    this.__listeners.forEach(__unlisten);
+    if (this.__listeners) {
+        this.__listeners.forEach(__unlisten);
+        this.__listeners.length = 0;
+    }
 }
 export function componentWillReceiveProps(props, context) {
     if ((props.path === this.props.path && context.valueManager === this.context.valueManager)) {
         return;
     }
-    this.__listeners.forEach(__unlistenAndListen, {props, context});
+    if (this.__listeners)
+        this.__listeners.forEach(__unlistenAndListen, {props, context});
 }
 
 export function applyFuncs(f1, f2) {
     if (f1 && !f2) return f1;
     if (!f1 && f2) return f2;
-    return function () {
+    return function listenUtil$applyFuncs$wrapper() {
         f1.apply(this, arguments);
         f2.apply(this, arguments);
     }
 }
 
-export const mapTypes = {
+//If the target has __listeners already then we will assume that this is ours.  We really
+// should use a symbol for this, but then we would have to figure out how to reuse it.
+// this is really pretty fast, 1 array can hold all the listener details.
+/**
+ * Sets up listeners and their lifecycle.
+ * This should be used with fields.
+ * @param Target
+ * @param init
+ * @param contextTypes
+ */
+export function wrapTargetWithContextTypes(Target, init, contextTypes) {
+    setupContext(Target.constructor, contextTypes);
+    return wrapTarget(Target, init);
+}
+export function wrapTarget(Target, init) {
+    if (!Target.__listen$connect) {
+        Target.__listen$connect = true;
+        Target.componentWillUnmount = applyFuncs(Target.componentWillUnmount, componentWillUnmount);
+        Target.componentWillReceiveProps = applyFuncs(Target.componentWillReceiveProps, componentWillReceiveProps);
+    }
+    if (init) {
+        Target.componentWillMount = applyFuncs(function listenUtil$componentWillMount() {
+            init.call(this, _addListenersTo.bind(this))
+        }, Target.componentWillMount);
+    }
+    return Target;
+}
+
+
+function _addListenersTo(method, path, listener, init) {
+    var itm = {method: MapTypes[method], path, listener, init, scope: this};
+    (this.__listeners || (this.__listeners = [])).push(itm);
+    return __listen.call(this, itm);
+}
+/**
+ * Remove a listener;
+ *
+ * @param listeners
+ * @param itm
+ * @returns {*}
+ */
+export function removeListener(listeners, itm) {
+    __unlisten(itm);
+    var idx = listeners.indexOf(itm);
+    if (idx > -1) {
+        listeners.splice(itm, 1);
+    }
+    return listeners;
+}
+export function addListenersTo(method, path, listener, init) {
+    var itm = _addListenersTo.call(this, method, path, listener, init);
+    return {
+        remove: removeListener.bind(null, this.__listeners, itm)
+    }
+}
+
+export function setupContext(Target, contextTypes = DEFAULT_CONTEXT) {
+    if (!contextTypes) return;
+    if (contextTypes) {
+        Target.contextTypes = extend({}, Target.contextTypes, contextTypes);
+    }
+}
+
+/**
+ * The possible types of listeners that can be added.
+ * @readonly
+ * @enum {string}
+ */
+export const MapTypes = {
     'value': 'addListener',
     'error': 'addErrorListener',
     'submit': 'addSubmitListener',
-    'state': 'addStateListener'
+    'state': 'addStateListener',
+    'addListener': 'addListener',
+    'addErrorListener': 'addErrorListener',
+    'addSubmitListener': 'addSubmitListener',
+    'addStateListener': 'addStateListener'
 }

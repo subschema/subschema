@@ -1,10 +1,12 @@
 "use strict";
 
-var PropTypes = require('./React').PropTypes;
-var extend = require('lodash/object/extend');
-var find = require('lodash/collection/find');
-var map = require('lodash/collection/map');
+import { PropTypes } from 'react';
+import extend   from 'lodash/object/extend';
+import find     from 'lodash/collection/find';
+import map      from 'lodash/collection/map';
+
 var api = extend({}, PropTypes);
+export default api;
 
 api.cssClass = function api$cssClass() {
     return api.string.apply(api, arguments);
@@ -106,7 +108,7 @@ api.options = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
         label: api.string,
-        labelHTML:api.string,
+        labelHTML: api.string,
         val: api.value
     }))
 ]);
@@ -114,10 +116,10 @@ api.options = api.oneOfType([
 api.optionsGroup = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
-        options:api.options,
-        group:api.string,
+        options: api.options,
+        group: api.string,
         label: api.string,
-        labelHTML:api.string,
+        labelHTML: api.string,
         val: api.literal
     }))
 ])
@@ -160,6 +162,7 @@ api.mixin = {
         field: {}
     }, events)
 };
+
 api.propTypeToName = function propTypeToName(propType) {
     var keys = Object.keys(api), i = 0, l = keys.length, key, f;
     for (; i < l; i++) {
@@ -171,7 +174,7 @@ api.propTypeToName = function propTypeToName(propType) {
             return key;
         }
     }
-}
+};
 
 api.propTypesToNames = function (props) {
     var ret = {};
@@ -180,6 +183,3 @@ api.propTypesToNames = function (props) {
     });
     return ret;
 }
-
-
-module.exports = api;

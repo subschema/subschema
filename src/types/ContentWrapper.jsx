@@ -1,25 +1,44 @@
 "use strict";
 
 var React = require('../React');
-var DOM = React.DOM || {};
-var ContentWrapper = React.createClass({
-    mixins: [require('./SubstituteMixin.js')],
-    getDefaultProps(){
-        return {
-            type: 'span',
-            content: ''
-        }
-    },
-    componentWillReceiveProps(props){
+var SubstituteMixin = require('./SubstituteMixin.js');
+import lifecycle from '../decorators/lifecycle';
+import listeners from '../decorators/listeners';
+import substitute from './SubstituteMixin';
+import {FREEZE_OBJ} from '../tutils';
+
+
+export default class ContentWrapper extends React.Component {
+    static defaultProps = {
+        type: 'span',
+        content: ''
+    }
+
+    componentWillReceiveProps(props) {
         if (props.content === this.props.content) {
             return;
         }
-        this.rebuildValue(props.content);
-    },
-    componentWillMount(){
-        this.rebuildValue(this.props.content);
-    },
-    render(){
+        this.listen(props.content);
+    }
+
+    @listeners
+    listen(content) {
+        content = content || this.props.content;
+        var {listen} = this._fmt = substitute(content);
+        var obj = {};
+
+        listen.forEach(function keyToSetState(key) {
+            obj[key] = (value)=>this.setState({[key]: value});
+        }, this);
+
+        return obj;
+    }
+
+    currentContent() {
+        return this._fmt.format(this.state || FREEZE_OBJ);
+    }
+
+    render() {
         var {type, content, children, context, ...props} = this.props, Type
 
         if (React.DOM[type]) {
@@ -36,6 +55,4 @@ var ContentWrapper = React.createClass({
         </Type>
 
     }
-});
-
-module.exports = ContentWrapper;
+}

@@ -1,9 +1,11 @@
 "use strict";
 
-var React = require('../React'), util = require('../tutils'),
-    FieldMixin = require('../FieldMixin'), Constants = require('../Constants'),
-    css = require('../css')
-    ;
+import React from 'react';
+import Constants from '..';
+import util from '../tutils';
+import {forField} from '../css';
+import field from '../decorators/field';
+
 function toLabelVal(v) {
     if (util.isString(v)) {
         return {
@@ -21,13 +23,11 @@ function toLabelVal(v) {
     return v;
 }
 
-var Select = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
+@field
+export default class Select extends React.Component {
+    static inputClassName = Constants.inputClassName
 
-    },
-    handleSelect(e){
+    handleSelect(e) {
         if (this.props.multiple) {
             var placeholder = this.props.placeholder;
             //normalize multiple field selection
@@ -41,17 +41,16 @@ var Select = React.createClass({
             }
             this.triggerChange(values);
             return
-        }else if (this.props.placeholder){
-            if (e.target.value === this.props.placeholder){
+        } else if (this.props.placeholder) {
+            if (e.target.value === this.props.placeholder) {
                 this.triggerChange(null);
                 return;
             }
         }
+        this.handleChange(e);
+    }
 
-
-        this.triggerChange(e.target.value);
-    },
-    renderOptions(value){
+    renderOptions(value) {
         var props = this.props, multiple = props.multiple, opts = props.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
             if (!hasValue && o.val + '' == '' + value) hasValue = true;
             return <option key={'s' + i} value={o.val}>{o.label}</option>
@@ -63,24 +62,24 @@ var Select = React.createClass({
                 {placeholder}</option>);
         }
         return ret;
-    },
+    }
+
     render() {
         var {field, onChange, fieldAttrs, onBlur, type, value, multiple, placeholder,  ...props} = this.props;
         var value = this.state.value;
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
-        return <select className={css.forField(this)}
+        return <select className={forField(this)}
                        multiple={multiple}
                        ref="input"
                        value={value}
                        onBlur={this.handleValidate} onChange={this.handleSelect}
             {...props}
             {...fieldAttrs}
-            >
+        >
             {this.renderOptions(value)}
         </select>
     }
 
-})
-module.exports = Select;
+}

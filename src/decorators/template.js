@@ -3,29 +3,48 @@ import warning from '../warning';
 import PropTypes from '../PropTypes'
 import loader from '../loader';
 
-function loadTemplate(loader, template, key) {
-    if (template === false) return null;
-    warning(template, 'There was no template for %s in props', key);
-    var ret = loader.loadTemplate(template);
-    warning(ret, 'Could not find templtate "%s" in loader', template);
-    return ret;
+function loadCtx(v) {
+    if (v === false) {
+        return null;
+    }
+    var template = this.props[v];
+    warning(template, 'There was no template for %s in props', v);
+
+    if (typeof template !== 'string') {
+        return template;
+    }
+
+    template = this.context.loader.loadTemplate(template);
+
+    warning(template, 'There was no template for %s in the loader', template);
+
+    return template;
 }
+/**
+ * This injects a template into your method.  It can take variable length
+ * of strings, or objects.  Objects will be returned, strings will be
+ * resolved against the loader in the corrent context.
+ *
+ * @param property
+ * @param rest
+ * @returns {template$wrap}
+ */
 export default function (property = "template", ...rest) {
     if (typeof property === 'string') {
         rest.unshift(property);
         return template$wrap;
     } else {
-        var target = property, name = rest.shift(), description = rest.shift();
+        var target = property, name = rest[0], description = rest[1];
         rest = ['template']
         template$wrap(target, name, description);
     }
 
     function template$wrap(target, name, description) {
-        var loader = this.context.loader || loader;
         var ofunc = description.value;
-        description.value = function (...args) {
+        description.value = function template$wrap$value(...args) {
+            var loader = this.context.loader || loader;
             var props = this.props, loader = this.context.loader;
-            var tmpl = rest.map((v)=>loadTemplate(loader, props[v], v));
+            var tmpl = rest.map(loadCtx, this);
 
             return ofunc.apply(this, tmpl.concat(args));
         }

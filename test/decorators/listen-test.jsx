@@ -11,12 +11,12 @@ describe('decorator.listen', function () {
         class Test extends React.Component {
             static stuff = {what: true};
 
-            @listen('value', 'test')
+            @listen('value', 'test', false)
             doSomething(value) {
                 _value.push(value);
             }
 
-            @listen('error', 'test')
+            @listen('error', 'test', false)
             onError(value) {
                 _error.push(value);
             }
@@ -25,7 +25,8 @@ describe('decorator.listen', function () {
                 return <div>hello</div>
             }
         }
-        var comp = intoWithContext(<Test/>, {valueManager});
+        var comp = intoWithContext(<Test />, {valueManager});
+
         expect(valueManager.path('test')).toNotExist();
         valueManager.update('test', 1);
 
@@ -48,8 +49,9 @@ describe('decorator.listen', function () {
             static stuff = {what: true};
 
             @listen
-            doSomething(value) {
+            test(value) {
                 _value.push(value);
+                this.setState({value});
             }
 
             @listen('error')
@@ -64,18 +66,18 @@ describe('decorator.listen', function () {
         var comp = intoWithContext(<Test path="test"/>, {valueManager});
         expect(valueManager.path('test')).toNotExist();
         valueManager.update('test', 1);
-
-        expect(_value[0]).toBe(1);
+        expect(comp.state.value).toBe(1);
+        expect(_value[1]).toBe(1);
 
         valueManager.setErrors({
             'test': [{
                 message: 'hello'
             }]
         });
-        expect(_error[0][0].message).toBe('hello');
+        expect(_error[1][0].message).toBe('hello');
 
         valueManager.update('test', 'more');
-        expect(_value[1]).toBe('more');
+        expect(_value[2]).toBe('more');
     });
     it('should listen to events nested', function () {
         var valueManager = ValueManager();
@@ -83,12 +85,12 @@ describe('decorator.listen', function () {
         class Test extends React.Component {
             static stuff = {what: true};
 
-            @listen("value", ".what")
+            @listen("value", ".what", false)
             doSomething(value) {
                 _value.push(value);
             }
 
-            @listen('error', ".what")
+            @listen('error', ".what", false)
             onError(value) {
                 _error.push(value);
             }
@@ -139,12 +141,15 @@ describe('decorator.listen', function () {
             componentWillMount() {
                 willMount = true;
             }
+
             componentDidUpdate(props) {
                 willReceiveProps = true;
             }
+
             componentWillUnmount() {
                 willUnmount = true;
             }
+
             @listen("value")
             doSomething(value) {
                 _value.push(value);
@@ -157,7 +162,7 @@ describe('decorator.listen', function () {
         var comp = into(<Parent/>, {valueManager}, false);
         comp.setState({path: 'what'}, function () {
             valueManager.update('what', 'huh');
-            expect(_value[0]).toBe('huh');
+            expect(_value[2]).toBe('huh');
             done();
         });
     })

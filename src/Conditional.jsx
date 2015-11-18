@@ -1,6 +1,7 @@
 "use strict";
-var React = require('./React');
-var PropTypes = React.PropTypes;
+import React from 'react';
+import PropTypes from './PropTypes';
+
 var CSSTransitionGroup = require('react-addons-css-transition-group');
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
@@ -56,11 +57,16 @@ var opFactory = (function opFactory$factory(scope) {
         }
     }
 }());
+import ValueManagerListenerMixin from './ValueManagerListenerMixin';
 
-var Conditional = React.createClass({
-    displayName: 'Conditional',
-    mixins: [require('./ValueManagerListenerMixin')],
-    propTypes: {
+export default class Conditional extends ValueManagerListenerMixin {
+    static defaultProps = {
+        operator: '!=',
+        value: null,
+        animate: false
+
+    }
+    static propTypes = {
         /**
          * The value  to use too compare against  if not given, than
          * it will be a compare against null.
@@ -104,23 +110,16 @@ var Conditional = React.createClass({
          * Listen to an error rather than the mutually exclusive with listen.
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-    },
-    componentWillReceiveProps(props){
+    }
+
+    componentWillReceiveProps(props) {
         this._handleProps(this.props, props);
-    },
+    }
 
-    getInitialState(){
-        return {}
-    },
-    getDefaultProps(){
-        return {
-            operator: '!=',
-            value: null,
-            animate: false
-        }
-    },
 
-    listeners(){
+
+
+    listeners() {
         var {listen, error,path} = this.props;
         if (listen === false) {
             return;
@@ -135,11 +134,15 @@ var Conditional = React.createClass({
 
             }
         }
-    },
-    handleMatch(value){
+    }
+
+
+    handleMatch(value) {
         this.setState({matched: value});
-    },
-    errorListeners(){
+    }
+
+
+    errorListeners() {
         var {error, path} = this.props;
         if (error) {
             this._handleProps({}, this.props);
@@ -147,8 +150,10 @@ var Conditional = React.createClass({
                 [error === true ? path : error]: this.handleValue
             }
         }
-    },
-    _handleProps(oldProps, props){
+    }
+
+
+    _handleProps(oldProps, props) {
         if (oldProps.template != props.template) {
             if (props.template !== false) {
                 if (typeof props.template === 'string') {
@@ -167,12 +172,15 @@ var Conditional = React.createClass({
             this.evaluate = this.compile(props.operator);
             //  this.handleValue(this.state && this.state.value);
         }
-    },
-    handleValue(value){
+    }
+
+    handleValue(value) {
         var matched = this.evaluate(value, this.props.value);
         this.setState({matched});
-    },
-    compile(operator){
+    }
+
+
+    compile(operator) {
         if (operator instanceof RegExp) {
             return (compare, value) =>operator.test(compare, value);
         }
@@ -197,28 +205,31 @@ var Conditional = React.createClass({
         }
 
 
-    },
-    renderTemplate(){
+    }
+
+    renderTemplate() {
         var Template = this.Template;
         var {value,  template, falseTemplate, operator, animate,children, ...props} = this.props;
         return Template ?
             <Template key='true-conditional' dismiss={this._key} {...props}
-                >{this.props.children}</Template> : children;
-    },
-    renderFalseTemplate()
-    {
-        var FalseTemplate = this.FalseTemplate ;
+            >{this.props.children}</Template> : children;
+    }
+
+    renderFalseTemplate() {
+        var FalseTemplate = this.FalseTemplate;
         var {value, listen, error, template, falseTemplate, operator, animate, ...props} = this.props;
         return FalseTemplate ? <FalseTemplate
             key='false-conditional' {...props}
-            >{this.props.children}</FalseTemplate> : null;
-    },
-    renderContent(){
+        >{this.props.children}</FalseTemplate> : null;
+    }
+
+    renderContent() {
         return this.state.matched ? this.renderTemplate() : this.renderFalseTemplate();
 
-    },
-    render()
-    {
+    }
+
+
+    render() {
         if (!this.props.animate) {
 
             return this.renderContent();
@@ -234,5 +245,4 @@ var Conditional = React.createClass({
         </CSSTransitionGroup>
 
     }
-});
-module.exports = Conditional;
+}

@@ -97,7 +97,7 @@ function context(ctx){
 }
 function intoWithContext(child, ctx, debug) {
     var Context = context(ctx)
-    return into(<Context>{child}</Context>, debug);
+    return byType(into(<Context>{child}</Context>, debug), child.type);
 }
 
 
