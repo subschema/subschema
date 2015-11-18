@@ -29,25 +29,32 @@ function loadCtx(v) {
  * @param rest
  * @returns {template$wrap}
  */
-export default function (property = "template", ...rest) {
+export default function template(property = "template", ...rest) {
     if (typeof property === 'string') {
         rest.unshift(property);
         return template$wrap;
     } else {
         var target = property, name = rest[0], description = rest[1];
         rest = ['template']
-        template$wrap(target, name, description);
+        return template$wrap(target, name, description);
     }
 
     function template$wrap(target, name, description) {
+        var Target = target.constructor || target;
+        var contextTypes = Target.contextTypes;
+        if (!contextTypes) {
+            Target.contextTypes = {loader: PropTypes.loader};
+        } else if (!Target.contextTypes.loader) {
+            Target.contextTypes.loader = PropTypes.loader;
+        }
         var ofunc = description.value;
         description.value = function template$wrap$value(...args) {
-            var loader = this.context.loader || loader;
             var props = this.props, loader = this.context.loader;
             var tmpl = rest.map(loadCtx, this);
 
             return ofunc.apply(this, tmpl.concat(args));
         }
+        return description;
 
     }
 }

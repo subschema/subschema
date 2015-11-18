@@ -1,11 +1,10 @@
 "use strict";
-var React = require('./React');
-var tu = require('./tutils');
-var {FREEZE_OBJ, FREEZE_ARR} = tu;
-var PropTypes = require('./PropTypes');
-var Template = require('./Template.jsx');
-var applyFuncs = tu.applyFuncs;
+import React from 'react';
+import { FREEZE_ARR, titlelize, isRegExp,isFunction,toArary,nullCheck} from './tutils';
+import {valueManager, loader} from './PropTypes';
+import Template from './Template.jsx';
 import {listen} from './decorators';
+
 function initValidators(v) {
     //If it has a type init it
     if (v.type) {
@@ -13,13 +12,14 @@ function initValidators(v) {
         return validator(v);
     }
     //If it is a RegExp than init ReExp
-    if (tu.isRegExp(v)) {
+    if (isRegExp(v)) {
         return this.loadValidator('regexp')({
             regexp: v
         });
     }
     //If its a function just return it.
-    if (tu.isFunction(v)) {
+    if (
+        isFunction(v)) {
         return v;
     }
     //otherwise lets try initing it.
@@ -27,50 +27,52 @@ function initValidators(v) {
 }
 
 
-var Editor = React.createClass({
-    displayName: 'Editor',
-    mixins: [require('./LoaderMixin')],
-    contextTypes: {
-        valueManager: PropTypes.valueManager
-    },
+export default class Editor extends React.Component {
+    static contextTypes = {
+        valueManager,
+        loader
+    }
+    static defaultProps = {
+        field: {
+            type: 'Text'
+        },
+        onValidate() {
+        },
+        template: 'EditorTemplate'
+    }
 
-    getDefaultProps() {
-        return {
-            field: {
-                type: 'Text'
-            },
-            /*onValueChange() {
-             },*/
-            onValidate() {
-            },
-            template: 'EditorTemplate'
-
-        }
-    },
-    getInitialState(){
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             hasChanged: false,
             isValid: false
         }
-    },
+        this.validators = FREEZE_ARR;
+    }
 
-    setValue(value){
+
+    setValue(value) {
         this.refs.field.setValue(value);
-    },
-    componentWillMount(){
+    }
+
+    componentWillMount() {
         this.initValidators(this.props, this.context);
-    },
-    componentWillReceiveProps(newProps, newContext){
+    }
+
+    componentWillReceiveProps(newProps, newContext) {
         this.initValidators(newProps, newContext);
-    },
-    initValidators(props, context){
+    }
+
+    initValidators(props, context) {
         var validators = props.field.validators;
-        this.validators = validators ? tu.toArray(validators).map(initValidators, context.loader) : FREEZE_ARR;
-    },
+        this.validators = validators ? toArray(validators).map(initValidators, context.loader) : FREEZE_ARR;
+    }
+
     handleValidate(value, component, e) {
         this.state.hasValidated = true;
         this.validate();
-    },
+    }
+
     @listen("value", ".", false)
     handleChange(newValue, oldValue, name) {
         var hasChanged = newValue != oldValue;
@@ -86,16 +88,17 @@ var Editor = React.createClass({
         } else {
             this.validate(newValue, errors);
         }
-    },
-    getValue(){
+    }
+
+    getValue() {
         return this.context.valueManager.path(this.props.path);
-    },
+    }
 
     /**
      * Runs validation and updates empty fields.
      *
      */
-    validate(value, errors){
+    validate(value, errors) {
         value = arguments.length === 0 ? this.getValue() : value;
         errors = errors || this.getErrorMessages(value);
 
@@ -104,23 +107,25 @@ var Editor = React.createClass({
             hasValidated: true
         });
         return errors;
-    },
+    }
+
     @listen("error")
-    _validate: function () {
+    _validate() {
         this.validate(this.getValue());
-    },
-    getErrorMessages(value){
+    }
+
+    getErrorMessages(value) {
         var vm = this.context.valueManager;
 
         value = arguments.length === 0 ? this.getValue() : value;
         var msgs = this.validators.map((v)=> {
             return v(value, vm);
-        }).filter(tu.nullCheck);
+        }).filter(nullCheck);
         return msgs;
-    },
+    }
 
 
-    title: function () {
+    title() {
         var field = this.props.field || {};
         if (field.title === false) {
             return null;
@@ -129,12 +134,14 @@ var Editor = React.createClass({
             return field.title;
         }
         //Add spaces
-        return tu.titlelize(this.props.name);
-    },
-    handleValid: function (valid) {
+        return titlelize(this.props.name);
+    }
+
+    handleValid(valid) {
         this.setState({valid})
-    },
-    render(){
+    }
+
+    render() {
         var {field, onValueChange, template, onValidate, propsfield, conditional, onValueChange, template, onValidate, ...props} = this.props;
         var pConditional = conditional;
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
@@ -174,5 +181,6 @@ var Editor = React.createClass({
             {child}
         </Template>
     }
-});
+}
+
 module.exports = Editor;

@@ -1,40 +1,43 @@
-var React = require('../React');
-var Editor = require('../Editor');
-var Constants = require('../Constants');
-var ValueManager = require('../ValueManager');
-var BasicFieldMixin = require('../BasicFieldMixin');
-var LoaderMixin = require('../LoaderMixin');
-var NewChildContext = require('../NewChildContext.jsx');
-var tu = require('../tutils');
-var ObjectType = require('./Object.jsx');
-var PropTypes = require('../PropTypes');
-var map = require('lodash/collection/map');
-var style = require('subschema-styles/CollectionMixin-style');
-var css = require('../css');
+"use strict";
 
-var EditChildContext = React.createClass({
-    propTypes: {
+import React from 'react';
+import Editor from '../Editor';
+import Constants from '../Constants';
+import ValueManager from '../ValueManager';
+import BasicFieldMixin from '../BasicFieldMixin';
+import LoaderMixin from '../LoaderMixin';
+import NewChildContext from '../NewChildContext.jsx';
+import tu from '../tutils';
+import ObjectType from './Object.jsx';
+import PropTypes from '../PropTypes';
+import map from 'lodash/collection/map';
+import style from 'subschema-styles/CollectionMixin-style';
+import css from '../css';
+import listen from '../decorators/listen';
+import template from '../decorators/template';
+
+class EditChildContext extends React.Component {
+    static propTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         path: PropTypes.string.isRequired
-    },
-    childContextTypes: {
+    }
+    static childContextTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         parentValueManager: PropTypes.valueManager
-    },
-    getChildContext: function () {
+    }
+
+    getChildContext() {
         var parentValueManager = this.props.valueManager;
         var {loader,path} = this.props;
         var {...value} = this.props.value || parentValueManager.path(path);
         var valueManager = this.valueManager = ValueManager(value, parentValueManager.getErrors());
-        this._submit = parentValueManager.addSubmitListener(null, this.handleSubmit, this, false);
         return {valueManager, parentValueManager, loader};
-    },
-    componentWillUnmount(){
-        this._submit && this._submit.remove();
-    },
-    handleSubmit(e){
+    }
+
+    @listen("submit", null, false)
+    handleSubmit(e) {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
         var currentPath = tu.path(this.props.path, value.key);
@@ -46,23 +49,22 @@ var EditChildContext = React.createClass({
         }
 
         return false;
-    },
+    }
 
-    render(){
+    render() {
         return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit});
     }
-});
+}
 
 function wrapFunc(value, key) {
     return {value, key}
 };
 
-var CollectionMixin = {
-    statics: {
-        listClassName: Constants.listClassName,
-        itemTemplate: 'ListItemTemplate'
-    },
-    propTypes: {
+export default class CollectionMixin extends React.Component {
+    static listClassName = Constants.listClassName;
+    static itemTemplate = 'ListItemTemplate';
+
+    static propTypes = {
         value: PropTypes.object,
         canEdit: PropTypes.bool,
         canReorder: PropTypes.bool,
@@ -72,42 +74,48 @@ var CollectionMixin = {
         labelKey: PropTypes.path,
         createTemplate: PropTypes.template,
         buttonTemplate: PropTypes.template
-    },
-    mixins: [BasicFieldMixin, LoaderMixin],
-    getInitialState() {
-        return {};
-    },
-    getDefaultProps(){
-        return {
-            createTemplate: 'CollectionCreateTemplate',
-            buttonTemplate: 'ButtonTemplate'
-        }
-    },
-    getValue(){
+    }
+    static defaultProps = {
+        createTemplate: 'CollectionCreateTemplate',
+        buttonTemplate: 'ButtonTemplate'
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    getValue() {
         return this.unwrap(this.state.wrapped);
-    },
-    setValue(value){
+    }
+
+    setValue(value) {
         this.setState({wrapped: map(value, wrapFunc)});
-    },
-    setErrors(errors){
+    }
+
+    setErrors(errors) {
         this.setState({errors});
-    },
+    }
+
     handleMoveUp(pos, val) {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
-    },
+    }
+
     handleMoveDown(pos, val) {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.min(pos + 1, values.length), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
 
-    },
+    }
+
     handleDelete(pos, val, pid) {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(pos, 1);
         this.changeValue(values, oval);
-    },
+    }
+
     handleEdit(pos, val, pid) {
         this.setState({
             showAdd: false,
@@ -118,7 +126,7 @@ var CollectionMixin = {
                 key: pid
             }
         });
-    },
+    }
 
     changeValue(newValue, oldValue) {
         if (this.triggerChange(this.unwrap(newValue)) !== false) {
@@ -130,16 +138,19 @@ var CollectionMixin = {
                 editValue: null
             });
         }
-    },
+    }
+
     handleAddBtn(e) {
         e && e.preventDefault();
         this.setState({showAdd: true, editValue: this.newValue()});
-    },
+    }
+
     handleCancelAdd(e) {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false, editValue: null});
-    },
-    handleBtnClick(e, action){
+    }
+
+    handleBtnClick(e, action) {
 
         if (action !== 'submit') {
             e && e.preventDefault();
@@ -151,8 +162,9 @@ var CollectionMixin = {
             });
         }
 
-    },
-    handleSubmit(e, errors, value){
+    }
+
+    handleSubmit(e, errors, value) {
         e && e.preventDefault();
         if (errors == null || Object.keys(errors).length === 0) {
             this.setState({
@@ -162,7 +174,8 @@ var CollectionMixin = {
                 editPid: null
             });
         }
-    },
+    }
+
     renderAddEditTemplate(edit, create) {
         var handler, label = ''
         if (edit) {
@@ -183,23 +196,22 @@ var CollectionMixin = {
                             schema={this.createItemSchema()}
                             title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
 
-                    />
+                />
             </EditChildContext>)
-    },
+    }
 
-    renderAddBtn() {
+    @template('buttonTemplate')
+    renderAddBtn(Template) {
         if (!this.props.field.canAdd) {
             return null;
         }
-        var Template = this.template('buttonTemplate');
         return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
                          onClick={this.handleAddBtn}><i className={style.iconAdd}/>
         </Template>
 
-    },
+    }
 
-    renderAdd()
-    {
+    renderAdd() {
         var field = this.props.field;
         if (!(field.canAdd || field.canEdit)) {
             return null;
@@ -208,8 +220,9 @@ var CollectionMixin = {
         return showAdd || showEdit ?
             showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
             : this.renderAddBtn();
-    },
-    createItemSchema(){
+    }
+
+    createItemSchema() {
         return {
             schema: this.getTemplateItem(),
             fieldsets: [{
@@ -222,12 +235,14 @@ var CollectionMixin = {
             }]
 
         }
-    },
-    render() {
+    }
+
+    @template('itemTemplate')
+    render(ListItemTemplate) {
         var {name,  itemType, errors, canReorder, canDelete, canEdit, canAdd, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
             type: itemType || 'Text',
             name: name
-        } : itemType, ListItemTemplate = this.template('itemTemplate'), values = this.state.wrapped || [], length = values.length;
+        } : itemType, values = this.state.wrapped || [], length = values.length;
         item.canReorder = canReorder;
         item.canDelete = canDelete;
         item.canEdit = canEdit;
@@ -248,10 +263,9 @@ var CollectionMixin = {
                                              value={v} errors={errors} last={i + 1 === length}>
                         {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) : null}
                     </ListItemTemplate>
-                })}
+                    })}
             </ul>
         </div>);
     }
 
 }
-module.exports = CollectionMixin;

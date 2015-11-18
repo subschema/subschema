@@ -5,23 +5,17 @@ var Constants = require('../Constants');
 var css = require('../css');
 var style = require('subschema-styles/Mixed-style');
 var _get = require('lodash/object/get');
+var defaults = require('lodash/object/defaults');
 
-var MixedInput = React.createClass({
-    mixins: [CollectionMixin],
-    statics: {},
-    getDefaultProps() {
-        return {
-            placeholder: '',
-            itemType: 'Text',
-            keyType: 'Text',
-            valueType: 'Text',
-            itemTemplate: 'ListItemTemplate',
+export default class MixedInput extends CollectionMixin {
 
-            onValidate() {
-            }
-
-        }
-    },
+    static defaultProps = defaults({
+        placeholder: '',
+        itemType: 'Text',
+        keyType: 'Text',
+        valueType: 'Text',
+        itemTemplate: 'ListItemTemplate',
+    }, CollectionMixin)
 
     unwrap(value) {
         var ret = {}
@@ -32,9 +26,9 @@ var MixedInput = React.createClass({
             ret[v.key] = v.value;
         });
         return ret;
-    },
+    }
 
-    itemToString(){
+    itemToString() {
         if (this.props.itemToString) return this.props.itemToString;
         var labelKey = this.props.field.labelKey;
         return function (v) {
@@ -46,9 +40,9 @@ var MixedInput = React.createClass({
                 className={style.itemInner}>{ _get(v.value, labelKey, '')}</span> : null}</span>;
         }
 
-    },
+    }
 
-    uniqueCheck(value){
+    uniqueCheck(value) {
         var values = this.getValue();
         if (this.state.editPid == value) {
             return null;
@@ -61,11 +55,13 @@ var MixedInput = React.createClass({
 
         }
         return null;
-    },
-    newValue(){
+    }
+
+    newValue() {
         return {}
-    },
-    getTemplateItem(){
+    }
+
+    getTemplateItem() {
         var kt = this.props.field.keyType || this.props.keyType,
             keyType = tu.isString(kt) ? {
                 type: kt
@@ -82,8 +78,7 @@ var MixedInput = React.createClass({
         (keyType.validators || (keyType.validators = [])).unshift('required', this.uniqueCheck);
 
         return schema;
-    },
+    }
 
-});
 
-module.exports = MixedInput;
+}

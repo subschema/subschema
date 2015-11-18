@@ -1,41 +1,44 @@
 "use strict";
 
-var React = require('../React');
-var Constants = require('../Constants');
-var tu = require('../tutils');
-var CollectionMixin = require('./CollectionMixin.jsx');
-var css = require('../css');
-var style = require('subschema-styles/List-style');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-var _get = require('lodash/object/get');
-var map = require('lodash/collection/map');
-var PropTypes = require('../PropTypes');
-var ListInput = React.createClass({
-    mixins: [CollectionMixin],
-    propTypes: {
-        itemType: PropTypes.type,
-    },
-    getDefaultProps() {
-        return {
+import React from 'react';
+import Constants from '../Constants';
+import tu from '../tutils';
+import CollectionMixin from './CollectionMixin.jsx';
+import css from '../css';
+import style from 'subschema-styles/List-style';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import _get from 'lodash/object/get';
+import map from 'lodash/collection/map';
+import PropTypes from '../PropTypes';
+import defaults from 'lodash/object/defaults';
 
-            title: '',
-            placeholder: '',
-            onValidate() {
-            },
-            itemTemplate: 'ListItemTemplate',
-            collectionCreateTemplate: this.collectionCreateTemplate
-        }
-    },
+export default class ListInput extends CollectionMixin {
+    static propTypes = defaults({
+        itemType: PropTypes.type,
+    }, CollectionMixin.propTypes);
+
+    static defaultProps = defaults({
+        title: '',
+        placeholder: '',
+        onValidate() {
+        },
+        itemTemplate: 'ListItemTemplate'
+    }, CollectionMixin.defaultProps)
+
 
     unwrap(value) {
         return map(value, 'value');
-    },
-    newValue(){
+    }
+
+
+    newValue() {
         return {
             key: this.state.wrapped && this.state.wrapped.length || 0
         }
-    },
-    itemToString(){
+    }
+
+
+    itemToString() {
         if (this.props.itemToString) return this.props.itemToString;
         else if (this.props.labelKey) {
             var labelKey = this.props.labelKey;
@@ -46,9 +49,10 @@ var ListInput = React.createClass({
         return function (v) {
             return v.value;
         };
-    },
+    }
 
-    getTemplateItem(){
+
+    getTemplateItem() {
         var value = tu.isString(this.props.itemType) ? {
             type: this.props.itemType
         } : this.props.itemType || {};
@@ -58,5 +62,4 @@ var ListInput = React.createClass({
             key: {title: false, template: false, type: 'Hidden'}
         };
     }
-});
-module.exports = ListInput;
+}

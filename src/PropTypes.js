@@ -6,7 +6,6 @@ import find     from 'lodash/collection/find';
 import map      from 'lodash/collection/map';
 
 var api = extend({}, PropTypes);
-export default api;
 
 api.cssClass = function api$cssClass() {
     return api.string.apply(api, arguments);
@@ -183,3 +182,4 @@ api.propTypesToNames = function (props) {
     });
     return ret;
 }
+export default api;

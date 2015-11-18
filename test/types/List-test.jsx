@@ -72,7 +72,7 @@ describe('List', function () {
 
 
     });
-    it('should render a list with data without canAdd', function () {
+    it.only('should render a list with data without canAdd', function () {
         var schema = {
             schema: {
                 tasks: {
@@ -90,7 +90,7 @@ describe('List', function () {
                 'three'
             ]
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         var addBtn = byClass(root, 'btn-add')[0];
 

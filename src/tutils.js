@@ -40,7 +40,7 @@ var api = {
     },
     flatten: Function.apply.bind(Array.prototype.concat, []),
     toArray: function (v) {
-        if (Array.isArray(v)) {
+        if (api.isArray(v)) {
             return v;
         }
         if (api.isString(v)) {
