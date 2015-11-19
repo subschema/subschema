@@ -11,7 +11,9 @@ import _get from 'lodash/object/get';
 import map from 'lodash/collection/map';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
+import field from '../decorators/field';
 
+@field
 export default class ListInput extends CollectionMixin {
     static propTypes = defaults({
         itemType: PropTypes.type,

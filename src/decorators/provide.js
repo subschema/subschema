@@ -2,7 +2,7 @@
 import warning from '../warning';
 import map from 'lodash/collection/map';
 
-export default function provide(type) {
+ function provide(type) {
     function provide$config(typeName) {
 
 /*
@@ -30,3 +30,5 @@ export function schema() {
 export function processor() {
     return provide.apply(null, ['processor'].concat(arguments));
 }
+
+export default provide;

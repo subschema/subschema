@@ -17,16 +17,17 @@ const DEFAULT_PATH = '.';
 const DEFAULT_INIT = true;
 export default function listen(type = DEFAULT_TYPE, path = DEFAULT_PATH, init = DEFAULT_INIT) {
     if (typeof type !== 'string') {
-        listen$config(DEFAULT_TYPE, DEFAULT_PATH, DEFAULT_INIT)(arguments[0], arguments[1], arguments[2]);
+        return listen$config(DEFAULT_TYPE, DEFAULT_PATH, DEFAULT_INIT)(arguments[0], arguments[1], arguments[2]);
     } else {
         return listen$config(type, path, init);
     }
 
     function listen$config(type, path, init) {
         return function listen$decorate(Target, name, description) {
-            return wrapTargetWithContextTypes(Target, function listen$config$init(addResult) {
+             wrapTargetWithContextTypes(Target, function listen$config$init(addResult) {
                 addResult(type, path, description.value, init);
             });
+            return description;
         }
     }
 

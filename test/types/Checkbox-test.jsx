@@ -1,5 +1,5 @@
 import {React, into,TestUtils,expect, Simulate} from '../support';
-import {Form} from 'subschema';
+import {Form} from 'Subschema';
 
 describe('Checkbox', function () {
     it('should create a form', function () {

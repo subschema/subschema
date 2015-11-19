@@ -1,7 +1,6 @@
 "use strict";
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
-
-import {ValueManager, Conditional, loader, decorators, PropTypes} from 'subschema';
+import {ValueManager, Conditional, loader, decorators, PropTypes} from 'Subschema';
 var listen = decorators.listen;
 describe('decorator.listen', function () {
     this.timeout(50000);

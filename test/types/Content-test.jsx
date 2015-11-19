@@ -1,6 +1,6 @@
 import {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} from '../support';
 import ReactServer from 'react-dom/server';
-import {ValueManager, loader, types, Editor,Form} from 'subschema';
+import {ValueManager, loader, types, Editor,Form} from 'Subschema';
 
 var {Text, Content} = types;
 

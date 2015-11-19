@@ -97,5 +97,5 @@ var api = {
         return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, api.uppercase);
     },
     push: Function.apply.bind(Array.prototype.push)
-}
+};
 module.exports = api;

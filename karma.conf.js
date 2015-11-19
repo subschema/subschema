@@ -51,6 +51,7 @@ module.exports = function (config) {
                 extensions: ['', '.js', '.jsx'],
                 alias: {
                     'subschema': join('src/index.jsx'),
+                    'Subschema': join('src/index.jsx'),
                     'subschema-styles': join('src/styles')
                 }
             },

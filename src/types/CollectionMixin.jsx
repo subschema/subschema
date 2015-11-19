@@ -97,26 +97,26 @@ export default class CollectionMixin extends React.Component {
         this.setState({errors});
     }
 
-    handleMoveUp(pos, val) {
+    handleMoveUp = (pos, val) => {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
     }
 
-    handleMoveDown(pos, val) {
+    handleMoveDown = (pos, val)=> {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.min(pos + 1, values.length), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
 
     }
 
-    handleDelete(pos, val, pid) {
+    handleDelete = (pos, val, pid)=> {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(pos, 1);
         this.changeValue(values, oval);
     }
 
-    handleEdit(pos, val, pid) {
+    handleEdit = (pos, val, pid) => {
         this.setState({
             showAdd: false,
             showEdit: true,
@@ -140,17 +140,17 @@ export default class CollectionMixin extends React.Component {
         }
     }
 
-    handleAddBtn(e) {
+    handleAddBtn = (e)=> {
         e && e.preventDefault();
         this.setState({showAdd: true, editValue: this.newValue()});
     }
 
-    handleCancelAdd(e) {
+    handleCancelAdd = (e)=> {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false, editValue: null});
     }
 
-    handleBtnClick(e, action) {
+    handleBtnClick = (e, action)=> {
 
         if (action !== 'submit') {
             e && e.preventDefault();
@@ -164,7 +164,7 @@ export default class CollectionMixin extends React.Component {
 
     }
 
-    handleSubmit(e, errors, value) {
+    handleSubmit = (e, errors, value)=> {
         e && e.preventDefault();
         if (errors == null || Object.keys(errors).length === 0) {
             this.setState({

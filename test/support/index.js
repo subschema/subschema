@@ -1,5 +1,5 @@
 "use strict";
-import {React, PropTypes} from 'subschema';
+import {React, PropTypes} from 'Subschema';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import expect from 'expect';

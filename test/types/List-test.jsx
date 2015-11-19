@@ -72,6 +72,7 @@ describe('List', function () {
 
 
     });
+    //failing
     it.only('should render a list with data without canAdd', function () {
         var schema = {
             schema: {

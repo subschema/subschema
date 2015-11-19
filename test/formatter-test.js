@@ -1,4 +1,4 @@
-import {formatter} from 'subschema';
+import {formatter} from 'Subschema';
 import expect from 'expect';
 describe('should create a formatter from a a pattern', function () {
     describe('1 (###) ###-####', function(){
@@ -60,7 +60,7 @@ describe('should create a formatter from a a pattern', function () {
             result = pattern('12345678901')
             expect(result.value).toBe('1 (234) 567-8901')
         });
-        it('should format even with a number and matches', function(){
+        it('should format even with a number and matches again', function(){
             result = pattern('12345678901')
             expect(result.value).toBe('1 (234) 567-8901')
         });

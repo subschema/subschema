@@ -1,6 +1,6 @@
 "use strict";
 
-import {wrapTargetWithContextTypes,invoke, removeListener} from '../listenUtil';
+import {wrapTargetWithContextTypes, removeListener} from '../listenUtil';
 import warning from '../warning';
 import map from 'lodash/collection/map';
 

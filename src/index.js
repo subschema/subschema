@@ -3,5 +3,5 @@ context.keys().forEach(function (key) {
     var k = key.replace(/^\.\/(.*)\.js(x)?$/, '$1');
     api[k] = context(key);
 });
-
+api.decorators = require('./decorators');
 module.exports = api;

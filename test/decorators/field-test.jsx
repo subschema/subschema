@@ -1,7 +1,7 @@
 "use strict";
 import {React, ReactDOM, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
 
-import {ValueManager, Conditional, loader, decorators, PropTypes} from 'subschema';
+import {ValueManager, Conditional, loader, decorators, PropTypes} from 'Subschema';
 
 var field = decorators.field;
 describe('decorator.field', function () {

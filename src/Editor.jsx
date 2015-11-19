@@ -1,9 +1,12 @@
 "use strict";
 import React from 'react';
-import { FREEZE_ARR, titlelize, isRegExp,isFunction,toArary,nullCheck} from './tutils';
-import {valueManager, loader} from './PropTypes';
+import PropTypes from './PropTypes';
 import Template from './Template.jsx';
 import {listen} from './decorators';
+
+
+var { FREEZE_ARR, noop, titlelize, isRegExp,isFunction,toArray,nullCheck}  = require('./tutils');
+
 
 function initValidators(v) {
     //If it has a type init it
@@ -29,34 +32,28 @@ function initValidators(v) {
 
 export default class Editor extends React.Component {
     static contextTypes = {
-        valueManager,
-        loader
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
     }
     static defaultProps = {
         field: {
             type: 'Text'
         },
-        onValidate() {
-        },
+        onValidate: noop,
         template: 'EditorTemplate'
     }
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             hasChanged: false,
             isValid: false
-        }
-        this.validators = FREEZE_ARR;
+        };
+        this.initValidators(props, context);
     }
-
 
     setValue(value) {
         this.refs.field.setValue(value);
-    }
-
-    componentWillMount() {
-        this.initValidators(this.props, this.context);
     }
 
     componentWillReceiveProps(newProps, newContext) {
@@ -109,7 +106,7 @@ export default class Editor extends React.Component {
         return errors;
     }
 
-    @listen("error")
+    // @listen("error")
     _validate() {
         this.validate(this.getValue());
     }
@@ -149,18 +146,19 @@ export default class Editor extends React.Component {
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var Component = this.context.loader.loadType(type),
             title = this.title(),
+            handleValidate = this.handleValidate.bind(this),
             errorClassName = errorClassName == null ? 'has-error' : errorClassName;
         var child;
         if (Component instanceof Promise) {
             var Lazy = this.context.loader.loadType('LazyType');
             child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
-                          onValidate={this.handleValidate} promise={Component}/>
+                          onValidate={handleValidate} promise={Component}/>
         }
         else {
             child = <Component ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
 
-                               onValidate={this.handleValidate}/>;
+                               onValidate={handleValidate}/>;
         }
         if (!title) {
             title = '';
@@ -176,7 +174,7 @@ export default class Editor extends React.Component {
                          title={title}
                          errorClassName={errorClassName}
                          help={!this.state.valid && (props.help || rfield.help)}
-                         onValidate={this.handleValidate}
+                         onValidate={handleValidate}
         >
             {child}
         </Template>

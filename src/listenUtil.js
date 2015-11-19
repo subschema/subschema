@@ -114,7 +114,7 @@ export function wrapTarget(Target, init) {
 
 
 function _addListenersTo(method, path, listener, init) {
-    var itm = {method: MapTypes[method], path, listener, init, scope: this};
+    var itm = {method: MapTypes[method], path, listener: invoke(this, listener), init, scope: this};
     (this.__listeners || (this.__listeners = [])).push(itm);
     return __listen.call(this, itm);
 }

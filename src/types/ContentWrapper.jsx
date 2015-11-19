@@ -1,12 +1,16 @@
 "use strict";
 
-var React = require('../React');
-var SubstituteMixin = require('./SubstituteMixin.js');
+import React from 'react';
 import lifecycle from '../decorators/lifecycle';
 import listeners from '../decorators/listeners';
 import substitute from './SubstituteMixin';
 import {FREEZE_OBJ} from '../tutils';
+import PropTypes from '../PropTypes';
 
+function keyToSetState(obj, key) {
+    obj[key] = 'handleValChange';
+    return obj;
+}
 
 export default class ContentWrapper extends React.Component {
     static defaultProps = {
@@ -14,28 +18,37 @@ export default class ContentWrapper extends React.Component {
         content: ''
     }
 
+    static contextTypes = {
+        loader: PropTypes.loader
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
     componentWillReceiveProps(props) {
         if (props.content === this.props.content) {
             return;
         }
-        this.listen(props.content);
+        this.listen(props);
     }
 
     @listeners
-    listen(content) {
-        content = content || this.props.content;
-        var {listen} = this._fmt = substitute(content);
-        var obj = {};
+    listen(props) {
+        var listenTo = (this._fmt = substitute((props || this.props).content)).listen.reduce(keyToSetState, {});
+        return listenTo;
+    }
 
-        listen.forEach(function keyToSetState(key) {
-            obj[key] = (value)=>this.setState({[key]: value});
-        }, this);
-
-        return obj;
+    handleValChange(value, oldValue, path) {
+        if (this.state[path] !== value) {
+            this.state[path] = value;
+            this.forceUpdate();
+        }
     }
 
     currentContent() {
-        return this._fmt.format(this.state || FREEZE_OBJ);
+        return this._fmt.format(this.state);
     }
 
     render() {
@@ -49,10 +62,7 @@ export default class ContentWrapper extends React.Component {
         } else if (this.context.loader) {
             Type = this.context.loader.loadType(type);
         }
-        return <Type {...props}>
-            <span key='content' dangerouslySetInnerHTML={{ __html: this.currentContent()}}/>
-            {children}
-        </Type>
+        return <Type {...props} key='content' dangerouslySetInnerHTML={{ __html: this.currentContent()}}/>
 
     }
 }

@@ -1,7 +1,7 @@
 "use strict";
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
 
-import {ValueManager, Conditional, loader, decorators} from 'subschema';
+import {ValueManager, Conditional, loader, decorators} from 'Subschema';
 var template = decorators.template;
 describe('template', function () {
     var context = {

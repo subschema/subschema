@@ -1,6 +1,6 @@
 "use strict";
 import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from './support';
-import {ValueManager,loaderFactory,NestedMixin, Form, types} from 'subschema';
+import {ValueManager,loaderFactory,NestedMixin, Form, types} from 'Subschema';
 
 var ObjectType = types.Object
 var TextInput = types.Text;
@@ -130,7 +130,6 @@ describe('NestedMixin', function () {
             expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
             expect(fieldsets[0].fields).toEqual(['a', 'b', 'c']);
             expect(fieldsets[1].fields).toEqual(['d', 'e', 'f']);
-            console.log(JSON.stringify(fieldsets));
         });
 
         it('should normalize nested fieldsets', function () {
