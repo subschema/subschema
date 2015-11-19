@@ -1,17 +1,18 @@
 "use strict";
+import React, {Component} from 'react';
+import Constants from '../Constants';
+import css from '../css';
+import field from '../decorators/field';
 
-var React = require('../React'), Constants = require('../Constants'), css = require('../css'),
-    noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
+var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
-var Number = React.createClass({
-    mixins: [require('../BasicFieldMixin'), require('../FieldValueDefaultPropsMixin'), require('../FieldStateMixin')],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    handleChange(e){
+@field
+export default class NumberInput extends Component {
+    static inputClassName = Constants.inputClassName
+
+    handleDateChange(e) {
 
         var value = e.target.value;
-//        this.props.onChange(e);
         //Not a valid number but valid to become a number
         if (value === '') {
             this.triggerChange(null);
@@ -31,22 +32,16 @@ var Number = React.createClass({
             this.forceUpdate();
             return false;
         }
-    },
-    handleValidate(e){
-        this.props.onBlur.call(this, e);
-        this.props.onValidate(this.state.value, this, e);
+    }
 
-    },
     render() {
         var {onChange, onValueChange, onBlur, className, field, value, dataType, value, fieldAttrs, type, ...props} = this.props
-        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
+        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
                       className={css.forField(this)}
 
                       value={this.state.value}
             {...props} {...fieldAttrs}
                       type={dataType || 'text'}
-            />
+        />
     }
-});
-
-module.exports = Number;
+}

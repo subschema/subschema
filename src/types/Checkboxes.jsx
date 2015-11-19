@@ -1,41 +1,33 @@
-var React = require('../React');
-var BasicFieldMixin = require('../BasicFieldMixin');
-var LoaderMixin = require('../LoaderMixin');
-var tu = require('../tutils');
-var Constants = require('../Constants');
-var css = require('../css');
-var PropTypes = require('../PropTypes');
+import React, {Component} from '../React'
+import BasicFieldMixin from '../BasicFieldMixin'
+import LoaderMixin from '../LoaderMixin'
+import tu from '../tutils'
+import Constants from '../Constants'
+import css from '../css'
+import PropTypes from '../PropTypes'
+import field from '../decorators/field';
+import template from '../decorators/template';
 
-var Checkboxes = React.createClass({
-    statics: {
-        inputClassName: Constants.inputCheckboxesClassNam
-    },
-    mixins: [BasicFieldMixin, LoaderMixin],
-    propTypes:{
-        options:PropTypes.options,
-        itemTemplate:PropTypes.template,
-        groupTemplate:PropTypes.template
-    },
-    getDefaultProps() {
-        return {
-            title: '',
-            name: '',
-            placeholder: '',
-            dataType: this.dataType,
-            options:[],
-            itemTemplate: 'CheckboxesTemplate',
-            groupTemplate: 'CheckboxesGroupTemplate',
-            onValidate(){
-            }
-        }
+@field(null, 'handleCheckChange')
+export default class Checkboxes extends Component {
+    static      inputClassName = Constants.inputCheckboxesClassNam
 
-    },
+    static propTypes = {
+        options: PropTypes.options,
+        itemTemplate: PropTypes.template,
+        groupTemplate: PropTypes.template
+    }
+    static defaultProps = {
+        title: '',
+        name: '',
+        placeholder: '',
+        dataType: this.dataType,
+        options: [],
+        itemTemplate: 'CheckboxesTemplate',
+        groupTemplate: 'CheckboxesGroupTemplate'
+    }
 
-    setValue(value){
-        this.setState({value});
-    },
-
-    handleCheckChange(e){
+    handleCheckChange(e) {
         var newValues = this.state.value || [];
         if (e.target.checked) {
             newValues.push(e.target.value);
@@ -43,10 +35,10 @@ var Checkboxes = React.createClass({
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
         this.triggerChange(newValues);
-    },
+    }
 
 
-    _createCheckbox(option, index, group, CheckboxTemplate){
+    _createCheckbox(option, index, group, CheckboxTemplate) {
 
 
         var id = tu.path(this.props.path, index, group);
@@ -65,13 +57,14 @@ var Checkboxes = React.createClass({
             <input type="checkbox" {...opts}/>
         </CheckboxTemplate>);
 
-    },
-    _createGroup(option, index, group, Template, CheckboxTemplate){
+    }
+
+    _createGroup(option, index, group, Template, CheckboxTemplate) {
         return <Template group={option.group}>
             {this.makeOptions(option.options, group == null ? 0 : group, CheckboxTemplate)}
         </Template>
 
-    },
+    }
 
 
     /**
@@ -80,11 +73,10 @@ var Checkboxes = React.createClass({
      *                      or as an array of objects e.g. [{val: 543, label: 'Title for object 543'}]
      * @return {String} HTML
      */
-        makeOptions (array, group) {
+    @template('itemTemplate', 'groupTemplate')
+    makeOptions(CheckboxTemplate,CheckboxesGroupTemplate, array, group) {
         array = array || [];
         var name = this.props.name;
-        var CheckboxTemplate = this.template('itemTemplate');
-        var CheckboxesGroupTemplate = this.template('groupTemplate');
         return array.map((option, index)=> {
             option = tu.isString(option) ? {val: option} : option;
             return (
@@ -92,14 +84,11 @@ var Checkboxes = React.createClass({
                     key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate) : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
 
         });
-    },
+    }
 
-    render()
-    {
+    render() {
 
         return <div
             className={css.forField(this)}>{this.makeOptions(this.props.options, 1)}</div>
     }
-});
-
-module.exports = Checkboxes;
+}

@@ -1,6 +1,6 @@
 'use strict';
-
-var warning = require('lodash/utility/noop');
+import noop from 'lodash/utility/noop';
+var warning = noop;
 
 if (process.env.NODE_ENV !== 'production') {
     warning = function (check, format) {
@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
         if (typeof console !== void(0)) {
             console.error(message);
         }
+        
         try {
             //trigger debugger;
             throw new Error(message);
@@ -24,4 +25,4 @@ if (process.env.NODE_ENV !== 'production') {
     }
 }
 
-module.exports = warning;
+export default warning;

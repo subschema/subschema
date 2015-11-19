@@ -1,23 +1,25 @@
 "use strict";
 
-var React = require('../React');
-var DefaultContentWrapper = require('./ContentWrapper.jsx');
-var DOM = React.DOM || {};
-var map = require('lodash/collection/map');
-var isObject = require('lodash/lang/isObject');
-var tu = require('../tutils');
-var defaults = require('lodash/object/defaults');
-var PropTypes = require('../PropTypes');
-var Content = React.createClass({
+import React, {Component} from '../React';
+import DefaultContentWrapper from './ContentWrapper.jsx';
+import map from 'lodash/collection/map';
+import isObject from 'lodash/lang/isObject';
+import tu from '../tutils';
+import defaults from 'lodash/object/defaults';
+import PropTypes from '../PropTypes';
 
-    contextTypes: {
-        valueManager: PropTypes.valueManager,
+export class Content extends Component {
+    static contextTypes = {
         loader: PropTypes.loader
-    },
-    /*  getDefaultProps(){
-     return Content._defaultProps;
-     },*/
-    renderChildren(props, children){
+    }//Expose for react-native subschema.
+    static defaultProps = {
+        type: 'span',
+        content: ''
+    }
+    static displayName = 'Content';
+    static Types = React.DOM || {}
+
+    renderChildren(props, children) {
         if (!(children && props.children)) {
             return null;
         }
@@ -40,7 +42,8 @@ var Content = React.createClass({
             return children[v];
         });
 
-    },
+    }
+
     renderChild(content, props, prefix, children) {
         if (content == null || content === false) {
             return null;
@@ -81,10 +84,9 @@ var Content = React.createClass({
         return <Content {...props} key={'content-ft-'+prefix} content={content}>
             {this.renderChildren(content, children)}
         </Content>
-    },
+    }
 
-    render()
-    {
+    render() {
         var {type, content, children, field, context, ...props} = this.props, Ctype;
         if (field && field.content) {
             content = field.content;
@@ -123,12 +125,6 @@ var Content = React.createClass({
             {children}
         </Ctype>
     }
-});
-//Expose for react-native subschema.
-Content.defaultProps = {
-    type: 'span',
-    content: ''
 }
-Content.displayName = 'Content';
-Content.Types = React.DOM || {}
+
 module.exports = Content;

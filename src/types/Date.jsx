@@ -1,24 +1,29 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+import React, {Component} from '../React';
+import FieldMixin from '../FieldMixin';
+import Constants from '../Constants';
+import css from '../css';
+import field from '../decorators/field'
 
+@field
+export default class DateInput extends Component {
+    static inputClassName = Constants.inputClassName
 
-var DateInput = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    asInputValue(){
+    asInputValue() {
         if (this.state.value == null) {
             return '';
         }
-        var value = new Date(this.state.value).toISOString().substring(0, 10);
+        return new Date(this.state.value).toISOString().substring(0, 10);
 
-        return value;
-    },
-    handleDateChange(e){
+    }
+
+
+    handleDateChange = (e)=> {
         this.props.onChange(e);
         var value = this.valueFromEvt(e);
-        this.triggerChange(new Date(value).getTime());
-    },
+        this.handleChange(new Date(value).getTime());
+    }
+
+
     render() {
         var {onBlur,onValueChange,onChange, className, fieldAttrs, ...props} = this.props;
         return <input onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
@@ -26,8 +31,8 @@ var DateInput = React.createClass({
                       value={this.asInputValue()}
             {...props}
             {...fieldAttrs}
-            />
+        />
     }
-});
+}
 
 module.exports = DateInput;
