@@ -1,3 +1,4 @@
+import decorator from './decorator';
 /**
  * Bind decorator.  Binds to the first derefence of a function.
  * @example
@@ -37,16 +38,8 @@
  * @param descriptor
  * @returns {*}
  */
-export default function bind(args = null, name = null, descriptor = null) {
+function bind(args = null, name = null, descriptor = null) {
 
-
-    if (!Array.isArray(args)) {
-        return bind$config()(args, name, descriptor);
-    }
-
-    return bind$config(args);
-
-    function bind$config(args = null) {
         return function bind$decorator(target, name, descriptor) {
             var {value, writable, configurable, value, ...rest} = descriptor;
             if (args == null) {
@@ -66,6 +59,7 @@ export default function bind(args = null, name = null, descriptor = null) {
             }
             rest.bound = true;
             return rest;
-        }
     }
 }
+
+export default decorator(bind);

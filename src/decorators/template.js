@@ -1,24 +1,31 @@
 "use strict";
 import warning from '../warning';
 import PropTypes from '../PropTypes'
-import loader from '../loader';
+import decorator from './decorator';
+import Template from '../Template.jsx';
 
 function loadCtx(v) {
     if (v === false) {
         return null;
     }
-    var template = this.props[v];
-    warning(template, 'There was no template for %s in props', v);
+    
+    if (typeof v === 'string') {
+        var props = this.props;
+        var template = props && props.field && props.field[v] || props[v];
 
-    if (typeof template !== 'string') {
+        warning(template, 'There was no template for %s in props or in props.field on component %s', v, this.constructor.name);
+
+        if (typeof template !== 'string') {
+            return template;
+        }
+        warning(this.context, 'context.loader was not injected in %s!', this.constructor.name);
+
+        template = this.context.loader.loadTemplate(template);
+
+        warning(template, 'There was no template for %s in the loader', template);
         return template;
     }
-
-    template = this.context.loader.loadTemplate(template);
-
-    warning(template, 'There was no template for %s in the loader', template);
-
-    return template;
+    return Template;
 }
 /**
  * This injects a template into your method.  It can take variable length
@@ -29,26 +36,17 @@ function loadCtx(v) {
  * @param rest
  * @returns {template$wrap}
  */
-export default function template(property = "template", ...rest) {
-    if (typeof property === 'string') {
-        rest.unshift(property);
-        return template$wrap;
-    } else {
-        var target = property, name = rest[0], description = rest[1];
-        rest = ['template']
-        return template$wrap(target, name, description);
-    }
-
-    function template$wrap(target, name, description) {
+function template(property = "template", ...rest) {
+    return function template$config(target, name, description) {
         var Target = target.constructor || target;
         var contextTypes = Target.contextTypes;
         if (!contextTypes) {
-            Target.contextTypes = {loader: PropTypes.loader};
+            Target.contextTypes = { loader: PropTypes.loader };
         } else if (!Target.contextTypes.loader) {
             Target.contextTypes.loader = PropTypes.loader;
         }
         var ofunc = description.value;
-        description.value = function template$wrap$value(...args) {
+        description.value = function template$config$value(...args) {
             var props = this.props, loader = this.context.loader;
             var tmpl = rest.map(loadCtx, this);
 
@@ -58,3 +56,5 @@ export default function template(property = "template", ...rest) {
 
     }
 }
+
+export default decorator(template);

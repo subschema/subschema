@@ -1,5 +1,5 @@
 "use strict";
-
+import decorator from './decorator';
 import {wrapTargetWithContextTypes} from '../listenUtil';
 
 /**
@@ -15,20 +15,13 @@ import {wrapTargetWithContextTypes} from '../listenUtil';
 const DEFAULT_TYPE = 'value';
 const DEFAULT_PATH = '.';
 const DEFAULT_INIT = true;
-export default function listen(type = DEFAULT_TYPE, path = DEFAULT_PATH, init = DEFAULT_INIT) {
-    if (typeof type !== 'string') {
-        return listen$config(DEFAULT_TYPE, DEFAULT_PATH, DEFAULT_INIT)(arguments[0], arguments[1], arguments[2]);
-    } else {
-        return listen$config(type, path, init);
+function listen(type = DEFAULT_TYPE, path = DEFAULT_PATH, init = DEFAULT_INIT) {
+    return function listen$decorate(Target, name, description) {
+        wrapTargetWithContextTypes(Target, function listen$config$init(addResult) {
+            addResult(type, path, description.value, init);
+        });
+        return description;
     }
-
-    function listen$config(type, path, init) {
-        return function listen$decorate(Target, name, description) {
-             wrapTargetWithContextTypes(Target, function listen$config$init(addResult) {
-                addResult(type, path, description.value, init);
-            });
-            return description;
-        }
-    }
-
 }
+
+export default decorator.property(listen);

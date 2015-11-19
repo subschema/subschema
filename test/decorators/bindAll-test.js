@@ -55,7 +55,7 @@ describe('bindAll', function () {
     });
     it('should bind exclude notadd', function () {
 
-        @bindAll(null, [/^notadd$/])
+        @bindAll(null, null, [/^notadd$/])
         class MyClass {
             constructor(init = 1) {
                 this.init = init;
@@ -79,7 +79,7 @@ describe('bindAll', function () {
     })
     it('should bind exclude notadd and not add', function () {
 
-        @bindAll(['add'], [/^notadd$/])
+        @bindAll(['add'],null, [/^notadd$/])
         class MyClass {
             constructor(init = 1) {
                 this.init = init;

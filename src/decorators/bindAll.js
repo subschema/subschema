@@ -1,8 +1,11 @@
 "use strict";
+import decorator from './decorator';
 
 function match(name, include) {
     if (include) {
-        return (include.test) ? include.test(name) : (include === name);
+        //name = addStuff
+        //include = add
+        return (include.test) ? include.test(name) : (name.indexOf(include) > -1);
     }
 }
 
@@ -27,33 +30,39 @@ function allow(name, includes, excludes) {
     }
     return true;
 }
-
-export default function bindAll(include, exclude) {
-
-    if (Array.isArray(include) || Array.isArray(exclude)) {
-        return bindAll$config(include, exclude);
-    }
-
-    return bindAll$config()(include);
-
-    function bindAll$config(include = [], exclude = []) {
-        return function bindAll$decorator(Target) {
-
-            class BindTarget extends Target {
-                static displayName = Target.name;
-
-                constructor() {
-                    super(...arguments);
-                    var names = Object.getOwnPropertyNames(Target.prototype);
-                    for (var i = 0, l = names.length; i < l; i++) {
-                        var prop = names[i];
-                        if (prop !== 'constructor' && typeof this[prop] === 'function' && allow(prop, include, exclude)) {
-                            this[prop] = this[prop].bind(this);
+/**
+ * Bind methods to a class. 
+ *  Include will include only those matching.
+ *  Exclude will exclude only those that match.
+ * Otherwise binds all.
+ *@param {Array.[string|RegExp]} names - Include the names
+ *@param {Array.[string|RegExp]} include - Include the names matching (regexp or substring)
+ *@param {Array.[string|RegExp]} exclude - Exclude the names matching (regexp or substring)
+*/
+function bindAll(names = [], include = [], exclude = []) {
+    return function bindAll$decorator(Target) {
+        //prevent a method from being bound twice. (ie. a regex that matches include and does not match exclude)
+        var TP = Target.prototype;
+        class BindAllTarget extends Target {
+            constructor(args) {
+                super(...args);
+                var bound = [];
+                names = names == null || names.length === 0 ? Object.getOwnPropertyNames(TP) : names;
+                for (var i = 0, l = names.length; i < l; i++) {
+                    var prop = names[i];
+                    if (prop !== 'constructor' && typeof TP[prop] === 'function' && allow(prop, include, exclude)) {
+                        var ofunc = TP[prop];
+                        if (bound.indexOf(ofunc) === -1) {
+                            bound.push(ofunc);
+                            this[prop] = ofunc.bind(this);
                         }
                     }
                 }
+                bound = null;
             }
-            return BindTarget;
         }
+
+        return BindAllTarget;
     }
 }
+export default decorator(null, bindAll);
