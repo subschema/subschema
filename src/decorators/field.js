@@ -2,6 +2,7 @@ import PropTypes from '../PropTypes';
 import {noop,extend} from '../tutils';
 import {wrapTarget} from '../listenUtil';
 
+
 function defHandleChange(eventValue, e) {
     var value = eventValue(e);
     if (this.props.onChange(value) === false) {
@@ -68,7 +69,7 @@ function refOrFunc(obj, key, defValue) {
  * @returns {*}
  */
 export default function field(setValue = 'setValue', handleChange = 'handleChange', handleValidate = 'handleValidate', eventValue = defEventValue) {
-    if (typeof setValue !== 'string') {
+    if (typeof setValue === 'function') {
         var Target = setValue;
         setValue = 'setValue';
         handleChange = 'handleChange';
@@ -88,18 +89,17 @@ export default function field(setValue = 'setValue', handleChange = 'handleChang
 
         wrapTarget(Target.prototype, function init$field(addResult) {
             if (handleChangeKey !== false) {
-                this[handleChangeKey] = refOrFunc(this, handleChange, defHandleChange).bind(this, eventValue);
+                this[handleChangeKey] = refOrFunc(this, handleChange, defHandleChange.bind(this, eventValue));
             }
 
             if (handleValidateKey !== false) {
-                this[handleValidateKey] = refOrFunc(this, handleValidate, defHandleValidate).bind(this, eventValue);
+                this[handleValidateKey] = refOrFunc(this, handleValidate, defHandleValidate.bind(this, eventValue));
             }
 
             if (handleSetValueKey !== false) {
                 var listen = this[handleSetValueKey] = refOrFunc(this, setValue, defSetValue);
                 addResult('value', this.props.path, listen, true);
             }
-            this.setState({[this.props.path]: this.props.value});
         });
         return Target;
 

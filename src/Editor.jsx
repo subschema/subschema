@@ -32,8 +32,8 @@ function initValidators(v) {
 
 export default class Editor extends React.Component {
     static contextTypes = {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader
+        valueManager:PropTypes.valueManager,
+        loader:PropTypes.loader
     }
     static defaultProps = {
         field: {

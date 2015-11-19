@@ -37,7 +37,7 @@ class EditChildContext extends React.Component {
     }
 
     @listen("submit", null, false)
-    handleSubmit(e) {
+    handleSubmit = (e)=> {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
         var currentPath = tu.path(this.props.path, value.key);
@@ -63,7 +63,10 @@ function wrapFunc(value, key) {
 export default class CollectionMixin extends React.Component {
     static listClassName = Constants.listClassName;
     static itemTemplate = 'ListItemTemplate';
-
+    static contextTypes = {
+        loader: PropTypes.loader,
+        valueManager: PropTypes.valueManager
+    }
     static propTypes = {
         value: PropTypes.object,
         canEdit: PropTypes.bool,
@@ -140,12 +143,12 @@ export default class CollectionMixin extends React.Component {
         }
     }
 
-    handleAddBtn = (e)=> {
+    handleAddBtn = (e) => {
         e && e.preventDefault();
         this.setState({showAdd: true, editValue: this.newValue()});
     }
 
-    handleCancelAdd = (e)=> {
+    handleCancelAdd = (e) => {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false, editValue: null});
     }

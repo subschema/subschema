@@ -5,6 +5,7 @@ var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate}
 
 
 describe('List', function () {
+    this.timeout(50000);
     function add(root, c) {
         var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
         var addBtn = findNode(allBtns[0]);
@@ -73,7 +74,7 @@ describe('List', function () {
 
     });
     //failing
-    it.only('should render a list with data without canAdd', function () {
+    it('should render a list with data without canAdd', function () {
         var schema = {
             schema: {
                 tasks: {
