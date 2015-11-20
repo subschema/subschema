@@ -1,5 +1,4 @@
 import React, {Component} from '../React';
-import FieldMixin from '../FieldMixin';
 import Constants from '../Constants';
 import css from '../css';
 import field from '../decorators/field'

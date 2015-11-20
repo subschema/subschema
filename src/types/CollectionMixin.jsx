@@ -4,8 +4,6 @@ import React, {Component} from 'react';
 import Editor from '../Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
-import BasicFieldMixin from '../BasicFieldMixin';
-import LoaderMixin from '../LoaderMixin';
 import NewChildContext from '../NewChildContext.jsx';
 import tu from '../tutils';
 import ObjectType from './Object.jsx';

@@ -1,8 +1,9 @@
 "use strict";
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from './PropTypes';
+import CSSTransitionGroup  from 'react-addons-css-transition-group';
+import listeners from './decorators/listeners';
 
-var CSSTransitionGroup = require('react-addons-css-transition-group');
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
 var opFactory = (function opFactory$factory(scope) {
@@ -57,9 +58,8 @@ var opFactory = (function opFactory$factory(scope) {
         }
     }
 }());
-import ValueManagerListenerMixin from './ValueManagerListenerMixin';
 
-export default class Conditional extends ValueManagerListenerMixin {
+export default class Conditional extends Component {
     static defaultProps = {
         operator: '!=',
         value: null,
@@ -114,18 +114,23 @@ export default class Conditional extends ValueManagerListenerMixin {
 
     componentWillReceiveProps(props) {
         this._handleProps(this.props, props);
+        this.listeners(props);
+        this.errorListeners(props);
     }
 
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        this._handleProps({}, props);
+    }
 
-
-
-    listeners() {
-        var {listen, error,path} = this.props;
+    @listeners
+    listeners(props) {
+        props = props || this.props;
+        var {listen, error,path} = props;
         if (listen === false) {
             return;
         }
         if (listen || error == null) {
-            this._handleProps({}, this.props);
             var key = listen == null || listen === true ? path : listen;
             this._key = '@' + key.replace(/\./g, '_');
             return {
@@ -137,15 +142,15 @@ export default class Conditional extends ValueManagerListenerMixin {
     }
 
 
-    handleMatch(value) {
+    handleMatch = (value)=> {
         this.setState({matched: value});
     }
 
-
-    errorListeners() {
-        var {error, path} = this.props;
+    @listeners('error')
+    errorListeners(props) {
+        var props = props || this.props;
+        var {error, path} = props;
         if (error) {
-            this._handleProps({}, this.props);
             return {
                 [error === true ? path : error]: this.handleValue
             }
@@ -174,7 +179,7 @@ export default class Conditional extends ValueManagerListenerMixin {
         }
     }
 
-    handleValue(value) {
+    handleValue = (value)=> {
         var matched = this.evaluate(value, this.props.value);
         this.setState({matched});
     }

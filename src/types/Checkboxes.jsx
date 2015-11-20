@@ -1,6 +1,6 @@
+"use strict";
+
 import React, {Component} from '../React'
-import BasicFieldMixin from '../BasicFieldMixin'
-import LoaderMixin from '../LoaderMixin'
 import tu from '../tutils'
 import Constants from '../Constants'
 import css from '../css'
@@ -17,6 +17,7 @@ export default class Checkboxes extends Component {
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template
     }
+
     static defaultProps = {
         title: '',
         name: '',
@@ -74,7 +75,7 @@ export default class Checkboxes extends Component {
      * @return {String} HTML
      */
     @template('itemTemplate', 'groupTemplate')
-    makeOptions(CheckboxTemplate,CheckboxesGroupTemplate, array, group) {
+    makeOptions(CheckboxTemplate, CheckboxesGroupTemplate, array, group) {
         array = array || [];
         var name = this.props.name;
         return array.map((option, index)=> {

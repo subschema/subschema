@@ -2,8 +2,6 @@
 
 import React, {Component} from 'react';
 import {noop} from '../tutils';
-import BasicFieldMixin from '../BasicFieldMixin';
-import LoaderMixin from '../LoaderMixin';
 import css from '../css';
 import Dom from '../Dom';
 import style from 'subschema-styles/Autocomplete-style';
