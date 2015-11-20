@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import field from '../decorators/field';
 import Constants from '../Constants';
+import {forField} from '../css';
 
 @field
 export default class Password extends Component {
@@ -11,7 +12,7 @@ export default class Password extends Component {
     render(){
         var {onBlur, onChange, onValueChange, value, fieldAttrs, ...props} =this.props;
         return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
-                      className={css.forField(this)} type="password"
+                      className={forField(this)} type="password"
                       value={this.state.value}
             {...props}
             {...fieldAttrs}

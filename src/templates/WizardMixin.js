@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import ObjectType from '../types/Object.jsx';
 import PropTypes from '../PropTypes';
 import template from '../decorators/template';
+
 function donner(done) {
     if (typeof done === 'function')
         done();
@@ -173,9 +174,5 @@ export default class WizardMixin extends Component {
         done();
     }
 
-    @template('wizardProgressTemplate')
-    renderProgress = (Template, fieldsets)=> {
-        return <Template fieldsets={fieldsets} index={this.state.compState}
-                         onClick={this.handleOnClick}/>
-    }
+
 }

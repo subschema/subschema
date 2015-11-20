@@ -9,6 +9,7 @@ import cssUtil from '../css';
 import style from 'subschema-styles/WizardTemplate-style';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
+import template from '../decorators/template';
 
 function donner(done) {
     done();
@@ -56,7 +57,11 @@ export default class WizardTemplate extends WizardMixin {
         }
     }
 
-
+    @template('wizardProgressTemplate')
+    renderProgress(Template, fieldsets) {
+        return <Template fieldsets={fieldsets} index={this.state.compState}
+                         onClick={this.handleOnClick}/>
+    }
     render() {
         var {...schema} = this.schema.schema;
         var fieldsets = this.schema.fieldsets,
