@@ -23,8 +23,6 @@ export default class RadioInput extends Component {
             itemTemplate: 'RadioItemTemplate'
         }
 
-    static
-
     handleCheckChange = (e)=>{
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.forceSelection === false || this.props.options && this.props.options.length === 1) {
