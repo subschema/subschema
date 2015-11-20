@@ -1,6 +1,8 @@
 "use strict";
 
 import tutils from './tutils';
+import warning from './warning';
+
 var { isFunction } = tutils;
 /**
  * This callback is displayed as a global member.
@@ -33,13 +35,8 @@ export default function eventable(listeners, find, findOld) {
     }
 
     return function eventable$addListener(path, listener, scope, init) {
-        if (isFunction(path)) {
-            init = scope;
-            scope = listener;
-            listener = path;
-            path = null
-        }
         if (listener == null) {
+            warning(listener, 'trying to add a null listener %s', path )
             return;
         }
         var obj = {path, listener, scope, remove, once};

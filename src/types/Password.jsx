@@ -9,14 +9,14 @@ import {forField} from '../css';
 export default class Password extends Component {
     static inputClassName = Constants.inputClassName
 
-    render(){
+    render() {
         var {onBlur, onChange, onValueChange, value, fieldAttrs, ...props} =this.props;
         return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
                       className={forField(this)} type="password"
                       value={this.state.value}
             {...props}
             {...fieldAttrs}
-            />
+        />
     }
 
 }

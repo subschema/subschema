@@ -50,7 +50,7 @@ export default class Content extends Component {
             return null;
         }
         if (isString(content)) {
-            var ContentWrapper = this.DefaultContentWrapper || (this.DefaultContentWrapper = this.context.loader.loadType('ContentWrapper')) ;
+            var ContentWrapper = this.DefaultContentWrapper || (this.DefaultContentWrapper = this.context.loader.loadType('ContentWrapper'));
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}/>
         }
 

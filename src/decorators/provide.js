@@ -3,6 +3,10 @@ import warning from '../warning';
 import map from 'lodash/collection/map';
 import decorator from './decorator';
 import loader from '../loader';
+var provide = decorator(provideProperty, provideClass);
+provide.defaultLoader = loader;
+
+
 /***
  *
  * To add a type
@@ -22,44 +26,68 @@ import loader from '../loader';
  * @param loader
  * @returns {provideClass$config}
  */
-function provideClass(type, name, propType, loader = loader) {
+function provideClass(type, name, propType, loader = provide.defaultLoader) {
 
     return function provideClass$config(target) {
-        if (!type) {
-            warning(false, 'must provide for %s', target && target.name);
-            return target;
-        }
         name = name || target.name;
-        type = 'add' + (type.substring(0, 1).toUpperCase() + type.substring(1));
+        type = _type(type);
         loader[type](name, target);
         return target;
     }
 }
-function provideProperty(type, name, propType, loader = loader) {
-    return function provideProperty$config(template, property, descriptor) {
+
+function provideProperty(type, name, propType, loader = provide.defaultLoader) {
+    return function provideProperty$config(target, property, descriptor) {
         name = name || property;
-        var {value, writable, configurable,  ...rest} = descriptor;
-        type = 'add' + (type.substring(0, 1).toUpperCase() + type.substring(1));
-        rest.set = function (value) {
-            loader[type](name, value);
-        }
 
-        rest.get = function () {
-
-            return function rest$get(...args) {
-                var ret = value.apply(this, args);
-                loader[type](name, ret);
-                return ret;
+        var {value, initializer, writable, configurable,  ...rest} = descriptor;
+        value = value || initializer;
+        loader.addLoader({
+            [ _type(type, 'load')]: (loadName, ...rest)=> {
+                if (loadName === name) {
+                    return value.apply(this, rest);
+                }
+            },
+            [ _type(type, 'list', 's')]: ()=> {
+                return {
+                    name
+                }
             }
+        });
+
+        rest.set = function (newValue) {
+            value = newValue;
         }
+
         return rest;
 
     }
 }
-var provide = decorator(provideProperty, provideClass);
+function _type(type, prefix = 'add', postfix = '') {
 
-['type', 'validator', 'schema', 'template', 'processor'].forEach(function (key) {
-    this[key] = decorator(provideProperty.bind(null, key), provideClass.bind(null, key));
+    if (!type) {
+        warning(false, 'must provide for a type');
+        return null;
+    }
+
+    return prefix + (type.substring(0, 1).toUpperCase() + type.substring(1)) + postfix;
+}
+
+/**/
+
+['type', 'validator', 'schema', 'template', 'processor', 'operator'].forEach(function (key) {
+    this[key] =decorator(provideProperty.bind(null, key), provideClass.bind(null, key));
 }, provide);
 
 export default provide;
+/*
+
+export var type =  decorator(provideProperty.bind(null, 'type'), provideClass.bind(null, 'type'));
+export var validator =  decorator(provideProperty.bind(null, 'validator'), provideClass.bind(null, 'validator'));
+export var schema =  decorator(provideProperty.bind(null, 'schema'), provideClass.bind(null, 'schema'));
+export var template =  decorator(provideProperty.bind(null, 'template'), provideClass.bind(null, 'template'));
+export var processor =  decorator(provideProperty.bind(null, 'processor'), provideClass.bind(null, 'processor'));
+export var operator =  decorator(provideProperty.bind(null, 'operator'), provideClass.bind(null, 'operator'));
+
+*/
+

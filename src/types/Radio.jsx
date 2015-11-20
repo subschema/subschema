@@ -6,7 +6,7 @@ import css from '../css';
 import field from '../decorators/field';
 import template from '../decorators/template';
 
-function compare(val, val2){
+function compare(val, val2) {
     if (val == null && val2 == null) {
         return true;
     }
@@ -16,14 +16,14 @@ function compare(val, val2){
 
 @field
 export default class RadioInput extends Component {
-   static defaultProps = {
-            title: '',
-            name: '',
-            placeholder: '',
-            itemTemplate: 'RadioItemTemplate'
-        }
+    static defaultProps = {
+        title: '',
+        name: '',
+        placeholder: '',
+        itemTemplate: 'RadioItemTemplate'
+    }
 
-    handleCheckChange = (e)=>{
+    handleCheckChange = (e)=> {
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.forceSelection === false || this.props.options && this.props.options.length === 1) {
             this.triggerChange(compare(e.target.value, this.state.value) ? null : e.target.value);
@@ -32,7 +32,7 @@ export default class RadioInput extends Component {
         }
     }
 
-    makeOptions = (options)=>{
+    makeOptions = (options)=> {
         options = options || [];
         var onChange = this.handleCheckChange;
         var value = this.state.value;
@@ -53,15 +53,14 @@ export default class RadioInput extends Component {
                 label,
                 labelHTML,
                 onChange,
-                checkedClass:this.props.checkedClass,
+                checkedClass: this.props.checkedClass,
                 checked: compare(value, val)
             }
         });
     }
 
     @template('itemTemplate')
-    render(RadioItemTemplate)
-    {
+    render(RadioItemTemplate) {
         var {name,itemTemplate,path, checkedClass, value, dataType,options, field} = this.props;
         var options = this.makeOptions(options);
         return <div className={css.forField(this)}>{options.map((option, index)=> {
@@ -69,7 +68,7 @@ export default class RadioInput extends Component {
                 <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
-        }, this)}</div>
+            }, this)}</div>
 
     }
 }

@@ -100,7 +100,7 @@ export default class ObjectType extends Component {
         path: null,
         template: 'ObjectTemplate',
         schema: {},
-        onButtonClick:noop
+        onButtonClick: noop
     }
 
     static normalizeSchema = normalizeSchema;

@@ -1,4 +1,6 @@
-import {formatter} from 'Subschema';
+import {types} from 'Subschema';
+var formatter = types.RestrictedMixin.makeFormatter;
+
 import expect from 'expect';
 describe('should create a formatter from a a pattern', function () {
     describe('1 (###) ###-####', function(){

@@ -10,10 +10,11 @@ function loadCtx(v) {
     if (v === false) {
         return null;
     }
-    warning(this.context, 'context.loader was not injected in %s!', this.constructor.name);
+    warning(this.context, 'context.loader was not injected in %s "%s"!', this.constructor.name, v);
 
     if (typeof v === 'string') {
         var props = this.props;
+
         var template = props && props.field && props.field[v] || props[v];
 
         warning(template, 'There was no template for %s in props or in props.field on component %s', v, this.constructor.name);
@@ -25,7 +26,7 @@ function loadCtx(v) {
             template = this.context.loader.loadTemplate(template);
         }
 
-        warning(template, 'There was no template for %s in the loader', template);
+        warning(template, 'There was no template for property "%s" in the loader named', v);
         return template;
     }
     return Template;
