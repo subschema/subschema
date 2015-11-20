@@ -1,11 +1,11 @@
-var React = require('../React');
-var CollectionMixin = require('./CollectionMixin.jsx');
-var tu = require('../tutils');
-var Constants = require('../Constants');
-var css = require('../css');
-var style = require('subschema-styles/Mixed-style');
-var _get = require('lodash/object/get');
-var defaults = require('lodash/object/defaults');
+import React from 'react';
+import CollectionMixin from './CollectionMixin.jsx';
+import tu from '../tutils';
+import Constants from '../Constants';
+import css from '../css';
+import style from 'subschema-styles/Mixed-style';
+import _get from 'lodash/object/get';
+import defaults from 'lodash/object/defaults';
 
 export default class MixedInput extends CollectionMixin {
 
