@@ -3,8 +3,8 @@ import {noop, extend} from '../tutils';
 import {wrapTarget} from '../listenUtil';
 import decorator from './decorator';
 
-function defHandleChange(eventValue, triggerChange, e) {
-    return refOrFunc(this, triggerChange).call(this, eventValue(e));
+function defHandleChange(triggerChange, eventValue,  e) {
+    return triggerChange.call(this, eventValue(e));
 }
 function defTriggerChange(value) {
     if (this.props.onChange(value) === false) {
