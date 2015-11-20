@@ -8,7 +8,7 @@ describe('Select', function () {
         var vm = ValueManager({test: 2});
 
         var root = intoWithContext(<Select options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"
-            />, {valueManager: vm});
+        />, {valueManager: vm});
         var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'select');
         expect(inputs.length).toEqual(1);
         var select = inputs[0];
@@ -21,9 +21,9 @@ describe('Select', function () {
             fired++;
             expect(value).toBe(2);
         };
-        vm.addListener('test', listen);
+        var listener = vm.addListener('test', listen);
         vm.setValue({test: 2});
-        vm.removeListener(listen);
+        listener.remove();
         vm.setValue({test: 1});
         expect(fired).toBe(1);
     });
@@ -42,9 +42,9 @@ describe('Select', function () {
             fired++;
             expect(value).toEqual([2]);
         };
-        vm.addListener('test', listen);
+        var listener = vm.addListener('test', listen);
         vm.setValue({test: [2]});
-        vm.removeListener(listen);
+        listener.remove();
         vm.setValue({test: [1]});
         expect(fired).toBe(1);
     });
