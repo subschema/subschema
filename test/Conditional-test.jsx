@@ -1,7 +1,7 @@
 "use strict";
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from './support';
 import each from 'lodash/collection/each';
-import {ValueManager, Conditional, loader} from 'subschema';
+import {ValueManager, Conditional, loader} from 'Subschema';
 
 describe('Conditional', function () {
     this.timeout(30000);

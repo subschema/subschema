@@ -1,4 +1,4 @@
-import React from '../React';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import css from '../css';
 import RestrictedMixin from './RestrictedMixin';

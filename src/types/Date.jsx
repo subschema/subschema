@@ -1,4 +1,4 @@
-import React, {Component} from '../React';
+import React, {Component} from 'react';
 import Constants from '../Constants';
 import css from '../css';
 import field from '../decorators/field'

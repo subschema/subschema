@@ -1,6 +1,6 @@
 "use strict";
 
-import React, {Component} from '../React';
+import React, {Component} from 'react';
 import DefaultContentWrapper from './ContentWrapper.jsx';
 import map from 'lodash/collection/map';
 import {isString,isObject, isArray, toArray} from '../tutils';

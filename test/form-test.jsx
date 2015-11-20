@@ -1,6 +1,6 @@
 "use strict";
 import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} from './support';
-import {loader,Form, templates} from 'subschema';
+import {loader,Form, templates} from 'Subschema';
 var {EditorTemplate} = templates;
 
 describe('form', function () {
@@ -15,11 +15,11 @@ describe('form', function () {
         }, errors = {};
 
         var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>);
-        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
+        var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0];
         var input = byTag(edit, 'input');
         Simulate.blur(input);
 
-        expect(edit.state.error).toNotExist();
+        expect(edit.props.error).toNotExist();
 
         /*
          Simulate.change(input, {target: {value: 'dude@g'}});
@@ -28,30 +28,30 @@ describe('form', function () {
 
         Simulate.change(input, {target: {value: 'dude@g.com'}});
 
-        expect(edit.state.error).toNotExist();
+        expect(edit.props.error).toNotExist();
 
         Simulate.change(input, {target: {value: 'dude@g'}});
-        expect(edit.state.error).toExist();
+        expect(edit.props.error).toExist();
         Simulate.change(input, {target: {value: 'dude@g.com'}});
 
-        expect(edit.state.error).toNotExist();
+        expect(edit.props.error).toNotExist();
 
 
         Simulate.change(input, {target: {value: 'dude@g'}});
 
-        expect(edit.state.error).toExist();
+        expect(edit.props.error).toExist();
 
         Simulate.blur(input);
-        expect(edit.state.error).toExist();
+        expect(edit.props.error).toExist();
 
         Simulate.change(input, {target: {value: 'dude@go.com'}});
-        expect(edit.state.error).toNotExist();
+        expect(edit.props.error).toNotExist();
 
         Simulate.change(input, {target: {value: 'dude@g'}});
-        expect(edit.state.error).toExist();
+        expect(edit.props.error).toExist();
 
         Simulate.change(input, {target: {value: ''}});
-        expect(edit.state.error).toNotExist();
+        expect(edit.props.error).toNotExist();
         done();
     });
     //This should give a warning. and it does, but it makes debuuging harder so let's skip it and leave it for
@@ -96,7 +96,7 @@ describe('form', function () {
         };
         var root = into(<Form value={value} schema={schema} errors={errors}/>);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
-        expect(edit.state.error).toEqual('Is lousy');
+        expect(edit.props.error).toEqual('Is lousy');
     });
 
     it('should create a form with a schema and value and triggered error', function () {
@@ -113,7 +113,7 @@ describe('form', function () {
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
         Simulate.blur(input);
-        expect(edit.state.error).toEqual('Required');
+        expect(edit.props.error).toEqual('Required');
     });
 
     it('should create a nested form with multiple errors', function () {

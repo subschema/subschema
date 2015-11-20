@@ -1,5 +1,6 @@
 "use strict";
-import React, {Component} from '../React';
+
+import React, {Component} from 'react';
 import css from '../css';
 import Constants from '../Constants'
 import makeFormatter from '../formatter';

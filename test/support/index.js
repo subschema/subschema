@@ -1,5 +1,6 @@
 "use strict";
-import {React, PropTypes, ValueManager, loader} from 'Subschema';
+import React from 'react';
+import { PropTypes, ValueManager, loader} from 'Subschema';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import expect from 'expect';
@@ -108,14 +109,14 @@ function intoWithContext(child, ctx, debug) {
 
 
 module.exports = {
-    context,
-    intoWithContext,
-    prettyLog,
-    findNode,
     React,
     ReactDOM,
     TestUtils,
     Simulate,
+    context,
+    intoWithContext,
+    prettyLog,
+    findNode,
     into,
     expect,
     click,

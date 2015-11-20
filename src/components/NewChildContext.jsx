@@ -1,8 +1,8 @@
 "use strict";
 
-import React, {Component} from './React';
-import PropTypes from './PropTypes';
-import ValueManager from './ValueManager';
+import React, {Component} from 'react';
+import PropTypes from './../PropTypes';
+import ValueManager from './../ValueManager';
 
 export default class NewChildContext extends Component {
     static propTypes = {

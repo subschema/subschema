@@ -1,9 +1,9 @@
 import React, {Component, Children} from 'react';
-import PropTypes from './PropTypes';
-import Content from './types/Content.jsx';
-import {FREEZE_OBJ} from './tutils';
+import PropTypes from './../PropTypes';
+import Content from './../types/Content.jsx';
+import {FREEZE_OBJ} from './../tutils';
 import Conditional from './Conditional.jsx';
-import template from './decorators/template';
+import template from '../decorators/template';
 /**
  * This meta template resolves templates, and allows
  * properties to be assigned to a a template object.

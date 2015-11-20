@@ -12,7 +12,10 @@ import decorator from './decorator';
  * This allows for nice names, and methods that can be invoked without worry
  * of subclasses being called.
  *
- 
+ *  @lifecycle("componentWillMount")
+ *  yourFunc(){
+ *
+ *  }
  */
 /**
  * @param stage [strgin=componentWillMount] - The lifecycle method to partake in .

@@ -1,8 +1,8 @@
 "use strict";
 import React, {Component} from 'react';
-import PropTypes from './PropTypes';
+import PropTypes from './../PropTypes';
 import CSSTransitionGroup  from 'react-addons-css-transition-group';
-import listeners from './decorators/listeners';
+import listeners from './../decorators/listeners';
 
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 

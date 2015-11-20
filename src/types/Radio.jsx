@@ -1,6 +1,6 @@
 "use strict";
 
-import React, {Component} from '../React';
+import React, {Component} from 'react';
 import tu from '../tutils';
 import css from '../css';
 import field from '../decorators/field';

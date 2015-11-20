@@ -30,7 +30,7 @@ export function invoke(obj, func) {
     if (typeof func === 'function') return func;
     if (typeof obj[func] === 'function') return obj[func];
     warning(
-        func == null,
+        func,
         'Can not resolve %s on %s to a function to be called with the event',
         func, obj
     )

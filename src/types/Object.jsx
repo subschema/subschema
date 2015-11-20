@@ -2,10 +2,10 @@
 import React, {Component}  from 'react';
 import PropTypes  from '../PropTypes';
 import {toArray, isString, isArray, unique, path, clone, noop}  from '../tutils';
-import Editor  from '../Editor';
+import Editor  from '../components/Editor';
 import ValueManager  from '../ValueManager';
 import map  from 'lodash/collection/map';
-import Template  from '../Template.jsx';
+import Template  from '../components/Template.jsx';
 
 var push = Function.apply.bind(Array.prototype.push);
 

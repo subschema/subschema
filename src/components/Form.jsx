@@ -1,11 +1,11 @@
 "use strict";
 
 import React, {Component} from 'react';
-import PropTypes from './PropTypes';
-import ValueManager from './ValueManager';
-import ObjectType from './types/Object.jsx';
-import _set from 'lodash/object/set';
-import {noop} from './tutils';
+import PropTypes from './../PropTypes';
+import ValueManager from './../ValueManager';
+import ObjectType from './../types/Object.jsx';
+import _set from '../../node_modules/lodash/object/set';
+import {noop} from './../tutils';
 
 export default class Form extends Component {
     static  childContextTypes = PropTypes.contextTypes;
@@ -36,7 +36,7 @@ export default class Form extends Component {
 
     constructor(props, context, whatever) {
         super(props, context, whatever);
-        this.loader = props.loader || require('./loader.js');
+        this.loader = props.loader || require('./../loader.js');
         if (!props.valueManager) {
             this.valueManager = ValueManager(this.props.value, this.props.errors);
         } else {

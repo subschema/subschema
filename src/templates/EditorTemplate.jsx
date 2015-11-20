@@ -7,16 +7,8 @@ import Content from '../types/Content.jsx';
 import listen from '../decorators/listen';
 
 export default class EditorTemplate extends Component {
-
-    @listen('error')
-    setError(errors){
-        this.setState({
-            error: errors && errors[0].message
-        });
-    }
     render(){
-        var {name, title, help, errorClassName, message, fieldClass,  children} = this.props;
-        var error = this.state.error;
+        var {name, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
         if (!title) {
             title = ''
         }

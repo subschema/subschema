@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {isString, extend} from '../tutils';
 import style from 'subschema-styles/ButtonsTemplate-style';
-import Template from '../Template.jsx';
+import Template from '../components/Template.jsx';
 
 export default class ButtonsTemplate extends Component {
     static defaultProps = {

@@ -1,11 +1,11 @@
 "use strict";
-import React from 'react';
-import PropTypes from './PropTypes';
+import React, {Component} from 'react';
+import PropTypes from './../PropTypes';
 import Template from './Template.jsx';
-import {listen} from './decorators';
+import {listen} from './../decorators';
 
 
-var { FREEZE_ARR, noop, titlelize, isRegExp,isFunction,toArray,nullCheck}  = require('./tutils');
+var { FREEZE_ARR, noop, titlelize, isRegExp,isFunction,toArray,nullCheck}  = require('./../tutils');
 
 
 function initValidators(v) {
@@ -30,10 +30,10 @@ function initValidators(v) {
 }
 
 
-export default class Editor extends React.Component {
+export default class Editor extends Component {
     static contextTypes = {
-        valueManager:PropTypes.valueManager,
-        loader:PropTypes.loader
+        valueManager: PropTypes.valueManager,
+        loader: PropTypes.loader
     }
     static defaultProps = {
         field: {
@@ -69,7 +69,10 @@ export default class Editor extends React.Component {
         this.state.hasValidated = true;
         this.validate();
     }
-
+    @listen("error", ".")
+    handleError(errors){
+        this.setState({errors});
+    }
     @listen("value", ".", false)
     handleChange(newValue, oldValue, name) {
         var hasChanged = newValue != oldValue;
@@ -98,10 +101,13 @@ export default class Editor extends React.Component {
     validate(value, errors) {
         value = arguments.length === 0 ? this.getValue() : value;
         errors = errors || this.getErrorMessages(value);
-
         this.context.valueManager.updateErrors(this.props.path, errors, value);
+        if (errors && errors.length === 0){
+            errors = null;
+        }
         this.setState({
-            hasValidated: true
+            hasValidated: true,
+            errors:errors
         });
         return errors;
     }
@@ -169,10 +175,13 @@ export default class Editor extends React.Component {
         } else if (field.template != null) {
             template = field.template;
         }
+        var errors = this.state.errors;
+        if (errors) errors = errors[0] && errors[0].message || errors[0];
 
         return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass}
                          title={title}
                          errorClassName={errorClassName}
+                         error={errors}
                          help={!this.state.valid && (props.help || rfield.help)}
                          onValidate={handleValidate}
         >

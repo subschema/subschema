@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Editor from '../Editor.jsx';
+import Editor from '../components/Editor.jsx';
 import Content from '../types/Content.jsx';
 import style from 'subschema-styles/CollectionCreateTemplate-style';
 export default class CollectionCreateTemplate extends Component {

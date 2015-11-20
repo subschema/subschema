@@ -1,3 +1,23 @@
+Subschema 0.2x ->0.3 Upgrade
+##Dependencies
+##Webpack
+## API Changes
+  * Mixins are now defunct.  Either use inheritance, or decorators.
+  * FieldMixin and friends is replaced with @field.
+  * ValueManagerListenerMixin is replaced with @listeners and @listen respectively.
+  * Core components are now in components/
+  * ValueManager#removeListener now must take a listener no longer supports a  path.
+  * No longer includes the React.js exported, now it just requires react.
+  * EditorTemplate no longer handles errors. Editor does and passes the first error message as a prop to the EditorTemplate.
+     - If you need all errors add a template @listener("error") to your template.
+  * NestedMixin is now just types/Object.jsx
+  * DefaultLoader and ValidatorLoader are gone.
+    - Use @provide.type, @provide.validator @provide.loader respectively.
+
+
+
+
+
 Subschema 0.1x -> 0.2 Upgrade Guide
 ---
 

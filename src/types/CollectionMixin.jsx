@@ -1,10 +1,10 @@
 "use strict";
 
 import React, {Component} from 'react';
-import Editor from '../Editor';
+import Editor from '../components/Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
-import NewChildContext from '../NewChildContext.jsx';
+import NewChildContext from '../components/NewChildContext.jsx';
 import tu from '../tutils';
 import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
@@ -35,7 +35,7 @@ class EditChildContext extends Component {
     }
 
     @listen("submit", null, false)
-    handleSubmit = (e)=> {
+    handleSubmit(e) {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
         var currentPath = tu.path(this.props.path, value.key);
@@ -50,7 +50,7 @@ class EditChildContext extends Component {
     }
 
     render() {
-        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit});
+        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit.bind(this)});
     }
 }
 

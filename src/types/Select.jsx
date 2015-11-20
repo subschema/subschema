@@ -3,7 +3,7 @@
 import React from 'react';
 import Constants from '..';
 import util from '../tutils';
-import {forField} from '../css';
+import css from '../css';
 import field from '../decorators/field';
 
 function toLabelVal(v) {
@@ -70,7 +70,7 @@ export default class Select extends React.Component {
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
-        return <select className={forField(this)}
+        return <select className={css.forField(this)}
                        multiple={multiple}
                        ref="input"
                        value={value}

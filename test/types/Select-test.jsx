@@ -1,5 +1,5 @@
 import {React, findNode, intoWithContext, TestUtils,expect, Simulate} from '../support';
-import {types, ValueManager} from 'subschema';
+import {types, ValueManager} from 'Subschema';
 var Select = types.Select;
 
 describe('Select', function () {

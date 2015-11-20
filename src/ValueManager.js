@@ -394,4 +394,4 @@ ValueManager.prototype = {
     }
 }
 
-module.exports = ValueManager;
+export default ValueManager;

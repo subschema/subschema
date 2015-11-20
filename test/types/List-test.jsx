@@ -231,6 +231,6 @@ describe('List', function () {
         }
         var root = into(<Form schema={schema} value={data} errors={errors}/>);
         var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
-        expect(found[0].state.error).toEqual('Can not be 2');
+        expect(found[0].props.error).toEqual('Can not be 2');
     });
 })

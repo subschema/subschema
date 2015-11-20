@@ -3,7 +3,25 @@ import warning from '../warning';
 import map from 'lodash/collection/map';
 import decorator from './decorator';
 import loader from '../loader';
-
+/***
+ *
+ * To add a type
+ *
+ * @provider.type("SomethingElse")
+ * @field
+ * class NewType extends Component {
+ *
+ *
+ * }
+ *
+ *
+ *
+ * @param type
+ * @param name
+ * @param propType
+ * @param loader
+ * @returns {provideClass$config}
+ */
 function provideClass(type, name, propType, loader = loader) {
 
     return function provideClass$config(target) {
@@ -17,19 +35,20 @@ function provideClass(type, name, propType, loader = loader) {
         return target;
     }
 }
-function provideProperty(type, name, propType, loader = loader){
-    return function provideProperty$config(template, property, descriptor){
+function provideProperty(type, name, propType, loader = loader) {
+    return function provideProperty$config(template, property, descriptor) {
+        name = name || property;
         var {value, writable, configurable,  ...rest} = descriptor;
         type = 'add' + (type.substring(0, 1).toUpperCase() + type.substring(1));
-        rest.set = function(value){
-            loader[type](property, value);
+        rest.set = function (value) {
+            loader[type](name, value);
         }
 
-        rest.get = function(){
+        rest.get = function () {
 
-            return function rest$get(...args){
+            return function rest$get(...args) {
                 var ret = value.apply(this, args);
-                loader[type](property, ret);
+                loader[type](name, ret);
                 return ret;
             }
         }

@@ -1,6 +1,6 @@
 "use strict";
 
-import React, {Component} from '../React'
+import React, {Component} from 'react'
 import tu from '../tutils'
 import Constants from '../Constants'
 import css from '../css'

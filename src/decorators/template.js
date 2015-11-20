@@ -3,9 +3,8 @@ import React, {Component} from 'react';
 import warning from '../warning';
 import PropTypes from '../PropTypes'
 import decorator from './decorator';
-import Template from '../Template.jsx';
 import Content from '../types/Content.jsx'
-
+import Template from '../components/Template.jsx';
 
 function loadCtx(v) {
     if (v === false) {
@@ -29,7 +28,6 @@ function loadCtx(v) {
         warning(template, 'There was no template for %s in the loader', template);
         return template;
     }
-    //Recurse through Template.jsx;
     return Template;
 }
 /**
