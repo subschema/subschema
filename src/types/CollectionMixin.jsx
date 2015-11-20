@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React, {Component} from 'react';
 import Editor from '../Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
@@ -16,7 +16,7 @@ import css from '../css';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 
-class EditChildContext extends React.Component {
+class EditChildContext extends Component {
     static propTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
@@ -60,13 +60,17 @@ function wrapFunc(value, key) {
     return {value, key}
 };
 
-export default class CollectionMixin extends React.Component {
+export default class CollectionMixin extends Component {
+
     static listClassName = Constants.listClassName;
+
     static itemTemplate = 'ListItemTemplate';
+
     static contextTypes = {
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
     }
+
     static propTypes = {
         value: PropTypes.object,
         canEdit: PropTypes.bool,
@@ -78,6 +82,7 @@ export default class CollectionMixin extends React.Component {
         createTemplate: PropTypes.template,
         buttonTemplate: PropTypes.template
     }
+
     static defaultProps = {
         createTemplate: 'CollectionCreateTemplate',
         buttonTemplate: 'ButtonTemplate'
@@ -131,7 +136,7 @@ export default class CollectionMixin extends React.Component {
         });
     }
 
-    changeValue(newValue, oldValue) {
+    changeValue = (newValue, oldValue)=> {
         if (this.triggerChange(this.unwrap(newValue)) !== false) {
 
             this.setState({

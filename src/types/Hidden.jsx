@@ -1,17 +1,9 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
-
-
-var HiddenInput = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
+"use strict";
+import React, {Component} from 'react';
+import {field} from '../decorators';
+@field
+export default class Hidden extends Component {
     render() {
-        return <input id={this.props.name}
-                      className={css.forField(this)} type="hidden"
-                      value={this.state.value}
-                      data-path={this.props.path}/>
+        return <input id={this.props.name} name={this.props.name} type="hidden" value={JSON.stringify(this.state.value)}  />
     }
-});
-
-module.exports = HiddenInput;
+}

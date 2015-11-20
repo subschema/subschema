@@ -1,5 +1,5 @@
-import {React, ReactDOM, into,TestUtils,expect, Simulate, change} from '../support';
-import {types} from 'subschema';
+import {React, ReactDOM, into, intoWithContext, TestUtils,expect, Simulate, change} from '../support';
+import {types} from 'Subschema';
 
 var Restricted = types.Restricted;
 
@@ -10,13 +10,13 @@ describe('Restricted', function () {
 
     it('should create a restricted input', function () {
 
-        var root = into(<Restricted formatter="###-##"/>);
+        var root = intoWithContext(<Restricted path="test" formatter="###-##"/>);
         expect(root).toExist();
 
     });
 
     describe('mm20YY', function () {
-        var root = into(<Restricted formatter="mm20YY"/>);
+        var root = intoWithContext(<Restricted path="test" formatter="mm20YY"/>);
         expect(root).toExist();
         var input = TestUtils.scryRenderedDOMComponentsWithTag(root, 'input')[0];
         var inputEl = ReactDOM.findDOMNode(input);

@@ -1,18 +1,54 @@
-var React = require('../React');
-var tpath = require('../tutils').path;
-var Buttons = require('../templates/ButtonsTemplate.jsx');
-var style = require('subschema-styles/ListItemTemplate-style');
+import React, {Component} from 'react';
+import {path, noop} from '../tutils';
+import Buttons from './ButtonsTemplate';
+import style from 'subschema-styles/ListItemTemplate-style';
 
-var ListItemTemplate = React.createClass({
-    mixins: [require('./ListItemMixin')],
 
-    renderField(){
+export default class ListItemTemplate extends Component {
+    static defaultProps = {
+        type: 'Text',
+        onMoveUp: noop,
+        onMoveDown: noop,
+        onDelete: noop,
+        onValidate: noop,
+        onValueChange: noop,
+        onEdit: noop,
+        last: false,
+        itemToString(v) {
+            return v != null ? v.toString() : '';
+        }
+    }
+
+    handleMoveUp = (e)=> {
+        e.preventDefault();
+        this.props.onMoveUp(this.props.pos, this.props.value, this.props.pid);
+    }
+
+    handleMoveDown = (e)=> {
+        e.preventDefault();
+        this.props.onMoveDown(this.props.pos, this.props.value, this.props.pid);
+    }
+
+    handleDelete = (e)=> {
+        e.preventDefault();
+        this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
+    }
+
+    handleEdit = (e)=> {
+        e.preventDefault();
+        var val = this.props.value;
+
+        this.props.onEdit(this.props.pos, val.value, this.props.pid);
+    }
+
+    renderField() {
         var field = this.props.field, content = this.props.itemToString(this.props.value);
 
-        return <span className={style.itemValue} path={tpath(this.props.path, this.props.value.key)}
+        return <span className={style.itemValue} path={path(this.props.path, this.props.value.key)}
                      onClick={field.canEdit ? this.handleEdit : null} key="content">{content}</span>;
-    },
-    buttons(pos, last, canReorder, canDelete){
+    }
+
+    buttons(pos, last, canReorder, canDelete) {
         var buttons = [];
         var buttonClass = style.button;
         if (canReorder) {
@@ -50,7 +86,8 @@ var ListItemTemplate = React.createClass({
         }
 
         return buttons;
-    },
+    }
+
     render() {
         var {pos, field, value, errors, path, onValidate, last, onValueChange} = this.props;
         var {type, name, canReorder, canDelete} = field;
@@ -65,5 +102,4 @@ var ListItemTemplate = React.createClass({
 
     }
 
-});
-module.exports = ListItemTemplate;
+}

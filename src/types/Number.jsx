@@ -6,7 +6,7 @@ import field from '../decorators/field';
 
 var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
-@field
+@field(null, false)
 export default class NumberInput extends Component {
     static inputClassName = Constants.inputClassName
 

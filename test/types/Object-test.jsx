@@ -1,11 +1,12 @@
 "use strict";
-import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from './support';
-import {ValueManager,loaderFactory,NestedMixin, Form, types} from 'Subschema';
+import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from '../support';
+import {ValueManager,loaderFactory, Form, types} from 'Subschema';
 
+var NestedMixin = types.Object;
 var ObjectType = types.Object
 var TextInput = types.Text;
 
-describe('NestedMixin', function () {
+describe('ObjectType', function () {
 
     var schema = {
         schema: {

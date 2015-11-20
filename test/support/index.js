@@ -1,5 +1,5 @@
 "use strict";
-import {React, PropTypes} from 'Subschema';
+import {React, PropTypes, ValueManager, loader} from 'Subschema';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import expect from 'expect';
@@ -79,6 +79,12 @@ function findNode(n) {
     return ReactDOM.findDOMNode(n);
 }
 function context(ctx){
+    if (ctx == null){
+        ctx = {
+            valueManager:ValueManager(),
+            loader:loader
+        }
+    }
     var childContextTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader

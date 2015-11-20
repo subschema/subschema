@@ -1,46 +1,19 @@
 "use strict";
-var React = require('../React');
-var Children = React.Children;
-var css = require('../css');
-var Content = require('../types/Content.jsx')
-var style = require('subschema-styles/EditorTemplate-style');
-var {FREEZE_OBJ} = require('../tutils');
-var PropTypes = require('../PropTypes');
-function childrenValueManager(children, valueManager) {
-    var props = {valueManager};
-    return Children.map(children, (child)=>React.cloneElement(child, props));
-}
+import React, {Component} from 'react';
+import style from 'subschema-styles/EditorTemplate-style';
+import PropTypes from '../PropTypes';
+import css from '../css';
+import Content from '../types/Content.jsx';
+import listen from '../decorators/listen';
 
-var EditorTemplate = React.createClass({
-    displayName: 'EditorTemplate',
-    contextTypes: {
-        valueManager: PropTypes.valueManager
-    },
-    componentWillMount(){
-        this._listen(this.props, FREEZE_OBJ);
-    },
-    componentWillUnmount(){
-        this._errorListener && this._errorListener.remove();
-    },
-    componentWillReceiveProps(newProps){
-        this._listen(newProps, this.props)
-    },
-    getInitialState(){
-        return {};
-    },
-    _listen(newProps, oldProps){
-        if ((newProps.path === oldProps.path )) {
-            return;
-        }
-        this._errorListener && this._errorListener.remove();
-        this._errorListener = this.context.valueManager.addErrorListener(newProps.path, this.setError, this, true);
-    },
+export default class EditorTemplate extends Component {
 
+    @listen('error')
     setError(errors){
         this.setState({
             error: errors && errors[0].message
         });
-    },
+    }
     render(){
         var {name, title, help, errorClassName, message, fieldClass,  children} = this.props;
         var error = this.state.error;
@@ -59,5 +32,4 @@ var EditorTemplate = React.createClass({
             </div>
         </div>);
     }
-});
-module.exports = EditorTemplate;
+}

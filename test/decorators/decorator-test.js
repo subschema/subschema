@@ -3,7 +3,7 @@ import expect from 'expect';
 
 var decorator = decorators.decorator;
 var originalWarning = decorator.warning;
-describe.only('decorator', function () {
+describe('decorator', function () {
 	beforeEach(function () {
 		decorator.warning = originalWarning;
 	})

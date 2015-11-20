@@ -1,32 +1,16 @@
 "use strict";
 
-var React = require('./React');
-var PropTypes = require('./PropTypes');
-var ValueManager = require('./ValueManager');
-var ObjectType = require('./types/Object.jsx');
-var _set = require('lodash/object/set');
+import React, {Component} from 'react';
+import PropTypes from './PropTypes';
+import ValueManager from './ValueManager';
+import ObjectType from './types/Object.jsx';
+import _set from 'lodash/object/set';
+import {noop} from './tutils';
 
-var Form = React.createClass({
-    displayName: 'Form',
-    childContextTypes: {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader
-    },
+export default class Form extends Component {
+    static  childContextTypes = PropTypes.contextTypes;
 
-    getChildContext() {
-        var {valueManager, loader, value, errors} = this.props;
-        if (loader == null) {
-            loader = require('./loader.js');
-        }
-        if (valueManager === null) {
-            valueManager = ValueManager(value, errors);
-        }
-        return {
-            valueManager, loader
-        };
-    },
-
-    propTypes: {
+    static propTypes = {
         schema: PropTypes.schema.isRequired,
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager,
@@ -36,66 +20,76 @@ var Form = React.createClass({
         enctype: PropTypes.string,
         onSubmit: PropTypes.event,
         noValidate: PropTypes.bool
-    },
-//    mixins: [NestedMixin],
-    getDefaultProps() {
+    }
+
+    static defaultProps = {
+        template: 'FormTemplate',
+        onSubmit: noop,
+        noValidate: false
+    }
+
+    getChildContext() {
         return {
-            template: 'FormTemplate',
-            onSubmit(e){
-            },
-            noValidate: false,
-            valueManager: ValueManager()
+            valueManager: this.valueManager, loader: this.loader
+        };
+    }
+
+    constructor(props, context, whatever) {
+        super(props, context, whatever);
+        this.loader = props.loader || require('./loader.js');
+        if (!props.valueManager) {
+            this.valueManager = ValueManager(this.props.value, this.props.errors);
+        } else {
+            this.valueManager = props.valueManager;
+            if (props.value) {
+                this.valueManager.setValue(this.props.value);
+            }
+            if (this.props.errors) {
+                this.valueManager.setErrors(this.props.errors);
+            }
         }
-    },
-    componentWillMount(){
-        if (this.props.value) {
-            this.props.valueManager.setValue(this.props.value);
+
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.loader && newProps.loader !== this.loader) {
+            this.loader = newProps.loader;
         }
-        if (this.props.errors) {
-            this.props.valueManager.setErrors(this.props.errors);
+        if (newProps.valueManager && newProps.valueManager !== this.valueManager) {
+            this.valueManager = newProps.valueManager;
         }
-        var p = ['schema'];
-        if (this.props.path) {
-            p.unshift(this.props.path);
-        }
-        this._stateListener = this.props.valueManager.addStateListener(p.join('.'), this.handleState, this, false);
-    },
-    componentWillReceiveProps(newProps){
+
         if (this.props.value !== newProps.value) {
-            this.props.valueManager.setValue(newProps.value);
+            this.valueManager.setValue(newProps.value);
         }
         if (this.props.errors !== newProps.errors) {
-            this.props.valueManager.setErrors(newProps.errors);
+            this.valueManager.setErrors(newProps.errors);
         }
-    },
-    componentWillUnmount(){
-        this._stateListener.remove();
-    },
-    handleState(value, path){
-        _set(this, path, value);
-        this.forceUpdate();
-    },
-    getValue(){
-      return this.props.valueManager.getValue();
-    },
-    handleSubmit(e){
+    }
+
+    getValue() {
+        return this.valueManager.getValue();
+    }
+
+    handleSubmit = (e)=> {
         e && e.preventDefault();
-        var vm = this.props.valueManager;
+        var vm = this.valueManager;
         if (!this.props.novalidate) {
             vm.validate();
         }
         if (vm.onSubmit(e, vm.getErrors(), vm.getValue(), this.props.path) !== false) {
             this.props.onSubmit(e, vm.getErrors(), vm.getValue());
         }
-    },
-    setErrors(errors){
-        this.props.valueManager.setErrors(errors);
-    },
-    render(){
+    }
+
+    setErrors = (errors)=> {
+        this.valueManager.setErrors(errors);
+    }
+
+    render() {
 
         var {valueManager, onSubmit, loader, ...props} = this.props;
         return <ObjectType {...props} onSubmit={this.handleSubmit}/>
     }
 
-});
-module.exports = Form;
+}

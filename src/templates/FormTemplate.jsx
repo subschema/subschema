@@ -1,19 +1,16 @@
 "use strict";
-var React = require('../React');
-var styles = require('subschema-styles/FormTemplate-style');
 
-var FormTemplate = React.createClass({
-    getDefaultProps(){
-        return {
+import React, {Component} from 'react';
+import styles from 'subschema-styles/FormTemplate-style';
+
+export default class FormTemplate extends Component {
+    static defaultProps = {
             className: styles.formClass
-        }
-    },
+    }
     render(){
-        var {children, name, fieldAttrs, encoding, className, action, method, onSubmit, ...props} = this.props;
-        return (<form name={name} action={action} method={method} onSubmit={onSubmit} className={className} {...fieldAttrs}>
+        var {children, name, fieldAttrs, enctype, className, action, method, onSubmit, ...props} = this.props;
+        return (<form name={name} action={action} enctype={enctype} method={method} onSubmit={onSubmit} className={className} {...fieldAttrs}>
             {children}
         </form>);
     }
-});
-
-module.exports = FormTemplate;
+}

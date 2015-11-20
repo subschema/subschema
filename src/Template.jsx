@@ -1,9 +1,9 @@
-var React = require('./React');
-var Children = React.Children;
-var PropTypes = require('./PropTypes');
-var Content = require('./types/Content.jsx');
-var {FREEZE_OBJ} = require('./tutils');
-var Conditional = require('./Conditional.jsx');
+import React, {Component, Children} from 'react';
+import PropTypes from './PropTypes';
+import Content from './types/Content.jsx';
+import {FREEZE_OBJ} from './tutils';
+import Conditional from './Conditional.jsx';
+import template from './decorators/template';
 /**
  * This meta template resolves templates, and allows
  * properties to be assigned to a a template object.
@@ -12,37 +12,41 @@ var Conditional = require('./Conditional.jsx');
  *
  * @type {*|Function}
  */
-var Template = React.createClass({
-    propTypes: {
+export default class Template extends Component {
+    static propTypes = {
         path: PropTypes.path,
         template: PropTypes.template,
         wrap: PropTypes.bool
-    },
-    contextTypes: {
-        loader: PropTypes.loader.isRequired
-    },
-    renderContent(rest, template, children){
-        if (template == null || template === false) return children;
+    }
 
-        if (typeof template === 'string') {
-            var Template = this.context.loader.loadTemplate(template);
-        } else if (typeof template.template === 'string') {
-            var {template, ...more} = template;
-            var Template = this.context.loader.loadTemplate(template.template);
-        } else if (template.content) {
+    static contextTypes = PropTypes.contextTypes;
+
+    @template('template')
+    template(Template){
+        return Template;
+    }
+
+    renderContent(rest, children) {
+        var more = {};
+        var Template = this.props.template ? this.template() : null;
+        if (Template == null || Template === false) return children;
+
+        if (rest.content) {
             Template = Content;
-            more = typeof template.content === 'string' ? {content: template.content} : template.content;
+            more = typeof rest.content === 'string' ? {content: rest.content} : rest.content;
         }
+
         return this.props.wrap ? Children.map(children, (child)=><Template {...more} {...rest}>
             {child}
         </Template>) : <Template {...more} {...rest}>
             {children}
         </Template>
 
-    },
-    render(){
+    }
+
+    render() {
         var {field,  path, conditional, children, template,...props} = this.props;
-        if (field && field.conditional){
+        if (field && field.conditional) {
             var {conditional, ...rest} = field;
             field = props.field = rest;
 
@@ -51,16 +55,14 @@ var Template = React.createClass({
         if (conditional == null || conditional === false) {
             props.path = path;
             props.field = field;
-            return this.renderContent(props, template, children);
+            return this.renderContent(props, children);
         }
         if (typeof conditional === 'string') {
             conditional = {operator: conditional};
         }
         props.path = conditional.path || path;
         return (<Conditional path={props.path} {...conditional} field={field}>
-            {this.renderContent(props, template, children)}
+            {this.renderContent(props, children)}
         </Conditional>);
     }
-});
-
-module.exports = Template;
+}

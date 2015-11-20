@@ -6,7 +6,6 @@ import find     from 'lodash/collection/find';
 import map      from 'lodash/collection/map';
 
 var api = extend({}, PropTypes);
-
 api.cssClass = function api$cssClass() {
     return api.string.apply(api, arguments);
 };
@@ -161,6 +160,10 @@ api.mixin = {
         field: {}
     }, events)
 };
+api.contextTypes = Object.freeze({
+    valueManager:api.valueManager,
+    loader:api.loader
+});
 
 api.propTypeToName = function propTypeToName(propType) {
     var keys = Object.keys(api), i = 0, l = keys.length, key, f;

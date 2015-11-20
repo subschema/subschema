@@ -1,30 +1,35 @@
 "use strict";
+import React, {Component} from 'react';
 import warning from '../warning';
 import PropTypes from '../PropTypes'
 import decorator from './decorator';
 import Template from '../Template.jsx';
+import Content from '../types/Content.jsx'
+
 
 function loadCtx(v) {
     if (v === false) {
         return null;
     }
-    
+    warning(this.context, 'context.loader was not injected in %s!', this.constructor.name);
+
     if (typeof v === 'string') {
         var props = this.props;
         var template = props && props.field && props.field[v] || props[v];
 
         warning(template, 'There was no template for %s in props or in props.field on component %s', v, this.constructor.name);
 
-        if (typeof template !== 'string') {
-            return template;
+        //allow for singly nested templates to be resolved.
+        if (template && typeof template.template === 'string') {
+            template = this.context.loader.loadTemplate(template.template);
+        } else if (typeof template === 'string') {
+            template = this.context.loader.loadTemplate(template);
         }
-        warning(this.context, 'context.loader was not injected in %s!', this.constructor.name);
-
-        template = this.context.loader.loadTemplate(template);
 
         warning(template, 'There was no template for %s in the loader', template);
         return template;
     }
+    //Recurse through Template.jsx;
     return Template;
 }
 /**
@@ -36,12 +41,16 @@ function loadCtx(v) {
  * @param rest
  * @returns {template$wrap}
  */
-function template(property = "template", ...rest) {
+const DEFAULT_TEMPLATE_PROP = ["template"];
+function template(...rest) {
+    if (rest == null || rest.length === 0) {
+        rest = DEFAULT_TEMPLATE_PROP;
+    }
     return function template$config(target, name, description) {
         var Target = target.constructor || target;
         var contextTypes = Target.contextTypes;
         if (!contextTypes) {
-            Target.contextTypes = { loader: PropTypes.loader };
+            Target.contextTypes = {loader: PropTypes.loader};
         } else if (!Target.contextTypes.loader) {
             Target.contextTypes.loader = PropTypes.loader;
         }

@@ -83,7 +83,9 @@ function field(setValue = 'setValue', handleChange = 'handleChange', handleValid
         var handleValidateKey = typeof handleValidate === 'function' ? 'handleValidate' : handleValidate;
         var handleSetValueKey = typeof setValue === 'function' ? 'setValue' : setValue;
         var triggerChangeKey = triggerChange === false ? false : typeof triggerChange === 'string' ? triggerChange : 'triggerChange';
-
+        if (triggerChange === true){
+            triggerChange = defTriggerChange;
+        }
         setupProps(Target, DEFAULT_PROP_TYPES);
         Target.contextTypes = Target.contextTypes ? extend({}, Target.contextTypes, DEFAULT_CONTEXT_TYPES) : DEFAULT_CONTEXT_TYPES;
         var TP = Target.prototype;
@@ -96,7 +98,7 @@ function field(setValue = 'setValue', handleChange = 'handleChange', handleValid
             }
 
             if (handleChangeKey !== false) {
-                this[handleChangeKey] = refOrFunc(this, handleChange, defHandleChange.bind(this, triggerChangeKey ? triggerChange : defTriggerChange, eventValue)).bind(this)
+                this[handleChangeKey] = refOrFunc(this, handleChange, defHandleChange.bind(this, (triggerChangeKey ? triggerChange : defTriggerChange).bind(this), eventValue)).bind(this)
             }
             if (handleValidateKey !== false) {
                 this[handleValidateKey] = refOrFunc(this, handleValidate, defHandleValidate.bind(this, eventValue)).bind(this)

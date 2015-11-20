@@ -3,20 +3,21 @@
 import React, {Component} from '../React';
 import DefaultContentWrapper from './ContentWrapper.jsx';
 import map from 'lodash/collection/map';
-import isObject from 'lodash/lang/isObject';
-import tu from '../tutils';
+import {isString,isObject, isArray, toArray} from '../tutils';
 import defaults from 'lodash/object/defaults';
 import PropTypes from '../PropTypes';
 
-export class Content extends Component {
+export default class Content extends Component {
     static contextTypes = {
         loader: PropTypes.loader
-    }//Expose for react-native subschema.
+    }
+
+    //Expose for react-native subschema.
     static defaultProps = {
         type: 'span',
         content: ''
     }
-    static displayName = 'Content';
+
     static Types = React.DOM || {}
 
     renderChildren(props, children) {
@@ -30,8 +31,8 @@ export class Content extends Component {
             return children;
         }
         var toChildren;
-        if (tu.isString(props.children) || tu.isArray(props.children)) {
-            toChildren = tu.toArray(props.children);
+        if (isString(props.children) || isArray(props.children)) {
+            toChildren = toArray(props.children);
         } else if (isObject(props.children)) {
             toChildren = Object.keys(props.children).filter((v)=> v === true);
         }
@@ -48,12 +49,13 @@ export class Content extends Component {
         if (content == null || content === false) {
             return null;
         }
-        if (tu.isString(content)) {
-            var ContentWrapper = this.context.loader.loadType('ContentWrapper') || DefaultContentWrapper;
+        if (isString(content)) {
+            var ContentWrapper = this.DefaultContentWrapper || (this.DefaultContentWrapper = this.context.loader.loadType('ContentWrapper')) ;
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}/>
         }
 
-        if (Array.isArray(content)) {
+
+        if (isArray(content)) {
             //TODO - check if we need to flatten this.
             return map(content, (c, key)=> {
                 //prevent children from being wrapped.
@@ -104,10 +106,10 @@ export class Content extends Component {
             var {...rest} = content;
             delete rest.content;
             children = this.renderChild(content.content, rest, 'dom', children)
-        } else if (tu.isString(content)) {
+        } else if (isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');
-        } else if (tu.isArray(content)) {
+        } else if (isArray(content)) {
             props.type = type;
             children = this.renderChild(content, props, 'arr', children);
         } else if (content.content === false) {
@@ -126,5 +128,3 @@ export class Content extends Component {
         </Ctype>
     }
 }
-
-module.exports = Content;

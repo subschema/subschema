@@ -1,31 +1,20 @@
 "use strict";
-var React = require('../React');
-var FieldValueMixin = require('../FieldValueMixin');
-var css = require('../css');
-var Constants = require('../Constants')
-var makeFormatter = require('../formatter');
-var PropTypes = require('../PropTypes');
-
-function ret(op) {
-    return op;
-}
+import React, {Component} from '../React';
+import css from '../css';
+import Constants from '../Constants'
+import makeFormatter from '../formatter';
+import PropTypes from '../PropTypes';
 
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
 function lastEq(input, val) {
     return input && input[input.length - 1] === val;
 }
-/*function findCharPosAfter(value, char, pos) {
- for (var i = pos, l = value.length; i < l; i++) {
- if (value[i] === char) {
- return i + 1;
- }
- }
- return value.length;
- }*/
+
 function defaultValidator(value, regex) {
     return regex.test(value);
 }
 var dd_yyyy = makeFormatter('##/####');
+
 function shortDate(value, isBackspace, caret) {
     var ref = dd_yyyy(value, isBackspace, caret),
         parts = /(\d{1,2})([^\d]+?)?(\d{0,4})?/.exec(value),
@@ -117,33 +106,9 @@ function title(value) {
     }
     return value.substring(0, 1).toUpperCase() + value.substring(1);
 }
-var RestrictedMixin = {
-    mixins: [require('../BasicFieldMixin'), require('../FieldValueDefaultPropsMixin'), require('../FieldHandleValueMixin')],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    contextTypes: {
-        loader: PropTypes.loader
-    },
-
-    getInitialState(){
-        var value = this.props.value ? this.formatter(this.props.value) : {
-            isValid: false,
-            value: ''
-        };
-
-        return {
-            value: value.value || '',
-            hasValidValue: value.isValid
-        }
-    },
-    setValue(value){
-        this.setState({value: value});
-    },
-    getValue(){
-        return this.state.value;
-    },
-    formatters: {
+export default class RestrictedMixin extends Component {
+    static inputClassName = Constants.inputClassName
+    static formatters = {
         uszip(value, isBackspace, position){
             value = (value || '').substring(0, 10);
             var parts = zipRe.exec(value) || [], isValid = false;
@@ -198,16 +163,33 @@ var RestrictedMixin = {
         creditcard: '#### #### #### ####',
         mm20YY: shortDate,
         shortDate
-    },
+    }
 
-    formatter: function (value, isBackspace, caret) {
+    constructor(props, ...rest){
+        super(props, ...rest);
+        if (props && props.value) {
+            var value = this.props.value ? this.formatter(this.props.value) : {
+                isValid: false,
+                value: ''
+            };
+            if (!this.state) {
+                this.state = {};
+            }
+            this.state.value = value.value || '';
+            this.state.hasValidValue = value.isValid;
+        }
+
+    }
+
+
+    formatter(value, isBackspace, caret) {
         if (this._formatter) {
             return this._formatter.call(this, value, isBackspace, caret);
         }
         var formatter = this.props.formatter;
 
         if (typeof formatter === 'string') {
-            formatter = this.formatters[formatter] || formatter;
+            formatter = RestrictedMixin.formatters[formatter] || formatter;
             if (typeof formatter === 'function') {
                 return (this._formatter = formatter).call(this, value, isBackspace, caret);
             } else {
@@ -217,11 +199,8 @@ var RestrictedMixin = {
             return (this._formatter = formatter).call(this, value, isBackspace, caret);
         }
         return value;
-    },
-    valueFromEvt: function (e) {
-        return e.target.value;
-    },
-    handleKeyDown(e){
+    }
+    handleKeyDown = (e) => {
         if (this.props.onKeyDown) {
             this.props.onKeyDown.call(this, e);
         }
@@ -271,7 +250,7 @@ var RestrictedMixin = {
             nvalue.splice(pos, Math.max(end - pos, 1), char);
             this._value(nvalue.join(''), false, pos);
         }
-    },
+    }
     _value(str, isBackspace, caret){
         var value = this.formatter(str, isBackspace, caret) || {isValid: false};
 
@@ -291,11 +270,9 @@ var RestrictedMixin = {
             hasValidValue: value.isValid
         }, this.handleSelectionRange);
 
-    },
-    handleValueChange(e){
+    }
+    handleValueChange = (e)=>{
         this.props.onChange.call(this, e);
         this._value(e.target.value, false);
     }
-};
-
-module.exports = RestrictedMixin;
+}

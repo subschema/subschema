@@ -1,13 +1,12 @@
 "use strict";
-var React = require('../React');
-var Children = React.Children;
-var Buttons = require('./ButtonsTemplate.jsx');
-var Content = require('../types/Content.jsx')
-var styles = require('subschema-styles/ModalTemplate-style');
-var ValueManager = require('../ValueManager');
-var Editor = require('../Editor');
-var PropTypes = require('../PropTypes');
-var NewChildContext = require('../NewChildContext.jsx');
+import React, {Component, Children} from 'react';
+import Buttons from './ButtonsTemplate.jsx';
+import Content from '../types/Content.jsx'
+import styles from 'subschema-styles/ModalTemplate-style';
+import ValueManager from '../ValueManager';
+import Editor from '../Editor';
+import PropTypes from '../PropTypes';
+import NewChildContext from '../NewChildContext.jsx';
 var ModalTemplate = React.createClass({
 
     contextTypes: {
