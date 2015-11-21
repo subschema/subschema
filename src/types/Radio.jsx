@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import tu from '../tutils';
-import css from '../css';
+import {forField} from '../css';
 import field from '../decorators/field';
 import template from '../decorators/template';
 
@@ -63,7 +63,7 @@ export default class RadioInput extends Component {
     render(RadioItemTemplate) {
         var {name,itemTemplate,path, checkedClass, value, dataType,options, field} = this.props;
         var options = this.makeOptions(options);
-        return <div className={css.forField(this)}>{options.map((option, index)=> {
+        return <div className={forField(this)}>{options.map((option, index)=> {
             return <RadioItemTemplate checkedClass={checkedClass} {...option} key={option.path}>
                 <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>

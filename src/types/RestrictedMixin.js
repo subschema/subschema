@@ -1,8 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import css from '../css';
-import Constants from '../Constants'
 import PropTypes from '../PropTypes';
 
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
@@ -10,7 +8,6 @@ function lastEq(input, val) {
     return input && input[input.length - 1] === val;
 }
 var reRe = /(#{1,}|A{1,}|a{1,}|0{1,}(?:\.0{1,})?)?(.+?)?/mg;
-var slice = Function.call.bind(Array.prototype.slice);
 function fixDelim(str) {
     return (str || '').replace(/([ ().-])/g, '\\$1');
 }
@@ -290,7 +287,6 @@ function title(value) {
     return value.substring(0, 1).toUpperCase() + value.substring(1);
 }
 export default class RestrictedMixin extends Component {
-    static inputClassName = Constants.inputClassName;
     static makeFormatter = makeFormatter;
     static formatters = {
         uszip(value, isBackspace, position){

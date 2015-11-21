@@ -3,7 +3,7 @@
 import React, {Component} from 'react'
 import tu from '../tutils'
 import Constants from '../Constants'
-import css from '../css'
+import {forField} from '../css'
 import PropTypes from '../PropTypes'
 import field from '../decorators/field';
 import template from '../decorators/template';
@@ -90,6 +90,6 @@ export default class Checkboxes extends Component {
     render() {
 
         return <div
-            className={css.forField(this)}>{this.makeOptions(this.props.options, 1)}</div>
+            className={forField(this)}>{this.makeOptions(this.props.options, 1)}</div>
     }
 }

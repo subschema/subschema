@@ -10,7 +10,7 @@ import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
-import css from '../css';
+import {forField} from '../css';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 
@@ -253,7 +253,7 @@ export default class CollectionMixin extends Component {
         item.canDelete = canDelete;
         item.canEdit = canEdit;
         var itemToString = this.itemToString();
-        return (<div className={css.forField(this, 'list-editor')}>
+        return (<div className={forField(this, 'list-editor')}>
             {this.renderAdd()}
             <ul>
                 {values.map((v, i) => {

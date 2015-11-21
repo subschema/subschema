@@ -1,9 +1,9 @@
 "use strict";
 
-import React from 'react';
-import Constants from '..';
+import React, {Component} from 'react';
+import Constants from '../Constants';
 import util from '../tutils';
-import css from '../css';
+import {forField} from '../css';
 import field from '../decorators/field';
 
 function toLabelVal(v) {
@@ -24,9 +24,7 @@ function toLabelVal(v) {
 }
 
 @field
-export default class Select extends React.Component {
-    static inputClassName = Constants.inputClassName
-
+export default class Select extends Component {
     handleSelect(e) {
         if (this.props.multiple) {
             var placeholder = this.props.placeholder;
@@ -70,7 +68,7 @@ export default class Select extends React.Component {
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
-        return <select className={css.forField(this)}
+        return <select className={forField(this)}
                        multiple={multiple}
                        ref="input"
                        value={value}

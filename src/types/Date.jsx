@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import Constants from '../Constants';
-import css from '../css';
+import {forField} from '../css';
 import field from '../decorators/field'
 
 @field
 export default class DateInput extends Component {
-    static inputClassName = Constants.inputClassName
 
     asInputValue() {
         if (this.state.value == null) {
@@ -26,7 +24,7 @@ export default class DateInput extends Component {
     render() {
         var {onBlur,onValueChange,onChange, className, fieldAttrs, ...props} = this.props;
         return <input onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
-                      className={css.forField(this)} type="date"
+                      className={forField(this)} type="date"
                       value={this.asInputValue()}
             {...props}
             {...fieldAttrs}

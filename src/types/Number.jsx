@@ -1,14 +1,12 @@
 "use strict";
 import React, {Component} from 'react';
-import Constants from '../Constants';
-import css from '../css';
+import {forField} from '../css';
 import field from '../decorators/field';
 
 var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
 @field(null, false)
 export default class NumberInput extends Component {
-    static inputClassName = Constants.inputClassName
 
     handleDateChange(e) {
 

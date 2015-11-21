@@ -50,19 +50,14 @@ api.loader = api.shape({
 
 api.valueManager = api.shape({
     addListener: api.func,
-    removeListener: api.func,
 
     addErrorListener: api.func,
-    removeErrorListener: api.func,
 
     addValidateListener: api.func,
-    removeValidateListener: api.func,
 
     addSubmitListener: api.func,
-    removeSubmitListener: api.func,
 
     addStateListener: api.func,
-    removeStateListener: api.func
 });
 
 api.content = api.oneOfType([api.string, api.shape({

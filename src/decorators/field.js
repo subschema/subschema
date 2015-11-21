@@ -77,7 +77,7 @@ function refOrFunc(obj, key, defValue) {
  * @param eventValue {[function]} - Takes an event and extracts the value.
  * @returns {*}
  */
-function field(setValue = 'setValue', handleChange = 'handleChange', handleValidate = 'handleValidate', triggerChange = false, eventValue = defEventValue) {
+function field( triggerChange = false, setValue = 'setValue', handleChange = 'handleChange', handleValidate = 'handleValidate', eventValue = defEventValue) {
     return function field$decorate(Target) {
         var handleChangeKey = typeof handleChange === 'function' ? 'handleChange' : handleChange;
         var handleValidateKey = typeof handleValidate === 'function' ? 'handleValidate' : handleValidate;

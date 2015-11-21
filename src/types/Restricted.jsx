@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import css from '../css';
+import {forField} from '../css';
 import RestrictedMixin from './RestrictedMixin';
 import field from '../decorators/field';
 import PropTypes from '../PropTypes';
 import {noop} from '../tutils';
 
-@field(null, null, null, true)
+@field(true)
 export default class Restricted extends RestrictedMixin {
     static contextTypes = PropTypes.contextTypes;
     static defaultProps = {
@@ -30,7 +30,7 @@ export default class Restricted extends RestrictedMixin {
     render() {
         var {onChange, onValueChange, onBlur, className,field,value, dataType, value, type, fieldAttrs, ...props} = this.props
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
-                      className={css.forField(this)}
+                      className={forField(this)}
                       value={this.state.value}
             {...props} {...fieldAttrs} type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
     }

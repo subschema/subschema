@@ -66,6 +66,9 @@ function filterProp(node, property, value) {
 function change(node, value) {
     Simulate.change(node, {target: {value}});
 }
+function check(node, checked) {
+    Simulate.change(node, {target: {checked}});
+}
 function byComponent(node, comp) {
     return TestUtils.scryRenderedComponentsWithType(node, comp)[0];
 }
@@ -129,5 +132,6 @@ module.exports = {
     byClass,
     byComponent,
     byComponents,
-    change
+    change,
+    check
 }

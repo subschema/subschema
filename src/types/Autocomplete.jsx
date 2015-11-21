@@ -2,10 +2,13 @@
 
 import React, {Component} from 'react';
 import {noop} from '../tutils';
-import css from '../css';
+import {forField} from '../css';
 import Dom from '../Dom';
 import style from 'subschema-styles/Autocomplete-style';
 import PropTypes from '../PropTypes';
+import field from '../decorators/field';
+
+@field(true)
 export default class Autocomplete extends Component {
     static propTypes = {
         name: React.PropTypes.string.isRequired,
@@ -456,7 +459,7 @@ export default class Autocomplete extends Component {
             {...cprops}
             ref="input"
             value={this.state.input}
-            className={css.forField(this)}
+            className={forField(this)}
 
         />;
     }

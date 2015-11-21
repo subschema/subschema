@@ -1,10 +1,8 @@
 "use strict";
 
 import React from 'react';
-import Constants from '../Constants';
 import tu from '../tutils';
 import CollectionMixin from './CollectionMixin.jsx';
-import css from '../css';
 import style from 'subschema-styles/List-style';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import _get from 'lodash/object/get';
