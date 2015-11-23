@@ -109,6 +109,7 @@ export default class ObjectType extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
+    static isContainer = true;
 
     componentWillMount() {
         this.updateProps({}, this.props);
@@ -144,10 +145,19 @@ export default class ObjectType extends Component {
         if (field == null) {
             return null;
         }
-        return <Editor ref={f} key={'key-' + f} path={path(this.props.path, f)}
-                       field={field}
-                       name={f}
-                       template={field.template}
+        var EditType = Editor, component = this.context.loader.loadType(field.type);
+
+        if (component.isContainer) {
+            EditType = component;
+
+            //Don't pass type into a container;
+            component = null;
+        }
+        return <EditType ref={f} key={'key-' + f} path={path(this.props.path, f)}
+                         field={field}
+                         name={f}
+                         component={component}
+                         template={field.template}
         />
     }
 

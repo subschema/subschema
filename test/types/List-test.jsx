@@ -1,6 +1,6 @@
 var {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
 
-var {templates, Form} = require('subschema');
+var {templates, Form} = require('Subschema');
 var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
 

@@ -5,6 +5,7 @@ import Constants from '../Constants';
 import util from '../tutils';
 import {forField} from '../css';
 import field from '../decorators/field';
+import PropTypes from '../PropTypes';
 
 function toLabelVal(v) {
     if (util.isString(v)) {
@@ -23,9 +24,22 @@ function toLabelVal(v) {
     return v;
 }
 
-@field
 export default class Select extends Component {
-    handleSelect(e) {
+    static eventValue(e) {
+        return e;
+    }
+
+    static propTypes = {
+        options: PropTypes.options,
+        multiple: PropTypes.bool,
+
+    }
+    static defaultProps = {
+        options: [],
+        multiple: false
+    }
+
+    handleSelect = (e)=> {
         if (this.props.multiple) {
             var placeholder = this.props.placeholder;
             //normalize multiple field selection
@@ -37,15 +51,16 @@ export default class Select extends Component {
                         values.push(option.value);
                 }
             }
-            this.triggerChange(values);
+            this.props.onChange(values);
             return
         } else if (this.props.placeholder) {
             if (e.target.value === this.props.placeholder) {
-                this.triggerChange(null);
+                this.props.onChange(null);
                 return;
             }
+        }else{
+            this.props.onChange(e.target.value);
         }
-        this.handleChange(e);
     }
 
     renderOptions(value) {
@@ -63,19 +78,11 @@ export default class Select extends Component {
     }
 
     render() {
-        var {field, onChange, fieldAttrs, onBlur, type, value, multiple, placeholder,  ...props} = this.props;
-        var value = this.state.value;
+        var {multiple, onChange,value, ...props} = this.props;
         if (multiple && !Array.isArray(value)) {
             value = value ? [value] : value;
         }
-        return <select className={forField(this)}
-                       multiple={multiple}
-                       ref="input"
-                       value={value}
-                       onBlur={this.handleValidate} onChange={this.handleSelect}
-            {...props}
-            {...fieldAttrs}
-        >
+        return <select {...props} value={value} onChange={this.handleSelect}>
             {this.renderOptions(value)}
         </select>
     }

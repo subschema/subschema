@@ -4,7 +4,7 @@ var ReactDOM = require('react-dom');
 var Highlight = require('./Highlight.jsx');
 var Playground = require('component-playground/lib/components/playground.js');
 var Subschema = require('subschema');
-var ValueManager = Subschema.ValueManager;
+var {PropTypes, ValueManager} = Subschema;
 require('codemirror/mode/javascript/javascript.js');
 
 function stringify(name, obj) {
@@ -50,7 +50,7 @@ var SampleExample = React.createClass({
     },
     componentWillMount(){
     },
-    componentWillUnmount(){
+    componentWillReceiveProps(props){
         this.removeListeners();
         this.addListeners(props.valueManager);
     },
@@ -67,10 +67,6 @@ var SampleExample = React.createClass({
             });
             this.__listeners = null;
         }
-    },
-    componentWillReceiveProps(props){
-        this.removeListeners();
-        this.addListeners(props.valueManager);
     },
     setValue(data){
         this.setState({data});

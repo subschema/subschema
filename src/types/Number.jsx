@@ -5,7 +5,7 @@ import field from '../decorators/field';
 
 var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
-@field(null, false)
+@field(true)
 export default class NumberInput extends Component {
 
     handleDateChange(e) {
@@ -35,7 +35,7 @@ export default class NumberInput extends Component {
     render() {
         var {onChange, onValueChange, onBlur, className, field, value, dataType, value, fieldAttrs, type, ...props} = this.props
         return <input ref="input" onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
-                      className={css.forField(this)}
+                      className={forField(this)}
 
                       value={this.state.value}
             {...props} {...fieldAttrs}

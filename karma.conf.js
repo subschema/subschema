@@ -32,7 +32,7 @@ module.exports = function (config) {
                         include: [
                             join('src'),
                             join('test'),
-                            '~/node_modules/react',
+                            join('public'),
                             '~/node_modules/react-router',
                             '~/node_modules/react-bootstrap',
                             '~/node_modules/subschema-builder'
@@ -56,7 +56,10 @@ module.exports = function (config) {
                 }
             },
 
-            plugins: [
+            plugins: [new webpack.ProvidePlugin({
+                CodeMirror: "codemirror",
+                "window.CodeMirror": "codemirror"
+            }),
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': JSON.stringify('development')
                 })]

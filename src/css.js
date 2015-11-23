@@ -24,16 +24,18 @@ export function addClasses(classes, str) {
  * @param {Reactnode} node - node to create for.
  * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
  */
-export function forField(node) {
+export function forField(node, field) {
     var classes = [];
-    addClasses(classes, slice(arguments, 1));
-    var field = node.props.field;
-    var className = field && field.className || node.props.className;
+    addClasses(classes, slice(arguments, 2));
+    field = field || node.props.field;
+    var className = field ? field.className : node.props.className;
 
     if (className) {
         addClasses(classes, className);
     } else if (node.constructor.inputClassName) {
         push(classes, node.constructor.inputClassName.split(/\s+?/));
+    } else if (node.inputClassName) {
+        push(classes, node.inputClassName.split(/\s+?/));
     } else {
         push(classes, Constants.inputClassName.split(/\s+?/));
     }

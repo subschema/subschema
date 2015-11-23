@@ -37,9 +37,9 @@ function byTag(node, tag) {
 function byTags(node, tag) {
     return TestUtils.scryRenderedDOMComponentsWithTag(node, tag);
 }
-function byName(root, name){
+function byName(root, name) {
     var all = TestUtils.findAllInRenderedTree(root, function (inst) {
-        if (!TestUtils.isDOMComponent(inst)){
+        if (!TestUtils.isDOMComponent(inst)) {
             return false;
         }
         var inode = findNode(inst);
@@ -64,11 +64,23 @@ function filterProp(node, property, value) {
     })
 }
 function change(node, value) {
-    Simulate.change(node, {target: {value}});
+    Simulate.change(findNode(node), {target: {value}});
+    return node;
 }
 function check(node, checked) {
-    Simulate.change(node, {target: {checked}});
+    Simulate.change(findNode(node), {target: {checked}});
+    return node;
 }
+function blur(node) {
+    Simulate.blur(findNode(node));
+    return node;
+}
+
+function focus(node) {
+    Simulate.focus(findNode(node));
+    return node;
+}
+
 function byComponent(node, comp) {
     return TestUtils.scryRenderedComponentsWithType(node, comp)[0];
 }
@@ -76,17 +88,17 @@ function byComponent(node, comp) {
 function byComponents(node, comp) {
     return TestUtils.scryRenderedComponentsWithType(node, comp);
 }
-function byClass(node, className){
+function byClass(node, className) {
     return TestUtils.scryRenderedDOMComponentsWithClass(node, className);
 }
 function findNode(n) {
     return ReactDOM.findDOMNode(n);
 }
-function context(ctx){
-    if (ctx == null){
+function context(ctx) {
+    if (ctx == null) {
         ctx = {
-            valueManager:ValueManager(),
-            loader:loader
+            valueManager: ValueManager(),
+            loader: loader
         }
     }
     var childContextTypes = {
@@ -111,18 +123,41 @@ function intoWithContext(child, ctx, debug) {
 }
 
 
+function select(composit, index) {
+    var node = findNode(composit);
+    var multiple = node.multiple;
+
+    var options = byTags(composit, 'option')
+    expect(options[index]).toExist(`${index} should exist`);
+    if (!multiple) {
+        options.forEach((option, idx)=> {
+            option.selected = (idx === index);
+        })
+    } else {
+        options[index].selected = !options[index].selected;
+    }
+
+    Simulate.change(node, {
+        target: {
+            options,
+            value: multiple ? options.map((o)=>o.value) : options[index].value
+        }
+    });
+    return node;
+}
+
 module.exports = {
     React,
     ReactDOM,
     TestUtils,
     Simulate,
+
+    into,
     context,
     intoWithContext,
     prettyLog,
     findNode,
-    into,
     expect,
-    click,
     byName,
     byTags,
     byTag,
@@ -132,6 +167,11 @@ module.exports = {
     byClass,
     byComponent,
     byComponents,
+    //trigger events
+    select,
+    click,
     change,
-    check
+    check,
+    blur,
+    focus
 }

@@ -8,7 +8,7 @@ import PropTypes from '../PropTypes'
 import field from '../decorators/field';
 import template from '../decorators/template';
 
-@field(null, 'handleCheckChange')
+@field(true)
 export default class Checkboxes extends Component {
     static      inputClassName = Constants.inputCheckboxesClassNam
 

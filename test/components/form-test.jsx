@@ -1,5 +1,5 @@
 "use strict";
-import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} from './support';
+import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} from '../support';
 import {loader,Form, templates} from 'Subschema';
 var {EditorTemplate} = templates;
 
