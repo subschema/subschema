@@ -1,25 +1,13 @@
 "use strict";
+
 import React, {Component}  from 'react';
 import PropTypes  from '../PropTypes';
-import {toArray, isString, isArray, unique, path, clone, noop}  from '../tutils';
+import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path, clone, noop}  from '../tutils';
 import Editor  from '../components/Editor';
 import ValueManager  from '../ValueManager';
 import map  from 'lodash/collection/map';
 import Template  from '../components/Template.jsx';
-
-var push = Function.apply.bind(Array.prototype.push);
-
-var noTypeInfo;
-if ("production" !== process.env.NODE_ENV) {
-    noTypeInfo = function (f) {
-        ("production" !== process.env.NODE_ENV ? console.log(
-            false,
-            'subschema: tried to create a field  "%s"  without any type info likely a typo', f) : null);
-    };
-} else {
-    noTypeInfo = function () {
-    }
-}
+import warning from '../warning';
 
 function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
@@ -47,7 +35,7 @@ function normalizeFieldsets(fieldsets, fields) {
             rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
             return rest;
         } else {
-            console.log('do not know what %s this is ', fieldset);
+            warning(false, 'do not know what %s this is ', f);
         }
     });
     if (fieldsets.length === 0) {
@@ -95,13 +83,26 @@ function normalizeSchema(oschema, loader, fs, f) {
 }
 
 export default class ObjectType extends Component {
+    static inputClassName = ' ';
+
+    static isContainer = true;
+
+    static noTemplate = true;
+
+    static propTypes = {
+        objectTemplate: PropTypes.template,
+        schema: PropTypes.schema,
+        subSchema: PropTypes.schema,
+        onButtonClick: PropTypes.event,
+        onSubmit: PropTypes.event,
+        buttons: PropTypes.buttons
+    };
 
     static defaultProps = {
-        path: null,
-        template: 'ObjectTemplate',
-        schema: {},
-        onButtonClick: noop
-    }
+        onButtonClick: noop,
+        onSubmit: noop,
+        objectTemplate: 'ObjectTemplate'
+    };
 
     static normalizeSchema = normalizeSchema;
 
@@ -109,10 +110,9 @@ export default class ObjectType extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
-    static isContainer = true;
 
     componentWillMount() {
-        this.updateProps({}, this.props);
+        this.updateProps(FREEZE_OBJ, this.props);
     }
 
     componentWillReceiveProps(newProps) {
@@ -145,19 +145,10 @@ export default class ObjectType extends Component {
         if (field == null) {
             return null;
         }
-        var EditType = Editor, component = this.context.loader.loadType(field.type);
-
-        if (component.isContainer) {
-            EditType = component;
-
-            //Don't pass type into a container;
-            component = null;
-        }
-        return <EditType ref={f} key={'key-' + f} path={path(this.props.path, f)}
-                         field={field}
-                         name={f}
-                         component={component}
-                         template={field.template}
+        return <Editor ref={f} key={'key-' + f} path={path(this.props.path, f)}
+                       field={field}
+                       name={f}
+                       template={field.template}
         />
     }
 
@@ -205,7 +196,8 @@ export default class ObjectType extends Component {
     render() {
         //capture the things that should not fall through.
         var {schema, subSchema, title, fields, submitButton, conditional, template, ...props} = this.props;
-        return <Template ref="form" template={schema.template || template} onValidate={this.handleValidate}
+        return <Template ref="form" template={this.props.objectTemplate}
+                         onValidate={this.handleValidate}
                          schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}

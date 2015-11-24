@@ -1,36 +1,34 @@
+"use strict";
+
 import React, {Component} from 'react';
-import {forField} from '../css';
-import field from '../decorators/field';
+import PropTypes from '../PropTypes';
+import {returnFirst} from '../tutils';
 
-@field(true)
 export default class Checkbox extends Component {
+
     static inputClassName = ' ';
-    constructor(props, ...rest) {
-        super(props, ...rest);
-    }
 
-    handleChange(e) {
-        var hasProp = 'value' in this.props;
+    static eventValue = returnFirst;
 
-        this.triggerChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
-    }
+    static propTypes = {
+        checkedClass: PropTypes.cssClass
+    };
+
+    static defaultProps = {
+        type: 'checkbox',
+        checkedClass: ''
+    };
+
+    handleChange = (e)=> {
+        var {value} = this.props;
+        this.props.onChange(e.target.checked ? value == null || value === false ? true : value : value == null || value == true ? false : null);
+    };
 
     render() {
-        var {onValueChange, onChange,value, type, dataType, checkedClass, fieldAttrs, className, onBlur, ...props} = this.props;
-        dataType = dataType || 'checkbox';
-        var checked = false;
-        if ('value' in this.props) {
-            checked = this.state.value === value;
-        } else {
-            checked = this.state.value != null;
-        }
-        return <input onBlur={this.handleValidate} onChange={this.handleChange} id={this.props.name}
-                      className={ (checked ? checkedClass || '' : '' )+' '+forField(this)}
-                      value={value}
-                      checked={checked}
-                      type={dataType}
-            {...props}
-            {...fieldAttrs}
-        />
+        var {onChange, value, className, checkedClass, ...props} = this.props;
+
+        var checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
+        return <input {...props} value={value} className={className+' '+(checked ? checkedClass : '')}
+                                 checked={checked} onChange={this.handleChange}/>
     }
 }

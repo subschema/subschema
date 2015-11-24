@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import tu from '../tutils';
+import tu, {noop} from '../tutils';
 import CollectionMixin from './CollectionMixin.jsx';
 import style from 'subschema-styles/List-style';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -9,19 +9,17 @@ import _get from 'lodash/object/get';
 import map from 'lodash/collection/map';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
-import field from '../decorators/field';
 
-@field
+
 export default class ListInput extends CollectionMixin {
-    static propTypes = defaults({
-        itemType: PropTypes.type,
-    }, CollectionMixin.propTypes);
+    static inputClassName = CollectionMixin.inputClassName;
+
+    static isContainer = true;
+
+    static propTypes = defaults({}, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
-        title: '',
-        placeholder: '',
-        onValidate() {
-        },
+        onValidate: noop,
         itemTemplate: 'ListItemTemplate'
     }, CollectionMixin.defaultProps)
 

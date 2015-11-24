@@ -88,8 +88,8 @@ export default class Form extends Component {
 
     render() {
 
-        var {valueManager, onSubmit, loader, ...props} = this.props;
-        return <ObjectType {...props} onSubmit={this.handleSubmit}/>
+        var {valueManager, template, onSubmit, loader, ...props} = this.props;
+        return <ObjectType {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
     }
 
 }

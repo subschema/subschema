@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {forField} from '../css';
 import RestrictedMixin from './RestrictedMixin';
-import field from '../decorators/field';
 import PropTypes from '../PropTypes';
-import {noop} from '../tutils';
+import {noop, returnFirst} from '../tutils';
 
-@field(true)
 export default class Restricted extends RestrictedMixin {
     static contextTypes = PropTypes.contextTypes;
+
     static defaultProps = {
         onValid: noop
     }
+    static eventValue = returnFirst;
 
     componentWillReceiveProps(newProps) {
         if (this.props.value !== newProps.value) {
@@ -28,10 +27,7 @@ export default class Restricted extends RestrictedMixin {
     }
 
     render() {
-        var {onChange, onValueChange, onBlur, className,field,value, dataType, value, type, fieldAttrs, ...props} = this.props
-        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
-                      className={forField(this)}
-                      value={this.state.value}
-            {...props} {...fieldAttrs} type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
+        var {onValid, ...props} = this.props
+        return <input ref="input" onKeyDown={this.handleKeyDown} {...props}/>
     }
 }

@@ -1,6 +1,5 @@
 "use strict";
 
-
 import escape from 'lodash/string/escape';
 import loget from 'lodash/object/get';
 import defaults from 'lodash/object/defaults';

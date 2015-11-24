@@ -1,7 +1,6 @@
 "use strict";
 
-import React from 'react';
-import lifecycle from '../decorators/lifecycle';
+import React, {Component} from 'react';
 import listeners from '../decorators/listeners';
 import substitute from './SubstituteMixin';
 import {FREEZE_OBJ} from '../tutils';
@@ -12,12 +11,14 @@ function keyToSetState(obj, key) {
     return obj;
 }
 
-export default class ContentWrapper extends React.Component {
+export default class ContentWrapper extends Component {
     static defaultProps = {
         type: 'span',
         content: ''
     }
-
+    static proptypes = {
+        content: PropTypes.string
+    }
     static contextTypes = {
         loader: PropTypes.loader
     }

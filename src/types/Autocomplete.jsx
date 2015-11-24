@@ -1,29 +1,35 @@
 "use strict";
 
 import React, {Component} from 'react';
-import {noop} from '../tutils';
-import {forField} from '../css';
+import {noop, returnFirst} from '../tutils';
 import Dom from '../Dom';
 import style from 'subschema-styles/Autocomplete-style';
 import PropTypes from '../PropTypes';
-import field from '../decorators/field';
+import lifecycle from '../decorators/lifecycle';
+import template from '../decorators/template';
 
-@field(true)
 export default class Autocomplete extends Component {
+    static eventValue = returnFirst;
+    static contextTypes = {
+        loader: PropTypes.loader
+    }
     static propTypes = {
-        name: React.PropTypes.string.isRequired,
-        /* processor: React.PropTypes.shape({
-         fetch: React.PropTypes.func.isRequired
-         }).isRequired,*/
-        //optional
-        onChange: React.PropTypes.func,
-        onSelect: React.PropTypes.func,
-        minLength: React.PropTypes.number,
-        foundCls: React.PropTypes.string,
-        notFoundCls: React.PropTypes.string,
-        autoSelectSingle: React.PropTypes.bool
+        onSelect: PropTypes.event,
+        minLength: PropTypes.number,
+        autoSelectSingle: PropTypes.bool,
+        country: PropTypes.string,
+        locale: PropTypes.string,
+        useshowing: PropTypes.bool,
+        maxInputLength: PropTypes.number,
+        itemTemplate: PropTypes.template,
+        processor: PropTypes.processor,
+        showing: PropTypes.content,
+        foundCls: PropTypes.cssClass,
+        notFoundCls: PropTypes.cssClass,
+        input:PropTypes.string,
 
     }
+
     static inputClassName = 'form-control';
 
     static defaultProps = {
@@ -84,6 +90,10 @@ export default class Autocomplete extends Component {
         state.input = props.input;
         state.value = props.value;
 
+    }
+
+    componentWillMount() {
+        this._processProps(this.props);
 
     }
 
@@ -110,10 +120,6 @@ export default class Autocomplete extends Component {
             }.bind(this));
         }
 
-    }
-
-    getValue() {
-        return this.state.value
     }
 
     setValue(v) {
@@ -186,17 +192,6 @@ export default class Autocomplete extends Component {
     }
 
 
-    componentWillUnmount() {
-        this.unbindDocument();
-
-    }
-
-
-    componentWillMount() {
-        this._processProps(this.props);
-    }
-
-
     bindDocument() {
         if (this._bound) {
             return;
@@ -213,7 +208,7 @@ export default class Autocomplete extends Component {
             Dom.listen(this, 'keypress', this.handleDocumentEnter);
     }
 
-
+    @lifecycle("componentWillUnmount")
     unbindDocument() {
         this._bound = false;
         if (this._onDocumentClickListener) {
@@ -266,8 +261,8 @@ export default class Autocomplete extends Component {
     }
 
 
-    getProcessor() {
-        return this.processor();
+    processor() {
+        return this.__processor || ( this.__processor = (typeof this.props.processor === 'string' ? this.context.loader.loadProcessor(this.props.processor) : this.props.processor));
     }
 
 
@@ -280,9 +275,9 @@ export default class Autocomplete extends Component {
         if (this.props.onSelect(o) === false) {
             return;
         }
-        var p = this.getProcessor();
+        var p = this.processor();
         var value = p.value(o);
-        if (this.triggerChange(value) !== false) {
+        if (this.props.onChange(value) !== false) {
             var input = p.format(o);
             this.setState({
                 suggestions: [],
@@ -305,7 +300,7 @@ export default class Autocomplete extends Component {
         if (this._fetch && this._fetch.cancel) {
             this._fetch.cancel();
         }
-        this._fetch = this.getProcessor().fetch(this.props.url, value, this, (err, suggestions) => {
+        this._fetch = this.processor().fetch(this.props.url, value, this, (err, suggestions) => {
             if (err) {
                 return;
             }
@@ -370,6 +365,11 @@ export default class Autocomplete extends Component {
     }
 
 
+    @template('itemTemplate')
+    itemTemplate(Template) {
+        return Template;
+    }
+
     renderSuggestions() {
         var suggestions = this.state.suggestions || [];
         if (this.state.showing === false || suggestions.length === 0) {
@@ -379,7 +379,7 @@ export default class Autocomplete extends Component {
         var {focus, input} = this.state;
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
-        var CompleteItem = this.template('itemTemplate');
+        var CompleteItem = this.itemTemplate();
         return <ul className={style.listGroup}>
             {suggestions.map((item, i) => <CompleteItem
                 key={item.val}
@@ -394,9 +394,6 @@ export default class Autocomplete extends Component {
     }
 
     handleChange = (e) => {
-        if (this.props.onChange) {
-            this.props.onChange(e);
-        }
         this._handleDispatch(e.target.value);
     }
 
@@ -427,8 +424,8 @@ export default class Autocomplete extends Component {
                 if (child.props.onValueChange) {
                     var {onChange, ...nprops} = props;
                     var onChildChange = child.props.onChange;
-                    nprops.onValueChange = function (val) {
-                        handleDispatch(val);
+                    nprops.onChange = function (val) {
+                        onChildChange(val);
                     }
                     var onBlur = nprops.onBlur;
                     nprops.onBlur = (e)=> {
@@ -454,25 +451,24 @@ export default class Autocomplete extends Component {
         }
 
         return <input
-            id={cprops.name}
+            id={props.id}
             type="text"
             {...cprops}
-            ref="input"
             value={this.state.input}
-            className={forField(this)}
+            className={props.className}
 
         />;
     }
 
     render() {
         var suggestions = this.state.suggestions || [];
-        var {onChange,onPaste, children, fieldAttrs, field,value, onBlur,notFoundCls, foundCls,minLength,maxInputLength,onSelect,processor,onValid,onValidate,country,locale,useshowing, itemTemplate, onKeyUp,  ...props} = this.props;
+        var {foundCls, notFoundCls, ...props} = this.props;
         props.onChange = this.handleChange;
         props.onPaste = this.handlePaste;
         props.onKeyDown = this.handleKeyUp;
         props.onBlur = this.handleBlur;
         return <div
-            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)} {...fieldAttrs}>
+            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)} >
             {this.createInput(props)}
             {this.renderSuggestions()}
         </div>

@@ -5,26 +5,27 @@ import Editor from '../components/Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import NewChildContext from '../components/NewChildContext.jsx';
-import tu from '../tutils';
+import tu, {isString, path, returnFirst, EMPTY_ARR} from '../tutils';
 import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
-import {forField} from '../css';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 
 class EditChildContext extends Component {
+
     static propTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         path: PropTypes.string.isRequired
-    }
+    };
+
     static childContextTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         parentValueManager: PropTypes.valueManager
-    }
+    };
 
     getChildContext() {
         var parentValueManager = this.props.valueManager;
@@ -38,11 +39,11 @@ class EditChildContext extends Component {
     handleSubmit(e) {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
-        var currentPath = tu.path(this.props.path, value.key);
+        var currentPath = path(this.props.path, value.key);
         if (this.props.onSubmit(e, errors, value, currentPath) !== false) {
             this.props.valueManager.update(currentPath, value.value);
             if (this.props.childPath && value.key !== this.props.childPath) {
-                this.props.valueManager.update(tu.path(this.props.path, this.props.childPath), void(0));
+                this.props.valueManager.update(path(this.props.path, this.props.childPath), void(0));
             }
         }
 
@@ -56,20 +57,18 @@ class EditChildContext extends Component {
 
 function wrapFunc(value, key) {
     return {value, key}
-};
+}
 
 export default class CollectionMixin extends Component {
 
-    static listClassName = Constants.listClassName;
+    static eventValue = returnFirst;
 
-    static itemTemplate = 'ListItemTemplate';
+    static inputClassName = Constants.listClassName;
 
-    static contextTypes = {
-        loader: PropTypes.loader,
-        valueManager: PropTypes.valueManager
-    }
+    static contextTypes = PropTypes.contextTypes;
 
     static propTypes = {
+        path: PropTypes.path,
         value: PropTypes.object,
         canEdit: PropTypes.bool,
         canReorder: PropTypes.bool,
@@ -78,13 +77,16 @@ export default class CollectionMixin extends Component {
         inline: PropTypes.bool,
         labelKey: PropTypes.path,
         createTemplate: PropTypes.template,
-        buttonTemplate: PropTypes.template
-    }
+        buttonTemplate: PropTypes.template,
+        itemTemplate: PropTypes.template,
+        itemType: PropTypes.schema
+    };
 
     static defaultProps = {
         createTemplate: 'CollectionCreateTemplate',
-        buttonTemplate: 'ButtonTemplate'
-    }
+        buttonTemplate: 'ButtonTemplate',
+        itemTemplate: 'ListItemTemplate'
+    };
 
     constructor(props) {
         super(props);
@@ -95,10 +97,12 @@ export default class CollectionMixin extends Component {
         return this.unwrap(this.state.wrapped);
     }
 
+    @listen("value")
     setValue(value) {
         this.setState({wrapped: map(value, wrapFunc)});
     }
 
+    @listen("error", '.')
     setErrors(errors) {
         this.setState({errors});
     }
@@ -135,7 +139,7 @@ export default class CollectionMixin extends Component {
     }
 
     changeValue = (newValue, oldValue)=> {
-        if (this.triggerChange(this.unwrap(newValue)) !== false) {
+        if (this.props.onChange(this.unwrap(newValue)) !== false) {
 
             this.setState({
                 wrapped: newValue,
@@ -183,13 +187,11 @@ export default class CollectionMixin extends Component {
     }
 
     renderAddEditTemplate(edit, create) {
-        var handler, label = ''
+        var label = '';
         if (edit) {
-            handler = this.handleEditValue;
-            label = 'Save'
+            label = 'Save';
         } else if (create) {
-            handler = this.handleAddValue;
-            label = 'Create'
+            label = 'Create';
         } else {
             return null;
         }
@@ -206,11 +208,11 @@ export default class CollectionMixin extends Component {
             </EditChildContext>)
     }
 
-    @template('buttonTemplate')
-    renderAddBtn(Template) {
-        if (!this.props.field.canAdd) {
+    renderAddBtn() {
+        if (!this.props.canAdd) {
             return null;
         }
+        var Template = this.props.buttonTemplate;
         return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
                          onClick={this.handleAddBtn}><i className={style.iconAdd}/>
         </Template>
@@ -218,8 +220,7 @@ export default class CollectionMixin extends Component {
     }
 
     renderAdd() {
-        var field = this.props.field;
-        if (!(field.canAdd || field.canEdit)) {
+        if (!(this.props.canAdd || this.props.canEdit)) {
             return null;
         }
         var {showAdd, showEdit} = this.state;
@@ -243,33 +244,35 @@ export default class CollectionMixin extends Component {
         }
     }
 
-    @template('itemTemplate')
-    render(ListItemTemplate) {
-        var {name,  itemType, errors, canReorder, canDelete, canEdit, canAdd, path,field} = this.props, item = (!itemType || tu.isString(itemType)) ? {
-            type: itemType || 'Text',
-            name: name
-        } : itemType, values = this.state.wrapped || [], length = values.length;
-        item.canReorder = canReorder;
-        item.canDelete = canDelete;
-        item.canEdit = canEdit;
-        var itemToString = this.itemToString();
-        return (<div className={forField(this, 'list-editor')}>
+    renderRowEach = (data, rowId)=> {
+        return this.renderRow(data, null, rowId);
+    }
+
+    renderRow(v, sectionId, i) {
+        var ItemTemplate = this.props.itemTemplate;
+
+        return <ItemTemplate key={this.props.path+'.'+i} pos={i} path={ path(this.props.path, v.key)}
+                             onMoveUp={this.handleMoveUp}
+                             onMoveDown={this.handleMoveDown}
+                             onDelete={this.handleDelete}
+                             onEdit={this.handleEdit}
+                             canReorder={this.props.canReorder}
+                             canDelete={this.props.canDelete}
+                             canEdit={this.props.canEdit}
+                             field={v}
+                             pid={v.key}
+                             itemToString={this.itemToString()}
+                             value={v} errors={this.props.errors} last={i + 1 === this.state.wrapped.length}>
+            {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) : null}
+        </ItemTemplate>
+    }
+
+    render() {
+        var {name,  itemType, errors,className, canReorder, canDelete, itemTemplate, canEdit, canAdd } = this.props, values = this.state.wrapped || EMPTY_ARR, length = values.length;
+        return (<div className={className}>
             {this.renderAdd()}
             <ul>
-                {values.map((v, i) => {
-                    var path = tu.path(path, v.key);
-                    return <ListItemTemplate key={path} pos={i} path={path}
-                                             onMoveUp={this.handleMoveUp}
-                                             onMoveDown={this.handleMoveDown} onDelete={this.handleDelete}
-                                             onEdit={this.handleEdit}
-
-                                             field={item}
-                                             pid={v.key}
-                                             itemToString={itemToString}
-                                             value={v} errors={errors} last={i + 1 === length}>
-                        {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) : null}
-                    </ListItemTemplate>
-                    })}
+                {values.map(this.renderRowEach)}
             </ul>
         </div>);
     }

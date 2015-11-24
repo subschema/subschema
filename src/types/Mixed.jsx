@@ -1,19 +1,23 @@
 import React from 'react';
 import CollectionMixin from './CollectionMixin.jsx';
-import tu from '../tutils';
+import {isString} from '../tutils';
 import style from 'subschema-styles/Mixed-style';
 import _get from 'lodash/object/get';
 import defaults from 'lodash/object/defaults';
+import PropTypes from '../PropTypes';
 
 export default class MixedInput extends CollectionMixin {
+    static isContainer = true;
+    static propTypes = defaults({
+        labelKey: PropTypes.string,
+        keyType: PropTypes.schema
+
+    }, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
-        placeholder: '',
-        itemType: 'Text',
-        keyType: 'Text',
-        valueType: 'Text',
-        itemTemplate: 'ListItemTemplate',
-    }, CollectionMixin)
+        itemType: {type: 'Text'},
+        keyType: {type: 'Text'},
+    }, CollectionMixin.defaultProps)
 
     unwrap(value) {
         var ret = {}
@@ -28,7 +32,7 @@ export default class MixedInput extends CollectionMixin {
 
     itemToString() {
         if (this.props.itemToString) return this.props.itemToString;
-        var labelKey = this.props.field.labelKey;
+        var labelKey = this.props.labelKey;
         return function (v) {
             if (!(v && v.key)) {
                 return null;
@@ -60,13 +64,13 @@ export default class MixedInput extends CollectionMixin {
     }
 
     getTemplateItem() {
-        var kt = this.props.field.keyType || this.props.keyType,
-            keyType = tu.isString(kt) ? {
+        var kt = this.props.keyType,
+            keyType = isString(kt) ? {
                 type: kt
             } : kt || {},
             schema = {
                 key: keyType,
-                value: this.props.field.valueType || this.props.valueType
+                value: this.props.itemType
             };
 
         if (!keyType.type) {

@@ -8,8 +8,13 @@ import defaults from 'lodash/object/defaults';
 import PropTypes from '../PropTypes';
 
 export default class Content extends Component {
+    static isContainer = true;
+
     static contextTypes = {
         loader: PropTypes.loader
+    }
+    static propTypes = {
+        content:PropTypes.content,
     }
 
     //Expose for react-native subschema.

@@ -39,6 +39,7 @@ api.path.isRequired = function ap$path$isRequired() {
     return api.string.isRequired.apply(api.string, arguments);
 }
 
+
 api.loader = api.shape({
     loadTemplate: api.func,
     loadType: api.func,
@@ -60,13 +61,20 @@ api.valueManager = api.shape({
     addStateListener: api.func,
 });
 
-api.content = api.oneOfType([api.string, api.shape({
+var content = api.oneOfType([api.string, api.shape({
     content: api.string,
     className: api.cssClass,
     type: api.string,
     children: api.bool
 })]);
 
+api.content = api.oneOfType([content, api.arrayOf(content)]);
+
+api.template = api.oneOfType([api.string, api.bool, api.shape({
+    template: api.oneOfType([api.string, api.bool, api.func]),
+    content: api.content,
+    className: api.className
+}), api.func]);
 
 api.button = api.oneOfType([api.string, api.shape({
     onClick: api.event,
@@ -124,12 +132,6 @@ api.schema = api.oneOfType([api.string, api.shape({
 })]);
 
 
-api.template = api.oneOfType([api.string, api.shape({
-    template: api.oneOfType([api.string, api.bool]),
-    content: api.content,
-    className: api.className
-
-})]);
 
 api.type = api.oneOfType([api.string, api.object])
 
@@ -155,10 +157,18 @@ api.mixin = {
         field: {}
     }, events)
 };
+
 api.contextTypes = Object.freeze({
-    valueManager:api.valueManager,
-    loader:api.loader
+    valueManager: api.valueManager,
+    loader: api.loader
 });
+
+
+api.processor = api.oneOfType([api.string, api.shape({
+    fetch: PropTypes.func,
+    value: PropTypes.func,
+    format: PropTypes.func
+})]);
 
 api.propTypeToName = function propTypeToName(propType) {
     var keys = Object.keys(api), i = 0, l = keys.length, key, f;
@@ -172,7 +182,7 @@ api.propTypeToName = function propTypeToName(propType) {
         }
     }
 };
-
+api.promise = api.shape({then: api.func});
 api.propTypesToNames = function (props) {
     var ret = {};
     map(props, function (v, k) {

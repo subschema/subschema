@@ -42,7 +42,7 @@ export default class ListItemTemplate extends Component {
     }
 
     renderField() {
-        var field = this.props.field, content = this.props.itemToString(this.props.value);
+        var field = this.props, content = this.props.itemToString(this.props.value);
 
         return <span className={style.itemValue} path={path(this.props.path, this.props.value.key)}
                      onClick={field.canEdit ? this.handleEdit : null} key="content">{content}</span>;
@@ -89,8 +89,7 @@ export default class ListItemTemplate extends Component {
     }
 
     render() {
-        var {pos, field, value, errors, path, onValidate, last, onValueChange} = this.props;
-        var {type, name, canReorder, canDelete} = field;
+        var {pos,  value, errors, path, onValidate,type, name, canReorder, canDelete, last, onValueChange} = this.props;
         var error = errors && errors[0] && errors[0].message;
         return <li className={style.listGroupItem+' '+(error ? style.hasError : '')}>
             {this.renderField()}

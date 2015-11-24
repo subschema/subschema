@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
+import listen from '../decorators/listen';
 
 export default class NewChildContext extends Component {
     static propTypes = {
@@ -16,18 +17,26 @@ export default class NewChildContext extends Component {
         parentValueManager: PropTypes.valueManager
     }
 
-    getChildContext() {
+    constructor(props, context, ...rest) {
+        super(props, context, ...rest);
         var parentValueManager = this.props.valueManager;
-        var valueManager = this.valueManager = ValueManager(parentValueManager.getValue(), parentValueManager.getErrors());
-        this._submit = parentValueManager.addSubmitListener(null, this.handleSubmit, this, false);
-        return {valueManager, parentValueManager, loader: this.props.loader};
+        this.valueManager = ValueManager(parentValueManager.getValue(), parentValueManager.getErrors());
     }
 
-    componentWillUnmount() {
-        this._submit && this._submit.remove();
+    getChildContext() {
+        return {
+            valueManager: this.valueManager,
+            parentValueManager: this.props.valueManager,
+            loader: this.props.loader
+        };
     }
 
-    handleSubmit(e) {
+    @listen("submit")
+    cancelSubmit() {
+        return false;
+    }
+
+    handleSubmit = (e)=> {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.path(this.props.path), errors = this.valueManager.getErrors();
 

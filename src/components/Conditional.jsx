@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import CSSTransitionGroup  from 'react-addons-css-transition-group';
 import listeners from './../decorators/listeners';
+import {FREEZE_OBJ} from '../tutils';
 
 var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 
@@ -60,12 +61,15 @@ var opFactory = (function opFactory$factory(scope) {
 }());
 
 export default class Conditional extends Component {
+    static contextTypes = PropTypes.contextTypes;
+
     static defaultProps = {
         operator: '!=',
         value: null,
         animate: false
 
     }
+
     static propTypes = {
         /**
          * The value  to use too compare against  if not given, than
@@ -111,6 +115,10 @@ export default class Conditional extends Component {
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
     }
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        this._handleProps(FREEZE_OBJ, props);
+    }
 
     componentWillReceiveProps(props) {
         this._handleProps(this.props, props);
@@ -118,10 +126,6 @@ export default class Conditional extends Component {
         this.errorListeners(props);
     }
 
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this._handleProps({}, props);
-    }
 
     @listeners
     listeners(props) {

@@ -2,13 +2,16 @@
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import Template from './Template.jsx';
-import {listen} from './../decorators';
+import {listeners} from './../decorators';
 import defaults from 'lodash/object/defaults';
 import {forField} from '../css';
+import { FREEZE_OBJ, FREEZE_ARR, noop, titlelize, isString, isRegExp,isFunction,toArray,nullCheck} from '../tutils';
 
-
-var { FREEZE_OBJ, FREEZE_ARR, noop, titlelize, isRegExp,isFunction,toArray,nullCheck}  = require('./../tutils');
-
+const ERRORS = {
+    '.': 'setErrors'
+}, VALUES = {
+    '.': 'handleValueChange'
+}, EMPTY = FREEZE_OBJ;
 
 function initValidators(v) {
     //If it has a type init it
@@ -30,26 +33,17 @@ function initValidators(v) {
     //otherwise lets try initing it.
     return this.loadValidator(v)();
 }
-/**
- * //TODO -
- * Make types super dumb. install triggerChange, eventExtract if requested via annotation or static.
- * Otherwise use the props on the types plus the defaults to pass only the defaults needed to the
- * component.
- *
- * @param props
- * @param defProps
- */
-function copyProps(props, defProps) {
-    var {fieldAttrs, ...rest} = props;
-    var {...attrs} = fieldAttrs;
-    return defaults(attrs, rest, defProps);
-}
+
+
+var ptemplate = PropTypes.template, prtemplate = ptemplate.isRequired,
+    poptions = PropTypes.options, proptions = poptions.isRequired,
+    pschema = PropTypes.schema, prschema = pschema.isRequired
+    ;
 
 export default class Editor extends Component {
-    static contextTypes = {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader
-    }
+
+    static contextTypes = PropTypes.contextTypes;
+
     static defaultProps = {
         field: {
             type: 'Text'
@@ -67,14 +61,49 @@ export default class Editor extends Component {
             isValid: false
         };
         this.initValidators(props, context);
+        this.createPropForType(props, context);
     }
 
-    setValue(value) {
-        this.refs.field.setValue(value);
+    componentWillReceiveProps(props, context) {
+        this.initValidators(props, context);
+        this.createPropForType(props, context);
+        this.listenTo();
+        this.listenToError();
+
     }
 
-    componentWillReceiveProps(newProps, newContext) {
-        this.initValidators(newProps, newContext);
+    normalizePropType(propType, value) {
+        if (value == null || value === false) {
+            return value
+        }
+        if (poptions === propType || proptions === propType) {
+            return toArray(value).map(function (v) {
+                if (isString(v)) {
+                    return {
+                        label: v,
+                        val: v
+                    }
+                }
+                return v;
+            });
+        }
+        if (ptemplate === propType || prtemplate === propType) {
+            if (isString(value)) {
+                var template = this.context.loader.loadTemplate(value)
+                return template || value;
+            }
+            if (value === false) {
+                return false;
+            }
+        }
+        if (pschema === propType || prschema === propType) {
+            if (isString(value)) {
+                var schema = this.context.loader.loadSchema(value);
+                return schema || value;
+            }
+        }
+
+        return value;
     }
 
     initValidators(props, context) {
@@ -82,18 +111,32 @@ export default class Editor extends Component {
         this.validators = validators ? toArray(validators).map(initValidators, context.loader) : FREEZE_ARR;
     }
 
-    handleValidate(value, component, e) {
+    handleValidate = (value, component, e)=> {
         this.state.hasValidated = true;
         this.validate();
     }
 
-    @listen("error", ".")
-    handleError(errors) {
+    setErrors(errors) {
         this.setState({errors});
     }
 
-    @listen("value")
-    handleChange(value, oldValue, name) {
+    @listeners("value")
+    listenTo() {
+        if (this._Component.isContainer) {
+            return EMPTY;
+        }
+        return VALUES;
+    }
+
+    @listeners("error")
+    listenToError() {
+        if (this._Component.isContainer) {
+            return EMPTY;
+        }
+        return ERRORS;
+    }
+
+    handleValueChange(value, oldValue, name) {
         if (!(this.state && 'value' in this.state)) {
             //init first value prolly not needed see hasChanged below.
             this.setState({value});
@@ -176,22 +219,29 @@ export default class Editor extends Component {
             return false;
         }
         if (this.context.valueManager.update(this.props.path, value) !== false) {
+            this.setState({value});
             return this.props.onValueChange(value);
         }
 
         return false;
     }
 
-    createPropForType(Node, props) {
-        var propTypes = Node.propTypes || FREEZE_OBJ;
-        var newProps = {};
+    createPropForType(props, context) {
         var field = props.field || FREEZE_OBJ;
+
+        var Node = this._Component = context.loader.loadType(field.type);
+
+        var propTypes = Node.propTypes || FREEZE_OBJ, defProps = Node.defaultProps || FREEZE_OBJ;
+        var newProps = {};
         Object.keys(propTypes).forEach((key)=> {
             if (key in field) {
-                newProps[key] = field[key];
-            } else if (key in props)
-                newProps[key] = props[key];
-        });
+                newProps[key] = this.normalizePropType(propTypes[key], field[key]);
+            } else if (key in props) {
+                newProps[key] = this.normalizePropType(propTypes[key], props[key]);
+            } else if (key in defProps) {
+                newProps[key] = this.normalizePropType(propTypes[key], defProps[key]);
+            }
+        }, this);
 
         var eventValue = Node.eventValue || this.eventValue,
             className = forField(Node, field),
@@ -214,46 +264,56 @@ export default class Editor extends Component {
             className
         }, field.fieldAttrs, newProps);
 
-        return newProps;
+        if (Node instanceof Promise) {
+            Component.then((component)=> {
+                this._Component = null;
+                this._componentProps = null;
+                this.forceUpdate();
+                return component;
+            });
+            var Lazy = this.context.loader.loadType('LazyType');
+            return Lazy
+        }
+
+        this._componentProps = newProps;
     }
 
     render() {
-        var {field, onValueChange, template, component, onValidate, propsfield, conditional, onValueChange, template, onValidate, ...props} = this.props;
+        var {field} = this.props, props = this.props;
         var pConditional = conditional;
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
         conditional = conditional || pConditional;
         //err = errors, //&& errors[path] && errors[path][0] && errors[path],
-        var Component = component || this.context.loader.loadType(type),
-            title = this.title(),
-            handleValidate = this.handleValidate.bind(this),
-            errorClassName = errorClassName == null ? 'has-error' : errorClassName;
-        var child;
-        var childProps = this.createPropForType(Component, this.props);
-        if (Component instanceof Promise) {
-            var Lazy = this.context.loader.loadType('LazyType');
-            child = <Lazy ref="field" {...props} {...field} field={rfield} editorClass={editorClass}
+        var title = this.title(),
+            handleValidate = this.handleValidate,
+            errorClassName = errorClassName == null ? 'has-error' : errorClassName,
+            Component = this._Component;
 
-                          onValidate={handleValidate} promise={Component}/>
+        //Handle Lazy which forces a rerender which causes this to be null and checked again.
+        if (Component === null) {
+            this.createPropForType(props, this.context);
+            Component = this._Component;
         }
-        else {
-            child = <Component ref="field" {...childProps}/>;
-        }
-        if (!title) {
+
+        var child = <Component ref="field" {...this._componentProps}
+                               value={this.state.value}/>;
+        if (title === false) {
             title = '';
         }
         var template = this.props.template
-        if (template === false || field.template === false || type === 'Hidden') {
+        if (template === false || field.template === false || Component.noTemplate === true) {
             template = null;
         } else if (field.template != null) {
             template = field.template;
         }
-        var errors = this.state.errors;
-        if (errors) errors = errors[0] && errors[0].message || errors[0];
+        var errors = this.state.errors, error;
+        if (errors) error = errors[0] && errors[0].message || errors[0];
 
         return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass}
                          title={title}
                          errorClassName={errorClassName}
-                         error={errors}
+                         error={error}
+                         errors={errors}
                          help={!this.state.valid && (props.help || rfield.help)}
                          onValidate={handleValidate}
         >

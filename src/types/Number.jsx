@@ -1,22 +1,36 @@
 "use strict";
 import React, {Component} from 'react';
-import {forField} from '../css';
-import field from '../decorators/field';
+import {returnFirst} from '../tutils';
 
 var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
-@field(true)
+
 export default class NumberInput extends Component {
 
-    handleDateChange(e) {
+    static eventValue = returnFirst;
+
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        var state = this.state || (this.state = {});
+        state.value = props.value;
+
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.value !== this.props.value) {
+            this.setState({value: newProps.value});
+        }
+    }
+
+    handleDateChange = (e)=> {
 
         var value = e.target.value;
         //Not a valid number but valid to become a number
         if (value === '') {
-            this.triggerChange(null);
+            this.props.onChange(null);
         } else if (noRe.test(value)) {
             if (/\.$/.test(value)) {
-                this.triggerChange(parseFloat(value))
+                this.props.onChange(parseFloat(value))
                 this.setValue(value);
             } else {
                 this.setValue(value);
@@ -24,22 +38,15 @@ export default class NumberInput extends Component {
         } else
         //check if real actual numbers.
         if (numRe.test(value)) {
-            this.triggerChange(parseFloat(value))
+            this.props.onChange(parseFloat(value))
         } else {
-            this.setState({value: this.state.value || ''});
             this.forceUpdate();
             return false;
         }
     }
 
     render() {
-        var {onChange, onValueChange, onBlur, className, field, value, dataType, value, fieldAttrs, type, ...props} = this.props
-        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
-                      className={forField(this)}
-
-                      value={this.state.value}
-            {...props} {...fieldAttrs}
-                      type={dataType || 'text'}
-        />
+        var {onChange, value, ...props} = this.props
+        return <input {...props} value={this.state.value} onChange={this.handleDateChange}/>
     }
 }

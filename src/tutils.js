@@ -14,6 +14,9 @@ var api = {
     unique: require('lodash/array/unique'),
     noop: require('lodash/utility/noop'),
     values: require('lodash/object/values'),
+    returnFirst:function(value){
+      return value;
+    },
     result: function result(scope, key) {
         if (!key) {
             return null;

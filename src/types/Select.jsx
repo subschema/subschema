@@ -1,37 +1,15 @@
 "use strict";
 
 import React, {Component} from 'react';
-import Constants from '../Constants';
-import util from '../tutils';
-import {forField} from '../css';
-import field from '../decorators/field';
 import PropTypes from '../PropTypes';
-
-function toLabelVal(v) {
-    if (util.isString(v)) {
-        return {
-            label: v,
-            val: v
-        }
-    }
-    if (v == null) {
-        return {
-            label: 'No Value',
-            val: null
-        }
-    }
-
-    return v;
-}
+import {returnFirst, isArray} from '../tutils';
 
 export default class Select extends Component {
-    static eventValue(e) {
-        return e;
-    }
+    static eventValue = returnFirst;
 
     static propTypes = {
         options: PropTypes.options,
-        multiple: PropTypes.bool,
+        multiple: PropTypes.bool
 
     }
     static defaultProps = {
@@ -40,9 +18,9 @@ export default class Select extends Component {
     }
 
     handleSelect = (e)=> {
-        if (this.props.multiple) {
-            var placeholder = this.props.placeholder;
-            //normalize multiple field selection
+        var {multiple, placeholder} = this.props;
+        if (multiple) {
+            //normalize multiple  selection
             var values = [], options = e.target.options, i = 0, l = options.length, option;
             for (; i < l; i++) {
                 var option = options[i];
@@ -53,25 +31,29 @@ export default class Select extends Component {
             }
             this.props.onChange(values);
             return
-        } else if (this.props.placeholder) {
-            if (e.target.value === this.props.placeholder) {
+        } else if (placeholder) {
+            if (e.target.value === placeholder) {
                 this.props.onChange(null);
                 return;
             }
-        }else{
+        } else {
             this.props.onChange(e.target.value);
         }
     }
 
     renderOptions(value) {
-        var props = this.props, multiple = props.multiple, opts = props.options || [], hasValue = false, ret = opts.map(toLabelVal).map((o, i)=> {
-            if (!hasValue && o.val + '' == '' + value) hasValue = true;
+        var {multiple, options, placeholder} = this.props;
+
+
+        var hasValue = false, ret = options.map(multiple ? (o, i)=> {
+            return <option key={'s' + i} value={o.val}>{o.label}</option>;
+        } : (o, i)=> {
+            if (!hasValue && o.val + '' == value + '') hasValue = true;
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
-        var placeholder = this.props.placeholder;
-        if (placeholder) {
 
-            ret.unshift(<option key={'null-' + opts.length}>
+        if (placeholder) {
+            ret.unshift(<option key={'null-' + options.length}>
                 {placeholder}</option>);
         }
         return ret;
@@ -79,7 +61,7 @@ export default class Select extends Component {
 
     render() {
         var {multiple, onChange,value, ...props} = this.props;
-        if (multiple && !Array.isArray(value)) {
+        if (multiple && !isArray(value)) {
             value = value ? [value] : value;
         }
         return <select {...props} value={value} onChange={this.handleSelect}>

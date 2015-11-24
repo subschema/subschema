@@ -3,17 +3,20 @@
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
 
-var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/;
+var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/, reRe = /(#{1,}|A{1,}|a{1,}|0{1,}(?:\.0{1,})?)?(.+?)?/mg;
+
 function lastEq(input, val) {
     return input && input[input.length - 1] === val;
 }
-var reRe = /(#{1,}|A{1,}|a{1,}|0{1,}(?:\.0{1,})?)?(.+?)?/mg;
+
 function fixDelim(str) {
     return (str || '').replace(/([ ().-])/g, '\\$1');
 }
+
 function ret(exact, val, d, backward) {
     return (exact != null && exact === d) ? exact : exact == null || exact == '' ? val : exact;
 }
+
 function fmt(delim, placeholder) {
     delim = delim || '';
     function fmt$return(exact, val, d, backward) {
@@ -28,6 +31,7 @@ function fmt(delim, placeholder) {
     fmt$return.placeholder = placeholder;
     return fmt$return;
 }
+
 function upper(delim) {
     return function fmt$return(exact, val, d, backward) {
         exact = (ret(exact, val, d) || '').toUpperCase();
@@ -437,7 +441,7 @@ export default class RestrictedMixin extends Component {
         var value = this.formatter(str, isBackspace, caret) || {isValid: false};
 
         this.props.onValid(value.isValid, value);
-        this.triggerChange(value.value);
+        this.props.onChange(value.value);
         if (caret != null && typeof value.position === 'number') {
             if (isBackspace) {
                 caret += value.position - 1;
@@ -455,7 +459,6 @@ export default class RestrictedMixin extends Component {
     }
 
     handleValueChange = (e)=> {
-        this.props.onChange.call(this, e);
         this._value(e.target.value, false);
     }
 }

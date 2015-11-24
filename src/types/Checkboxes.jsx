@@ -1,48 +1,56 @@
 "use strict";
 
 import React, {Component} from 'react'
-import tu from '../tutils'
 import Constants from '../Constants'
-import {forField} from '../css'
 import PropTypes from '../PropTypes'
-import field from '../decorators/field';
 import template from '../decorators/template';
+import tu, {path, toArray, FREEZE_ARR,returnFirst,  isArray} from '../tutils';
 
-@field(true)
 export default class Checkboxes extends Component {
-    static      inputClassName = Constants.inputCheckboxesClassNam
+    static eventValue = returnFirst;
 
+    static inputClassName = ' ';
     static propTypes = {
         options: PropTypes.options,
         itemTemplate: PropTypes.template,
-        groupTemplate: PropTypes.template
+        groupTemplate: PropTypes.template,
     }
 
     static defaultProps = {
-        title: '',
-        name: '',
-        placeholder: '',
-        dataType: this.dataType,
-        options: [],
+        options: FREEZE_ARR,
         itemTemplate: 'CheckboxesTemplate',
-        groupTemplate: 'CheckboxesGroupTemplate'
+        groupTemplate: 'CheckboxesGroupTemplate',
     }
 
-    handleCheckChange(e) {
-        var newValues = this.state.value || [];
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        var state = this.state || (this.state = {});
+        state.value = props.value == null ? FREEZE_ARR : toArray(props.value)
+    }
+
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.value !== this.props.value) {
+            this.setState({value: newProps.value == null ? FREEZE_ARR : toArray(newProps.value)});
+        }
+    }
+
+    handleCheckChange = (e)=> {
+        var newValues = (this.state.value).concat();
         if (e.target.checked) {
             newValues.push(e.target.value);
         } else {
             newValues.splice(newValues.indexOf(e.target.value), 1);
         }
-        this.triggerChange(newValues);
+
+        this.props.onChange(newValues);
     }
 
 
     _createCheckbox(option, index, group, CheckboxTemplate) {
 
 
-        var id = tu.path(this.props.path, index, group);
+        var id = path(this.props.path, index, group);
         var {val, labelHTML} = option;
         var value = this.state.value;
         var labelContent = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : val;
@@ -50,7 +58,6 @@ export default class Checkboxes extends Component {
             onChange: this.handleCheckChange,
             name: this.props.name,
             checked: value ? !!~value.indexOf(val) : false,
-            ref: id.replace(/\./g, '_'),
             id,
             value: val
         }
@@ -76,10 +83,9 @@ export default class Checkboxes extends Component {
      */
     @template('itemTemplate', 'groupTemplate')
     makeOptions(CheckboxTemplate, CheckboxesGroupTemplate, array, group) {
-        array = array || [];
+        array = array || FREEZE_ARR;
         var name = this.props.name;
         return array.map((option, index)=> {
-            option = tu.isString(option) ? {val: option} : option;
             return (
                 <div
                     key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate) : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
@@ -90,6 +96,6 @@ export default class Checkboxes extends Component {
     render() {
 
         return <div
-            className={forField(this)}>{this.makeOptions(this.props.options, 1)}</div>
+            className={this.props.className}>{this.makeOptions(this.props.options, 1)}</div>
     }
 }

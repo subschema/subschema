@@ -3,7 +3,7 @@
 import tutils from './tutils';
 import warning from './warning';
 
-var { isFunction } = tutils;
+var { isFunction, returnFirst } = tutils;
 /**
  * This callback is displayed as a global member.
  * It will call them in order of most distant to least distance path.
@@ -15,7 +15,7 @@ var { isFunction } = tutils;
  * @param {*} oldValue - The previous value updated.
  * @param {String} path - The path to value updated
  */
-export default function eventable(listeners, find, findOld) {
+export default function eventable(listeners, find = returnFirst, findOld = returnFirst) {
     listeners = listeners || [];
 
     function remove() {
@@ -36,7 +36,7 @@ export default function eventable(listeners, find, findOld) {
 
     return function eventable$addListener(path, listener, scope, init) {
         if (listener == null) {
-            warning(listener, 'trying to add a null listener %s', path )
+            warning(listener, 'trying to add a null listener %s', path)
             return;
         }
         var obj = {path, listener, scope, remove, once};

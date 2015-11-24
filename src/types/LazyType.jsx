@@ -1,6 +1,13 @@
+"use strict";
+
 import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
 
 export default class LazyType extends Component {
+    static propTypes = {
+        promise: PropTypes.promise
+    }
+
     constructor(props) {
         super(props);
         this.state = {loaded: false};

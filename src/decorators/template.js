@@ -17,7 +17,7 @@ function loadCtx(v) {
 
         var template = props && props.field && props.field[v] || props[v];
 
-        warning(template, 'There was no template for %s in props or in props.field on component %s', v, this.constructor.name);
+        warning(template, 'There was no template for "%s" in props or in props.field on component "%s"', v, this.constructor.name);
 
         //allow for singly nested templates to be resolved.
         if (template && typeof template.template === 'string') {
@@ -26,7 +26,9 @@ function loadCtx(v) {
             template = this.context.loader.loadTemplate(template);
         }
 
-        warning(template, 'There was no template for property "%s" in the loader named', v);
+        if (!template) {
+            warning(false, 'There was no template for property "%s" in the loader named "%s" on component "%s"', v, props && props.field && props.field[v] || props[v], this.constructor.name);
+        }
         return template;
     }
     return Template;
