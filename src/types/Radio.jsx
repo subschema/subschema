@@ -65,6 +65,7 @@ export default class RadioInput extends Component {
     render() {
         var {name,itemTemplate,path, className, checkedClass, value, options, field} = this.props;
         var options = this.makeOptions(options);
+        var RadioItemTemplate = itemTemplate;
         return <div className={className}>{options.map((option, index)=> {
             return <RadioItemTemplate checkedClass={checkedClass} {...option} key={option.path}>
                 <input id={options.path} type="radio"

@@ -196,7 +196,7 @@ export default class ObjectType extends Component {
     render() {
         //capture the things that should not fall through.
         var {schema, subSchema, title, fields, submitButton, conditional, template, ...props} = this.props;
-        return <Template ref="form" template={this.props.objectTemplate}
+        return <Template ref="form" template={this.schema.template || this.props.objectTemplate}
                          onValidate={this.handleValidate}
                          schema={this.schema}
                          className={this.props.className}
