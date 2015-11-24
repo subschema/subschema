@@ -1,11 +1,13 @@
 "use strict";
 
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
 import ObjectType from './../types/Object.jsx';
 import _set from '../../node_modules/lodash/object/set';
 import {noop} from './../tutils';
+import warning from '../warning';
 
 export default class Form extends Component {
     static  childContextTypes = PropTypes.contextTypes;
@@ -74,7 +76,7 @@ export default class Form extends Component {
     handleSubmit = (e)=> {
         e && e.preventDefault();
         var vm = this.valueManager;
-        if (!this.props.novalidate) {
+        if (!this.props.noValidate) {
             vm.validate();
         }
         if (vm.onSubmit(e, vm.getErrors(), vm.getValue(), this.props.path) !== false) {
@@ -86,10 +88,11 @@ export default class Form extends Component {
         this.valueManager.setErrors(errors);
     }
 
+
     render() {
 
         var {valueManager, template, onSubmit, loader, ...props} = this.props;
-        return <ObjectType {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
+        return <ObjectType ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
     }
 
 }

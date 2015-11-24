@@ -1,9 +1,10 @@
 "use strict";
-import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType} from '../support';
+import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType, click} from '../support';
 import {loader,Form, templates} from 'Subschema';
-var {EditorTemplate} = templates;
+var {EditorTemplate, ButtonTemplate} = templates;
 
-describe('form', function () {
+describe('Form', function () {
+    this.timeout(50000);
     it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
         var value = {}, schema = {
             schema: {
@@ -217,5 +218,63 @@ describe('form', function () {
 
     });
 
+    it('should submit a form', function () {
+        var schema = {
+            schema: {
+                "test": "Text"
+            },
+            fieldsets: [{
+                fields: 'test',
+                buttons: ["submit"]
+            }]
+        }, value = {}, submitArgs, onSubmit = (e, ...args)=> {
+            e && e.preventDefault();
+
+            submitArgs = args;
+        };
+
+        var root = into(<Form value={value} schema={schema} onSubmit={onSubmit}/>, true);
+        var button = byType(root, ButtonTemplate);
+        expect(button).toExist('it should have rendered');
+        click(button);
+        expect(submitArgs).toExist();
+    });
+
+    it('should not submit a form with errors', function () {
+        var schema = {
+            schema: {
+                "test": {
+                    type: "Text",
+                    "validators": ["required"]
+                }
+            },
+            fieldsets: [{
+                fields: 'test',
+                buttons: ["submit"]
+            }]
+        }, value, error, count = 0, onSubmit = (e, err, val, ...args)=> {
+            e && e.preventDefault();
+            value = val;
+            error = err;
+            count++;
+        };
+
+        var root = into(<Form value={{}} schema={schema} onSubmit={onSubmit}/>, true);
+        var button = byType(root, ButtonTemplate);
+        expect(button).toExist('it should have rendered');
+        click(button);
+        expect(value).toExist();
+        expect(error).toExist();
+        expect(error.test).toExist();
+        expect(error.test[0].type).toBe('required', 'Should have an error');
+        expect(error.test.length).toBe(1);
+        click(button);
+        expect(value).toExist();
+        expect(error).toExist();
+        expect(error.test).toExist();
+        expect(error.test[0].type).toBe('required', 'Should have an error');
+        expect(error.test.length).toBe(1);
+        expect(count).toBe(2);
+    })
 
 })

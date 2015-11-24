@@ -25,9 +25,12 @@ export default class Restricted extends RestrictedMixin {
         if (caret != null)
             input && input.setSelectionRange(caret, caret);
     }
+    handleChange = (e)=> {
+        this.props.onChange(e.target.value);
+    }
 
     render() {
-        var {onValid, ...props} = this.props
-        return <input ref="input" onKeyDown={this.handleKeyDown} {...props}/>
+        var {onValid, onChange, ...props} = this.props
+        return <input ref="input" onKeyDown={this.handleKeyDown} onChange={this.handleChange} {...props}/>
     }
 }

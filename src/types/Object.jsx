@@ -129,8 +129,8 @@ export default class ObjectType extends Component {
 
     makeFieldset = (f, i)=> {
         return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} legend={f.legend}
-                         onButtonClick={this.props.onButtonClick}
-                         onSubmit={this.props.onSubmit}
+                         onButtonClick={this.handleButtonClick}
+                         onSubmit={this.handleSubmit}
                          fields={f.fields}
                          schema={this.schema.schema}>
             {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
@@ -173,7 +173,7 @@ export default class ObjectType extends Component {
                 }
             } else {
                 if (ref == null) {
-                    noTypeInfo(f);
+                    warning(false, 'No type info for "%s" probably a typo in fieldsets', f);
                     return null;
                 }
                 if (!ref.type) {
@@ -193,15 +193,28 @@ export default class ObjectType extends Component {
         return map(this.schema.fieldsets, this.makeFieldset);
     }
 
+    handleButtonClick = (e, action, ...rest)=> {
+        if (this.props.onButtonClick(e, action, ...rest) !== false) {
+            if (action === 'submit') {
+                this.props.onSubmit(e, ...rest);
+            }
+        }
+    }
+
+    handleSubmit(...rest) {
+        this.props.onSubmit(...rest);
+    }
+
     render() {
         //capture the things that should not fall through.
         var {schema, subSchema, title, fields, submitButton, conditional, template, ...props} = this.props;
-        return <Template ref="form" template={this.schema.template || this.props.objectTemplate}
+        return <Template template={this.schema.template || this.props.objectTemplate}
                          onValidate={this.handleValidate}
                          schema={this.schema}
                          className={this.props.className}
                          title={title === false ?'' : title}
             {...props}
+                         onButtonClick={this.handleButtonClick}
                          onSubmit={this.handleSubmit || this.props.onSubmit}
         >
             {this.schema && this.schema.schema ? this.renderSchema() : null}

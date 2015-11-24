@@ -5,7 +5,7 @@ var {Text} = types;
 
 describe('Editor', function () {
     this.timeout(50000);
-    it('Editor should inject things', function () {
+    it('should inject things', function () {
         var valueManager = new ValueManager();
         var editor = intoWithContext(<Editor field={{type:'Text', name:'myname'}} path="test"/>, {
             valueManager,
@@ -34,7 +34,7 @@ describe('Editor', function () {
 
     });
 
-    it('Editor should inject things with a custom eventValue with custom propTypes', function () {
+    it('should inject things with a custom eventValue with custom propTypes', function () {
         var count = 0;
         var customLoader = loaderFactory([loader]);
         class TestType extends Text {

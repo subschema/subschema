@@ -201,7 +201,7 @@ var dd_yyyy = makeFormatter('##/####');
 
 function shortDate(value, isBackspace, caret) {
     var ref = dd_yyyy(value, isBackspace, caret),
-        parts = /(\d{1,2})([^\d]+?)?(\d{0,4})?/.exec(value),
+        parts = /(\d{1,2})([^\d]+?)?(\d{0,4})?/.exec(value) || [],
         position = ref.position,
         str = '',
         [whole, mm, delim, last] = parts,

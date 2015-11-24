@@ -157,8 +157,10 @@ export const MapTypes = {
     'error': 'addErrorListener',
     'submit': 'addSubmitListener',
     'state': 'addStateListener',
+    'validate':'addValidateListener',
     'addListener': 'addListener',
     'addErrorListener': 'addErrorListener',
     'addSubmitListener': 'addSubmitListener',
-    'addStateListener': 'addStateListener'
+    'addStateListener': 'addStateListener',
+    'addValidateListener':'addValidateListener'
 }

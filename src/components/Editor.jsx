@@ -11,6 +11,8 @@ const ERRORS = {
     '.': 'setErrors'
 }, VALUES = {
     '.': 'handleValueChange'
+}, VALIDATE = {
+    '.': 'handleValidateListener'
 }, EMPTY = FREEZE_OBJ;
 
 function initValidators(v) {
@@ -107,13 +109,13 @@ export default class Editor extends Component {
     }
 
     initValidators(props, context) {
-        var validators = props.field.validators;
-        this.validators = validators ? toArray(validators).map(initValidators, context.loader) : FREEZE_ARR;
+        var vals = props.field.validators;
+        this.validators = vals ? toArray(vals).map(initValidators, context.loader) : FREEZE_ARR;
     }
 
     handleValidate = (value, component, e)=> {
         this.state.hasValidated = true;
-        this.validate();
+        this.validate(value, this.getErrorMessages(value));
     }
 
     setErrors(errors) {
@@ -134,6 +136,14 @@ export default class Editor extends Component {
             return EMPTY;
         }
         return ERRORS;
+    }
+
+    @listeners("validate", false)
+    _handleValidate() {
+        if (this._Component.isContainer) {
+            return EMPTY;
+        }
+        return VALIDATE;
     }
 
     handleValueChange(value, oldValue, name) {
@@ -166,8 +176,6 @@ export default class Editor extends Component {
      *
      */
     validate(value, errors) {
-        value = arguments.length < 1 ? this.getValue() : value;
-        errors = arguments.length < 2 ? this.getErrorMessages(value) : errors;
         this.context.valueManager.updateErrors(this.props.path, errors, value);
         if (errors && errors.length === 0) {
             errors = null;
@@ -177,6 +185,11 @@ export default class Editor extends Component {
             errors: errors
         });
         return errors;
+    }
+
+    handleValidateListener() {
+        var value = this.getValue();
+        this.validate(value, this.getErrorMessages(value));
     }
 
     _validate() {
@@ -301,7 +314,7 @@ export default class Editor extends Component {
             title = '';
         }
         var template = this.props.template
-        if (template === false || field.template === false || Component.noTemplate === true) {
+        if (field.template === false || Component.noTemplate === true) {
             template = null;
         } else if (field.template != null) {
             template = field.template;
@@ -309,7 +322,7 @@ export default class Editor extends Component {
         var errors = this.state.errors, error;
         if (errors) error = errors[0] && errors[0].message || errors[0];
 
-        return <Template template={template} conditional={conditional} field={rfield} {...props} fieldClass={fieldClass}
+        return <Template field={rfield} {...props} template={template} conditional={conditional} fieldClass={fieldClass}
                          title={title}
                          errorClassName={errorClassName}
                          error={error}

@@ -16,12 +16,9 @@ export default class ListInput extends CollectionMixin {
 
     static isContainer = true;
 
-    static propTypes = defaults({}, CollectionMixin.propTypes);
+    static propTypes = CollectionMixin.propTypes;
 
-    static defaultProps = defaults({
-        onValidate: noop,
-        itemTemplate: 'ListItemTemplate'
-    }, CollectionMixin.defaultProps)
+    static defaultProps = CollectionMixin.defaultProps;
 
 
     unwrap(value) {

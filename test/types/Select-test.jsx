@@ -2,7 +2,7 @@ import {React, findNode, into, TestUtils,expect, Simulate,select, byTags} from '
 import {types, ValueManager} from 'Subschema';
 var Select = types.Select;
 
-describe.only('Select', function () {
+describe('Select', function () {
     this.timeout(50000);
     var values = [];
     var onChange = function (e) {

@@ -145,13 +145,28 @@ function select(composit, index) {
     });
     return node;
 }
+class StateWrapper extends React.Component {
+    render() {
+        return React.cloneElement(this.props.children, this.state);
+    }
+}
+
+function intoWithState(child, state, debug) {
+    var s = into(<StateWrapper>{child}</StateWrapper>, debug);
+    if (state != null) s.setState(state);
+    var schild = byType(s, child.type);
+    return {
+        state: s,
+        child: schild
+    }
+}
 
 module.exports = {
     React,
     ReactDOM,
     TestUtils,
     Simulate,
-
+    intoWithState,
     into,
     context,
     intoWithContext,

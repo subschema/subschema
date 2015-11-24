@@ -1,3 +1,4 @@
+/*
 var {React, byName, intoWithContext,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents}
     = require('../support');
 
@@ -23,4 +24,4 @@ describe('SampleExample', function(){
         var sample = intoWithContext(<SampleExample {...props}/>);
         expect(sample).toExist();
     })
-});
+});*/

@@ -61,14 +61,21 @@ api.valueManager = api.shape({
     addStateListener: api.func,
 });
 
-var content = api.oneOfType([api.string, api.shape({
-    content: api.string,
+var contentShape = {
     className: api.cssClass,
     type: api.string,
     children: api.bool
-})]);
+}
+var content = api.shape(contentShape);
 
-api.content = api.oneOfType([content, api.arrayOf(content)]);
+contentShape.content = api.oneOfType([
+    api.string,
+    api.arrayOf(api.oneOfType([content, api.string])),
+    api.shape(contentShape)
+])
+
+
+api.content = api.oneOfType([api.string, content, api.arrayOf(api.string), api.arrayOf(content)]);
 
 api.template = api.oneOfType([api.string, api.bool, api.shape({
     template: api.oneOfType([api.string, api.bool, api.func]),
@@ -130,7 +137,6 @@ api.schema = api.oneOfType([api.string, api.shape({
     fieldsets: api.oneOfType([api.arrayString, api.fieldset, api.arrayOf(api.fieldset)]),
     schema: api.object,
 })]);
-
 
 
 api.type = api.oneOfType([api.string, api.object])

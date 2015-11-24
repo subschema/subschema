@@ -35,7 +35,6 @@ class EditChildContext extends Component {
         return {valueManager, parentValueManager, loader};
     }
 
-    @listen("submit", null, false)
     handleSubmit(e) {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
@@ -51,7 +50,7 @@ class EditChildContext extends Component {
     }
 
     render() {
-        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit.bind(this)});
+        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit });
     }
 }
 

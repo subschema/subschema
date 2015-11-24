@@ -188,23 +188,59 @@ describe('decorator', function () {
 
     });
     it('should convert named parameters', function () {
-        var warning, p1,p2, invokers;
+        var warning, p1, p2, invokers;
         decorator.warning = function (check, message) {
             warning = message;
         }
-        var newdecorator = decorator.clazz(function test(empty=false, help=false) {
-            p1=empty, p2 = help;
-
+        var newdecorator = decorator.clazz(function test({empty = false, help = false} = {}) {
+            p1 = empty, p2 = help;
             return function (...args) {
                 invokers = args;
                 return args[2];
             }
         });
-        @newdecorator({help:true})
+        @newdecorator({help: true})
         class Stuff {
 
         }
         expect(p2).toBe(true);
         expect(p1).toBe(false);
     });
+    it('experiment', function () {
+        var _name, _value;
+        var func = function ({name='yes', value='no'}={}) {
+            _name = name;
+            _value = value;
+        }
+        func({name: 'nono', value: 'yesyes'});
+        expect(_name).toBe('nono');
+        expect(_value).toBe('yesyes')
+
+    });
+
+
+    it('should allow for decorators to be disabled', function () {
+        var warning, p1, p2, invokers;
+        decorator.warning = function (check, message) {
+            warning = message;
+        }
+        var newdecorator = decorator.clazz(function test({empty = false, help = false} = {}) {
+            p1 = empty, p2 = help;
+            throw new Error("This should not exec");
+            return function (...args) {
+                throw new Error("This should not exec");
+            }
+        });
+        newdecorator.noDecorate = true;
+
+        @newdecorator({help: true})
+        class Stuff {
+
+        }
+        expect(p1).toNotExist();
+        expect(p2).toNotExist();
+        expect(invokers).toNotExist();
+
+    })
+
 });

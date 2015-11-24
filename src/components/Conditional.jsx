@@ -67,7 +67,6 @@ export default class Conditional extends Component {
         operator: '!=',
         value: null,
         animate: false
-
     }
 
     static propTypes = {
