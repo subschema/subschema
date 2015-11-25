@@ -1,36 +1,34 @@
 "use strict";
-var React = require('../React');
-var Children = React.Children;
-var Buttons = require('./ButtonsTemplate.jsx');
-var Content = require('../types/Content.jsx')
-var styles = require('subschema-styles/ModalTemplate-style');
-var ValueManager = require('../ValueManager');
-var Editor = require('../Editor');
-var PropTypes = require('../PropTypes');
-var NewChildContext = require('../NewChildContext.jsx');
-var ModalTemplate = React.createClass({
+import React, {Component, Children} from 'react';
+import Buttons from './ButtonsTemplate.jsx';
+import Content from '../types/Content.jsx'
+import styles from 'subschema-styles/ModalTemplate-style';
+import ValueManager from '../ValueManager';
+import Editor from '../components/Editor';
+import PropTypes from '../PropTypes';
+import NewChildContext from '../components/NewChildContext.jsx';
 
-    contextTypes: {
+class ModalTemplate extends Component {
+
+    static contextTypes = {
         valueManager: PropTypes.valueManager,
         parentValueManager: PropTypes.valueManager,
         loader: PropTypes.loader
-    },
-    propTypes: {
+    };
+
+    static propTypes = {
         onCommit: PropTypes.event,
 
-    },
-    getDefaultProps(){
-        return {
-            onCommit(){
-
-            }
+    };
+    static defaultProps = {
+        onCommit(){
         }
-    },
-    handleClose(e){
+    }
+    handleClose = (e)=> {
         e && e.preventDefault();
         this.context.parentValueManager.update(this.props.dismiss, false);
-    },
-    handleBtnClose(e, action){
+    }
+    handleBtnClose = (e, action) => {
         switch (action) {
             case 'submit':
             {
@@ -42,12 +40,14 @@ var ModalTemplate = React.createClass({
                 break;
         }
 
-    },
-    renderFooter(buttons){
+    }
+
+    renderFooter(buttons) {
         if (!buttons) return null;
         return <div className={styles.footer}><Buttons buttons={buttons} onButtonClick={this.handleBtnClose}/></div>
-    },
-    render(){
+    }
+
+    render() {
         var {title, buttons, path,value, children, ...rest} = this.props;
         return <div className={`${styles.namespace} ${styles.overlay}`} style={{display:'block'}}>
             <div className={styles.backdrop}></div>
@@ -67,21 +67,25 @@ var ModalTemplate = React.createClass({
             </div>
         </div>
     }
-});
+}
 
 //module.exports = ModalTemplate;
-var ModalTemplateWrapper = React.createClass({
-    contextTypes: {
+export default class ModalTemplateWrapper extends Component {
+    static contextTypes = {
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
-    },
-    render(){
+    };
+    static propTypes = {
+        title: PropTypes.node,
+        buttons: PropTypes.buttons,
+        path: PropTypes.path,
+    }
+
+    render() {
         var {...context} = this.context;
         var {conditional, ...props} = this.props;
         return <NewChildContext {...context} path={props.path}>
             <ModalTemplate {...props}/>
         </NewChildContext>
     }
-});
-
-module.exports = ModalTemplateWrapper;
+}

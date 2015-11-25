@@ -1,23 +1,31 @@
 "use strict";
 
-var React = require('../React');
-var DefaultContentWrapper = require('./ContentWrapper.jsx');
-var DOM = React.DOM || {};
-var map = require('lodash/collection/map');
-var isObject = require('lodash/lang/isObject');
-var tu = require('../tutils');
-var defaults = require('lodash/object/defaults');
-var PropTypes = require('../PropTypes');
-var Content = React.createClass({
+import React, {Component} from 'react';
+import DefaultContentWrapper from './ContentWrapper.jsx';
+import map from 'lodash/collection/map';
+import {isString,isObject, isArray, toArray} from '../tutils';
+import defaults from 'lodash/object/defaults';
+import PropTypes from '../PropTypes';
 
-    contextTypes: {
-        valueManager: PropTypes.valueManager,
+export default class Content extends Component {
+    static isContainer = true;
+
+    static contextTypes = {
         loader: PropTypes.loader
-    },
-    /*  getDefaultProps(){
-     return Content._defaultProps;
-     },*/
-    renderChildren(props, children){
+    }
+    static propTypes = {
+        content:PropTypes.content,
+    }
+
+    //Expose for react-native subschema.
+    static defaultProps = {
+        type: 'span',
+        content: ''
+    }
+
+    static Types = React.DOM || {}
+
+    renderChildren(props, children) {
         if (!(children && props.children)) {
             return null;
         }
@@ -28,8 +36,8 @@ var Content = React.createClass({
             return children;
         }
         var toChildren;
-        if (tu.isString(props.children) || tu.isArray(props.children)) {
-            toChildren = tu.toArray(props.children);
+        if (isString(props.children) || isArray(props.children)) {
+            toChildren = toArray(props.children);
         } else if (isObject(props.children)) {
             toChildren = Object.keys(props.children).filter((v)=> v === true);
         }
@@ -40,17 +48,19 @@ var Content = React.createClass({
             return children[v];
         });
 
-    },
+    }
+
     renderChild(content, props, prefix, children) {
         if (content == null || content === false) {
             return null;
         }
-        if (tu.isString(content)) {
-            var ContentWrapper = this.context.loader.loadType('ContentWrapper') || DefaultContentWrapper;
+        if (isString(content)) {
+            var ContentWrapper = this.DefaultContentWrapper || (this.DefaultContentWrapper = this.context.loader.loadType('ContentWrapper'));
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}/>
         }
 
-        if (Array.isArray(content)) {
+
+        if (isArray(content)) {
             //TODO - check if we need to flatten this.
             return map(content, (c, key)=> {
                 //prevent children from being wrapped.
@@ -81,10 +91,9 @@ var Content = React.createClass({
         return <Content {...props} key={'content-ft-'+prefix} content={content}>
             {this.renderChildren(content, children)}
         </Content>
-    },
+    }
 
-    render()
-    {
+    render() {
         var {type, content, children, field, context, ...props} = this.props, Ctype;
         if (field && field.content) {
             content = field.content;
@@ -102,10 +111,10 @@ var Content = React.createClass({
             var {...rest} = content;
             delete rest.content;
             children = this.renderChild(content.content, rest, 'dom', children)
-        } else if (tu.isString(content)) {
+        } else if (isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');
-        } else if (tu.isArray(content)) {
+        } else if (isArray(content)) {
             props.type = type;
             children = this.renderChild(content, props, 'arr', children);
         } else if (content.content === false) {
@@ -123,12 +132,4 @@ var Content = React.createClass({
             {children}
         </Ctype>
     }
-});
-//Expose for react-native subschema.
-Content.defaultProps = {
-    type: 'span',
-    content: ''
 }
-Content.displayName = 'Content';
-Content.Types = React.DOM || {}
-module.exports = Content;

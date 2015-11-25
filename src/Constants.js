@@ -1,6 +1,6 @@
 var api = {
     inputClassName: 'form-control',
-    listClassName: 'edit-list list-group'
+    listClassName: 'list-editor'
 };
 
 

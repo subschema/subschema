@@ -1,8 +1,7 @@
 "use strict";
 var api = {
-    FREEZE_OBJ:Object.freeze({}),
-    FREEZE_ARR:Object.freeze([]),
-    template: require('lodash/string/template'),
+    FREEZE_OBJ: Object.freeze({}),
+    FREEZE_ARR: Object.freeze([]),
     extend: require('lodash/object/extend'),
     isFunction: require('lodash/lang/isFunction'),
     isString: require('lodash/lang/isString'),
@@ -12,9 +11,26 @@ var api = {
     isArray: require('lodash/lang/isArray'),
     isNumber: require('lodash/lang/isNumber'),
     find: require('lodash/collection/find'),
-    unique:require('lodash/array/unique'),
+    unique: require('lodash/array/unique'),
     noop: require('lodash/utility/noop'),
-    values:require('lodash/object/values'),
+    each: require('lodash/collection/each'),
+    values: require('lodash/object/values'),
+    returnFirst: function (value) {
+        return value;
+    },
+    result: function result(scope, key) {
+        if (!key) {
+            return null;
+        }
+        if (typeof key === 'string') {
+            return result(scope, scope[key]);
+        }
+        if (typeof key === 'function') {
+            return key.call(scope);
+        }
+        return key;
+    },
+
     path: function () {
         var args = api.slice(arguments), l = args.length, i = 0, j = 0, p;
         var ret = '';
@@ -28,7 +44,7 @@ var api = {
     },
     flatten: Function.apply.bind(Array.prototype.concat, []),
     toArray: function (v) {
-        if (Array.isArray(v)) {
+        if (api.isArray(v)) {
             return v;
         }
         if (api.isString(v)) {
@@ -84,6 +100,37 @@ var api = {
     titlelize: function (value) {
         return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, api.uppercase);
     },
-    push: Function.apply.bind(Array.prototype.push)
-}
+    push: Function.apply.bind(Array.prototype.push),
+    applyFuncs: function (f1, f2) {
+        if (f1 && !f2) return f1;
+        if (!f1 && f2) return f2;
+        return function tutils$applyFuncs$wrapper() {
+            f1.apply(this, arguments);
+            f2.apply(this, arguments);
+        }
+    },
+    /**
+     * When f1 and f2 are defined-
+     *
+     * Calls f1 and f2 if f1 and f2 are defined and f1 does not return false.
+     * If f1 returns false, f2 is not called.
+     *
+     * If f2 is not defined f1 is returned.
+     * if f1 is not defined f2 is returned.
+     *
+     * @param f1
+     * @param f2
+     * @returns {function}
+     */
+    nextFunc: function (f1, f2) {
+        if (f1 && !f2) return f1;
+        if (f2 && !f1) return f2;
+        return function tutils$nextFunc$wrapper() {
+            if (f1.apply(this, arguments) !== false) {
+                return f2.apply(this, arguments);
+            }
+        }
+    }
+
+};
 module.exports = api;

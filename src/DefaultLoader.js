@@ -1,5 +1,5 @@
 "use strict";
-
+var validators = require('./validators');
 var templates = {},
     types = {},
     templateContext = require.context("./templates", true, /Template.js(x)?$/),
@@ -40,5 +40,17 @@ module.exports = {
         return Object.keys(types).map(function (key) {
             return types[key]
         });
+    },
+    loadValidator(validator){
+        return validators[validator] && validators[validator].bind(validators);
+    },
+    listValidators(){
+        return Object.keys(validators).map(function (name) {
+            var validator = validators[name];
+            return {
+                name, validator
+            };
+        });
     }
+
 }

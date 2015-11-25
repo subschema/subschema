@@ -42,7 +42,7 @@ module.exports = {
             {
                 test: /\.js(x)?$/,
                 exclude: /node_modules/,
-                //do this to prevent babel fromt tanslating everything.
+                //do this to prevent babel from translating everything.
                 include: [
                     join('src'),
                     join('public')
@@ -86,9 +86,9 @@ module.exports = {
         extensions: ['', '.js', '.jsx'],
         alias: {
             'subschema': join('src/index.jsx'),
+            'Subschema': join('src/index.jsx'),
             'react': join('node_modules/react'),
             'subschema-styles': join('src/styles')
-            //   'component-playground':join('node_modules/component-playground')
         }
     },
 

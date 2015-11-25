@@ -24,12 +24,12 @@ module.exports = {
                     },
                     zip: {
                         type: 'Text',
-                        validators: ['required', {type:'regexp', regexp:'/^[0-9]{5}(-([0-9]{4}))?$/'}]
+                        validators: ['required', {type: 'regexp', regexp: '/^[0-9]{5}(-([0-9]{4}))?$/'}]
                     }
                 }
             }
         },
-        submitButton: 'Submit',
+        buttons: 'Submit',
         "fieldsets": [{
             "legend": "Name",
             "fields": ["title", "name", "email"]

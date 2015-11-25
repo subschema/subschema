@@ -1,9 +1,9 @@
-var React = require('../React');
-var Editor = require('../Editor');
-var Content = require('../types/Content.jsx');
-var style = require('subschema-styles/CollectionCreateTemplate-style');
-var CollectionCreateTemplate = React.createClass({
-    render(){
+import React, {Component} from 'react';
+import Editor from '../components/Editor.jsx';
+import Content from '../types/Content.jsx';
+import style from 'subschema-styles/CollectionCreateTemplate-style';
+export default class CollectionCreateTemplate extends Component {
+    render() {
         var title = this.props.title;
         if (typeof title === 'string') {
             title = {
@@ -24,6 +24,5 @@ var CollectionCreateTemplate = React.createClass({
             </div>
         </div>);
     }
-});
-module.exports = CollectionCreateTemplate;
+}
 

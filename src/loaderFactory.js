@@ -1,4 +1,8 @@
-var tu = require('./tutils'), isArray = tu.isArray, isString = tu.isString, concat = Function.apply.bind(Array.prototype.concat, []);
+var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.concat, []);
+var PropTypes = require('./PropTypes');
+var warning = require('./warning');
+var {isArray,toArray,isFunction, isString, isRegExp} = tu;
+
 module.exports = function loaderFactory(loaders) {
     loaders = loaders || [];
     var types = {load, list, add},
@@ -120,5 +124,81 @@ module.exports = function loaderFactory(loaders) {
         }
     }
 
+    function initValidators(v) {
+        if (isString(v)) {
+            if (v[0] === '/' && v[v.length - 1] === '/') {
+                v = new RegExp(v);
+            } else {
+                var validator = this.loadValidator(v);
+                warning(validator, 'Validator was not found for "%s"', v);
+                return this.loadValidator(v)();
+            }
+        }
+        //If it is a RegExp than init ReExp
+        if (isRegExp(v)) {
+            return this.loadValidator('regexp')({
+                regexp: v
+            });
+        }
+
+        //If it has a type init it
+        if (v.type) {
+            var validator = this.loadValidator(v.type);
+            return validator(v);
+        }
+
+        //If its a function just return it.
+        if (isFunction(v)) {
+            return v;
+        }
+        //otherwise lets try initing it.
+        return this.loadValidator(v)();
+    }
+
+    function toLabelVal(v) {
+        if (isString(v)) {
+            return {
+                label: v,
+                val: v
+            }
+        }
+        return v;
+    }
+
+    api.loadByPropType = (function () {
+        var {operator, options, processor, schema, template,  type,  validator, validators} = PropTypes;
+        var properator = operator.isRequired,
+            proptions = options.isRequired,
+            prprocessor = processor.isRequired,
+            prschema = schema.isRequired,
+            prtemplate = template.isRequired,
+            prtype = type.isRequired,
+            prvalidator = validator.isRequired,
+            prvalidators = validators.isRequired;
+
+
+        return function loadByPropType(propType, value) {
+            var ret = null;
+
+            if (options === propType || proptions === propType) {
+                ret = toArray(value).map(toLabelVal);
+            } else if (template === propType || prtemplate === propType) {
+                ret = this.loadTemplate(value)
+            } else if (schema === propType || prschema === propType) {
+                ret = this.loadSchema(value);
+            } else if (type === propType || prtype === propType) {
+                ret = this.loadType(value);
+            } else if (processor === propType || prprocessor === propType) {
+                ret = this.loadProcessor(value);
+            } else  if (operator === propType || properator === propType) {
+                ret = this.loadOperator(value);
+            } else if (validator === propType || prvalidator === propType) {
+                ret = initValidators.call(this, value);
+            } else if (validators === propType || prvalidators === propType) {
+                ret = toArray(value).map(initValidators, this);
+            }
+            return (ret == null) ? value : ret;
+        }
+    }());
     return api;
 }

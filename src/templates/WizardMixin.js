@@ -1,37 +1,41 @@
 'use strict'
-var React = require('../React')
-var NestedMixin = require('../NestedMixin');
-var PropTypes = require('../PropTypes');
+import React, {Component} from 'react';
+import ObjectType from '../types/Object.jsx';
+import PropTypes from '../PropTypes';
+import template from '../decorators/template';
+
 function donner(done) {
     if (typeof done === 'function')
         done();
 }
 
-var WizardMixin = {
-    contextTypes: {
+export default class WizardMixin extends Component {
+    static contextTypes = {
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
-    },
+    }
+    static defaultProps = {
+        buttonsTemplate: 'ButtonsTemplate'
+    }
 
-    getInitialState() {
-
-        return {
-            compState: 0,
-            prevState: 0,
-            maxState: 0
-        }
-    },
-    componentWillMount(){
-        this.assignSchema(this.props);
-
-    },
-    componentWillReceiveProps(props){
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        var state = this.state || (this.state = {});
+        state.compState = 0;
+        state.prevState = 0;
+        state.maxState = 0;
         this.assignSchema(props);
-    },
-    assignSchema(props){
-        this.schema = NestedMixin.normalizeSchema(props.schema || props.subSchema, this.context.loader);
-    },
-    next(){
+    }
+
+    componentWillReceiveProps(props) {
+        this.assignSchema(props);
+    }
+
+    assignSchema(props) {
+        this.schema = ObjectType.normalizeSchema(props.schema || props.subSchema, this.context.loader);
+    }
+
+    next = ()=> {
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
         this.setState({disabled: true});
         this._validate((e)=> {
@@ -44,8 +48,9 @@ var WizardMixin = {
                 return;
             }
         });
-    },
-    previous(){
+    }
+
+    previous = ()=> {
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState - 1;
         this.setState({disabled: true});
 
@@ -53,28 +58,32 @@ var WizardMixin = {
             this.setState({disabled: false});
             return;
         }
-    },
-    go(pos, resp){
+    }
+
+
+    go = (pos, resp)=> {
         if (resp === false) {
             this.setState({disabled: false});
             return;
         }
         this.setNavState(resp == null ? pos : resp);
-    },
-    _validate(done){
+    }
+
+    _validate(done) {
         this.context.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
-    },
+    }
 
 
-    handleOnClick(evt) {
+    handleOnClick = (evt)=> {
         var steps = this.schema.fieldsets.length, value = evt.target.value;
         if (value < steps && value <= this.state.maxState) {
             this.setNavState(value, true);
         }
 
-    },
+    }
 
-    handleKeyDown(e) {
+
+    handleKeyDown = (e)=> {
         if (e.which === 13) {
             if (this.state.compState < this.schema.fieldsets.length - 1) {
                 return this.handleBtn(e, 'next');
@@ -82,10 +91,13 @@ var WizardMixin = {
                 return this.handleBtn(e, 'submit');
             }
         }
-    },
-    handleValidate(){
-    },
-    handleSubmit(e){
+    }
+
+
+    handleValidate = () => {
+    }
+
+    handleSubmit = (e)=> {
         this._validate((errors)=> {
             if (!errors && this.props.onDone((submit)=> {
                     if (submit !== false) {
@@ -95,8 +107,10 @@ var WizardMixin = {
                 return;
             }
         })
-    },
-    renderBtns(compState){
+    }
+
+    @template('buttonsTemplate')
+    renderBtns(ButtonsTemplate, compState) {
         var buttons = this.schema.fieldsets[compState].buttons;
         if (!buttons && buttons !== false) {
             buttons = [];
@@ -117,11 +131,12 @@ var WizardMixin = {
                 }
             }, this.state);
         }
-        var ButtonsTemplate = this.ButtonsTemplate || (this.ButtonsTemplate = this.context.loader.loadTemplate('ButtonsTemplate'));
         return <ButtonsTemplate key={'btn-'+compState} className={this.props.buttons.buttonsStyle} buttons={buttons}
                                 onButtonClick={this.handleBtn}/>
-    },
-    handleBtn(e, action, btn){
+    }
+
+
+    handleBtn = (e, action, btn)=> {
         e && e.preventDefault();
         switch (action) {
 
@@ -146,25 +161,18 @@ var WizardMixin = {
             }
         }
 
-    },
-    handleEnter(){
+    }
+
+
+    handleEnter = ()=> {
         this.setState({animating: true})
-    },
-    handleLeave(done){
+    }
+
+
+    handleLeave = (done)=> {
         this.setState({animating: false})
         done();
-    },
-    renderProgress(fieldsets){
-        if (this.props.wizardProgressTemplate === false) {
-            return null;
-        }
-        var Template = this.context.loader.loadTemplate(this.props.wizardProgressTemplate);
-        if (!Template) {
-            return null;
-        }
-        return <Template fieldsets={fieldsets} index={this.state.compState}
-                         onClick={this.handleOnClick}/>
     }
-};
 
-module.exports = WizardMixin;
+
+}

@@ -1,103 +1,31 @@
 "use strict";
 
-var tu = require('./tutils');
+import tutils from './tutils';
+import eventable from './eventable';
 
-function removeListener(listeners) {
-    return function ValueManager$removeListener(path, listener) {
-        var remove = listeners.slice(0);
-        if (path && !listener && !tu.isString(path)) {
-            path = listener;
-            listener = null;
-        }
-        if (path) {
-            remove = remove.filter(v=> {
-                return v.path === path;
-            });
-        }
-        if (listener) {
-            //make the return of addListener also able to be used
-            //in remove listener.
-            remove = remove.filter(v=> {
-                return v === listener || v.listener === listener;
-            });
-        }
-        return remove.map(function (r) {
-            var idx = this.indexOf(r);
-            if (idx > -1) {
-                return this.splice(idx, 1)[0];
-            }
-        }, listeners);
+var {push, path, unique, noop, extend, isBoolean, isString, isDate, isArray, isNumber} = tutils;
+
+const tpath = path;
+
+function reduceKeys(arr, v, b, c) {
+    if (canDescend(v)) {
+        push(arr, Object.keys(v))
     }
-}
-/**
- * This callback is displayed as a global member.
- * It will call them in order of most distant to least distance path.
- * In the event of two paths being the same distance, it will call the last
- * added first.
- *
- * @callback ValueManagerListener
- * @param {*} newValue - The new value to be updated
- * @param {*} oldValue - The previous value updated.
- * @param {String} path - The path to value updated
- */
-function addListener(listeners, find, findOld) {
-    function remove() {
-        listeners.splice(listeners.indexOf(this), 1);
-        return this;
-    }
-
-    function once() {
-        var self = this, listener = self.listener;
-
-        this.listener = function () {
-            var ret = listener.apply(this, arguments);
-            self.remove();
-            return ret;
-        }
-        return this;
-    }
-
-    return function ValueManager$addListener(path, listener, scope, init) {
-        if (tu.isFunction(path)) {
-            init = scope;
-            scope = listener;
-            listener = path;
-            path = null
-        }
-        if (listener == null) {
-            return;
-        }
-        var obj = {path, listener, scope, remove, once};
-
-        init = init === true ? obj.listener : tu.isFunction(init) ? init : null;
-        if (init) {
-            init.call(obj.scope, find(path), findOld(path), path)
-        }
-        if (listeners.length === 0) {
-            listeners.push(obj)
-        } else {
-            var plength = path ? path.split('.').length : 0;
-            for (var i = 0, l = listeners.length; i < l; i++) {
-
-                var lp = listeners[i].path, cllength = lp ? lp.split('.').length : 0;
-
-                if (plength >= cllength || i + 1 === l) {
-                    listeners.splice(i, 0, obj);
-                    break;
-                }
-            }
-        }
-        return obj;
-    }
+    return arr;
 }
 function canDescend(obj) {
-    if (obj == null || tu.isNumber(obj) || tu.isBoolean(obj) || tu.isString(obj) || tu.isDate(obj) || tu.isArray(obj)) {
+    if (obj == null || isNumber(obj) || isBoolean(obj) || isString(obj) || isDate(obj) || isArray(obj)) {
         return false;
     }
     return true;
 }
 function copy(obj) {
-    return obj == null ? null : Array.isArray(obj) ? obj.slice(0) : tu.extend({}, obj);
+    return obj == null ? null : isArray(obj) ? obj.slice(0) : extend({}, obj);
+}
+
+function _keys(...args) {
+    return unique(args.reduce(reduceKeys, []));
+
 }
 /**
  * Value manager listens and changes values on the objects.
@@ -117,18 +45,11 @@ function ValueManager(value, errors) {
     this.validateListeners = [];
     this.stateListeners = [];
     this.setValue(value || {});
-    this.oldValue = tu.extend({}, this.value);
     this.setErrors(errors);
+    this.oldValue = extend({}, this.value);
 
 
     var self = this;
-    /**
-     * Removes a value listener.
-     * @param {String} [path] -  path to remove.
-     * @param {ValueManagerListener} [fn] - the listener to look for.
-     * @param {Listener} [listener] - the listener returned from addListener();
-     */
-    this.removeListener = removeListener(this.listeners);
 
     /**
      * Adds a value listener
@@ -137,18 +58,11 @@ function ValueManager(value, errors) {
      * @param {Object} [scope] - The scope to execute the listener in.
      * @param {boolean|Function}  init - true or a function will execute when the listener is added.
      * */
-    this.addListener = addListener(this.listeners, function (prop) {
+    this.addListener = eventable(this.listeners, function (prop) {
         return self.path(prop, self.value);
     }, function (prop) {
         return self.path(prop, self.oldValue);
     });
-    /**
-     * Removes a error listener.
-     * @param {String} [path] -  path to remove.
-     * @param {ValueManagerListener} [fn] - the listener to look for.
-     * @param {Listener} [listener] - the listener returned from addListener();
-     */
-    this.removeErrorListener = removeListener(this.errorListeners);
     /**
      * Adds an error  listener
      * @param {String} [path] - Path to listen to, null or no value will listen to all changes.
@@ -156,9 +70,9 @@ function ValueManager(value, errors) {
      * @param {Object} [scope] - The scope to execute the listener in.
      * @param {boolean|Function}  init - true or a function will execute when the listener is added.
      * */
-    this.addErrorListener = addListener(this.errorListeners, function (prop) {
+    this.addErrorListener = eventable(this.errorListeners, function (prop) {
         return self.errorsFor(prop);
-    }, tu.noop);
+    }, noop);
 
     /**
      * Adds a validate  listener
@@ -168,75 +82,49 @@ function ValueManager(value, errors) {
      * @param {boolean|Function}  init - true or a function will execute when the listener is added.
      * */
 
-    this.addValidateListener = addListener(this.validateListeners, tu.noop, tu.noop);
-    /**
-     * Removes a validate listener.
-     * @param {String} [path] -  path to remove.
-     * @param {Function} [ValueManagerListener] - the listener to look for.
-     * @param {Listener} [listener] - the listener returned from addListener();
-     */
-    this.removeValidateListener = removeListener(this.validateListeners);
-
-    this.createListeners = [];
-    this.addCreateValueListener = addListener(this.createListeners);
-    this.removeCreateValueListener = removeListener(this.createListeners);
+    this.addValidateListener = eventable(this.validateListeners, noop, noop);
 
     this.submitListeners = [];
     /**
      * adds a submit listener.
      * @param {String} [path] -  path to listen to.
      * @param {Function} [ValueManagerListener] - the listener to look for.
-     * @param {Listener} [listener] - the listener returned from addListener();
+     * @param {Listener} [listener] - the listener returned from eventable();
      */
-    this.addSubmitListener = addListener(this.submitListeners);
-    /**
-     * removes a submit listener;
-     */
-    this.removeSubmitListener = removeListener(this.submitListeners);
+    this.addSubmitListener = eventable(this.submitListeners);
 
     /**
      * adds a submit listener.
      * @param {String} [path] -  path to listen to.
      * @param {Function} [ValueManagerListener] - the listener to look for.
-     * @param {Listener} [listener] - the listener returned from addListener();
+     * @param {Listener} [listener] - the listener returned from eventable();
      */
-    this.addStateListener = addListener(this.stateListeners);
-    /**
-     * removes a submit listener;
-     */
-    this.removeStateListener = removeListener(this.stateListeners);
+    this.addStateListener = eventable(this.stateListeners);
+
 }
 
+function remove(v) {
+    v && v.remove && v.remove();
+}
+var listenersTypes = ['listeners', 'errorListeners', 'validateListeners', 'stateListeners', 'submitListeners'];
+function removeAll(v) {
+    var listeners = this[v];
+    if (listeners) {
+        listeners.forEach(remove);
+        listeners.length = 0;
+    }
+
+}
 ValueManager.prototype = {
-    createValueManager(value, errors, path){
-        var vm = ValueManager(value, errors);
-        vm.addCreateValueListener(null, this.onCreateValueManager, this);
-        this.onCreateValueManager(vm, path);
-        return vm;
-    },
-    onCreateValueManager(vm, path){
-        var v, i = 0, l = this.createListeners.length
-        for (; i < l; i++) {
-            var v = this.createListeners[i];
-            if (!(v.path == null || v.path === path))
-                continue;
-            if (v.listener.call(v.scope, vm, path) === false) {
-                return false;
-            }
-        }
-        return true;
+    removeListener(...args){
+        args.forEach(remove);
     },
     /**
      * Removes all listeners, both error and value.
      */
-        removeAll()
+    removeAll()
     {
-        this.listeners.length = 0;
-        this.errorListeners.length = 0;
-        this.validateListeners.length = 0;
-        this.createListeners.length = 0;
-        this.submitListeners.length = 0;
-        this.stateListeners.length = 0;
+        listenersTypes.forEach(removeAll, this);
     }
     ,
     /**
@@ -252,7 +140,7 @@ ValueManager.prototype = {
                 }, this) === true) {
                 return false
             }
-            pp = tu.path(pp, parts[i]);
+            pp = tpath(pp, parts[i]);
         } while (i++ < l);
         return true;
     },
@@ -260,7 +148,7 @@ ValueManager.prototype = {
     /**
      * Triggers the value change on all listeneners.
      */
-        onValueChange(path, value, oldValue)
+    onValueChange(path, value, oldValue)
     {
         var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
         do {
@@ -271,7 +159,7 @@ ValueManager.prototype = {
                 }, this) === true) {
                 return false
             }
-            pp = tu.path(pp, parts[i]);
+            pp = tpath(pp, parts[i]);
         } while (i++ < l);
         return true;
     }
@@ -281,7 +169,7 @@ ValueManager.prototype = {
      * @param {String} - a dot deliminted string.
      * @param {Object} [object] - defaults to the current value.
      */
-        path(p, obj)
+    path(p, obj)
     {
         if (arguments.length < 2) {
             obj = this.value;
@@ -305,7 +193,7 @@ ValueManager.prototype = {
      * @param {String} path - Path to update
      * @param {*} value - Value to update.argument.
      */
-        update(path, value)
+    update(path, value)
     {
         var parts = path.split('.'), obj = this.value || (this.value = {}), oobj = this.oldValue, last = parts[parts.length - 1];
 
@@ -345,7 +233,7 @@ ValueManager.prototype = {
     /**
      * Returns the current value.
      */
-        getValue()
+    getValue()
     {
         return this.value;
     }
@@ -354,29 +242,21 @@ ValueManager.prototype = {
      * @param {Object} value - The new value for the params.  Will trigger
      * changes on all listeners.
      */
-        setValue(value)
+    setValue(value)
     {
-        this.oldValue = tu.extend({}, this.value);
-        this.value = tu.extend({}, value);
+        this.oldValue = extend({}, this.value);
+        this.value = extend({}, value);
         if (this._setValue(value, this.oldValue) !== false) {
 
         }
     }
-    ,
-    _keys()
-    {
-        var args = Array.prototype.slice.call(arguments).map(function (v) {
-            return (canDescend(v) ? Object.keys(v) : null);
-        });
-        return tu.unique(Array.prototype.concat.apply([], args).filter(tu.nullCheck));
 
-    }
     ,
     _setValue(value, oldValue, path)
     {
         if (canDescend(value) || canDescend(oldValue)) {
-            this._keys(value, oldValue).forEach(function (key) {
-                this._setValue(value && value[key], oldValue && oldValue[key], tu.path(path, key));
+            _keys(value, oldValue).forEach(function (key) {
+                this._setValue(value && value[key], oldValue && oldValue[key], tpath(path, key));
             }, this);
         } else {
             return this.onValueChange(path, value, oldValue);
@@ -391,7 +271,7 @@ ValueManager.prototype = {
      * @param {String} errors.name - Name of the error.
      * @param {String} errors.message - Message of the error.
      */
-        onError(path, errors, value)
+    onError(path, errors, value)
     {
         errors = errors && errors[0] ? errors : null;
         var oErrors = this.errors || {}, listeners = this.errorListeners;
@@ -410,10 +290,10 @@ ValueManager.prototype = {
      * @param {Object} errors - object containing errors. The key is the full qualified path to the value in error
      *
      */
-        setErrors(errors)
+    setErrors(errors)
     {
-        var keys = this._keys(errors, this.errors);
-        this.errors = tu.extend({}, errors);
+        var keys = _keys(errors, this.errors);
+        this.errors = extend({}, errors);
         return keys.some(function (key) {
                 return this.onError(key, this.errors[key]);
             }, this) !== true;
@@ -432,7 +312,7 @@ ValueManager.prototype = {
     ,
     updateErrors(path, errors, value)
     {
-        errors = Array.isArray(errors) ? errors : [errors];
+        errors = isArray(errors) ? errors : [errors];
         errors = errors && errors[0] ? errors : null;
         this.errors[path] = errors;
         this.onError(path, errors, value);
@@ -448,7 +328,7 @@ ValueManager.prototype = {
             return this.errors[keys[0]];
         }
         keys.forEach(function (key) {
-            tu.push(errors, this[key]);
+            push(errors, this[key]);
         }, this.errors);
         return errors;
     }
@@ -457,7 +337,7 @@ ValueManager.prototype = {
      * Trigger the validators.
      *
      */
-        validate(path, value)
+    validate(path, value)
     {
         var pp = path && path + '.';
         this.validateListeners.forEach(function ValueManager$validate$forEach(v) {
@@ -468,7 +348,7 @@ ValueManager.prototype = {
     /**
      * Trigger Validators And Callback with Errors for paths.
      */
-        validatePaths(paths, callback){
+    validatePaths(paths, callback){
         var copyPaths = paths && paths.concat() || [];
         var errors;
         paths.forEach(function validatePaths$forEach(path) {
@@ -492,7 +372,7 @@ ValueManager.prototype = {
      * Pretty much the same as update, except that it does not, store
      * the values.  It just fires, listeners.
      */
-        updateState(path, value){
+    updateState(path, value){
         return this.onChangeState(path, value) !== false;
     },
     onChangeState(path, value){
@@ -505,7 +385,7 @@ ValueManager.prototype = {
                 }, this) === true) {
                 return false
             }
-            pp = tu.path(pp, parts[i]);
+            pp = tpath(pp, parts[i]);
         } while (i++ < l);
         return true;
     },
@@ -514,4 +394,4 @@ ValueManager.prototype = {
     }
 }
 
-module.exports = ValueManager;
+export default ValueManager;

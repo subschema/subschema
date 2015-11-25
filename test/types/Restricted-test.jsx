@@ -1,5 +1,5 @@
-import {React, ReactDOM, into,TestUtils,expect, Simulate, change} from '../support';
-import {types} from 'subschema';
+import {React, ReactDOM, intoWithState, TestUtils,expect, Simulate, change} from '../support';
+import {types} from 'Subschema';
 
 var Restricted = types.Restricted;
 
@@ -9,16 +9,20 @@ describe('Restricted', function () {
     var Form = require('subschema').Form;
 
     it('should create a restricted input', function () {
-
-        var root = into(<Restricted formatter="###-##"/>);
-        expect(root).toExist();
+        var onChange = (value)=> {
+            state.setState({value})
+        }, {state, child} = intoWithState(<Restricted formatter="###-##"/>);
+        expect(child).toExist();
 
     });
 
     describe('mm20YY', function () {
-        var root = into(<Restricted formatter="mm20YY"/>);
-        expect(root).toExist();
-        var input = TestUtils.scryRenderedDOMComponentsWithTag(root, 'input')[0];
+
+        var onChange = (value)=> {
+            state.setState({value})
+        }, {state, child} = intoWithState(<Restricted formatter="mm20YY" onChange={onChange}/>);
+        expect(child).toExist();
+        var input = TestUtils.scryRenderedDOMComponentsWithTag(child, 'input')[0];
         var inputEl = ReactDOM.findDOMNode(input);
 
         it('enters 2/16', function () {

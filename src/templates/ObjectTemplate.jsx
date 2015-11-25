@@ -1,13 +1,8 @@
-var React = require('../React');
+import React from 'react';
 
-var ObjectTemplate = React.createClass({
-    render(){
-
-        var {children, className, fieldAttrs, ...props} = this.props;
-        return (<div className={className} {...fieldAttrs}>
-            {children}
-        </div>);
-    }
-});
-
-module.exports = ObjectTemplate;
+export default function ObjectTemplate(props) {
+    var {children, className, fieldAttrs, ...rest} = props;
+    return (<div className={className} {...fieldAttrs}>
+        {children}
+    </div>);
+}

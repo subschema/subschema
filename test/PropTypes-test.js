@@ -20,4 +20,19 @@ describe('PropTypes', function () {
 
     });
 
+    it('should handle something complex like content', function () {
+        var content = [{
+            "className": "clz-left",
+            "content": [{"type": "h1", "content": "Heading stuff {hello}"}, {
+                "type": "p",
+                "content": "Super special content"
+            }, {"type": "button", "className": "btn btn-primary", "content": "Activate"}]
+        }, {
+            "className": "clz-right",
+            "content": [{"type": "img", "className": "super-img", "src": "about:blank", "content": false}]
+        }];
+        var err = PT.content({content}, 'content', 'Test', 'PropTypes-test', 'content');
+        expect(err).toNotExist();
+    });
+
 });

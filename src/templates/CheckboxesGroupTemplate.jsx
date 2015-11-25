@@ -1,11 +1,11 @@
-var React = require('../React');
-var style = require('subschema-styles/CheckboxesGroupTemplate-style');
-var CheckboxesGroupTemplate = React.createClass({
-    render(){
-        return (<fieldset className={style.group}>
-            <legend>{this.props.group}</legend>
-            {this.props.children}
+import React from 'react';
+import style from 'subschema-styles/CheckboxesGroupTemplate-style';
+
+function CheckBoxGroupTempalte(props){
+    return (<fieldset className={style.group}>
+          <legend>{props.group}</legend>
+            {props.children}
         </fieldset>);
-    }
-});
-module.exports = CheckboxesGroupTemplate;
+};
+
+export default CheckBoxGroupTempalte;

@@ -1,5 +1,5 @@
 import {React, into,TestUtils,expect, Simulate}  from './support';
-import {Form} from 'subschema';
+import {Form} from 'Subschema';
 import Sample from '../public/samples/Wizard';
 
 describe('Wizard', function () {
@@ -7,4 +7,4 @@ describe('Wizard', function () {
         var root = into(<Form template="WizardTemplate" schema={Sample.schema}/>);
         expect(root).toExist();
     });
-})
+});

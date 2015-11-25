@@ -1,15 +1,12 @@
-var React = require('../React');
-var Content = require('../types/Content.jsx');
-var style = require('subschema-styles/CheckboxTemplate-style');
-var CheckboxTemplate = React.createClass({
-    render(){
+import React from 'react';
+import Content from '../types/Content.jsx';
+import style  from 'subschema-styles/CheckboxTemplate-style';
+function CheckboxTemplate(props){
         return (<div className={style.checkbox}>
             <label>
-                {this.props.children}
-                {this.props.label}
+                {props.children}
+                {props.label}
             </label>
         </div>);
-    }
-});
-
-module.exports = CheckboxTemplate;
+}
+export default CheckboxTemplate;

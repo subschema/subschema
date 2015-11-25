@@ -1,10 +1,11 @@
 var {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
 
-var {templates, Form} = require('subschema');
+var {templates, Form} = require('Subschema');
 var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
 
 describe('List', function () {
+    this.timeout(50000);
     function add(root, c) {
         var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
         var addBtn = findNode(allBtns[0]);
@@ -15,7 +16,7 @@ describe('List', function () {
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
         var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate)
         var btn = findNode(filterProp(buttons, 'action', 'submit')[0]);
-        Simulate.submit(btn);
+        Simulate.click(btn);
 
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
@@ -90,21 +91,21 @@ describe('List', function () {
                 'three'
             ]
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         var addBtn = byClass(root, 'btn-add')[0];
 
-        expect(addBtn).toNotExist();
-        expect(tasks[0]).toExist();
-        expect(tasks[1]).toExist();
-        expect(tasks[2]).toExist();
-        var li = byComponents(root, ListItemTemplate)[0];
+        expect(addBtn).toNotExist('add button does not exist');
+        expect(tasks[0]).toExist('task 1');
+        expect(tasks[1]).toExist('task 2');
+        expect(tasks[2]).toExist('task 3');
 
+        click(byTag(tasks[0], 'span'));
 
-        click(byTag(li, 'span'));
         var edit = byComponent(root, CollectionCreateTemplate);
+        expect(edit).toExist('should not find CollectionCreateTemplate');
         var input = byName(edit, 'value');
-        expect(findNode(input).value).toBe('one');
+        expect(findNode(input).value).toBe('one', 'value should be one');
 
     });
     it('should render a list with data is not editable', function () {
@@ -144,7 +145,7 @@ describe('List', function () {
         })
     });
     //why does this not work when we run all, but does work when we run it.only
-    it.skip('should render a list without data and add values', function () {
+    it('should render a list without data and add values', function () {
         var schema = {
             schema: {
                 tasks: {
@@ -159,7 +160,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);
@@ -169,6 +170,8 @@ describe('List', function () {
         expect(byClass(a0, 'btn-up')[0]).toNotExist();
         expect(byClass(a0, 'btn-delete')[0]).toExist();
         expect(byClass(a0, 'btn-down')[0]).toNotExist();
+
+    /*
         var a1 = add(root, 1);
         expect(byClass(a1, 'btn-up')[0]).toExist();
         expect(byClass(a1, 'btn-delete')[0]).toExist();
@@ -188,7 +191,7 @@ describe('List', function () {
         expect(root.getValue().tasks.length).toEqual(1);
 
         click(byClass(a2, 'btn-delete')[0]);
-        expect(root.getValue().tasks.length).toEqual(0);
+        expect(root.getValue().tasks.length).toEqual(0);*/
 
 
     });
@@ -227,8 +230,8 @@ describe('List', function () {
         }, errors = {
             'tasks.1': [{message: 'Can not be 2'}]
         }
-        var root = into(<Form schema={schema} value={data} errors={errors}/>);
+        var root = into(<Form schema={schema} value={data} errors={errors}/>, true);
         var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
-        expect(found[0].state.error).toEqual('Can not be 2');
+        expect(found[0].props.error).toEqual('Can not be 2');
     });
 })

@@ -1,17 +1,28 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+"use strict";
 
+import React, {Component} from 'react';
+import listen from '../decorators/listen';
+import PropTypes from '../PropTypes';
 
-var HiddenInput = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    render() {
-        return <input id={this.props.name}
-                      className={css.forField(this)} type="hidden"
-                      value={this.state.value}
-                      data-path={this.props.path}/>
+/**
+ * Hidden does need a template, and does not care about errors.
+ * but we will
+ */
+export default class Hidden extends Component {
+    static noTemplate = true;
+    //only unnormal is asJSON, which will set the value to json rather than a string
+    // so that it can be used to hold hidden state of complex structures.
+    static propTypes = {
+        asJSON: PropTypes.bool
     }
-});
 
-module.exports = HiddenInput;
+    static defaultProps = {
+        type: "hidden",
+        asJSON: false
+    }
+
+    render() {
+        var {value,asJSON, ...props} =this.props;
+        return <input {...props} value={asJSON ? JSON.stringify(value) : value}/>
+    }
+}
