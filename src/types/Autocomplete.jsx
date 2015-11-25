@@ -14,7 +14,7 @@ export default class Autocomplete extends Component {
         loader: PropTypes.loader
     }
     static propTypes = {
-        onChange:PropTypes.valueEvent,
+        onChange: PropTypes.valueEvent,
         onSelect: PropTypes.event,
         minLength: PropTypes.number,
         autoSelectSingle: PropTypes.bool,
@@ -27,7 +27,8 @@ export default class Autocomplete extends Component {
         showing: PropTypes.content,
         foundCls: PropTypes.cssClass,
         notFoundCls: PropTypes.cssClass,
-        input:PropTypes.string,
+        input: PropTypes.string,
+        options: PropTypes.options
 
     }
 
@@ -469,7 +470,7 @@ export default class Autocomplete extends Component {
         props.onKeyDown = this.handleKeyUp;
         props.onBlur = this.handleBlur;
         return <div
-            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)} >
+            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)}>
             {this.createInput(props)}
             {this.renderSuggestions()}
         </div>
