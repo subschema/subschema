@@ -41,6 +41,10 @@ module.exports = function (config) {
                         loader: 'babel-loader?stage=0'
                     },
                     {
+                        test: /-setup\.js(x)?$/,
+                        loader: join('test/support/sample-loader.js')
+                    },
+                    {
                         test: /\.less$/,
                         loader: 'style!css!less-loader'
                     }

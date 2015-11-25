@@ -70,7 +70,8 @@ export default class Editor extends Component {
         className: PropTypes.cssClass,
         id: PropTypes.id,
         type: PropTypes.dataType,
-        fieldAttrs: PropTypes.fieldAttrs
+        fieldAttrs: PropTypes.fieldAttrs,
+        placeholder: PropTypes.placeholder
     }
 
 
@@ -120,16 +121,13 @@ export default class Editor extends Component {
 
         var propTypes = Node.propTypes || FREEZE_OBJ,
             overrideProps = {
-                type: field.dataType
+                type: field.dataType,
+                id: path
             },
             defaultProps = Node.defaultProps || FREEZE_OBJ,
             generatedDefs = {
-                type: field.dataType,
                 className: forField(Node, field),
-                name: props.name || path,
-                id: props.name || path,
-                placeholder: field.placeholder,
-                onValid: this.handleValid
+                name: props.name || path
             };
         var newProps = uniqueKeyEach((propType, key)=> {
             var val;
@@ -163,6 +161,8 @@ export default class Editor extends Component {
             return nextFunc(value, this.handleTargetValue);
         } else if (propType === PropTypes.blurEvent || propType === PropTypes.blurEvent.isRequired) {
             return nextFunc(value, this.handleValidateListener);
+        } else if (propType === PropTypes.validEvent || propType === PropTypes.validEvent.isRequired){
+            return nextFunc(value, this.handleValid);
         }
         return this.context.loader.loadByPropType(propType, value);
     }

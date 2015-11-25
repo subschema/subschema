@@ -11,7 +11,7 @@ export default class Restricted extends RestrictedMixin {
         onValid: noop
     }
     static propTypes = {
-        onValid: PropTypes.event,
+        onValid: PropTypes.validEvent,
         onChange: PropTypes.valueEvent
     }
 

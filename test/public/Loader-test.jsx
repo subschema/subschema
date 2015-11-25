@@ -1,4 +1,4 @@
-import {into, expect, React} from '../support';
+import {React, into,TestUtils,expect, Simulate}  from '../support';
 
 import Subschema from 'Subschema';
 

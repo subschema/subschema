@@ -66,6 +66,20 @@ function filterProp(node, property, value) {
         return false;
     })
 }
+function byId(node, id) {
+    var all = TestUtils.findAllInRenderedTree(node, function (inst) {
+        if (!TestUtils.isDOMComponent(inst)) {
+            return false;
+        }
+        var inode = findNode(inst);
+        return inode.id === id;
+    });
+    if (all.length !== 1) {
+        throw new Error('Did not find exactly one match for name:' + name);
+    }
+    return all[0];
+}
+
 function change(node, value) {
     Simulate.change(findNode(node), {target: {value}});
     return node;
@@ -176,6 +190,7 @@ module.exports = {
     prettyLog,
     findNode,
     expect,
+    byId,
     byName,
     byTags,
     byTag,

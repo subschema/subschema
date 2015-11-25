@@ -8,6 +8,7 @@ import ValueManager  from '../ValueManager';
 import map  from 'lodash/collection/map';
 import Template  from '../components/Template.jsx';
 import warning from '../warning';
+var _path = path;
 
 function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
@@ -95,7 +96,8 @@ export default class ObjectType extends Component {
         subSchema: PropTypes.schema,
         onButtonClick: PropTypes.event,
         onSubmit: PropTypes.event,
-        buttons: PropTypes.buttons
+        buttons: PropTypes.buttons,
+        path: PropTypes.path
     };
 
     static defaultProps = {
@@ -145,7 +147,7 @@ export default class ObjectType extends Component {
         if (field == null) {
             return null;
         }
-        return <Editor ref={f} key={'key-' + f} path={path(this.props.path, f)}
+        return <Editor ref={f} key={'key-' + f} path={_path(this.props.path, f)}
                        field={field}
                        name={f}
                        template={field.template}

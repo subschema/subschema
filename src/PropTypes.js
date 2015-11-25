@@ -47,9 +47,13 @@ api.valueEvent = customPropType(api.func, 'valueEvent');
 api.targetEvent = customPropType(api.func, 'targetEvent');
 
 /**
- * Signify this is a blur Event type listener.
+ * Signify this is a blur Event Listener.
  */
 api.blurEvent = customPropType(api.func, 'blurEvent');
+/**
+ * Signify this is a onValid Event listener.
+ */
+api.validEvent = customPropType(api.func, 'validEvent');
 
 api.dataType = customPropType(api.string, 'dataType');
 
