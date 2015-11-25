@@ -30,14 +30,17 @@ module.exports = function (config) {
                     {
                         test: /\.js(x)?$/,
                         include: [
-                           join('test'),
-                           join('public')
+                            join('test'),
+                            join('public')
 
                         ],
-                        exclude:[
+                        exclude: [
                             join('dist/subschema-noreact.js')
                         ],
                         loader: 'babel-loader'
+                    }, {
+                        test: /-setup\.js(x)?$/,
+                        loader: join('test/support/sample-loader.js')
                     },
                     {
                         test: /\.less$/,

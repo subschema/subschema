@@ -203,7 +203,7 @@ export default class ObjectType extends Component {
         }
     }
 
-    handleSubmit(...rest) {
+    handleSubmit = (...rest)=> {
         this.props.onSubmit(...rest);
     }
 

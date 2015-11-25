@@ -16,7 +16,7 @@ describe('List', function () {
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
         var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate)
         var btn = findNode(filterProp(buttons, 'action', 'submit')[0]);
-        Simulate.submit(btn);
+        Simulate.click(btn);
 
         var value = root.getValue();
         expect(value.tasks[c]).toEqual('Hello, world ' + c);
@@ -145,7 +145,7 @@ describe('List', function () {
         })
     });
     //why does this not work when we run all, but does work when we run it.only
-    it.skip('should render a list without data and add values', function () {
+    it('should render a list without data and add values', function () {
         var schema = {
             schema: {
                 tasks: {
@@ -160,7 +160,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);
@@ -170,6 +170,8 @@ describe('List', function () {
         expect(byClass(a0, 'btn-up')[0]).toNotExist();
         expect(byClass(a0, 'btn-delete')[0]).toExist();
         expect(byClass(a0, 'btn-down')[0]).toNotExist();
+
+    /*
         var a1 = add(root, 1);
         expect(byClass(a1, 'btn-up')[0]).toExist();
         expect(byClass(a1, 'btn-delete')[0]).toExist();
@@ -189,7 +191,7 @@ describe('List', function () {
         expect(root.getValue().tasks.length).toEqual(1);
 
         click(byClass(a2, 'btn-delete')[0]);
-        expect(root.getValue().tasks.length).toEqual(0);
+        expect(root.getValue().tasks.length).toEqual(0);*/
 
 
     });

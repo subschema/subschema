@@ -75,6 +75,11 @@ export default class ModalTemplateWrapper extends Component {
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
     };
+    static propTypes = {
+        title: PropTypes.node,
+        buttons: PropTypes.buttons,
+        path: PropTypes.path,
+    }
 
     render() {
         var {...context} = this.context;

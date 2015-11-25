@@ -7,7 +7,7 @@ Subschema 0.2x ->0.3 Upgrade
   * ValueManagerListenerMixin is replaced with @listeners and @listen respectively.
   * Core components are now in components/
   * ValueManager#removeListener now must take a listener no longer supports a  path.
-  * No longer includes the React.js exported, now it just requires react.
+  * No longer includes the React.js exported, now it just import React from  'react'.
   * EditorTemplate now will pass error with the first error and errors with all errors into the corresponding template.
   * NestedMixin is now just types/Object.jsx.  The property to change the template is objectTemplate.
   * DefaultLoader is now powered by decorators.

@@ -239,33 +239,30 @@ Example:
 
 
 ```jsx
-        import React, {Component} from 'react';
-        import Subschema, {decorators, types, Form} from 'Subschema';
-
-        var {type} = decorators.provide;
-        var {Select, Checkbox} = types;
-        
-        //This will add it to the loader as a type
-        @type
-        class CheckboxSelect extends React.Component {
-
-            //allows for injection of the Select.
-            static propTypes = Select.propTypes;
-
-            constructor(...rest) {
-                super(...rest);
-                //init state
-                this.state = {disabled: false};
-            }
-
-            render() {
-                var {className, ...props} = this.props;
-                return <div className={className}>
-                    <Checkbox onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
-                    <Select {...props} disabled={this.state.disabled}/>
-                </div>
-            }
-        }
+      var {types, loaderFactory,DefaultLoader, Form, decorators} = Subschema;
+      var {type} = decorators.provide;
+      var {Select, Checkbox} = types;
+      
+      @type
+      class CheckboxSelect extends React.Component {
+       
+                   //allows for injection of the Select properties.
+                   static propTypes = Select.propTypes;
+       
+                   constructor(...rest) {
+                       super(...rest);
+                       //init state
+                       this.state = {disabled: false};
+                   }
+       
+                   render() {
+                       var {className, ...props} = this.props;
+                       return <div className={className}>
+                           <Checkbox onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
+                           <Select {...props} disabled={this.state.disabled}/>
+                       </div>
+                   }
+         }
 
         var schema = {
             schema: {

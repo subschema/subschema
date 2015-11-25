@@ -7,7 +7,7 @@ describe('NestedForms', function () {
     it('should render nested forms', ()=> {
         var valueManager = ValueManager(NestedForms.data);
 
-        var form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>, true);
+        var form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>);
 
         var street = byId(form, 'address.street');
 
