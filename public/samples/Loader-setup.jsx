@@ -12,38 +12,37 @@ loader.addTemplate('SimpleTemplate', React.createClass({
     }
 }));
 
-var ObjectType = loader.loadType('Object');
+var {type} = Subschema.decorators.provide;
+var {Checkbox, Select} = Subschema.types;
 
-loader.addType('ToggleObject', React.createClass({
-    displayName: 'ToggleObject',
-    getInitialState(){
-        return {
-            toggled: false
-        }
-    },
-    handleToggle(){
-        this.setState({toggled: !this.state.toggled});
-    },
-    getValue(){
-        return this.refs.val.getValue()
-    },
-    setValue(val){
-        this.refs.val.setValue(val);
-    },
-    render(){
-        var style = {
-            display: this.state.toggled ? 'none' : 'block'
-        };
+@type
+class CheckboxSelect extends React.Component {
 
-        return <div className="form-group">
-            <legend onClick={this.handleToggle}>Click to toggle [{this.state.toggled ? 'v' : '^'}]</legend>
-            <div style={style}>
-                <ObjectType {...this.props}/>
-            </div>
-        </div>;
+    //you can change the behaviour of onChange, but default it expects an event, otherwise
+    // you can do as you want, this just returns the first arg.
 
+    static eventValue = (v)=>v;
+
+    constructor(...rest){
+        super(...rest);
+        //init state
+        this.state = { disabled:false };
     }
-}));
+
+    //Note: that functions are no longer bound by default to this, must use es6 binding for that
+    handleCheck = (e)=>{
+        this.setState({disabled:!e});
+    }
+
+    render(){
+        var {className, ...props} = this.props;
+        return <div className={className}>
+            <Checkbox onChange={this.handleCheck} checked={this.state.disabled} />
+            <Select {...props} disabled={this.state.disabled}/>
+        </div>
+    }
+}
+
 
 loader.addSchema({
     Address: {
@@ -51,7 +50,7 @@ loader.addSchema({
             address: 'Text',
             city: 'Text',
             state: {
-                type: 'Select',
+                type: 'CheckboxSelect',
                 options: ['CA', 'FL', 'VA', 'IL']
             },
             zipCode: {
@@ -65,7 +64,7 @@ loader.addSchema({
         schema: {
             name: 'Text',
             primary: {
-                type: 'ToggleObject',
+                type: 'Object',
                 subSchema: 'Address',
                 template: 'SimpleTemplate'
             },

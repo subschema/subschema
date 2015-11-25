@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from './PropTypes'
-import {each, extend, result, FREEZE_ARR} from './tutils';
+import {each, extend, applyFuncs, result, FREEZE_ARR} from './tutils';
 import warning from './warning';
 import map from 'lodash/collection/map';
 
@@ -73,15 +73,6 @@ export function componentWillReceiveProps(props, context) {
     }
     if (this.__listeners)
         this.__listeners.forEach(__unlistenAndListen, {props, context});
-}
-
-export function applyFuncs(f1, f2) {
-    if (f1 && !f2) return f1;
-    if (!f1 && f2) return f2;
-    return function listenUtil$applyFuncs$wrapper() {
-        f1.apply(this, arguments);
-        f2.apply(this, arguments);
-    }
 }
 
 //If the target has __listeners already then we will assume that this is ours.  We really
@@ -157,10 +148,10 @@ export const MapTypes = {
     'error': 'addErrorListener',
     'submit': 'addSubmitListener',
     'state': 'addStateListener',
-    'validate':'addValidateListener',
+    'validate': 'addValidateListener',
     'addListener': 'addListener',
     'addErrorListener': 'addErrorListener',
     'addSubmitListener': 'addSubmitListener',
     'addStateListener': 'addStateListener',
-    'addValidateListener':'addValidateListener'
+    'addValidateListener': 'addValidateListener'
 }

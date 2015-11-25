@@ -10,7 +10,10 @@ export default class Restricted extends RestrictedMixin {
     static defaultProps = {
         onValid: noop
     }
-    static eventValue = returnFirst;
+    static propTypes = {
+        onValid: PropTypes.event,
+        onChange: PropTypes.valueEvent
+    }
 
     componentWillReceiveProps(newProps) {
         if (this.props.value !== newProps.value) {

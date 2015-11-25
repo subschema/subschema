@@ -8,9 +8,8 @@ export default class Checkbox extends Component {
 
     static inputClassName = ' ';
 
-    static eventValue = returnFirst;
-
     static propTypes = {
+        onChange:PropTypes.valueEvent,
         checkedClass: PropTypes.cssClass
     };
 
@@ -18,6 +17,7 @@ export default class Checkbox extends Component {
         type: 'checkbox',
         checkedClass: ''
     };
+
 
     handleChange = (e)=> {
         var {value} = this.props;

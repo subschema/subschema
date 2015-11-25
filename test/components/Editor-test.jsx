@@ -26,7 +26,8 @@ describe('Editor', function () {
         expect(className).toBe('form-control', 'className')
 
         expect(id).toBe('test', 'id');
-        expect(name).toBe('test', 'id');
+
+        expect(name).toBe('myname', 'name');
 
         change(text, 'hello');
         expect(valueManager.path('test')).toBe('hello', 'valueManager should update');
@@ -45,21 +46,14 @@ describe('Editor', function () {
             static propTypes = {
                 cool: React.PropTypes.bool
             }
+
             /**
              * Input class can be overriden
              * @type {string}
              */
             static inputClassName = 'super-cool';
 
-            /**
-             * Event Value allows for components to not use normal onChange
-             * @param e
-             * @returns {*}
-             */
-            static eventValue(e) {
-                count++;
-                return e.target.value
-            }
+
         }
         loader.addType('TestType', TestType);
         var valueManager = new ValueManager({test: 'good'});
@@ -85,7 +79,7 @@ describe('Editor', function () {
         expect(dataType).toNotExist('dataType should not make it through');
         expect(type).toBe('hidden', 'dataType should be converted to type')
         expect(id).toBe('test', 'id');
-        expect(name).toBe('test', 'id');
+        expect(name).toBe('myname', 'name attribute');
         expect(cool).toBe(true, 'Sure defined custom props are handled')
         expect(notCool).toNotExist('Undefined custom props are undefined');
 
@@ -101,7 +95,6 @@ describe('Editor', function () {
 
         expect(valueManager.path('test')).toBe('hello', 'valueManager should update');
 
-        expect(count).toBe(3, 'should of fired this many times');
     });
 
 

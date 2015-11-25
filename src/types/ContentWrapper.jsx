@@ -16,9 +16,10 @@ export default class ContentWrapper extends Component {
         type: 'span',
         content: ''
     }
-    static proptypes = {
+    static propTypes = {
         content: PropTypes.string
     }
+
     static contextTypes = {
         loader: PropTypes.loader
     }

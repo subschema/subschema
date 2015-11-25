@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {returnFirst} from '../tutils';
+import PropTypes from '../PropTypes';
+
 export default class DateInput extends Component {
 
-    static eventValue = returnFirst;
-
+    static propTypes = {
+        onChange: PropTypes.valueEvent
+    }
     static defaultProps = {
         type: "date"
     }
@@ -24,6 +26,6 @@ export default class DateInput extends Component {
 
     render() {
         var {value, onChange, ...props} = this.props;
-        return <input {...props} onChange={this.handleDateChange} value={this.asInputValue(value)}  />
+        return <input {...props} onChange={this.handleDateChange} value={this.asInputValue(value)}/>
     }
 }

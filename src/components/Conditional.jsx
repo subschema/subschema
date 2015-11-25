@@ -70,6 +70,7 @@ export default class Conditional extends Component {
     }
 
     static propTypes = {
+        path: PropTypes.path,
         /**
          * The value  to use too compare against  if not given, than
          * it will be a compare against null.
@@ -80,18 +81,18 @@ export default class Conditional extends Component {
          * in which case will look for
          * defaults to the current path.
          */
-        listen: PropTypes.string,
+        listen: PropTypes.path,
 
         /**
          * The template to use if it evaluates to true
          * IE - Modal, ShowHide
          */
-        template: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+        template: PropTypes.template,
         /**
          * The template to use if it evaluates to false
          * defaults to a null span
          */
-        falseTemplate: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.func]),
+        falseTemplate: PropTypes.template,
         /**
          * A string to use  a named animation,or a boolean.
          *
@@ -108,12 +109,13 @@ export default class Conditional extends Component {
          * If ommitted and the value is ommitted than a !(value == null) is used.
          *
          */
-        operator: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.instanceOf(RegExp)]),
+        operator: PropTypes.operator,
         /**
          * Listen to an error rather than the mutually exclusive with listen.
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
     }
+
     constructor(props, ...rest) {
         super(props, ...rest);
         this._handleProps(FREEZE_OBJ, props);

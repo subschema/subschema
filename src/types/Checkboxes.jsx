@@ -7,10 +7,10 @@ import template from '../decorators/template';
 import tu, {path, toArray, FREEZE_ARR,returnFirst,  isArray} from '../tutils';
 
 export default class Checkboxes extends Component {
-    static eventValue = returnFirst;
 
     static inputClassName = ' ';
     static propTypes = {
+        onChange:PropTypes.valueEvent,
         options: PropTypes.options,
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template,

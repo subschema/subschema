@@ -1,13 +1,15 @@
 "use strict";
 import React, {Component} from 'react';
-import {returnFirst} from '../tutils';
+import PropTypes from '../PropTypes';
 
 var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
 
 export default class NumberInput extends Component {
 
-    static eventValue = returnFirst;
+    static propTypes = {
+        onChange: PropTypes.valueEvent
+    }
 
     constructor(props, ...rest) {
         super(props, ...rest);

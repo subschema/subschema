@@ -9,11 +9,12 @@ import lifecycle from '../decorators/lifecycle';
 import template from '../decorators/template';
 
 export default class Autocomplete extends Component {
-    static eventValue = returnFirst;
+
     static contextTypes = {
         loader: PropTypes.loader
     }
     static propTypes = {
+        onChange:PropTypes.valueEvent,
         onSelect: PropTypes.event,
         minLength: PropTypes.number,
         autoSelectSingle: PropTypes.bool,

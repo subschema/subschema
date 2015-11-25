@@ -5,10 +5,21 @@ import styles from 'subschema-styles/FormTemplate-style';
 import PropTypes from '../PropTypes';
 export default class FormTemplate extends Component {
     static propTypes = {
-        onSubmit: PropTypes.event
+        onSubmit: PropTypes.event,
+        accept: PropTypes.string,
+        acceptCharset: PropTypes.string,
+        action: PropTypes.string,
+        autocapitalize: PropTypes.oneOf(['on', 'off', 'words', 'sentences', 'charecters', 'none']),
+        autocomplete: PropTypes.oneOf(['on', 'off']),
+        enctype: PropTypes.oneOf(['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain']),
+        method: PropTypes.oneOf(['get', 'post']),
+        name: PropTypes.string,
+        novalidate: PropTypes.bool,
+        target: PropTypes.string,
     }
+
     static defaultProps = {
-        className: styles.formClass
+        className: styles.formClass,
     }
 
     render() {

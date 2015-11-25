@@ -5,7 +5,7 @@ import Template from './Template.jsx';
 import {listeners} from './../decorators';
 import defaults from 'lodash/object/defaults';
 import {forField} from '../css';
-import { FREEZE_OBJ, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
+import { FREEZE_OBJ, nextFunc, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
 
 const ERRORS = {
     '.': 'setErrors'
@@ -15,6 +15,36 @@ const ERRORS = {
     '.': 'handleValidateListener'
 }, EMPTY = FREEZE_OBJ;
 
+/**
+ * Apply function with scope to every key in each object that has not been
+ * seen before.
+ *
+ * If the function returns undefined that it will not add the key
+ *
+ * @param fn
+ * @param scope
+ * @param args - the object to iterate over.
+ * @return {} - object containing the keys and the value return from the function
+ */
+
+function uniqueKeyEach(fn, scope, ...args) {
+    var i = 0, j = 0, jl = 0, l = args.length, ans, keys = FREEZE_ARR, arg, uniq = {}, obj;
+    for (; i < l; i++) {
+        obj = args[i];
+        if (obj == null) continue;
+        keys = Object.keys(obj);
+        for (j = 0, jl = keys.length; j < jl; j++) {
+            var key = keys[j];
+            if (!uniq.hasOwnProperty(key)) {
+                ans = fn.call(scope, obj[key], key);
+                if (ans !== void(0)) {
+                    uniq[key] = ans;
+                }
+            }
+        }
+    }
+    return uniq;
+}
 
 export default class Editor extends Component {
 
@@ -29,6 +59,20 @@ export default class Editor extends Component {
         onValueChange: noop,
         template: 'EditorTemplate'
     }
+    /**
+     * All Types have the following automatically injected.
+     * @type {{name: *, onChange: *, className: *, id: *}}
+     */
+    static fieldPropTypes = {
+        name: PropTypes.name,
+        onChange: PropTypes.targetEvent,
+        onBlur: PropTypes.blurEvent,
+        className: PropTypes.cssClass,
+        id: PropTypes.id,
+        type: PropTypes.dataType,
+        fieldAttrs: PropTypes.fieldAttrs
+    }
+
 
     constructor(props, context, ...rest) {
         super(props, context, ...rest);
@@ -36,25 +80,127 @@ export default class Editor extends Component {
             hasChanged: false,
             isValid: false
         };
-        this.createPropForType(props, context);
+
         this.initValidators(props, context);
+        this.initPropTypes(props, context);
     }
 
     componentWillReceiveProps(props, context) {
         this.initValidators(props, context);
-        this.createPropForType(props, context);
+        this.initPropTypes(props, context);
         this.listenTo();
         this.listenToError();
 
     }
 
-    normalizePropType(propType, value) {
-        return this.context.loader.loadByPropType(propType, value);
-    }
-
     initValidators(props, context) {
         this.validators = context.loader.loadByPropType(PropTypes.validators, props.field.validators);
     }
+
+
+    initPropTypes(props, context) {
+        var Component = this._Component = this.createPropForType(props, context);
+        //Handle Lazy which forces a rerender which causes this to be null and checked again.
+        if (Component instanceof Promise) {
+            Component.then((component)=> {
+                this._Component = null;
+                this._componentProps = null;
+                this.forceUpdate();
+                return component;
+            });
+            Component = this.context.loader.loadType('LazyType');
+        }
+
+    }
+
+    createPropForType(props, context) {
+        var field = props.field || FREEZE_OBJ;
+        var path = field.conditional && field.conditional.path || props.path;
+        var Node = context.loader.loadType(field.type);
+
+        var propTypes = Node.propTypes || FREEZE_OBJ,
+            overrideProps = {
+                type: field.dataType
+            },
+            defaultProps = Node.defaultProps || FREEZE_OBJ,
+            generatedDefs = {
+                type: field.dataType,
+                className: forField(Node, field),
+                name: props.name || path,
+                id: props.name || path,
+                placeholder: field.placeholder,
+                onValid: this.handleValid
+            };
+        var newProps = uniqueKeyEach((propType, key)=> {
+            var val;
+            if (overrideProps.hasOwnProperty(key)) {
+                val = overrideProps[key];
+            } else if (field.hasOwnProperty(key)) {
+                val = field[key];
+            } else if (props.hasOwnProperty(key)) {
+                val = props[key];
+            } else if (defaultProps.hasOwnProperty(key)) {
+                val = defaultProps[key];
+            } else if (generatedDefs.hasOwnProperty(key)) {
+                val = generatedDefs[key];
+            }
+            return this.normalizePropType(propType, val);
+        }, this, propTypes, Editor.fieldPropTypes);
+
+        //change in behaviour fieldAttrs come afterward
+        if (field.fieldAttrs) {
+            defaults(newProps, field.fieldAttrs);
+        }
+
+        this._componentProps = newProps;
+        return Node;
+    }
+
+    normalizePropType(propType, value) {
+        if (propType === PropTypes.valueEvent || propType === PropTypes.valueEvent.isRequired) {
+            return nextFunc(value, this.handleUpdateValue);
+        } else if (propType === PropTypes.targetEvent || propType === PropTypes.targetEvent.isRequired) {
+            return nextFunc(value, this.handleTargetValue);
+        } else if (propType === PropTypes.blurEvent || propType === PropTypes.blurEvent.isRequired) {
+            return nextFunc(value, this.handleValidateListener);
+        }
+        return this.context.loader.loadByPropType(propType, value);
+    }
+
+    handleTargetValue = (e)=> {
+        this.handleUpdateValue(e.target.value);
+    }
+    handleUpdateValue = (value)=> {
+        if (this.props.onChange(value) === false) {
+            return false;
+        }
+        var field = this.props.field || FREEZE_OBJ;
+        var path = field.conditional && field.conditional.path || this.props.path;
+
+        if (this.context.valueManager.update(path, value) !== false) {
+
+            return this.props.onValueChange(value);
+        }
+
+        return false;
+    }
+
+    handleValueChange(value, oldValue, name) {
+
+        this.setState({value});
+
+        this.state.hasChanged = true;
+
+        var errors = this.getErrorMessages(value);
+        if (!this.state.hasValidated) {
+            if (!errors || errors.length === 0) {
+                this.state.hasValidated = true;
+            }
+        } else {
+            this.validate(value, errors);
+        }
+    }
+
 
     handleValidate = (value, component, e)=> {
         this.state.hasValidated = true;
@@ -69,6 +215,11 @@ export default class Editor extends Component {
     listenTo() {
         if (this._Component.isContainer) {
             return EMPTY;
+        }
+        if (this.props.field.conditional && this.props.field.conditional.path) {
+            return {
+                [this.props.field.conditional.path]: 'handleValueChange'
+            }
         }
         return VALUES;
     }
@@ -87,27 +238,6 @@ export default class Editor extends Component {
             return EMPTY;
         }
         return VALIDATE;
-    }
-
-    handleValueChange(value, oldValue, name) {
-        if (!(this.state && 'value' in this.state)) {
-            //init first value prolly not needed see hasChanged below.
-            this.setState({value});
-            return;
-        }
-        var hasChanged = value != oldValue;
-        if (!hasChanged) {
-            return;
-        }
-        this.state.hasChanged = true;
-        var errors = this.getErrorMessages(value);
-        if (!this.state.hasValidated) {
-            if (!errors || errors.length === 0) {
-                this.state.hasValidated = true;
-            }
-        } else {
-            this.validate(value, errors && errors.length === 0 ? null : errors);
-        }
     }
 
     getValue() {
@@ -130,9 +260,8 @@ export default class Editor extends Component {
         return errors;
     }
 
-    handleValidateListener() {
-        var value = this.getValue();
-        this.validate(value, this.getErrorMessages(value));
+    handleValidateListener = ()=> {
+        this.validate(this.state.value, this.getErrorMessages(this.state.value));
     }
 
     _validate() {
@@ -162,77 +291,10 @@ export default class Editor extends Component {
         return titlelize(this.props.name);
     }
 
-    handleValid(valid) {
+    handleValid = (valid)=> {
         this.setState({valid})
     }
 
-    eventValue(e) {
-        return e.target.value;
-    }
-
-    handleNodeChange(value, ...rest) {
-        if (this.props.onChange(value) === false) {
-            return false;
-        }
-        if (this.context.valueManager.update(this.props.path, value) !== false) {
-            this.setState({value});
-            return this.props.onValueChange(value);
-        }
-
-        return false;
-    }
-
-    createPropForType(props, context) {
-        var field = props.field || FREEZE_OBJ;
-
-        var Node = this._Component = context.loader.loadType(field.type);
-
-        var propTypes = Node.propTypes || FREEZE_OBJ, defProps = Node.defaultProps || FREEZE_OBJ;
-        var newProps = {};
-        Object.keys(propTypes).forEach((key)=> {
-            if (key in field) {
-                newProps[key] = this.normalizePropType(propTypes[key], field[key]);
-            } else if (key in props) {
-                newProps[key] = this.normalizePropType(propTypes[key], props[key]);
-            } else if (key in defProps) {
-                newProps[key] = this.normalizePropType(propTypes[key], defProps[key]);
-            }
-        }, this);
-
-        var eventValue = Node.eventValue || this.eventValue,
-            className = forField(Node, field),
-            name = props.name || props.path,
-            onChange = (e, ...rest)=> {
-                this.handleNodeChange(eventValue(e), e, ...rest);
-            },
-            onBlur = (e, ...rest)=> {
-                this.handleValidate(eventValue(e), e, ...rest);
-            };
-
-        newProps = defaults({
-            onChange,
-            onBlur,
-            type: field.dataType,
-            value: this.state.value,
-            placeholder: field.placeholder,
-            name,
-            id: props.path,
-            className
-        }, field.fieldAttrs, newProps);
-
-        if (Node instanceof Promise) {
-            Component.then((component)=> {
-                this._Component = null;
-                this._componentProps = null;
-                this.forceUpdate();
-                return component;
-            });
-            var Lazy = this.context.loader.loadType('LazyType');
-            return Lazy
-        }
-
-        this._componentProps = newProps;
-    }
 
     render() {
         var {field} = this.props, props = this.props;
@@ -245,11 +307,6 @@ export default class Editor extends Component {
             errorClassName = errorClassName == null ? 'has-error' : errorClassName,
             Component = this._Component;
 
-        //Handle Lazy which forces a rerender which causes this to be null and checked again.
-        if (Component === null) {
-            this.createPropForType(props, this.context);
-            Component = this._Component;
-        }
 
         var child = <Component ref="field" {...this._componentProps}
                                value={this.state.value}/>;

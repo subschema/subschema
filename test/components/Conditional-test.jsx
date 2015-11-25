@@ -169,12 +169,11 @@ describe('Conditional', function () {
 
             expect(selects.length).toBe(2, 'Should have 2 selects');
             select(selects[0], 1);
-            expect(valueManager.path('make')).toBe('amc', 'should update make');
+            expect(valueManager.path('make')).toBe('amc', 'should update the make');
             var selects = byTypes(form, Select);
             expect(selects[1].props.placeholder).toBe('Select a model of AMC', 'should update placeholder');
             select(selects[1], 1);
-
-//            expect(valueManager.path('model')).toBe('AMX', 'should update');
+            expect(valueManager.path('model')).toBe('AMX', 'should update the model');
 
 
         })

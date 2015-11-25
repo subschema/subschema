@@ -21,6 +21,10 @@ function customPropType(type, name) {
 
 var api = extend({}, PropTypes);
 
+api.id = customPropType(api.string, 'id');
+
+api.fieldAttrs = customPropType(api.object, 'fieldAttrs');
+
 api.cssClass = customPropType(api.string, 'cssClass');
 
 api.event = customPropType(api.func, 'event');
@@ -29,8 +33,27 @@ api.validator = customPropType(api.func, 'validator');
 
 api.path = customPropType(api.string, 'path');
 
+api.placeholder = customPropType(api.string, 'placeholder');
+
 api.arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
 
+/**
+ * A valueEvent does not expect target.value
+ */
+api.valueEvent = customPropType(api.func, 'valueEvent');
+/**
+ * A targetEvent expects the first arg to have target.value
+ */
+api.targetEvent = customPropType(api.func, 'targetEvent');
+
+/**
+ * Signify this is a blur Event type listener.
+ */
+api.blurEvent = customPropType(api.func, 'blurEvent');
+
+api.dataType = customPropType(api.string, 'dataType');
+
+api.type = api.oneOfType([api.string, api.func]);
 
 api.loader = api.shape({
     loadTemplate: api.func,
@@ -88,7 +111,8 @@ api.buttons = api.oneOfType([
         buttonsClass: api.cssClass,
         onButtonClick: api.event,
         buttons: api.oneOfType(api.arrayString, api.arrayOf(api.button)),
-        buttonTemplate: api.template
+        buttonTemplate: api.template,
+        buttonsTemplate: api.template
     })
 ]);
 
@@ -109,7 +133,6 @@ api.options = api.oneOfType([
         val: api.value
     }))
 ]);
-api.type = api.oneOfType([api.string, api.func]);
 
 api.optionsGroup = api.oneOfType([
     api.arrayString,
@@ -131,17 +154,18 @@ api.schema = api.oneOfType([api.string, api.shape({
 
 api.type = api.oneOfType([api.string, api.object])
 
-api.validators = api.arrayOf(api.validators);
+api.validators = api.oneOfType([api.arrayString, api.arrayOf(api.validators)]);
 
-api.operator = api.oneOfType([api.string, api.func]);
+api.operator = api.oneOfType([api.string, api.func, api.instanceOf(RegExp)]);
 
 var events = {
     onValidate: api.event,
     onFocus: api.event,
     onBlur: api.event,
     onValid: api.event,
-    onChange: api.event
+    onChange: api.oneOfType(api.targetEvent, api.valueEvent)
 };
+
 api.field = api.oneOfType([api.string, api.shape({
     type: api.string.isRequired,
     title: api.string,
@@ -155,8 +179,8 @@ api.mixin = {
         title: api.content,
         help: api.content,
         name: api.string,
-        placeholder: api.string,
-        dataType: api.string,
+        placeholder: api.placeholder,
+        dataType: api.dataType,
         editorClass: api.cssClass,
         fieldClass: api.cssClass,
         field: {}

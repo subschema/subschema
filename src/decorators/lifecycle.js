@@ -1,5 +1,5 @@
 "use strict";
-import {applyFuncs} from '../listenUtil';
+import {applyFuncs} from '../tutils';
 import decorator from './decorator';
 /**
  * Add a function to the lifecycle. By Default its componentWillMount;

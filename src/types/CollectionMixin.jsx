@@ -60,13 +60,13 @@ function wrapFunc(value, key) {
 
 export default class CollectionMixin extends Component {
 
-    static eventValue = returnFirst;
 
     static inputClassName = Constants.listClassName;
 
     static contextTypes = PropTypes.contextTypes;
 
     static propTypes = {
+        onChange: PropTypes.valueEvent,
         path: PropTypes.path,
         canEdit: PropTypes.bool,
         canReorder: PropTypes.bool,
@@ -93,7 +93,9 @@ export default class CollectionMixin extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setValue(props.value);
+        if (props.value !== this.props.value) {
+            this.setValue(props.value);
+        }
     }
 
     getValue() {

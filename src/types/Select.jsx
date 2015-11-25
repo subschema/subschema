@@ -5,13 +5,15 @@ import PropTypes from '../PropTypes';
 import {returnFirst, isArray} from '../tutils';
 
 export default class Select extends Component {
-    static eventValue = returnFirst;
+
 
     static propTypes = {
         options: PropTypes.options,
-        multiple: PropTypes.bool
-
+        multiple: PropTypes.bool,
+        onChange:PropTypes.valueEvent,
+        placeholder:PropTypes.placeholder
     }
+
     static defaultProps = {
         options: [],
         multiple: false

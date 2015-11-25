@@ -39,7 +39,7 @@ describe('Substitute', function () {
         expect(value).toBe(" cruel <b>is cool</b>", 'substitute the value');
     });
 
-    it('should substitute multiple values wierd', function () {
+    it('should substitute multiple values weirdo quotes', function () {
 
         var res = SubstituteMixin('{h\"ello} \"cruel <b>{world}</b>');
         expect(res.listen.length).toBe(2, 'check length of listen')

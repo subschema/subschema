@@ -18,7 +18,6 @@ function compare(val, val2) {
 export default class RadioInput extends Component {
     static inputClassName = '  ';
 
-    static eventValue = returnFirst;
 
     static defaultProps = {
         itemTemplate: 'RadioItemTemplate',
@@ -27,6 +26,7 @@ export default class RadioInput extends Component {
     }
 
     static propTypes = {
+        onChange: PropTypes.valueEvent,
         itemTemplate: PropTypes.template,
         forceSelection: PropTypes.bool,
         checkedClass: PropTypes.cssClass,

@@ -100,6 +100,37 @@ var api = {
     titlelize: function (value) {
         return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, api.uppercase);
     },
-    push: Function.apply.bind(Array.prototype.push)
+    push: Function.apply.bind(Array.prototype.push),
+    applyFuncs: function (f1, f2) {
+        if (f1 && !f2) return f1;
+        if (!f1 && f2) return f2;
+        return function tutils$applyFuncs$wrapper() {
+            f1.apply(this, arguments);
+            f2.apply(this, arguments);
+        }
+    },
+    /**
+     * When f1 and f2 are defined-
+     *
+     * Calls f1 and f2 if f1 and f2 are defined and f1 does not return false.
+     * If f1 returns false, f2 is not called.
+     *
+     * If f2 is not defined f1 is returned.
+     * if f1 is not defined f2 is returned.
+     *
+     * @param f1
+     * @param f2
+     * @returns {function}
+     */
+    nextFunc: function (f1, f2) {
+        if (f1 && !f2) return f1;
+        if (f2 && !f1) return f2;
+        return function tutils$nextFunc$wrapper() {
+            if (f1.apply(this, arguments) !== false) {
+                return f2.apply(this, arguments);
+            }
+        }
+    }
+
 };
 module.exports = api;
