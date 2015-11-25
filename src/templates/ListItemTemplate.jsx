@@ -73,18 +73,18 @@ export default class ListItemTemplate extends Component {
                 });
 
             }
-            if (canDelete) {
-                buttons.push({
-                    onClick: this.handleDelete,
-                    title: 'Delete',
-                    iconClass: style.delete,
-                    buttonClass,
-                    label: '',
-                    ref: 'deleteBtn'
-                });
-            }
-        }
 
+        }
+        if (canDelete) {
+            buttons.push({
+                onClick: this.handleDelete,
+                title: 'Delete',
+                iconClass: style.delete,
+                buttonClass,
+                label: '',
+                ref: 'deleteBtn'
+            });
+        }
         return buttons;
     }
 

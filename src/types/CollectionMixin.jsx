@@ -93,7 +93,7 @@ export default class CollectionMixin extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState(props.value);
+        this.setValue(props.value);
     }
 
     getValue() {

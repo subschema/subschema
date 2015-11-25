@@ -5,18 +5,19 @@ import style from 'subschema-styles/Mixed-style';
 import _get from 'lodash/object/get';
 import defaults from 'lodash/object/defaults';
 import PropTypes from '../PropTypes';
-
+var typetype = PropTypes.oneOfType([PropTypes.shape({type: PropTypes.string}), PropTypes.string])
 export default class MixedInput extends CollectionMixin {
-    static isContainer = true;
+
     static propTypes = defaults({
         labelKey: PropTypes.string,
-        keyType: PropTypes.schema,
+        keyType: typetype,
+        valueType: typetype,
         value: PropTypes.object
 
     }, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
-        valueType:{type: 'Text'},
+        valueType: {type: 'Text'},
         keyType: {type: 'Text'},
     }, CollectionMixin.defaultProps)
 
@@ -71,7 +72,7 @@ export default class MixedInput extends CollectionMixin {
             } : kt || {},
             schema = {
                 key: keyType,
-                value: this.props.itemType
+                value: this.props.itemType || this.props.valueType
             };
 
         if (!keyType.type) {
