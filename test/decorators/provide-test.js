@@ -12,7 +12,7 @@ describe('provide', function () {
     class TestClass extends Component {
 
     }
-    ['type', 'schema', 'validator', 'schema', 'template', 'processor', 'operator' ].forEach(function (test) {
+    ['type',  'validator', 'template', 'processor', 'operator' ].forEach(function (test) {
         var decorator = provide[test];
         var Postfix = test.substring(0, 1).toUpperCase() + test.substring(1), method = 'load' + Postfix;
         it(`should add ${test}`, function () {

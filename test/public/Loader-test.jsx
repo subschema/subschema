@@ -18,8 +18,7 @@ describe('Loader Example', ()=> {
         var valueManager = ValueManager();
         loaderTestSetup(loader, schema, Subschema, React, valueManager);
 
-        var s = schema.replace(/^"(.*)\"$/, '$1');
-        console.log('schema', s);
+        var s = JSON.parse(schema);
         var form = into(<Form schema={s} loader={loader} />, true);
 
         var CheckboxSelect = loader.loadType('CheckboxSelect');
