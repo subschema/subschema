@@ -89,7 +89,6 @@ module.exports = {
             'Subschema': join('src/index.jsx'),
             'react': join('node_modules/react'),
             'subschema-styles': join('src/styles')
-            //   'component-playground':join('node_modules/component-playground')
         }
     },
 

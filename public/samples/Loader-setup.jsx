@@ -1,6 +1,14 @@
-loader.addTemplate('SimpleTemplate', React.createClass({
-    displayName: 'SimpleTemplate',
-    render(){
+var {types, decorators} = Subschema;
+var {provide} = decorators;
+var {type, template} = provide;
+var {Select, Checkbox} = types;
+decorators.provide.defaultLoader = loader;
+
+//Provide a template named SimpleTempalte
+
+@template
+class SimpleTemplate extends React.Component {
+    render() {
         var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
         return (<div
             className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' +  fieldClass}>
@@ -10,56 +18,48 @@ loader.addTemplate('SimpleTemplate', React.createClass({
             </div>
         </div>);
     }
-}));
-
-var {type} = Subschema.decorators.provide;
-var {Checkbox, Select} = Subschema.types;
-
+}
+//Provide a type named CheckboxSelect
 @type
 class CheckboxSelect extends React.Component {
 
-    //you can change the behaviour of onChange, but default it expects an event, otherwise
-    // you can do as you want, this just returns the first arg.
+    //allows for injection of the Select types.
+    static propTypes = Select.propTypes;
 
-    static eventValue = (v)=>v;
-
-    constructor(...rest){
+    constructor(...rest) {
         super(...rest);
         //init state
-        this.state = { disabled:false };
+        this.state = {disabled: false};
     }
 
-    //Note: that functions are no longer bound by default to this, must use es6 binding for that
-    handleCheck = (e)=>{
-        this.setState({disabled:!e});
-    }
-
-    render(){
-        var {className, ...props} = this.props;
-        return <div className={className}>
-            <Checkbox onChange={this.handleCheck} checked={this.state.disabled} />
-            <Select {...props} disabled={this.state.disabled}/>
+    //inline styles, because this is an example
+    render() {
+        return <div>
+            <Checkbox className='' style={{position: 'absolute',  left:'-5px', top:'5px'}}
+                      onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
+            <Select {...this.props} disabled={this.state.disabled}/>
         </div>
     }
 }
-
-
-loader.addSchema({
-    Address: {
-        schema: {
-            address: 'Text',
-            city: 'Text',
-            state: {
-                type: 'CheckboxSelect',
-                options: ['CA', 'FL', 'VA', 'IL']
-            },
-            zipCode: {
-                type: 'Text',
-                dataType: 'number'
-            }
+//Use a class as a schema, this news the class before adding it.
+@provide.schema
+class Address {
+    schema = {
+        address: 'Text',
+        city: 'Text',
+        state: {
+            type: 'CheckboxSelect',
+            options: 'CA,FL,VA,IL'
         },
-        fields:['address', 'city', 'state', 'zipCode']
-    },
+        zipCode: {
+            type: 'Text',
+            dataType: 'number'
+        }
+    }
+    fields = ['address', 'city', 'state', 'zipCode']
+}
+//Adding a schema manually, this can also be done for types, templates,validators, etc...
+loader.addSchema({
     Contact: {
         schema: {
             name: 'Text',

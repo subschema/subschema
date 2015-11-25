@@ -32,11 +32,7 @@ module.exports = function (config) {
                         include: [
                             join('src'),
                             join('test'),
-                            join('public'),
-                            '~/node_modules/react-router',
-                            '~/node_modules/react-bootstrap',
-                            '~/node_modules/subschema-builder'
-
+                            join('public')
                         ],
                         loader: 'babel-loader?stage=0'
                     },
@@ -55,15 +51,12 @@ module.exports = function (config) {
                 extensions: ['', '.js', '.jsx'],
                 alias: {
                     'subschema': join('src/index.jsx'),
+                    'subschema-styles': join('src/styles'),
                     'Subschema': join('src/index.jsx'),
-                    'subschema-styles': join('src/styles')
                 }
             },
 
-            plugins: [new webpack.ProvidePlugin({
-                CodeMirror: "codemirror",
-                "window.CodeMirror": "codemirror"
-            }),
+            plugins: [
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': JSON.stringify('development')
                 })]

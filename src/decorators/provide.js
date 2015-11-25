@@ -35,6 +35,14 @@ function provideClass(type, name, propType, loader = provide.defaultLoader) {
         return target;
     }
 }
+function provideSchemaClass(name, propType, loader = provide.defaultLoader) {
+
+    return function provideClass$config(Target) {
+        name = name || Target.name;
+        loader.addSchema(name, new Target);
+        return Target;
+    }
+}
 
 function provideProperty(type, name, propType, loader = provide.defaultLoader) {
     return function provideProperty$config(target, property, descriptor) {
@@ -75,19 +83,20 @@ function _type(type, prefix = 'add', postfix = '') {
 
 /**/
 
-['type', 'validator', 'schema', 'template', 'processor', 'operator'].forEach(function (key) {
-    this[key] =decorator(provideProperty.bind(null, key), provideClass.bind(null, key));
+['type', 'validator', 'template', 'processor', 'operator'].forEach(function (key) {
+    this[key] = decorator(provideProperty.bind(null, key), provideClass.bind(null, key));
 }, provide);
 
+provide.schema = decorator(provideClass.bind(null, 'schema'), provideSchemaClass);
 export default provide;
 /*
 
-export var type =  decorator(provideProperty.bind(null, 'type'), provideClass.bind(null, 'type'));
-export var validator =  decorator(provideProperty.bind(null, 'validator'), provideClass.bind(null, 'validator'));
-export var schema =  decorator(provideProperty.bind(null, 'schema'), provideClass.bind(null, 'schema'));
-export var template =  decorator(provideProperty.bind(null, 'template'), provideClass.bind(null, 'template'));
-export var processor =  decorator(provideProperty.bind(null, 'processor'), provideClass.bind(null, 'processor'));
-export var operator =  decorator(provideProperty.bind(null, 'operator'), provideClass.bind(null, 'operator'));
+ export var type =  decorator(provideProperty.bind(null, 'type'), provideClass.bind(null, 'type'));
+ export var validator =  decorator(provideProperty.bind(null, 'validator'), provideClass.bind(null, 'validator'));
+ export var schema =  decorator(provideProperty.bind(null, 'schema'), provideClass.bind(null, 'schema'));
+ export var template =  decorator(provideProperty.bind(null, 'template'), provideClass.bind(null, 'template'));
+ export var processor =  decorator(provideProperty.bind(null, 'processor'), provideClass.bind(null, 'processor'));
+ export var operator =  decorator(provideProperty.bind(null, 'operator'), provideClass.bind(null, 'operator'));
 
-*/
+ */
 

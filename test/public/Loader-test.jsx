@@ -1,47 +1,32 @@
-import {React, into,TestUtils,expect, Simulate}  from '../support';
+import {React, into,TestUtils,expect, byId, byTypes, Simulate}  from '../support';
 
 import Subschema from 'Subschema';
+
+
+var loaderTestSetup = require('../../public/samples/Loader-setup.jsx');
+var LoaderTest = require('../../public/samples/Loader.jsx');
+
 
 describe('Loader Example', ()=> {
 
 
     it('should load a custom type', ()=> {
-        var {types, loaderFactory,DefaultLoader, Form, decorators} = Subschema;
-        var {type} = decorators.provide;
-        var {Select, Checkbox} = types;
-        var loader = decorators.provide.defaultLoader = loaderFactory([DefaultLoader]);
 
-        @type
-        class CheckboxSelect extends React.Component {
+        var {Form, loader, ValueManager, decorators} = Subschema;
 
-            //allows for injection of the Select types.
-            static propTypes = Select.propTypes;
+        var schema = LoaderTest.schema;
+        var valueManager = ValueManager();
+        loaderTestSetup(loader, schema, Subschema, React, valueManager);
 
-            constructor(...rest) {
-                super(...rest);
-                //init state
-                this.state = {disabled: false};
-            }
+        var s = schema.replace(/^"(.*)\"$/, '$1');
+        console.log('schema', s);
+        var form = into(<Form schema={s} loader={loader} />, true);
 
-            render() {
-                var {className, ...props} = this.props;
-                return <div className={className}>
-                    <Checkbox onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
-                    <Select {...props} disabled={this.state.disabled}/>
-                </div>
-            }
-        }
+        var CheckboxSelect = loader.loadType('CheckboxSelect');
+        expect(CheckboxSelect).toExist('CheckboxSelect should be found');
 
-        var schema = {
-            schema: {
-                'bases': {
-                    type: 'CheckboxSelect',
-                    placeholder:'Select a base',
-                    options: 'first,second,third, home'
-                }
-            }
-        }
-        into(<Form schema={schema} loader={loader} />, true);
+        var cselects = byTypes(form);
+
 
     });
 });
