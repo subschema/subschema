@@ -10,12 +10,13 @@ export default class MixedInput extends CollectionMixin {
     static isContainer = true;
     static propTypes = defaults({
         labelKey: PropTypes.string,
-        keyType: PropTypes.schema
+        keyType: PropTypes.schema,
+        value: PropTypes.object
 
     }, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
-        itemType: {type: 'Text'},
+        valueType:{type: 'Text'},
         keyType: {type: 'Text'},
     }, CollectionMixin.defaultProps)
 
@@ -44,7 +45,7 @@ export default class MixedInput extends CollectionMixin {
 
     }
 
-    uniqueCheck(value) {
+    uniqueCheck = (value)=> {
         var values = this.getValue();
         if (this.state.editPid == value) {
             return null;

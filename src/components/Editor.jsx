@@ -5,7 +5,7 @@ import Template from './Template.jsx';
 import {listeners} from './../decorators';
 import defaults from 'lodash/object/defaults';
 import {forField} from '../css';
-import { FREEZE_OBJ, FREEZE_ARR, noop, titlelize, isString, isRegExp,isFunction,toArray,nullCheck} from '../tutils';
+import { FREEZE_OBJ, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
 
 const ERRORS = {
     '.': 'setErrors'
@@ -15,32 +15,6 @@ const ERRORS = {
     '.': 'handleValidateListener'
 }, EMPTY = FREEZE_OBJ;
 
-function initValidators(v) {
-    //If it has a type init it
-    if (v.type) {
-        var validator = this.loadValidator(v.type);
-        return validator(v);
-    }
-    //If it is a RegExp than init ReExp
-    if (isRegExp(v)) {
-        return this.loadValidator('regexp')({
-            regexp: v
-        });
-    }
-    //If its a function just return it.
-    if (
-        isFunction(v)) {
-        return v;
-    }
-    //otherwise lets try initing it.
-    return this.loadValidator(v)();
-}
-
-
-var ptemplate = PropTypes.template, prtemplate = ptemplate.isRequired,
-    poptions = PropTypes.options, proptions = poptions.isRequired,
-    pschema = PropTypes.schema, prschema = pschema.isRequired
-    ;
 
 export default class Editor extends Component {
 
@@ -56,14 +30,14 @@ export default class Editor extends Component {
         template: 'EditorTemplate'
     }
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props, context, ...rest) {
+        super(props, context, ...rest);
         this.state = {
             hasChanged: false,
             isValid: false
         };
-        this.initValidators(props, context);
         this.createPropForType(props, context);
+        this.initValidators(props, context);
     }
 
     componentWillReceiveProps(props, context) {
@@ -75,42 +49,11 @@ export default class Editor extends Component {
     }
 
     normalizePropType(propType, value) {
-        if (value == null || value === false) {
-            return value
-        }
-        if (poptions === propType || proptions === propType) {
-            return toArray(value).map(function (v) {
-                if (isString(v)) {
-                    return {
-                        label: v,
-                        val: v
-                    }
-                }
-                return v;
-            });
-        }
-        if (ptemplate === propType || prtemplate === propType) {
-            if (isString(value)) {
-                var template = this.context.loader.loadTemplate(value)
-                return template || value;
-            }
-            if (value === false) {
-                return false;
-            }
-        }
-        if (pschema === propType || prschema === propType) {
-            if (isString(value)) {
-                var schema = this.context.loader.loadSchema(value);
-                return schema || value;
-            }
-        }
-
-        return value;
+        return this.context.loader.loadByPropType(propType, value);
     }
 
     initValidators(props, context) {
-        var vals = props.field.validators;
-        this.validators = vals ? toArray(vals).map(initValidators, context.loader) : FREEZE_ARR;
+        this.validators = context.loader.loadByPropType(PropTypes.validators, props.field.validators);
     }
 
     handleValidate = (value, component, e)=> {

@@ -5,39 +5,31 @@ import extend   from 'lodash/object/extend';
 import find     from 'lodash/collection/find';
 import map      from 'lodash/collection/map';
 
+function customPropType(type, name) {
+    function customPropType$return(...args) {
+        return type.apply(api, args);
+    }
+
+    customPropType$return.isRequired = function customPropType$return$isRequired(...args) {
+        return type.isRequired.apply(type, args);
+    }
+    if (name)
+        customPropType$return.propTypeName = name;
+
+    return customPropType$return;
+}
+
 var api = extend({}, PropTypes);
-api.cssClass = function api$cssClass() {
-    return api.string.apply(api, arguments);
-};
 
-api.cssClass.isRequired = function api$cssClass$isRequired() {
-    return api.string.isRequired.apply(api.string, arguments);
-}
+api.cssClass = customPropType(api.string, 'cssClass');
 
-api.event = function api$event() {
-    return api.func.apply(api.func, arguments);
-};
+api.event = customPropType(api.func, 'event');
 
-api.event.isRequired = function api$event$isRequired() {
-    return api.func.isRequired.apply(api.func, arguments);
-}
+api.validator = customPropType(api.func, 'validator');
 
-var arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
-api.arrayString = function api$arrayString() {
-    return arrayString.apply(api, arguments);
-};
+api.path = customPropType(api.string, 'path');
 
-api.arrayString.isRequired = function api$arrayString$isRequired() {
-    return arrayString.isRequired.apply(arrayString, arguments);
-}
-
-
-api.path = function api$path() {
-    return api.string.apply(api, arguments);
-}
-api.path.isRequired = function ap$path$isRequired() {
-    return api.string.isRequired.apply(api.string, arguments);
-}
+api.arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
 
 
 api.loader = api.shape({
@@ -66,16 +58,13 @@ var contentShape = {
     type: api.string,
     children: api.bool
 }
-var content = api.shape(contentShape);
+var pContentShape = api.shape(contentShape);
 
-contentShape.content = api.oneOfType([
-    api.string,
-    api.arrayOf(api.oneOfType([content, api.string])),
-    api.shape(contentShape)
-])
+var content = api.oneOfType([pContentShape, api.string, api.bool, api.arrayOf(api.oneOfType([api.string, pContentShape]))]);
 
+contentShape.content = content;
 
-api.content = api.oneOfType([api.string, content, api.arrayOf(api.string), api.arrayOf(content)]);
+api.content = content;
 
 api.template = api.oneOfType([api.string, api.bool, api.shape({
     template: api.oneOfType([api.string, api.bool, api.func]),
@@ -120,6 +109,7 @@ api.options = api.oneOfType([
         val: api.value
     }))
 ]);
+api.type = api.oneOfType([api.string, api.func]);
 
 api.optionsGroup = api.oneOfType([
     api.arrayString,
@@ -141,6 +131,9 @@ api.schema = api.oneOfType([api.string, api.shape({
 
 api.type = api.oneOfType([api.string, api.object])
 
+api.validators = api.arrayOf(api.validators);
+
+api.operator = api.oneOfType([api.string, api.func]);
 
 var events = {
     onValidate: api.event,
@@ -149,7 +142,13 @@ var events = {
     onValid: api.event,
     onChange: api.event
 };
-
+api.field = api.oneOfType([api.string, api.shape({
+    type: api.string.isRequired,
+    title: api.string,
+    name: api.string,
+    placeholder: api.string,
+    className: api.cssClass
+})])
 api.mixin = {
     events: events,
     field: extend({

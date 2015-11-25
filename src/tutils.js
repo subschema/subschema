@@ -13,9 +13,10 @@ var api = {
     find: require('lodash/collection/find'),
     unique: require('lodash/array/unique'),
     noop: require('lodash/utility/noop'),
+    each: require('lodash/collection/each'),
     values: require('lodash/object/values'),
-    returnFirst:function(value){
-      return value;
+    returnFirst: function (value) {
+        return value;
     },
     result: function result(scope, key) {
         if (!key) {

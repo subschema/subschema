@@ -16,7 +16,9 @@ export default class ListInput extends CollectionMixin {
 
     static isContainer = true;
 
-    static propTypes = CollectionMixin.propTypes;
+    static propTypes = defaults({
+        value: PropTypes.array
+    }, CollectionMixin.propTypes);
 
     static defaultProps = CollectionMixin.defaultProps;
 

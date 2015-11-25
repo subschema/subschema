@@ -10,6 +10,7 @@ function escapeGet(obj, key) {
 }
 
 export default function substitute(str) {
+
     if (str == null) {
         str = '';
     }

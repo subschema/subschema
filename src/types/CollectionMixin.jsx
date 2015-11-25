@@ -35,7 +35,7 @@ class EditChildContext extends Component {
         return {valueManager, parentValueManager, loader};
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e)=> {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
         var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
         var currentPath = path(this.props.path, value.key);
@@ -50,7 +50,7 @@ class EditChildContext extends Component {
     }
 
     render() {
-        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit });
+        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit});
     }
 }
 
@@ -68,7 +68,6 @@ export default class CollectionMixin extends Component {
 
     static propTypes = {
         path: PropTypes.path,
-        value: PropTypes.object,
         canEdit: PropTypes.bool,
         canReorder: PropTypes.bool,
         canDelete: PropTypes.bool,
@@ -160,9 +159,8 @@ export default class CollectionMixin extends Component {
     }
 
     handleBtnClick = (e, action)=> {
-
+        e && e.preventDefault();
         if (action !== 'submit') {
-            e && e.preventDefault();
             this.setState({
                 showAdd: false,
                 showEdit: false,
