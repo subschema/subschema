@@ -76,3 +76,4 @@ schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key
         val: key
     }
 });
+console.log('schema', JSON.stringify(schema))

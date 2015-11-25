@@ -23,7 +23,7 @@ export default class Select extends Component {
             //normalize multiple  selection
             var values = [], options = e.target.options, i = 0, l = options.length, option;
             for (; i < l; i++) {
-                var option = options[i];
+                option = options[i];
                 if (option.selected) {
                     if (option.label != placeholder)
                         values.push(option.value);
@@ -31,14 +31,12 @@ export default class Select extends Component {
             }
             this.props.onChange(values);
             return
-        } else if (placeholder) {
-            if (e.target.value === placeholder) {
-                this.props.onChange(null);
-                return;
-            }
-        } else {
-            this.props.onChange(e.target.value);
+        } else if (e.target.value === placeholder) {
+            this.props.onChange(null);
+            return;
         }
+        this.props.onChange(e.target.value);
+
     }
 
     renderOptions(value) {

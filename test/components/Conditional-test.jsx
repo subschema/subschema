@@ -1,8 +1,8 @@
 "use strict";
-import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
+import {React, into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from '../support';
 import each from '../../node_modules/lodash/collection/each';
-import {ValueManager, Conditional, loader} from 'Subschema';
-
+import {ValueManager, types, Form, Conditional, loader} from 'Subschema';
+var {Select} = types;
 describe('Conditional', function () {
     this.timeout(30000);
 
@@ -133,5 +133,51 @@ describe('Conditional', function () {
         });
 
     });
+    describe('ModelAndMake', function () {
+        var schema = {
+            "schema": {
+                "make": {
+                    "title": "Make",
+                    "type": "Select",
+                    "placeholder": "Select a make",
+                    "options": [{"label": "AMC", "val": "amc"}]
+                },
+                "model": {
+                    "title": "Model",
+                    "type": "Select",
+                    "placeholder": "Select a make first",
+                    "conditional": {"listen": "make", "operator": "falsey"}
+                },
+                "amc": {
+                    "title": "Model",
+                    "conditional": {"listen": "make", "value": "amc", "operator": "===", "path": "model"},
+                    "type": "Select",
+                    "placeholder": "Select a model of AMC",
+                    "options": ["AMX", "Concord", "Eagle", "Gremlin", "Matador", "Pacer"]
+                },
+
+            },
+            "fieldsets": [{
+                "legend": "Make And Model Linked Selects",
+                "fields": ["make", "model", "amc"]
+            }]
+        };
+        it('should render make and model', function () {
+            var valueManager = ValueManager();
+            var form = into(<Form schema={schema} valueManager={valueManager}/>)
+            var selects = byTypes(form, Select);
+
+            expect(selects.length).toBe(2, 'Should have 2 selects');
+            select(selects[0], 1);
+            expect(valueManager.path('make')).toBe('amc', 'should update make');
+            var selects = byTypes(form, Select);
+            expect(selects[1].props.placeholder).toBe('Select a model of AMC', 'should update placeholder');
+            select(selects[1], 1);
+
+//            expect(valueManager.path('model')).toBe('AMX', 'should update');
+
+
+        })
+    })
 });
 

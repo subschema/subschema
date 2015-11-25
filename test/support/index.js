@@ -19,9 +19,12 @@ function into(node, debug) {
     return TestUtils.renderIntoDocument(node);
 }
 
-function notByType(node, type) {
-    var ret = TestUtils.scryRenderedComponentsWithType(node, type);
-    expect(ret[0]).toNotExist();
+function notByType(node, type, description) {
+    var ret = byTypes(node, type);
+    expect(ret[0]).toNotExist(description);
+}
+function byTypes(node, type) {
+    return TestUtils.scryRenderedComponentsWithType(node, type);
 }
 function byType(node, type) {
     return TestUtils.findRenderedComponentWithType(node, type);
@@ -177,6 +180,7 @@ module.exports = {
     byTags,
     byTag,
     byType,
+    byTypes,
     notByType,
     filterProp,
     byClass,
