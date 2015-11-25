@@ -86,21 +86,24 @@ export default class CollectionMixin extends Component {
         itemTemplate: 'ListItemTemplate'
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {};
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        var state = this.state || (this.state = {});
+        state.wrapped = map(props.value, wrapFunc);
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState(props.value);
     }
 
     getValue() {
         return this.unwrap(this.state.wrapped);
     }
 
-    @listen("value")
     setValue(value) {
         this.setState({wrapped: map(value, wrapFunc)});
     }
 
-    @listen("error", '.')
     setErrors(errors) {
         this.setState({errors});
     }
@@ -196,7 +199,7 @@ export default class CollectionMixin extends Component {
         return (
             <EditChildContext {...this.context} onSubmit={this.handleSubmit} path={this.props.path}
                                                 childPath={this.state.editPid} value={this.state.editValue}>
-                <ObjectType key="addEdit" template={this.props.createTemplate}
+                <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
                             onButtonClick={this.handleBtnClick}
                             schema={this.createItemSchema()}
                             title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }

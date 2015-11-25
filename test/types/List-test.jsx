@@ -73,7 +73,6 @@ describe('List', function () {
 
 
     });
-    //failing
     it('should render a list with data without canAdd', function () {
         var schema = {
             schema: {
@@ -96,17 +95,17 @@ describe('List', function () {
         var tasks = byComponents(root, ListItemTemplate);
         var addBtn = byClass(root, 'btn-add')[0];
 
-        expect(addBtn).toNotExist();
-        expect(tasks[0]).toExist();
-        expect(tasks[1]).toExist();
-        expect(tasks[2]).toExist();
-        var li = byComponents(root, ListItemTemplate)[0];
+        expect(addBtn).toNotExist('add button does not exist');
+        expect(tasks[0]).toExist('task 1');
+        expect(tasks[1]).toExist('task 2');
+        expect(tasks[2]).toExist('task 3');
 
+        click(byTag(tasks[0], 'span'));
 
-        click(byTag(li, 'span'));
         var edit = byComponent(root, CollectionCreateTemplate);
+        expect(edit).toExist('should not find CollectionCreateTemplate');
         var input = byName(edit, 'value');
-        expect(findNode(input).value).toBe('one');
+        expect(findNode(input).value).toBe('one', 'value should be one');
 
     });
     it('should render a list with data is not editable', function () {
@@ -229,7 +228,7 @@ describe('List', function () {
         }, errors = {
             'tasks.1': [{message: 'Can not be 2'}]
         }
-        var root = into(<Form schema={schema} value={data} errors={errors}/>);
+        var root = into(<Form schema={schema} value={data} errors={errors}/>, true);
         var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
         expect(found[0].props.error).toEqual('Can not be 2');
     });

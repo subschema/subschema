@@ -3,7 +3,7 @@ import {types} from 'Subschema';
 
 var {SubstituteMixin} = types;
 
-describe.only('Substitute', function () {
+describe('Substitute', function () {
     this.timeout(50000);
 
     it('should substitute nicely', function () {

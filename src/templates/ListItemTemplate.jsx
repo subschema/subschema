@@ -45,7 +45,7 @@ export default class ListItemTemplate extends Component {
         var field = this.props, content = this.props.itemToString(this.props.value);
 
         return <span className={style.itemValue} path={path(this.props.path, this.props.value.key)}
-                     onClick={field.canEdit ? this.handleEdit : null} key="content">{content}</span>;
+                     onClick={field.canEdit ? this.handleEdit.bind(this) : null} key="content">{content}</span>;
     }
 
     buttons(pos, last, canReorder, canDelete) {

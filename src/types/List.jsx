@@ -14,7 +14,6 @@ import defaults from 'lodash/object/defaults';
 export default class ListInput extends CollectionMixin {
     static inputClassName = CollectionMixin.inputClassName;
 
-    static isContainer = true;
 
     static propTypes = defaults({
         value: PropTypes.array
