@@ -1,4 +1,4 @@
-Subschema 0.2x ->0.3 Upgrade
+Subschema 0.2x ->0.5 Upgrade
 ##Dependencies
 ##Webpack
 ## API Changes
