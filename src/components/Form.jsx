@@ -1,7 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
 import ObjectType from './../types/Object.jsx';
