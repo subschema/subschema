@@ -1,0 +1,10 @@
+.build
+.vscode
+jsconfig.json
+npm-debug.log*
+node_modules
+.idea
+.hot
+dist
+.DS_Store
+

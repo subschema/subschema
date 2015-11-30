@@ -1,0 +1,32 @@
+.autocomplete{
+  position: relative;
+}
+.autocomplete.found {
+  .form-control {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+  }
+  .list-group {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+  }
+  .list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: none;
+  }
+  .list-group-item {
+    cursor: pointer;
+  }
+  .list-group-item:hover {
+    background-color: #eee;
+  }
+  .focused {
+    background-color: #ddd;
+  }
+
+}
