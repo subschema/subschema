@@ -5,7 +5,6 @@ var join = path.join.bind(path, __dirname);
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
-var OUTPUT=process.env.DEMO_DIR ||  path.join(__dirname, '../subschema-demo')
 module.exports = {
 
     devtool: 'source-map',
@@ -13,7 +12,7 @@ module.exports = {
         app: './public/app.jsx'
     },
 	output:{
-        path:OUTPUT,
+        path:join('.build'),
         filename: 'app.[hash].js'
     },
 	target:"web",

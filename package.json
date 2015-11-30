@@ -21,7 +21,7 @@
     "karma-dist": "karma start ./karma.dist.noreact.conf.js --no-single-run --colors --auto-watch",
     "compile": "NODE_ENV=production webpack --config ./webpack.config.js -p --verbose",
     "prepublish": "NODE_ENV=production npm run test && NODE_ENV=production webpack --config ./webpack.config.js -p && npm run test-dist && node ./scripts/test-node.js",
-    "build-demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
+    "demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
     "react",
