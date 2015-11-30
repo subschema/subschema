@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
 import ObjectType from './../types/Object.jsx';
-import _set from '../../node_modules/lodash/object/set';
+import _set from 'lodash/object/set';
 import {noop} from './../tutils';
 import warning from '../warning';
 

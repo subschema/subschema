@@ -156,7 +156,6 @@ api.schema = api.oneOfType([api.string, api.shape({
 })]);
 
 
-api.type = api.oneOfType([api.string, api.object])
 
 api.validators = api.oneOfType([api.arrayString, api.arrayOf(api.validators)]);
 

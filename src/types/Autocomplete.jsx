@@ -1,7 +1,7 @@
 "use strict";
 
 import React, {Component} from 'react';
-import {noop, returnFirst} from '../tutils';
+import {noop, applyFuncs } from '../tutils';
 import Dom from '../Dom';
 import style from 'subschema-styles/Autocomplete-style';
 import PropTypes from '../PropTypes';
@@ -14,12 +14,12 @@ export default class Autocomplete extends Component {
         loader: PropTypes.loader
     }
     static propTypes = {
+        inputType: PropTypes.type,
         onChange: PropTypes.valueEvent,
+        onInputChange: PropTypes.event,
         onSelect: PropTypes.event,
         minLength: PropTypes.number,
         autoSelectSingle: PropTypes.bool,
-        country: PropTypes.string,
-        locale: PropTypes.string,
         useshowing: PropTypes.bool,
         maxInputLength: PropTypes.number,
         itemTemplate: PropTypes.template,
@@ -43,35 +43,9 @@ export default class Autocomplete extends Component {
         minLength: 1,
         maxInputLength: 200,
         itemTemplate: 'AutocompleteItemTemplate',
-        processor: {
-            fetch: function (url, value, component, cb) {
-
-                value = value && value.toLowerCase();
-                var data = (component.props.options || []).map(function (v) {
-                    return {
-                        label: v.label || v.val || v,
-                        data: v,
-                        val: v.val || v.label || v
-                    }
-                }).filter(function (v) {
-                    var l = ('' + v.val).toLowerCase();
-
-                    if (l.indexOf(value) === 0) {
-                        return true;
-                    }
-
-//                        return v.indexOf(value) === 0;
-                });
-
-                cb(null, data);
-            },
-            value(obj){
-                return obj == null ? null : obj.val || obj;
-            },
-            format(v){
-                return v == null ? null : v.label || v;
-            }
-        },
+        inputType: 'Text',
+        processor: 'OptionsProcessor',
+        onInputChange: noop,
         onChange: noop,
         onSelect: noop,
         onBlur: noop,
@@ -89,8 +63,6 @@ export default class Autocomplete extends Component {
         state.suggestions = [];
         state.showing = false;
         state.focus = -1;
-        state.input = props.input;
-        state.value = props.value;
 
     }
 
@@ -99,37 +71,23 @@ export default class Autocomplete extends Component {
 
     }
 
-    _processProps(props) {
-        if (props.value && !props.input) {
-            props.processor.fetch(props.url, props.value, this, function (e, o) {
-                if (o && o.length === 1) {
-                    this.setValue(o[0]);
-                } else {
-                    this.setState({
-                        suggestions: o,
-                        showing: true
-                    });
-                }
-
-            }.bind(this));
-        } else if (!props.value && props.input) {
-            props.processor.fetch(props.url, props.input, this, function (e, o) {
-                this.setState({
-                    suggestions: o,
-                    showing: true,
-                    input: props.input
-                });
-            }.bind(this));
-        }
-
+    componentWillReceiveProps(props, context) {
+        this._processProps(props);
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextState && nextState.suggestions && nextState.suggestions.length) {
+            this.bindDocument();
+        } else {
+            this.unbindDocument();
+        }
+    }
+
 
     setValue(v) {
         var p = this.processor();
         var value = p.value(v);
         var input = p.format(v);
-        var length = input && input.length || 0;
-        var refs = this.refs;
         this.setState({
             value,
             selected: v,
@@ -137,6 +95,35 @@ export default class Autocomplete extends Component {
             showing: false,
             suggestions: []
         });
+    }
+
+    /** In the event that the value does not have the meta data for displaying
+     * We will try to fetch the object and format it.
+     * @param props
+     * @private
+     */
+    _processProps(props) {
+        var value = props.value;
+        if (value && value !== this.state.value) {
+            //see if we can get the formatted value from the value, may not work.
+            var input = props.processor.format(value);
+            if (input == null) {
+                //It didn't format to a value, go fetch it so we can display it.
+                props.processor.fetch(props.url, value, this, (e, o)=> {
+                    if (o && o.length === 1) {
+                        this.setValue(o[0]);
+                    } else {
+                        this.setState({
+                            suggestions: o,
+                            showing: true
+                        });
+                    }
+
+                });
+            } else {
+                this.setState({input, value});
+            }
+        }
     }
 
     /**
@@ -194,7 +181,7 @@ export default class Autocomplete extends Component {
     }
 
 
-    bindDocument() {
+    bindDocument = ()=> {
         if (this._bound) {
             return;
         }
@@ -243,14 +230,6 @@ export default class Autocomplete extends Component {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (nextState && nextState.suggestions && nextState.suggestions.length) {
-            this.bindDocument();
-        } else {
-            this.unbindDocument();
-        }
-    }
-
 
     handleDocumentClick = (e)=> {
         // If the click originated from within this component
@@ -264,7 +243,7 @@ export default class Autocomplete extends Component {
 
 
     processor() {
-        return this.__processor || ( this.__processor = (typeof this.props.processor === 'string' ? this.context.loader.loadProcessor(this.props.processor) : this.props.processor));
+        return this.props.processor;
     }
 
 
@@ -293,16 +272,16 @@ export default class Autocomplete extends Component {
     }
 
 
-    _handleDispatch = (value)=> {
+    _handleDispatch = (input)=> {
         this.setState({
-            input: value,
+            input,
             selected: null
         });
 
         if (this._fetch && this._fetch.cancel) {
             this._fetch.cancel();
         }
-        this._fetch = this.processor().fetch(this.props.url, value, this, (err, suggestions) => {
+        this._fetch = this.processor().fetch(this.props.url, input, this, (err, suggestions) => {
             if (err) {
                 return;
             }
@@ -312,7 +291,7 @@ export default class Autocomplete extends Component {
                 this.setState({
                     suggestions: suggestions || [],
                     showing: true,
-                    input: value
+                    input
                 });
             }
         });
@@ -366,35 +345,6 @@ export default class Autocomplete extends Component {
         }
     }
 
-
-    @template('itemTemplate')
-    itemTemplate(Template) {
-        return Template;
-    }
-
-    renderSuggestions() {
-        var suggestions = this.state.suggestions || [];
-        if (this.state.showing === false || suggestions.length === 0) {
-
-            return null;
-        }
-        var {focus, input} = this.state;
-        var processor = this.processor();
-        var handleSuggestionClick = this.handleSuggestionClick;
-        var CompleteItem = this.itemTemplate();
-        return <ul className={style.listGroup}>
-            {suggestions.map((item, i) => <CompleteItem
-                key={item.val}
-                focus={focus === i}
-                value={input}
-                ref={"item_"+i}
-                processor={processor}
-                onSelect={handleSuggestionClick}
-                data={item}/>)}</ul>
-
-
-    }
-
     handleChange = (e) => {
         this._handleDispatch(e.target.value);
     }
@@ -418,60 +368,41 @@ export default class Autocomplete extends Component {
         this.props.onBlur(event);
     }
 
+    renderSuggestions() {
+        var suggestions = this.state.suggestions || [];
+        if (this.state.showing === false || suggestions.length === 0) {
 
-    createInput(props) {
-        if (this.props.children && this.props.children.length) {
-            var handleDispatch = this._handleDispatch;
-            return React.Children.map(this.props.children, (child, idx)=> {
-                if (child.props.onValueChange) {
-                    var {onChange, ...nprops} = props;
-                    var onChildChange = child.props.onChange;
-                    nprops.onChange = function (val) {
-                        onChildChange(val);
-                    }
-                    var onBlur = nprops.onBlur;
-                    nprops.onBlur = (e)=> {
-                        this.handleBlur(e);
-                        if (onBlur) {
-                            onBlur(e);
-                        }
-                    }
-                    /*nprops.onChange = function (e) {
-                     this.handleChange(e.target.value);
-                     onChildChange && onChildChange.call(this, e);
-                     }*/
-                    return React.cloneElement(child, nprops);
-                } else {
-                    return React.cloneElement(child, props);
-                }
-            });
+            return null;
         }
-        var {inputType, type, ...cprops} = props;
-        if (inputType) {
-            var Input = this.context.loader.loadType(inputType);
-            return <Input {...cprops} ref="input" value={this.state.input}/>
-        }
+        var {focus, input} = this.state;
+        var processor = this.processor();
+        var handleSuggestionClick = this.handleSuggestionClick;
+        var CompleteItem = this.props.itemTemplate;
+        return <ul className={style.listGroup}>
+            {suggestions.map((item, i) => <CompleteItem
+                key={item.val}
+                focus={focus === i}
+                value={input}
+                ref={"item_"+i}
+                processor={processor}
+                onSelect={handleSuggestionClick}
+                data={item}/>)}</ul>
 
-        return <input
-            id={props.id}
-            type="text"
-            {...cprops}
-            value={this.state.input}
-            className={props.className}
 
-        />;
     }
 
     render() {
         var suggestions = this.state.suggestions || [];
-        var {foundCls, notFoundCls, ...props} = this.props;
+        var {foundCls, inputType, notFoundCls, ...props} = this.props;
         props.onChange = this.handleChange;
         props.onPaste = this.handlePaste;
         props.onKeyDown = this.handleKeyUp;
         props.onBlur = this.handleBlur;
+
+        var Input = inputType;
         return <div
             className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)}>
-            {this.createInput(props)}
+            <Input {...props} ref="input" value={this.state.input}/>
             {this.renderSuggestions()}
         </div>
     }
