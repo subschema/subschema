@@ -1,21 +1,28 @@
-const React = require('../React');
-const LazyType = React.createClass({
-    mixins: [require('../LoaderMixin')],
-    getInitialState(){
-        return {
-            loaded: false
-        }
-    },
-    componentWillMount(){
+"use strict";
 
+import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
+
+export default class LazyType extends Component {
+    static propTypes = {
+        promise: PropTypes.promise
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {loaded: false};
+    }
+
+    componentWillMount() {
         var promise = this.props.promise;
         promise && promise.then(this.onResolve);
+    }
 
-    },
-    onResolve(resolved){
+    onResolve = (resolved) => {
         this.setState({resolved, loaded: true});
-    },
-    render(){
+    }
+
+    render() {
         if (this.state.loaded) {
             var Type = this.state.resolved;
             var {promise, ...props} = this.props;
@@ -23,5 +30,4 @@ const LazyType = React.createClass({
         }
         return <span className="lazy-loading-type" key="unresolved"/>;
     }
-});
-module.exports = LazyType;
+}

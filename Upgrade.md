@@ -1,3 +1,34 @@
+Subschema 0.2x ->0.3 Upgrade
+##Dependencies
+##Webpack
+## API Changes
+  * Mixins are now defunct.  Some have been changed to base classes, others are no longer needed.
+  * Components no longer manage their own state.  Instead a 'value' property is passed.
+  * ValueManagerListenerMixin is replaced with @listeners and @listen respectively.
+  * Core components are now in components/
+  * ValueManager#removeListener now must take a listener no longer supports a  path.
+  * No longer includes the React.js exported, now it just import React from  'react'.
+  * EditorTemplate now will pass error with the first error and errors with all errors into the corresponding template.
+  * NestedMixin is now just types/Object.jsx.  The property to change the template is objectTemplate.
+  * DefaultLoader is now powered by decorators.
+    - Use @provide.type, @provide.validator @provide.loader respectively.
+  * Injection - Types are now injected with the corresponding object according to the propTypes object on the object.
+  * Now using ES6 style classes.
+  * valueManager and loader  are now injected via context to use directly.
+   ```js
+      var PropTypes = Subschema.PropTypes;
+      
+      class SomeClass {
+        static contextTypes = PropTypes.contextTypes;
+        //now this.context will have valueManager and loader;
+      }
+   
+   
+   ```
+
+
+
+
 Subschema 0.1x -> 0.2 Upgrade Guide
 ---
 

@@ -30,24 +30,24 @@ module.exports = function (config) {
                     {
                         test: /\.js(x)?$/,
                         include: [
-                           join('test'),
-                           join('public')
-
+                            join('test'),
+                            join('public')
                         ],
-                        exclude:[
+                        exclude: [
+                            join('src'),
                             join('dist/subschema-noreact.js')
                         ],
-                        loader: 'babel-loader'
-                    },
-                    {
-                        test: /\.less$/,
-                        loader: 'style!css!less-loader'
+                        loader: 'babel-loader?stage=0'
+                    }, {
+                        test: /-setup\.js(x)?$/,
+                        loader: join('test/support/sample-loader.js')
                     }
                 ]
             },
             resolve: {
                 alias: {
-                    'subschema': path.join(__dirname, 'dist/subschema-noreact.js')
+                    'subschema': path.join(__dirname, 'dist/subschema-noreact.js'),
+                    'Subschema': path.join(__dirname, 'dist/subschema-noreact.js')
                 }
             },
 

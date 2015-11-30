@@ -1,51 +1,50 @@
-import {React, findNode, intoWithContext, TestUtils,expect, Simulate} from '../support';
-import {types, ValueManager} from 'subschema';
+import {React, findNode, into, TestUtils,expect, Simulate,select, byTags} from '../support';
+import {types, ValueManager} from 'Subschema';
 var Select = types.Select;
 
 describe('Select', function () {
+    this.timeout(50000);
+    var values = [];
+    var onChange = function (e) {
+        values.push(e);
+    }
+    beforeEach(function () {
+        values.length = 0;
+    });
 
     it('should create a select', function () {
-        var vm = ValueManager({test: 2});
+        var sel = into(<Select options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"
+                               onChange={onChange}/>);
+        expect(sel).toExist();
+        expect(values.length).toBe(0);
+        var options = byTags(sel, 'option');
+        expect(options.length).toBe(2, 'should have to options');
+        expect(options[0].value).toBe('1');
+        expect(options[1].value).toBe('2');
+        select(sel, 1);
+        expect(values.length).toBe(1);
+        expect(values[0]).toBe('2');
 
-        var root = intoWithContext(<Select options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]} path="test"
-            />, {valueManager: vm});
-        var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'select');
-        expect(inputs.length).toEqual(1);
-        var select = inputs[0];
-        expect(findNode(select).value).toEqual(2);
-        vm.setValue({test: 1});
-        expect(findNode(select).value).toEqual(1);
-        expect(vm.path('test')).toEqual(1);
-        var fired = 0;
-        var listen = function (value) {
-            fired++;
-            expect(value).toBe(2);
-        };
-        vm.addListener('test', listen);
-        vm.setValue({test: 2});
-        vm.removeListener(listen);
-        vm.setValue({test: 1});
-        expect(fired).toBe(1);
     });
-    it('should create a multi select', function () {
-        var vm = ValueManager({test: [2, 1]});
 
-        var root = intoWithContext(<Select multiple={true} options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]}
-                                           path="test"/>, {valueManager: vm});
-        var inputs = TestUtils.scryRenderedDOMComponentsWithTag(root, 'select');
-        expect(inputs.length).toEqual(1);
-        var select = inputs[0];
-        vm.setValue({test: [1]});
-        expect(vm.path('test')).toEqual([1]);
-        var fired = 0;
-        var listen = function (value) {
-            fired++;
-            expect(value).toEqual([2]);
-        };
-        vm.addListener('test', listen);
-        vm.setValue({test: [2]});
-        vm.removeListener(listen);
-        vm.setValue({test: [1]});
-        expect(fired).toBe(1);
+    it('should create a multi select', function () {
+        var sel = into(<Select multiple={true} options={[{val: 1, label: 'One'}, {val: 2, label: 'Two'}]}
+                               path="test" onChange={onChange}/>);
+
+        expect(sel).toExist();
+        expect(values.length).toBe(0);
+        var options = byTags(sel, 'option');
+        expect(options.length).toBe(2, 'should have to options');
+        expect(options[0].value).toBe('1');
+        expect(options[1].value).toBe('2');
+        select(sel, 1);
+        expect(values.length).toBe(1);
+        expect(values[0][0]).toBe('2');
+
+        select(sel, 0);
+        expect(values.length).toBe(2);
+        expect(values[0][0]).toBe('2');
+        expect(values[1][0]).toBe('1');
+
     });
 });

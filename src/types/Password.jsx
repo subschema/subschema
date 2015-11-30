@@ -1,23 +1,14 @@
 "use strict";
-var React = require('../React'), FieldMixin = require('../FieldMixin'),
-    Constants = require('../Constants'),
-    css = require('../css');
-;
 
-var Password = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    render(){
-        var {onBlur, onChange, onValueChange, value, fieldAttrs, ...props} =this.props;
-        return <input id={this.props.name} onBlur={this.handleValidate} onChange={this.handleChange}
-                      className={css.forField(this)} type="password"
-                      value={this.state.value}
-            {...props}
-            {...fieldAttrs}
-            />
+import React, {Component} from 'react';
+
+export default class Password extends Component {
+    static defaultProps = {
+        type: 'password'
     }
 
-});
-module.exports = Password;
+    render() {
+        return <input {...this.props}/>
+    }
+
+}

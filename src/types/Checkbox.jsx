@@ -1,26 +1,34 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+"use strict";
+
+import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
+import {returnFirst} from '../tutils';
+
+export default class Checkbox extends Component {
+
+    static inputClassName = ' ';
+
+    static propTypes = {
+        onChange:PropTypes.valueEvent,
+        checkedClass: PropTypes.cssClass
+    };
+
+    static defaultProps = {
+        type: 'checkbox',
+        checkedClass: ''
+    };
 
 
-var Checkbox = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: ''//Constants.inputClassName,
-    },
-    doChange: function (e) {
-        var hasProp = 'value' in this.props;
-        this.triggerChange(e.target.checked ? hasProp ? this.props.value : true : hasProp ? null : false);
-    },
+    handleChange = (e)=> {
+        var {value} = this.props;
+        this.props.onChange(e.target.checked ? value == null || value === false ? true : value : value == null || value == true ? false : null);
+    };
+
     render() {
-        var {onValueChange, onChange,value, type, dataType, checkedClass, fieldAttrs, className, onBlur, ...props} = this.props;
-        dataType = dataType || 'checkbox';
-        return <input onBlur={this.handleValidate} onChange={this.doChange} id={this.props.name}
-                      className={ (this.state.value ? checkedClass || '' : '' )+' '+css.forField(this)}
-                      checked={this.state.value}
-                      type={dataType}
-            {...props}
-            {...fieldAttrs}
-            />
-    }
-});
+        var {onChange, value, className, checkedClass, ...props} = this.props;
 
-module.exports = Checkbox;
+        var checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
+        return <input {...props} value={value} className={className+' '+(checked ? checkedClass : '')}
+                                 checked={checked} onChange={this.handleChange}/>
+    }
+}

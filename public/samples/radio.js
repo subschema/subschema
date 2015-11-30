@@ -3,25 +3,14 @@ module.exports = {
     schema: {
         schema: {
             radio1: {
-                options: [
-                    {
-                        val: 0,
-                        label: "Option 1"
-                    },
-                    {
-                        val: 1,
-                        label: "Option 2"
-                    },
-                    {
-                        val: 2,
-                        label: "Option 3"
-                    }
-                ],
-                checkedClass:'checked',
-                type: 'Radio'
+                options:  "Option 1, Option 2, Option 3",
+                checkedClass: 'checked',
+                type: 'Radio',
+                title:'Radio with forceSelection',
+                forceSelection: true
             },
             radio2: {
-                checkedClass:'checked',
+                checkedClass: 'checked',
                 options: ['Sterling', 'Lana', 'Cyril', 'Cheryl', 'Pam'],
                 type: 'Radio'
             },

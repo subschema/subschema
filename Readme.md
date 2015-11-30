@@ -90,49 +90,6 @@ and errors in check.
 Subschema allows for new types, validators, templates and even schemas to be registered with loaders.   To add your own 
 of any of these call the corresponding add method.
 
-### Type Loader
-
-This adds a type "ToggleType" to the loaders.  Now you can
-use this type anywhere in your schema, you would otherwise use a 
-type.
-
-Example:
-
-```jsx
-var loader = require('subschema').loader;
-
-loader.addType('ToggleType', React.createClass({
-                                         displayName: 'ToggleObject',
-                                         getInitialState(){
-                                             return {
-                                                 toggled: false
-                                             }
-                                         },
-                                         handleToggle(){
-                                             this.setState({toggled: !this.state.toggled});
-                                         },
-                                         getValue(){
-                                             return this.refs.val.getValue()
-                                         },
-                                         setValue(val){
-                                             this.refs.val.setValue(val);
-                                         },
-                                         render(){
-                                             var style = {
-                                                 display: this.state.toggled ? 'none' : 'block'
-                                             };
-                             
-                                             return <div className="form-group row">
-                                                     <legend onClick={this.handleToggle}>Toggle {this.state.toggled ? 'Up' : 'Down'}</legend>
-                                                     <div style={style}>
-                                                         <Object ref="val" {...this.props}/>
-                                                     </div>
-                                             </div>;
-                             
-                                         }
-                                     }));
-
-```
 See the [example](http://subschema.github.io/subschema/#/Loader)
 
 
@@ -211,71 +168,115 @@ Example:
   vm.addErrorListener('path', function(){
 
 });
-  var App = React.createClass({
-    handleSubmit(newValue, oldValue, property, path){
-    },
-    handleValueChange(newValue, oldValue, property, path){}
-    handleValidate(){}
+  class App extends React.Component {
+    handleSubmit = (newValue, oldValue, property, path)=>{
+    }
     render(){
         return <Form schema={'YourSchema'} onSubmit={this.handleSubmit} valueManager={vm}/>
     }
   
-  });
-
-
-
-
+  }
+  
 ```
 
+If you need to listen to a particular path use the decorator.
 
-#Custom Types
-A new type doesn't have to do anything, but if you want its values to participate in
-validation and value management it should regitster itself with the value manager.
+```js
+   var {listen} from Subschema.decorators;
 
-```jsx
-
-var MyType = React.createClass({
-   contextTypes: {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader
-   },
-   componentWillMount(){
-     this._listener = this.context.valueManager.addListener(this.props.path, this.onUpdate, this, true);
-   },
-   componenWillUnmount(){
-     this._listener.remove();
-   },
-   //this will update your state, when valueManager is changes values.
-   onUpdate(value){
-        this.setState({value});
-   },
-   // this will update value manager when your component changes something.  onUpdate will set the state
-   // of the component so don't do it here unless you want double state changes.
-   update(value){
-    this.context.valueManager.update(this.props.path, value);
-   },
-   //you know what to do.
-   render(){
-     return //magic here
+   class ListeningType {
+      //value, path, exec on init
+      @listen('value', 'somePath', false)
+      handleSomePath(value, oldValue, path){
+            
+      }
    }
 
 
+```
+If you need to listen to dynamic paths use the listeners decorator
+```js
+   var {listen} from Subschema.decorators;
 
-});
+  
+   class DynamicListenExample {
+       /**
+        *  this will listen to the current path
+        *  for errors without initing.
+        */
+
+       @listeners("error", false)
+       listen(){
+          return {[this.props.path]:this.handler}
+       }
+       
+       handler(value, oldValue, path){
+       
+       }
+
+   }
 
 
 ```
 
-Or you can just use the mixin
+
+
+
+
+#Custom Types
+A new type doesn't have to do anything, but you will need to
+add it to the loader. Either by a decorator, or by calling
+
+
+The old way - using the loader.
+
+```js
+
+  loader.addType('YourType', YourType);
+```
+Example:
+
 
 
 ```jsx
+      var {types, loaderFactory,DefaultLoader, Form, decorators} = Subschema;
+      var {type} = decorators.provide;
+      var {Select, Checkbox} = types;
+      
+      @type
+      class CheckboxSelect extends React.Component {
+       
+                   //allows for injection of the Select properties.
+                   static propTypes = Select.propTypes;
+       
+                   constructor(...rest) {
+                       super(...rest);
+                       //init state
+                       this.state = {disabled: false};
+                   }
+       
+                   render() {
+                       var {className, ...props} = this.props;
+                       return <div className={className}>
+                           <Checkbox onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
+                           <Select {...props} disabled={this.state.disabled}/>
+                       </div>
+                   }
+         }
 
-var MyType = React.createClass({
-   mixin:['subschema/FieldValueMixin'],
+        var schema = {
+            schema: {
+                'test': {
+                    type: 'CheckboxSelect',
+                    options: 'first,second,third'
+                }
+            },
+            fields: 'test'
+        }
 
-});
+
 ```
+
 
 
 ##Types
@@ -610,6 +611,16 @@ Fieldsets can be nested within each other allowing for fine grained grouping of 
   }  
 
 ```
+
+## Custom Types
+Subschema allows for custom types to be created.   Types are injected with the declared propTypes and defaultProps.  
+The most magical bit is the onChange prop is different depending if it is PropTypes.valueEvent or PropTypes.targetEvent.
+If it is a valueEvent than subschema just passes the value down to the ValueManager if it is a targetEvent, it passes
+e.target.value to the valueManager.   This allows for a very simple api to create new types.
+
+Types get passed value along with any other properties descriped in the static propTypes.  Types no longer have to 
+implement anything, other than React.Component.   State is managed by the editor.
+
 
 
 

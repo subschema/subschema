@@ -1,33 +1,31 @@
-var React = require('../React'), FieldMixin = require('../FieldMixin'), Constants = require('../Constants'), css = require('../css');
+import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
 
+export default class DateInput extends Component {
 
-var DateInput = React.createClass({
-    mixins: [FieldMixin],
-    statics: {
-        inputClassName: Constants.inputClassName
-    },
-    asInputValue(){
-        if (this.state.value == null) {
+    static propTypes = {
+        onChange: PropTypes.valueEvent
+    }
+    static defaultProps = {
+        type: "date"
+    }
+
+    asInputValue(value) {
+        if (value == null) {
             return '';
         }
-        var value = new Date(this.state.value).toISOString().substring(0, 10);
-
-        return value;
-    },
-    handleDateChange(e){
-        this.props.onChange(e);
-        var value = this.valueFromEvt(e);
-        this.triggerChange(new Date(value).getTime());
-    },
-    render() {
-        var {onBlur,onValueChange,onChange, className, fieldAttrs, ...props} = this.props;
-        return <input onBlur={this.handleValidate} onChange={this.handleDateChange} id={this.props.name}
-                      className={css.forField(this)} type="date"
-                      value={this.asInputValue()}
-            {...props}
-            {...fieldAttrs}
-            />
+        return new Date(value).toISOString().substring(0, 10);
     }
-});
 
-module.exports = DateInput;
+
+    handleDateChange = (e)=> {
+        var value = e.target.value
+        this.props.onChange(new Date(value).getTime());
+    }
+
+
+    render() {
+        var {value, onChange, ...props} = this.props;
+        return <input {...props} onChange={this.handleDateChange} value={this.asInputValue(value)}/>
+    }
+}

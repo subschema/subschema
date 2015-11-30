@@ -1,43 +1,63 @@
 "use strict";
 
-var PropTypes = require('./React').PropTypes;
-var extend = require('lodash/object/extend');
-var find = require('lodash/collection/find');
-var map = require('lodash/collection/map');
+import { PropTypes } from 'react';
+import extend   from 'lodash/object/extend';
+import find     from 'lodash/collection/find';
+import map      from 'lodash/collection/map';
+
+function customPropType(type, name) {
+    function customPropType$return(...args) {
+        return type.apply(api, args);
+    }
+
+    customPropType$return.isRequired = function customPropType$return$isRequired(...args) {
+        return type.isRequired.apply(type, args);
+    }
+    if (name)
+        customPropType$return.propTypeName = name;
+
+    return customPropType$return;
+}
+
 var api = extend({}, PropTypes);
 
-api.cssClass = function api$cssClass() {
-    return api.string.apply(api, arguments);
-};
+api.id = customPropType(api.string, 'id');
 
-api.cssClass.isRequired = function api$cssClass$isRequired() {
-    return api.string.isRequired.apply(api.string, arguments);
-}
+api.fieldAttrs = customPropType(api.object, 'fieldAttrs');
 
-api.event = function api$event() {
-    return api.func.apply(api.func, arguments);
-};
+api.cssClass = customPropType(api.string, 'cssClass');
 
-api.event.isRequired = function api$event$isRequired() {
-    return api.func.isRequired.apply(api.func, arguments);
-}
+api.event = customPropType(api.func, 'event');
 
-var arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
-api.arrayString = function api$arrayString() {
-    return arrayString.apply(api, arguments);
-};
+api.validator = customPropType(api.func, 'validator');
 
-api.arrayString.isRequired = function api$arrayString$isRequired() {
-    return arrayString.isRequired.apply(arrayString, arguments);
-}
+api.path = customPropType(api.string, 'path');
 
+api.placeholder = customPropType(api.string, 'placeholder');
 
-api.path = function api$path() {
-    return api.string.apply(api, arguments);
-}
-api.path.isRequired = function ap$path$isRequired() {
-    return api.string.isRequired.apply(api.string, arguments);
-}
+api.arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
+
+/**
+ * A valueEvent does not expect target.value
+ */
+api.valueEvent = customPropType(api.func, 'valueEvent');
+/**
+ * A targetEvent expects the first arg to have target.value
+ */
+api.targetEvent = customPropType(api.func, 'targetEvent');
+
+/**
+ * Signify this is a blur Event Listener.
+ */
+api.blurEvent = customPropType(api.func, 'blurEvent');
+/**
+ * Signify this is a onValid Event listener.
+ */
+api.validEvent = customPropType(api.func, 'validEvent');
+
+api.dataType = customPropType(api.string, 'dataType');
+
+api.type = api.oneOfType([api.string, api.func]);
 
 api.loader = api.shape({
     loadTemplate: api.func,
@@ -50,28 +70,34 @@ api.loader = api.shape({
 
 api.valueManager = api.shape({
     addListener: api.func,
-    removeListener: api.func,
 
     addErrorListener: api.func,
-    removeErrorListener: api.func,
 
     addValidateListener: api.func,
-    removeValidateListener: api.func,
 
     addSubmitListener: api.func,
-    removeSubmitListener: api.func,
 
     addStateListener: api.func,
-    removeStateListener: api.func
 });
 
-api.content = api.oneOfType([api.string, api.shape({
-    content: api.string,
+var contentShape = {
     className: api.cssClass,
     type: api.string,
     children: api.bool
-})]);
+}
+var pContentShape = api.shape(contentShape);
 
+var content = api.oneOfType([pContentShape, api.string, api.bool, api.arrayOf(api.oneOfType([api.string, pContentShape]))]);
+
+contentShape.content = content;
+
+api.content = content;
+
+api.template = api.oneOfType([api.string, api.bool, api.shape({
+    template: api.oneOfType([api.string, api.bool, api.func]),
+    content: api.content,
+    className: api.className
+}), api.func]);
 
 api.button = api.oneOfType([api.string, api.shape({
     onClick: api.event,
@@ -89,7 +115,8 @@ api.buttons = api.oneOfType([
         buttonsClass: api.cssClass,
         onButtonClick: api.event,
         buttons: api.oneOfType(api.arrayString, api.arrayOf(api.button)),
-        buttonTemplate: api.template
+        buttonTemplate: api.template,
+        buttonsTemplate: api.template
     })
 ]);
 
@@ -106,7 +133,7 @@ api.options = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
         label: api.string,
-        labelHTML:api.string,
+        labelHTML: api.string,
         val: api.value
     }))
 ]);
@@ -114,10 +141,10 @@ api.options = api.oneOfType([
 api.optionsGroup = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
-        options:api.options,
-        group:api.string,
+        options: api.options,
+        group: api.string,
         label: api.string,
-        labelHTML:api.string,
+        labelHTML: api.string,
         val: api.literal
     }))
 ])
@@ -129,37 +156,52 @@ api.schema = api.oneOfType([api.string, api.shape({
 })]);
 
 
-api.template = api.oneOfType([api.string, api.shape({
-    template: api.oneOfType([api.string, api.bool]),
-    content: api.content,
-    className: api.className
 
-})]);
+api.validators = api.oneOfType([api.arrayString, api.arrayOf(api.validators)]);
 
-api.type = api.oneOfType([api.string, api.object])
-
+api.operator = api.oneOfType([api.string, api.func, api.instanceOf(RegExp)]);
 
 var events = {
     onValidate: api.event,
     onFocus: api.event,
     onBlur: api.event,
     onValid: api.event,
-    onChange: api.event
+    onChange: api.oneOfType(api.targetEvent, api.valueEvent)
 };
 
+api.field = api.oneOfType([api.string, api.shape({
+    type: api.string.isRequired,
+    title: api.string,
+    name: api.string,
+    placeholder: api.string,
+    className: api.cssClass
+})])
 api.mixin = {
     events: events,
     field: extend({
         title: api.content,
         help: api.content,
         name: api.string,
-        placeholder: api.string,
-        dataType: api.string,
+        placeholder: api.placeholder,
+        dataType: api.dataType,
         editorClass: api.cssClass,
         fieldClass: api.cssClass,
         field: {}
     }, events)
 };
+
+api.contextTypes = Object.freeze({
+    valueManager: api.valueManager,
+    loader: api.loader
+});
+
+
+api.processor = api.oneOfType([api.string, api.shape({
+    fetch: PropTypes.func,
+    value: PropTypes.func,
+    format: PropTypes.func
+})]);
+
 api.propTypeToName = function propTypeToName(propType) {
     var keys = Object.keys(api), i = 0, l = keys.length, key, f;
     for (; i < l; i++) {
@@ -171,8 +213,8 @@ api.propTypeToName = function propTypeToName(propType) {
             return key;
         }
     }
-}
-
+};
+api.promise = api.shape({then: api.func});
 api.propTypesToNames = function (props) {
     var ret = {};
     map(props, function (v, k) {
@@ -180,6 +222,4 @@ api.propTypesToNames = function (props) {
     });
     return ret;
 }
-
-
-module.exports = api;
+export default api;

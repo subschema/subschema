@@ -1,22 +1,17 @@
 "use strict";
-var React = require('../React');
-var Content = require('../types/Content.jsx');
-var styles = require('subschema-styles/RadioItemTemplate-style');
-var RadioItemTemplate = React.createClass({
+import React from 'react';
+import Content from '../types/Content.jsx';
+import styles from 'subschema-styles/RadioItemTemplate-style';
 
-    render(){
-        var {label, labelHTML, checked, checkedClass, id} = this.props;
+export default function RadioItemTemplate(props) {
+    var {label, labelHTML,children, checked, checkedClass, id} = props;
+    label = labelHTML ? labelHTML : label;
+    checkedClass = checkedClass || '';
+    label = typeof label === 'string' ? [{children: true}, label] : label;
 
-
-        label = labelHTML ? labelHTML : label;
-        checkedClass = checkedClass || '';
-        label = typeof label === 'string' ? [{children: true}, label] : label;
-
-        return (<div className={styles.namespace+' '+(checked ? checkedClass || styles.checked : styles.unchecked)}>
-            <Content type='label' content={label}>
-                {this.props.children}
-            </Content>
-        </div>);
-    }
-});
-module.exports = RadioItemTemplate
+    return (<div className={styles.namespace+' '+(checked ? checkedClass || styles.checked : styles.unchecked)}>
+        <Content type='label' content={label}>
+            {children}
+        </Content>
+    </div>);
+}

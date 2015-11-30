@@ -1,27 +1,25 @@
-var React = require('../React');
-var CollectionMixin = require('./CollectionMixin.jsx');
-var tu = require('../tutils');
-var Constants = require('../Constants');
-var css = require('../css');
-var style = require('subschema-styles/Mixed-style');
-var _get = require('lodash/object/get');
+import React from 'react';
+import CollectionMixin from './CollectionMixin.jsx';
+import {isString} from '../tutils';
+import style from 'subschema-styles/Mixed-style';
+import _get from 'lodash/object/get';
+import defaults from 'lodash/object/defaults';
+import PropTypes from '../PropTypes';
+var typetype = PropTypes.oneOfType([PropTypes.shape({type: PropTypes.string}), PropTypes.string])
+export default class MixedInput extends CollectionMixin {
 
-var MixedInput = React.createClass({
-    mixins: [CollectionMixin],
-    statics: {},
-    getDefaultProps() {
-        return {
-            placeholder: '',
-            itemType: 'Text',
-            keyType: 'Text',
-            valueType: 'Text',
-            itemTemplate: 'ListItemTemplate',
+    static propTypes = defaults({
+        labelKey: PropTypes.string,
+        keyType: typetype,
+        valueType: typetype,
+        value: PropTypes.object
 
-            onValidate() {
-            }
+    }, CollectionMixin.propTypes);
 
-        }
-    },
+    static defaultProps = defaults({
+        valueType: {type: 'Text'},
+        keyType: {type: 'Text'},
+    }, CollectionMixin.defaultProps)
 
     unwrap(value) {
         var ret = {}
@@ -32,11 +30,11 @@ var MixedInput = React.createClass({
             ret[v.key] = v.value;
         });
         return ret;
-    },
+    }
 
-    itemToString(){
+    itemToString() {
         if (this.props.itemToString) return this.props.itemToString;
-        var labelKey = this.props.field.labelKey;
+        var labelKey = this.props.labelKey;
         return function (v) {
             if (!(v && v.key)) {
                 return null;
@@ -46,9 +44,9 @@ var MixedInput = React.createClass({
                 className={style.itemInner}>{ _get(v.value, labelKey, '')}</span> : null}</span>;
         }
 
-    },
+    }
 
-    uniqueCheck(value){
+    uniqueCheck = (value)=> {
         var values = this.getValue();
         if (this.state.editPid == value) {
             return null;
@@ -61,18 +59,20 @@ var MixedInput = React.createClass({
 
         }
         return null;
-    },
-    newValue(){
+    }
+
+    newValue() {
         return {}
-    },
-    getTemplateItem(){
-        var kt = this.props.field.keyType || this.props.keyType,
-            keyType = tu.isString(kt) ? {
+    }
+
+    getTemplateItem() {
+        var kt = this.props.keyType,
+            keyType = isString(kt) ? {
                 type: kt
             } : kt || {},
             schema = {
                 key: keyType,
-                value: this.props.field.valueType || this.props.valueType
+                value: this.props.itemType || this.props.valueType
             };
 
         if (!keyType.type) {
@@ -82,8 +82,7 @@ var MixedInput = React.createClass({
         (keyType.validators || (keyType.validators = [])).unshift('required', this.uniqueCheck);
 
         return schema;
-    },
+    }
 
-});
 
-module.exports = MixedInput;
+}

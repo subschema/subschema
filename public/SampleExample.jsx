@@ -4,8 +4,7 @@ var ReactDOM = require('react-dom');
 var Highlight = require('./Highlight.jsx');
 var Playground = require('component-playground/lib/components/playground.js');
 var Subschema = require('subschema');
-var ValueManager = Subschema.ValueManager;
-
+var {PropTypes, ValueManager} = Subschema;
 require('codemirror/mode/javascript/javascript.js');
 
 function stringify(name, obj) {
@@ -50,22 +49,24 @@ var SampleExample = React.createClass({
         return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors()};
     },
     componentWillMount(){
-        this.addListeners(this.props.valueManager);
-    },
-    componentWillUnmount(){
-        this.removeListeners(this.props.valueManager);
-    },
-    addListeners(valueManager){
-        valueManager.addListener(null, this.setValue, this, true);
-        valueManager.addErrorListener(null, this.setErrors, this, true);
-    },
-    removeListeners(valueManager){
-        valueManager.removeListener(null, this.setValue);
-        valueManager.removeErrorListener(null, this.setErrors);
     },
     componentWillReceiveProps(props){
-        this.removeListeners(this.props.valueManager);
+        this.removeListeners();
         this.addListeners(props.valueManager);
+    },
+    addListeners(valueManager){
+        this.removeListeners();
+        this.__listeners = [valueManager.addListener(null, this.setValue, this, true),
+            valueManager.addErrorListener(null, this.setErrors, this, true)];
+
+    },
+    removeListeners(){
+        if (this.__listeners) {
+            this.__listeners.forEach(function (v) {
+                v.remove();
+            });
+            this.__listeners = null;
+        }
     },
     setValue(data){
         this.setState({data});
@@ -117,14 +118,14 @@ var SampleExample = React.createClass({
             'return <Form ' + (propStr.join(' ')) + '/>',
             '}())'
         ].join('\n');
-    //    console.log('example\n\n', codeText, '\n\n');
+        //    console.log('example\n\n', codeText, '\n\n');
         return <div className='sample-example-playground'>
             <Playground key={'form-'+(data? 'data' :'no-data')}
                         codeText={codeText} theme='monokai'
                         collapsableCode={true}
                         scope={scope}
 
-                />
+            />
             <ValueManagerNode valueManager={valueManager}/>
         </div>
     }

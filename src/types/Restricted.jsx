@@ -1,29 +1,36 @@
-var React = require('../React');
-var ReactDOM = require('react-dom');
-var css = require('../css');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import RestrictedMixin from './RestrictedMixin';
+import PropTypes from '../PropTypes';
+import {noop, returnFirst} from '../tutils';
 
-var Restricted = React.createClass({
-    mixins: [require('./RestrictedMixin')],
-    componentWillReceiveProps(newProps){
-        if (this.props.value !== newProps.value) {
-            this._value(newProps.value);
-        }
+export default class Restricted extends RestrictedMixin {
+    static contextTypes = PropTypes.contextTypes;
 
-    },
-    handleSelectionRange(caret){
+    static defaultProps = {
+        onValid: noop
+    }
+    static propTypes = {
+        onValid: PropTypes.validEvent,
+        onChange: PropTypes.valueEvent,
+        formatter: PropTypes.string
+    }
+
+
+    handleSelectionRange = (caret)=> {
         var input = ReactDOM.findDOMNode(this.refs.input);
         if (!input)return;
 
-        if (caret != null)
-            input && input.setSelectionRange(caret, caret);
-    },
-    render(){
-        var {onChange, onValueChange, onBlur, className,field,value, dataType, value, type, fieldAttrs, ...props} = this.props
-        return <input ref="input" onBlur={this.handleValidate} onChange={this.handleValueChange} id={this.props.name}
-                      className={css.forField(this)}
-                      value={this.state.value}
-            {...props} {...fieldAttrs} type={dataType || 'text'} onKeyDown={this.handleKeyDown}/>
+        if (this.state.caret != null)
+            input && input.setSelectionRange(this.state.caret, this.state.caret);
     }
-});
+    handleValueChange = (e)=> {
+        this._value(e.target.value, false);
+    }
 
-module.exports = Restricted;
+    render() {
+        var {onValid,formatter, onChange, onKeyDown,value, ...props} = this.props
+        return <input ref="input"  {...props} value={this.state.value} onKeyDown={this.handleKeyDown}
+                      onChange={this.handleValueChange}/>
+    }
+}

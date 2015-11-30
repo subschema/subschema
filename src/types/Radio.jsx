@@ -1,85 +1,77 @@
 "use strict";
 
-var React = require('../React');
-var tu = require('../tutils');
-var BasicFieldMixin = require('../BasicFieldMixin');
-var LoaderMixin = require('../LoaderMixin');
-var css = require('../css');
-var RadioInput = React.createClass({
-    displayName: 'Radio',
-    mixins: [BasicFieldMixin,LoaderMixin],
-    getDefaultProps() {
-        return {
-            title: '',
-            name: '',
-            placeholder: '',
-            itemTemplate: 'RadioItemTemplate'
-        }
+import React, {Component} from 'react';
+import tu, {returnFirst} from '../tutils';
 
-    },
+import PropTypes from '../PropTypes';
 
-    setValue(value){
-        this.setState({value});
-    },
+import template from '../decorators/template';
 
-    getValue(){
-        return this.state.value;
-    },
-    _compare(val, val2){
-        if (val == null && val2 == null) {
-            return true;
-        }
-        if (val == null || val2 == null) return false;
-        return ('' + val === '' + val2);
-    },
-    handleCheckChange(e){
+function compare(val, val2) {
+    if (val == null && val2 == null) {
+        return true;
+    }
+    if (val == null || val2 == null) return false;
+    return ('' + val === '' + val2);
+}
+
+export default class RadioInput extends Component {
+    static inputClassName = '  ';
+
+
+    static defaultProps = {
+        itemTemplate: 'RadioItemTemplate',
+        options: [],
+        forceSelection: false
+    }
+
+    static propTypes = {
+        onChange: PropTypes.valueEvent,
+        itemTemplate: PropTypes.template,
+        forceSelection: PropTypes.bool,
+        checkedClass: PropTypes.cssClass,
+        options: PropTypes.options.isRequired
+    }
+
+
+    handleCheckChange = (e)=> {
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.forceSelection === false || this.props.options && this.props.options.length === 1) {
-            this.triggerChange(this._compare(e.target.value, this.state.value) ? null : e.target.value);
+            this.props.onChange(compare(e.target.value, this.props.value) ? null : e.target.value);
         } else {
-            this.triggerChange(e.target.value);
+            this.props.onChange(e.target.value);
         }
-    },
-    makeOptions(options){
+    }
+
+    makeOptions = (options)=> {
         options = options || [];
         var onChange = this.handleCheckChange;
-        var value = this.getValue();
+        var value = this.props.value;
         var path = this.props.path;
         return options.map((option, index)=> {
-            var {val, label, labelHTML} = tu.isString(option) ? {val: option, label: option} : option;
-            if (val == null) {
-                val = label;
-            }
-            if (label == null) {
-                label = val;
-            }
+            var {val, label, labelHTML} = option;
             var path = tu.path(path, index);
-
             return {
                 val,
                 path,
                 label,
-                labelHTML,
                 onChange,
-                checkedClass:this.props.checkedClass,
-                checked: this._compare(value, val)
+                checkedClass: this.props.checkedClass,
+                checked: compare(value, val)
             }
         });
-    },
-    render()
-    {
-        var {name,itemTemplate,path, checkedClass, value, dataType,options, field} = this.props;
+    }
 
-        var RadioItemTemplate = this.template(itemTemplate);
+    render() {
+        var {name,itemTemplate,path, className, checkedClass, value, options, field} = this.props;
         var options = this.makeOptions(options);
-        return <div className={css.forField(this)}>{options.map((option, index)=> {
+        var RadioItemTemplate = itemTemplate;
+        return <div className={className}>{options.map((option, index)=> {
             return <RadioItemTemplate checkedClass={checkedClass} {...option} key={option.path}>
                 <input id={options.path} type="radio"
                        name={name} {...option} value={option.val}/>
             </RadioItemTemplate>
-        }, this)}</div>
+            }, this)}</div>
 
     }
-});
-
-module.exports = RadioInput;
+}

@@ -1,7 +1,22 @@
-var React = require('../React');
-var ButtonsTemplate = require('./ButtonsTemplate.jsx');
-var FieldSetTemplate = React.createClass({
-    renderButtons(buttons){
+import React, {Component} from 'react';
+import ButtonsTemplate from './ButtonsTemplate.jsx';
+import PropTypes from  '../PropTypes';
+import {noop} from '../tutils';
+
+export default class FieldSetTemplate extends Component {
+    static propTypes = {
+        buttons: PropTypes.buttons,
+        legend: PropTypes.node,
+        className: PropTypes.cssClass,
+        onButtonClick: PropTypes.event,
+        onClick: PropTypes.event
+    }
+
+    static defaultProps = {
+
+    }
+
+    renderButtons(buttons) {
         if (!buttons) {
             return null;
         }
@@ -11,8 +26,9 @@ var FieldSetTemplate = React.createClass({
         }
         return <ButtonsTemplate ref="buttons" onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
                                 buttons={buttons}/>
-    },
-    render(){
+    }
+
+    render() {
         var {legend, buttons, className, ...rest} = this.props.field || {};
         return legend ?
             <fieldset className={className}>
@@ -25,8 +41,4 @@ var FieldSetTemplate = React.createClass({
                 {this.renderButtons(buttons)}
             </div>
     }
-
-});
-
-
-module.exports = FieldSetTemplate;
+}
