@@ -41,6 +41,8 @@ class CheckboxSelect extends React.Component {
         </div>
     }
 }
+
+
 //Use a class as a schema, this news the class before adding it.
 @provide.schema
 class Address {
