@@ -12,28 +12,25 @@ export default class Restricted extends RestrictedMixin {
     }
     static propTypes = {
         onValid: PropTypes.validEvent,
-        onChange: PropTypes.valueEvent
+        onChange: PropTypes.valueEvent,
+        formatter: PropTypes.string
     }
 
-    componentWillReceiveProps(newProps) {
-        if (this.props.value !== newProps.value) {
-            this._value(newProps.value);
-        }
-    }
 
     handleSelectionRange = (caret)=> {
         var input = ReactDOM.findDOMNode(this.refs.input);
         if (!input)return;
 
-        if (caret != null)
-            input && input.setSelectionRange(caret, caret);
+        if (this.state.caret != null)
+            input && input.setSelectionRange(this.state.caret, this.state.caret);
     }
-    handleChange = (e)=> {
-        this.props.onChange(e.target.value);
+    handleValueChange = (e)=> {
+        this._value(e.target.value, false);
     }
 
     render() {
-        var {onValid, onChange, ...props} = this.props
-        return <input ref="input" onKeyDown={this.handleKeyDown} onChange={this.handleChange} {...props}/>
+        var {onValid,formatter, onChange, onKeyDown,value, ...props} = this.props
+        return <input ref="input"  {...props} value={this.state.value} onKeyDown={this.handleKeyDown}
+                      onChange={this.handleValueChange}/>
     }
 }

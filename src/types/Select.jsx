@@ -60,8 +60,8 @@ export default class Select extends Component {
     }
 
     render() {
-        var {multiple, onChange,value, ...props} = this.props;
-        if (multiple && !isArray(value)) {
+        var { onChange,value, ...props} = this.props;
+        if (props.multiple && !isArray(value)) {
             value = value ? [value] : value;
         }
         return <select {...props} value={value} onChange={this.handleSelect}>

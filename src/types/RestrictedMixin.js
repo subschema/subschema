@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
+import warning from '../warning';
 
 var zipRe = /^(\d{0,5})(?:[^\d]?(\d{0,4}))?$/, reRe = /(#{1,}|A{1,}|a{1,}|0{1,}(?:\.0{1,})?)?(.+?)?/mg;
 
@@ -351,16 +352,36 @@ export default class RestrictedMixin extends Component {
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        if (props && props.value) {
-            var value = this.props.value ? this.formatter(this.props.value) : {
+        if (!this.state) {
+            this.state = {};
+        }
+    }
+
+    componentWillMount() {
+        this._handleProps(this.props);
+    }
+
+    componentWillReceiveProps(props) {
+        this._handleProps(props);
+    }
+
+    componentDidMount() {
+        this.handleSelectionRange(this.state.caret);
+    }
+
+    componentDidUpdate() {
+        this.handleSelectionRange(this.state.caret);
+    }
+
+    _handleProps(props) {
+        if (props && 'value' in props && props.value !== this.state.value) {
+            var value = props.value ? this.formatter(props.value) : {
                 isValid: false,
                 value: ''
             };
-            if (!this.state) {
-                this.state = {};
-            }
-            this.state.value = value.value || '';
+            this.state.value = value.value;
             this.state.hasValidValue = value.isValid;
+
         }
 
     }
@@ -382,7 +403,8 @@ export default class RestrictedMixin extends Component {
         } else if (typeof formatter === 'function') {
             return (this._formatter = formatter).call(this, value, isBackspace, caret);
         }
-        return value;
+        warning(false, 'Did not find a formatter for %s', this.props.formatter);
+        return {value};
     }
 
     handleKeyDown = (e) => {
@@ -425,6 +447,7 @@ export default class RestrictedMixin extends Component {
          }
          */
         if (pos < value.length) {
+            //This prevents onChange from firing.
             e.preventDefault();
             e.stopPropagation();
             var nvalue = value.split('');
@@ -437,11 +460,10 @@ export default class RestrictedMixin extends Component {
         }
     }
 
-    _value(str, isBackspace, caret) {
+    handleState(str, isBackspace, caret) {
         var value = this.formatter(str, isBackspace, caret) || {isValid: false};
 
-        this.props.onValid(value.isValid, value);
-        this.props.onChange(value.value);
+
         if (caret != null && typeof value.position === 'number') {
             if (isBackspace) {
                 caret += value.position - 1;
@@ -450,15 +472,28 @@ export default class RestrictedMixin extends Component {
                 caret = value.position;
             }
         }
-        this.setState({
-            value: value.value,
-            hasValue: value.value.length !== 0,
-            hasValidValue: value.isValid
-        }, this.handleSelectionRange);
+        var state = this.state;
+        state.caret = caret;
+        state.value = value.value;
+        state.hasValue = value.value != null && value.value.length !== 0;
+        state.hasValidValue = value.isValid;
+        /*
+         this.setState({
+         caret,
+         value: value.value,
+         hasValue: value.value != null && value.value.length !== 0,
+         hasValidValue: value.isValid
+         }, this.handleSelectionRange);
+         */
+        return value;
 
     }
 
-    handleValueChange = (e)=> {
-        this._value(e.target.value, false);
+    _value(str, isBackspace, caret) {
+        var value = this.handleState(str, isBackspace, caret);
+        this.props.onChange(value.value);
+        this.props.onValid(value.isValid, value);
     }
+
+
 }

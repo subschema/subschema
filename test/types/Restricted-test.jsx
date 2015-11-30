@@ -1,26 +1,46 @@
-import {React, ReactDOM, intoWithState, TestUtils,expect, Simulate, change} from '../support';
-import {types} from 'Subschema';
+import {React, ReactDOM, into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from '../support';
+import {types, ValueManager} from 'Subschema';
 
 var Restricted = types.Restricted;
 
 
 describe('Restricted', function () {
-    this.timeout(30000);
+    this.timeout(50000);
     var Form = require('subschema').Form;
 
     it('should create a restricted input', function () {
         var onChange = (value)=> {
             state.setState({value})
-        }, {state, child} = intoWithState(<Restricted formatter="###-##"/>);
+        }, {state, child} = intoWithState(<Restricted formatter="###-##" onChange={onChange}/>, {}, true);
         expect(child).toExist();
 
     });
-
+    it('should work within a Form', function () {
+        var valueManager = ValueManager();
+        var schema = {
+            schema: {
+                'test': {
+                    type: 'Restricted',
+                    formatter: '###-##'
+                }
+            }
+        };
+        var form = into(<Form valueManager={valueManager} schema={schema}/>)
+        var restricted = byType(form, Restricted);
+        expect(restricted).toExist('should render restricted');
+        var input = byTag(restricted, 'input');
+        change(input, '1');
+        expect(valueManager.path('test')).toBe('1', 'should update value manager');
+        change(input, '123');
+        expect(valueManager.path('test')).toBe('123-', 'should update value manager');
+        change(input, '123-4');
+        expect(valueManager.path('test')).toBe('123-4', 'should update value manager');
+    })
     describe('mm20YY', function () {
 
         var onChange = (value)=> {
             state.setState({value})
-        }, {state, child} = intoWithState(<Restricted formatter="mm20YY" onChange={onChange}/>);
+        }, {state, child} = intoWithState(<Restricted formatter="mm20YY" onChange={onChange}/>, {});
         expect(child).toExist();
         var input = TestUtils.scryRenderedDOMComponentsWithTag(child, 'input')[0];
         var inputEl = ReactDOM.findDOMNode(input);

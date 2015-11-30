@@ -612,6 +612,16 @@ Fieldsets can be nested within each other allowing for fine grained grouping of 
 
 ```
 
+## Custom Types
+Subschema allows for custom types to be created.   Types are injected with the declared propTypes and defaultProps.  
+The most magical bit is the onChange prop is different depending if it is PropTypes.valueEvent or PropTypes.targetEvent.
+If it is a valueEvent than subschema just passes the value down to the ValueManager if it is a targetEvent, it passes
+e.target.value to the valueManager.   This allows for a very simple api to create new types.
+
+Types get passed value along with any other properties descriped in the static propTypes.  Types no longer have to 
+implement anything, other than React.Component.   State is managed by the editor.
+
+
 
 
 
