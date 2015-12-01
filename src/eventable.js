@@ -34,6 +34,12 @@ export default function eventable(listeners, find = returnFirst, findOld = retur
         return this;
     }
 
+    /**
+     * @param path {string}
+     * @param listener {function}
+     * @param scope {object}
+     * @param init {boolean|function}
+     */
     return function eventable$addListener(path, listener, scope, init) {
         if (listener == null) {
             warning(listener, 'trying to add a null listener %s', path)
