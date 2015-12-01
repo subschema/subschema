@@ -277,4 +277,4 @@ describe('Form', function () {
         expect(count).toBe(2);
     })
 
-})
+});
