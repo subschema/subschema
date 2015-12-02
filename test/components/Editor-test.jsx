@@ -1,6 +1,6 @@
 "use strict";
 import {React, intoWithContext, findNode, TestUtils,expect, change, focus,blur, Simulate,byTag, byType, notByType} from '../support';
-import {loader, loaderFactory, Editor, ValueManager, types, templates} from 'Subschema';
+import {loader, loaderFactory, PropTypes, Editor, ValueManager, types, templates} from 'Subschema';
 var {Text} = types;
 
 describe('Editor', function () {
@@ -97,5 +97,42 @@ describe('Editor', function () {
 
     });
 
+    it('should update expressions', function () {
+        class ExpressionTest extends React.Component {
+            static propTypes = {
+                stuff: PropTypes.expression,
+                other: PropTypes.expression,
+                when: PropTypes.expression
+            }
+            static defaultProps = {
+                other: '{..test}-abc',
+                when: '{..cando}-do'
+            }
+
+            render() {
+                return <div>{this.props.stuff}{this.props.other}</div>
+            }
+        }
+        var valueManager = ValueManager({cando:'do'});
+        var customLoader = loaderFactory([loader]);
+        customLoader.addType('ExpressionTest', ExpressionTest);
+        var editor = intoWithContext(<Editor
+            field={{type:'ExpressionTest', validators:['required'], stuff:'{..test}-dba'}}
+            path="test"/>, {
+            valueManager,
+            loader: customLoader
+        });
+
+        var et = byType(editor, ExpressionTest);
+
+        expect(et.props.other).toEqual('-abc');
+        expect(et.props.stuff).toEqual('-dba');
+
+        valueManager.update('test', 'super');
+        expect(et.props.other).toEqual('super-abc');
+        expect(et.props.stuff).toEqual('super-dba');
+
+        expect(et.props.when).toEqual('do-do');
+    });
 
 });

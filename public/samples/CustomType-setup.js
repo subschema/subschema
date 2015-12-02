@@ -90,14 +90,15 @@ var styles = {
         width: '16px',
         boxSizing: 'border-box',
         borderRadius: '8px',
-        border: '1px outset #fff',
+        border: '5px outset rgba(204, 204, 204, .4)',
         position: 'absolute',
-        backgroundColor: '#ccc',
         transition: 'all .2s',
 
     },
     buttonOn: {
-        left: 1
+        left: 1,
+        border:'5px outset rgba(255,255,255,.8)'
+
     },
     buttonOff: {
         left: '100%',

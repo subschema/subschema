@@ -5,7 +5,9 @@ import Template from './Template.jsx';
 import {listeners} from './../decorators';
 import defaults from 'lodash/object/defaults';
 import {forField} from '../css';
-import { FREEZE_OBJ, nextFunc, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
+import { FREEZE_OBJ, applyFuncs, each, nextFunc, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
+import substitute from '../types/SubstituteMixin';
+import warning from '../warning';
 
 const ERRORS = {
     '.': 'setErrors'
@@ -50,6 +52,8 @@ export default class Editor extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
+    static expressionEngine = substitute;
+
     static defaultProps = {
         field: {
             type: 'Text'
@@ -81,7 +85,7 @@ export default class Editor extends Component {
             hasChanged: false,
             isValid: false
         };
-
+        this._substitute = [];
         this.initValidators(props, context);
         this.initPropTypes(props, context);
     }
@@ -98,6 +102,15 @@ export default class Editor extends Component {
         this.validators = context.loader.loadByPropType(PropTypes.validators, props.field.validators);
     }
 
+    addExpression(property, expression) {
+        expression = Editor.expressionEngine(expression);
+        if (!this._expressions) {
+            this._expressions = {[property]: expression};
+        } else {
+            warning(this._expressions[property] == null, 'Multiple expressions for the same property %s?', property);
+            this._expressions[property] = expression;
+        }
+    }
 
     initPropTypes(props, context) {
         var Component = this._Component = this.createPropForType(props, context);
@@ -142,7 +155,7 @@ export default class Editor extends Component {
             } else if (generatedDefs.hasOwnProperty(key)) {
                 val = generatedDefs[key];
             }
-            return this.normalizePropType(propType, val);
+            return this.normalizePropType(propType, val, key);
         }, this, propTypes, Editor.fieldPropTypes);
 
         //change in behaviour fieldAttrs come afterward
@@ -154,15 +167,17 @@ export default class Editor extends Component {
         return Node;
     }
 
-    normalizePropType(propType, value) {
+    normalizePropType(propType, value, property) {
         if (propType === PropTypes.valueEvent || propType === PropTypes.valueEvent.isRequired) {
             return nextFunc(value, this.handleUpdateValue);
         } else if (propType === PropTypes.targetEvent || propType === PropTypes.targetEvent.isRequired) {
             return nextFunc(value, this.handleTargetValue);
         } else if (propType === PropTypes.blurEvent || propType === PropTypes.blurEvent.isRequired) {
             return nextFunc(value, this.handleValidateListener);
-        } else if (propType === PropTypes.validEvent || propType === PropTypes.validEvent.isRequired){
+        } else if (propType === PropTypes.validEvent || propType === PropTypes.validEvent.isRequired) {
             return nextFunc(value, this.handleValid);
+        } else if (propType === PropTypes.expression || propType === PropTypes.expression.isRequired) {
+            this.addExpression(property, value);
         }
         return this.context.loader.loadByPropType(propType, value);
     }
@@ -216,13 +231,36 @@ export default class Editor extends Component {
         if (this._Component.isContainer) {
             return EMPTY;
         }
+        var listeners;
+
         if (this.props.field.conditional && this.props.field.conditional.path) {
-            return {
-                [this.props.field.conditional.path]: 'handleValueChange'
-            }
+            if (!listeners) listeners = {};
+            listeners[this.props.field.conditional.path] = 'handleValueChange';
         }
-        return VALUES;
+
+        if (this._expressions) {
+            if (!listeners) {
+                var {...listeners} = VALUES;
+            }
+            //Go through each property expression pair and store the state.
+            each(this._expressions, (expression, property)=> {
+                expression.listen.reduce((obj, key)=> {
+                    obj[key] = applyFuncs((v)=> {
+                        if (!expression.state) {
+                            expression.state = {[key]: v};
+                        } else {
+                            expression.state[key] = v;
+                        }
+                        this.forceUpdate();
+                    }, obj[key]);
+
+                    return obj;
+                }, listeners);
+            });
+        }
+        return listeners || VALUES;
     }
+
 
     @listeners("error")
     listenToError() {
@@ -295,6 +333,9 @@ export default class Editor extends Component {
         this.setState({valid})
     }
 
+    _invokeExpression(expression, property) {
+        this[property] = expression.format(expression.state);
+    }
 
     render() {
         var {field} = this.props, props = this.props;
@@ -307,8 +348,15 @@ export default class Editor extends Component {
             errorClassName = errorClassName == null ? 'has-error' : errorClassName,
             Component = this._Component;
 
+        var expressions;
+        if (this._expressions) {
+            expressions = {};
+            each(this._expressions, this._invokeExpression, expressions);
+        } else {
+            expressions = FREEZE_OBJ;
+        }
 
-        var child = <Component ref="field" {...this._componentProps}
+        var child = <Component ref="field" {...this._componentProps} {...expressions}
                                value={this.state.value}/>;
         if (title === false) {
             title = '';
@@ -321,7 +369,6 @@ export default class Editor extends Component {
         }
         var errors = this.state.errors, error;
         if (errors) error = errors[0] && errors[0].message || errors[0];
-
         return <Template field={rfield} {...props} template={template} conditional={conditional} fieldClass={fieldClass}
                          title={title}
                          errorClassName={errorClassName}

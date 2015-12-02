@@ -494,7 +494,7 @@ Props:
         * dismiss (optional - string) - This will be set to false, given to make the current conditional false.   Set this for dismissing modals.  If 
           not provided, the template will recieve a dismiss property with the current key substituting '.' with '_' and prepended with an @
 
-See the [example](http://subschema.github.io/subschema/#/Conditional)
+See the [example](https://subschema.github.io/subschema/#/Conditional)
 
 
 
@@ -622,6 +622,74 @@ Types get passed value along with any other properties descriped in the static p
 implement anything, other than React.Component.   State is managed by the editor.
 
 
+## Expression Properties
+Occasionally it would be nice to bind the value of a property to the value manager.   We got you covered.  To make a 
+property of a custom component you can use the substitution language used in the Content object.  As of now, none of the
+default components take the expression syntax.   This may change in the future.  It would pretty easy to extend the 
+propTypes on existing components to make thier values dynamic.
+
+Example:
+```jsx
+   
+   @provide.type
+   class Anchor extends React.Component {
+     static propTypes = {
+       //by making this propType an expression it will evaluate it dynamically.
+       href:PropTypes.expression,
+       label:PropTypes.string
+     };
+     static defaultProps = {
+       href:'/somewhere/{..page}'
+     }
+     render(){
+       return <a href={this.props.href}>{this.props.label}</a>
+     }
+   }
+```
+  
+Now the {..page} will be substituted with the page value in the valueManager. You can of course override the 
+default prop in the schema. Note the .. makes it look up a level for the value.  No dots means look in the 
+current path + name, a single dot, is the current path.  This is follows the listener conventions elsewhere.
+
+Example Usage:
+```jsx
+  
+    var schema = {
+    
+       schema:{
+          selectPage:{
+            type:'Select',
+            options:'Page1, Page2, Page3'
+          },
+          link1:{
+            type:'Anchor',
+            label:'Go To Page',
+            href:'/{..selectPage}/index.html'
+          }
+       },
+       fields:"selectPage, link1"
+    }
+
+   <Form schema={schema}/>  
+```  
+   
+Now when a user changes the selectPage, then the Anchor (link1} will reflect said change.
+  
+The default substitution engine can be changed by setting expressionEngine on Editor
+```
+  import {Editor} from "Subschema";
+  
+  Editor.expressionEngine = function() {
+     return {
+        format(string){
+        listen:[]//array of paths to listen to.
+     }
+   }
+  
+  
+```  
+
+See the [example](https://subschema.github.io/subschema/#/Expression)
 
 
 

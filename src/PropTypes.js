@@ -20,6 +20,7 @@ function customPropType(type, name) {
 }
 
 var api = extend({}, PropTypes);
+api.promise = api.shape({then: api.func});
 
 api.id = customPropType(api.string, 'id');
 
@@ -58,6 +59,17 @@ api.validEvent = customPropType(api.func, 'validEvent');
 api.dataType = customPropType(api.string, 'dataType');
 
 api.type = api.oneOfType([api.string, api.func]);
+
+/**
+ * Signify this property can take an expression.  This
+ * allows properties to be tied to the valueManager.  So
+ * it will evaluate the property against the valueManager.
+ *
+ * It will add a listener for each of the corresponding
+ * matching strings.
+ *
+ */
+api.expression = customPropType(api.string, 'expression');
 
 api.loader = api.shape({
     loadTemplate: api.func,
@@ -156,7 +168,6 @@ api.schema = api.oneOfType([api.string, api.shape({
 })]);
 
 
-
 api.validators = api.oneOfType([api.arrayString, api.arrayOf(api.validators)]);
 
 api.operator = api.oneOfType([api.string, api.func, api.instanceOf(RegExp)]);
@@ -214,7 +225,7 @@ api.propTypeToName = function propTypeToName(propType) {
         }
     }
 };
-api.promise = api.shape({then: api.func});
+
 api.propTypesToNames = function (props) {
     var ret = {};
     map(props, function (v, k) {
