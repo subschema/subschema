@@ -372,6 +372,7 @@ export default class Editor extends Component {
         if (errors) error = errors[0] && errors[0].message || errors[0];
         return <Template field={rfield} {...props} template={template} conditional={conditional}
                          title={title}
+                         fieldClass={fieldClass}
                          errorClassName={errorClassName}
                          error={error}
                          errors={errors}
