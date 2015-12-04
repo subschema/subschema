@@ -139,7 +139,7 @@ export default class Editor extends Component {
             },
             defaultProps = Node.defaultProps || FREEZE_OBJ,
             generatedDefs = {
-                className: forField(Node, field),
+                className: forField(Node, field.fieldClass),
                 name: props.name || path
             };
         var newProps = uniqueKeyEach((propType, key)=> {
