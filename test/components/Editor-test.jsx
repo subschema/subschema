@@ -35,6 +35,36 @@ describe('Editor', function () {
 
     });
 
+    it('should inject fieldClass', function () {
+        var valueManager = new ValueManager();
+        var editor = intoWithContext(<Editor field={{type:'Text', name:'myname', className:'me'}} path="test"/>, {
+            valueManager,
+            loader
+        });
+        expect(editor).toExist();
+        var text = byType(editor, Text);
+        expect(text).toExist();
+
+        var {onChange,className, onBlur, name, id} = text.props;
+
+        expect(onChange).toExist('onChange should exist');
+        expect(onBlur).toExist('onBlur should exist');
+
+        expect(typeof onBlur).toBe('function', 'onBlur should be a function');
+        expect(typeof onChange).toBe('function', 'onChange should be a function');
+
+        expect(className).toBe('me', 'className')
+
+        expect(id).toBe('test', 'id');
+
+        expect(name).toBe('myname', 'name');
+
+        change(text, 'hello');
+        expect(valueManager.path('test')).toBe('hello', 'valueManager should update');
+
+
+    });
+
     it('should inject things with a custom eventValue with custom propTypes', function () {
         var count = 0;
         var customLoader = loaderFactory([loader]);

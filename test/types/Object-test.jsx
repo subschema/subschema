@@ -29,7 +29,7 @@ describe('ObjectType', function () {
         }
     }
     it('should not other objects', function () {
-        var form = into(<Form schema={schema}/>);
+        var form = into(<Form schema={schema}/>, true);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
         var [n1,n2,n3] = TestUtils.scryRenderedComponentsWithType(obj, TextInput);

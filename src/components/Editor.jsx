@@ -134,12 +134,13 @@ export default class Editor extends Component {
 
         var propTypes = Node.propTypes || FREEZE_OBJ,
             overrideProps = {
+                className: forField(Node, field.className),
                 type: field.dataType,
                 id: path
             },
             defaultProps = Node.defaultProps || FREEZE_OBJ,
             generatedDefs = {
-                className: forField(Node, field.fieldClass),
+               // className: forField(Node, field.fieldClass),
                 name: props.name || path
             };
         var newProps = uniqueKeyEach((propType, key)=> {
@@ -369,7 +370,7 @@ export default class Editor extends Component {
         }
         var errors = this.state.errors, error;
         if (errors) error = errors[0] && errors[0].message || errors[0];
-        return <Template field={rfield} {...props} template={template} conditional={conditional} fieldClass={fieldClass}
+        return <Template field={rfield} {...props} template={template} conditional={conditional}
                          title={title}
                          errorClassName={errorClassName}
                          error={error}
