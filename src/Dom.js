@@ -36,7 +36,7 @@ function ownerDocument(componentOrElement) {
  */
 function isNodeInRoot(node, root) {
     node = ReactDOM.findDOMNode(node), root = ReactDOM.findDOMNode(root);
-    _isNodeInRoot(node, root);
+    return _isNodeInRoot(node, root);
 }
 function _isNodeInRoot(node, root){
     while (node) {
