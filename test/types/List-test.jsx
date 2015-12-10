@@ -145,7 +145,7 @@ describe('List', function () {
         })
     });
     //why does this not work when we run all, but does work when we run it.only
-    it.only('should render a list without data and add values', function () {
+    it('should render a list without data and add values', function () {
         var schema = {
             schema: {
                 tasks: {
