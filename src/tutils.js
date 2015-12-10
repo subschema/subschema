@@ -69,7 +69,7 @@ var api = {
     slice: Function.call.bind(Array.prototype.slice),
     clone: function (t) {
         var tt = typeof t;
-        if (t == null || tt === 'number' || tt === 'string' || tt === 'function') {
+        if (t == null || tt == 'boolean' || tt === 'number' || tt === 'string' || tt === 'function') {
             return t;
         }
         if (t instanceof Date) {

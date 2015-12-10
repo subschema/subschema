@@ -207,7 +207,15 @@ ValueManager.prototype = {
 
                 //We copy it so that when oldValues and value share a nested object, they do not conflict, but we only need to do it when
                 // they are referencing the same instance, note we are parts -1 levels up, so really only arrays and objects.
-                obj = obj[key] = (oobj === obj[key]) ? copy(obj[key]) : obj[key];
+                if (obj[key] == null) {
+                    if (/^\d+?$/.test(key)) {
+                        obj = obj[key] = []
+                    } else {
+                        obj = obj[key] = {}
+                    }
+                } else {
+                    obj = obj[key] = (oobj === obj[key]) ? copy(obj[key]) : obj[key];
+                }
             } else {
 
                 //So the object tree isn't reached yet, we will create an array or object. if the key

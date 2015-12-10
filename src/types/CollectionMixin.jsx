@@ -5,7 +5,7 @@ import Editor from '../components/Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import NewChildContext from '../components/NewChildContext.jsx';
-import tu, {isString, path, returnFirst, EMPTY_ARR} from '../tutils';
+import tu, {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
 import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
@@ -13,6 +13,15 @@ import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 
+/**
+ * This guy sticks the client context into a funky
+ * '@'+editPid so we can pull it out the other side,
+ * while at the same time modifying the values.
+ *
+ * We may no longer need to copy the value Manger here...
+ * as we can just commit the thing on the thing.
+ *
+ */
 class EditChildContext extends Component {
 
     static propTypes = {
@@ -29,28 +38,44 @@ class EditChildContext extends Component {
 
     getChildContext() {
         var parentValueManager = this.props.valueManager;
-        var {loader,path} = this.props;
-        var {...value} = this.props.value || parentValueManager.path(path);
-        var valueManager = this.valueManager = ValueManager(value, parentValueManager.getErrors());
+        var {loader,  editPid} = this.props;
+        var {...orig} = parentValueManager.getValue() || FREEZE_OBJ;
+        var value = clone(parentValueManager.path(path(this.props.path, editPid)));
+
+        var valueManager = this.valueManager = ValueManager(orig, parentValueManager.getErrors());
+        valueManager.update('@' + editPid, {
+            key: editPid,
+            value
+        });
+
         return {valueManager, parentValueManager, loader};
     }
 
     handleSubmit = (e)=> {
         //t(e, vm.getErrors(), vm.getValue(), this.props.path)
-        var value = this.valueManager.getValue(), errors = this.valueManager.getErrors();
-        var currentPath = path(this.props.path, value.key);
+        var {
+            key,
+            value
+            } = this.valueManager.path('@' + this.props.editPid), errors = this.valueManager.getErrors();
+
+        var currentPath = path(this.props.path, key);
         if (this.props.onSubmit(e, errors, value, currentPath) !== false) {
-            this.props.valueManager.update(currentPath, value.value);
-            if (this.props.childPath && value.key !== this.props.childPath) {
-                this.props.valueManager.update(path(this.props.path, this.props.childPath), void(0));
+
+            this.props.valueManager.update(currentPath, value);
+            if (key !== this.props.editPid) {
+                this.props.valueManager.update(path(this.props.path, this.props.editPid), void(0));
             }
+            /*this.props.valueManager.update(currentPath, value.value);
+             if (this.props.childPath && value.key !== this.props.childPath) {
+             this.props.valueManager.update(path(this.props.path, this.props.childPath), void(0));
+             }*/
         }
 
         return false;
     }
 
     render() {
-        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit});
+        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit, path: '@' + this.props.editPid});
     }
 }
 
@@ -155,7 +180,7 @@ export default class CollectionMixin extends Component {
 
     handleAddBtn = (e) => {
         e && e.preventDefault();
-        this.setState({showAdd: true, editValue: this.newValue()});
+        this.setState({showAdd: true, editPid: this.createPid()});
     }
 
     handleCancelAdd = (e) => {
@@ -198,12 +223,14 @@ export default class CollectionMixin extends Component {
             return null;
         }
         var title = this.props.title || '';
+        var childPath = path(this.props.path, this.state.editPid);
         return (
             <EditChildContext {...this.context} onSubmit={this.handleSubmit} path={this.props.path}
-                                                childPath={this.state.editPid} value={this.state.editValue}>
+                                                editPid={this.state.editPid}
+                                                value={this.state.editValue}>
                 <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
                             onButtonClick={this.handleBtnClick}
-                            schema={this.createItemSchema()}
+                            schema={this.createItemSchema(childPath)}
                             title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
 
                 />
@@ -235,7 +262,7 @@ export default class CollectionMixin extends Component {
         return {
             schema: this.getTemplateItem(),
             fieldsets: [{
-                fields: ['value', 'key'],
+                fields: ['key', 'value'],
                 buttons: {
                     buttonsClass: 'btn-group pull-right',
                     buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}

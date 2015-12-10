@@ -61,8 +61,8 @@ export default class MixedInput extends CollectionMixin {
         return null;
     }
 
-    newValue() {
-        return {}
+    createPid() {
+        return 'new_property_' + (this.state.wrapped.length);
     }
 
     getTemplateItem() {
