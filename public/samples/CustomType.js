@@ -1,4 +1,5 @@
 module.exports = {
+    name: 'Custom Type',
     description: 'Shows how to create a custom type',
     schema: {
         "schema": {
@@ -13,10 +14,5 @@ module.exports = {
     data: {
         areYouSure: true
     },
-    errors: {
-        name: [{
-            message: 'Name is already taken'
-        }]
-    },
-    setupFile: './CustomType-setup.js'
+    setupFile: 'CustomType-setup.js'
 }

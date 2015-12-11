@@ -8,24 +8,23 @@ export default class Main extends Component {
     }
     static propTypes = {
         useData: PropTypes.listener,
-        useError: PropTypes.listener
+        useError: PropTypes.listener,
+        component: PropTypes.listener,
+        example: PropTypes.listener,
     }
     static defaultProps = {
         useData: "useData",
-        useError: "useError"
+        useError: "useError",
+        conf: ".conf",
+        example: '.example',
+        component: '.component'
     };
 
     render() {
-        var value = this.props.value && this.props.value.replace(/^\/#?/, '');
-        console.log('main ', value);
-        if (/develop/.test(value)) {
-            var Develop = this.context.loader.loadTemplate(value);
-            if (Develop) {
-                return <Develop key={value}/>
-            }
-        } else if (value) {
-            return <Example key={value} example={value} useData={this.props.useData} useError={this.props.useError}/>
-        }
-        return <Index key={value}/>
+        var {component, ...rest}=this.props;
+        if (component == null) return null;
+        var Component = this.context.loader.loadType(component);
+        return <Component {...rest}/>
+
     }
 }

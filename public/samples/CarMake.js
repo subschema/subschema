@@ -34,5 +34,5 @@ module.exports = {
         props.valueManager = 'Subschema.ValueManager(' + JSON.stringify(props.value, null, '\t') + ')';
         delete props.value;
     },
-    setupFile: './CarMake-setup.js'
+    setupFile: 'CarMake-setup.js'
 }

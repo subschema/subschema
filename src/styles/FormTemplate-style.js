@@ -1,3 +1,4 @@
 module.exports = {
-    formClass:'form-horizontal'
+    //use to be form-horizontal
+    formClass: ''
 }

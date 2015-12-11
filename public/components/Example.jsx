@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Highlight from './Highlight.jsx';
-//import Playground from 'component-playground/lib/components/playground.js';
+import Playground from 'component-playground/lib/components/playground.js';
 import Subschema from 'Subschema';
 import CodeMirror from 'codemirror/mode/javascript/javascript.js';
 import cloneDeep from 'lodash/lang/cloneDeep';
@@ -16,26 +16,36 @@ function stringify(name, obj) {
     var str = !obj ? 'null' : typeof obj === 'string' ? obj : JSON.stringify(obj, null, '\t');
     return `var ${name} = ${str};`;
 }
-var {...contextTypes} =  PropTypes.contextTypes;
-contextTypes.schema = PropTypes.any;
-class Context extends Component {
-
-    static childContextTypes = contextTypes
-    static contextTypes = contextTypes;
-    static propTypes = contextTypes;
-
-    getChildContext() {
-        var {loader, valueManager, schema} = this.props;
-        return {loader, valueManager, schema};
-    }
-
-    render() {
-        return <div>{this.props.children}</div>
-    }
-}
 
 class ValueManagerNode extends Component {
-    @listen("value", null)
+    componentWillMount() {
+        this.setup(this.props);
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.valueManager !== this.props.valueManager)
+            this.setup(props);
+    }
+
+    setup(props) {
+        this.unlisten();
+        this._listeners = [
+            props.valueManager.addListener(null, this.update, this, true),
+            props.valueManager.addErrorListener(null, this.error, this, true)]
+    }
+
+    unlisten() {
+        if (this._listeners) this._listeners.forEach(v=>v.remove());
+    }
+
+    componentWillUnmount() {
+        this.unlisten();
+    }
+
+    error(errors) {
+        this.setState({errors});
+    }
+
     update(value) {
         this.setState({value});
     }
@@ -51,17 +61,15 @@ class ValueManagerNode extends Component {
 }
 
 class RenderPreview extends Component {
-    static contextTypes = contextTypes;
 
     render() {
         if (this.props.setupFunc) {
-            this.props.setupFunc(this.context.loader, this.context.schema, Subschema, React, this.context.valueManager);
+            this.props.setupFunc(this.props.loader, this.props.schema, Subschema, React, this.props.valueManager);
         }
-        provide.defaultLoader = this.context.loader;
-        var schema = cloneDeep(this.context.schema);
+        var schema = cloneDeep(this.props.schema);
 
-        return <Form schema={schema} valueManager={this.context.valueManager}
-                     loader={this.context.loader}/>;
+        return <Form key={'form-'+this.props.example} schema={schema} valueManager={this.props.valueManager}
+                     loader={this.props.loader}/>;
     }
 }
 
@@ -74,10 +82,9 @@ export default class Example extends Component {
 
     };
 
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this.setup(props);
+    componentWillMount() {
+        if (!this.state) this.state = {edit: true};
+        this.setup(this.props);
     }
 
     componentWillUnmount() {
@@ -85,90 +92,99 @@ export default class Example extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.example !== this.props.example)
+        if (!this.managed || props.example !== this.props.example) {
             this.setup(props);
+            this.forceUpdate();
+        } else {
+            if (props.useData !== this.props.useData) {
+                this.managed.valueManager.setValue(props.useData ? this.managed.data : {});
+            }
+            if (props.useError !== this.props.useError) {
+                this.managed.valueManager.setErrors(props.useError ? this.managed.errors : null);
+            }
+        }
     }
 
     setup(props) {
-        var example = require('../samples/' + props.example);
-        var config = this.config = {
-            example
-        }
-        if (example.setupFile) {
-            config.setupTxt = require('!raw!!../samples/' + example.setupFile.replace(/^\.\/?/, ''))
-            config.setupFunc = require('../sample-loader!../samples/' + example.setupFile.replace(/^\.\/?/, ''))
+        var {schema, ...managed} = require('../samples/' + props.example);
+        var setupFile = managed.setupFile;
+        this.managed = managed;
+        if (setupFile) {
+            setupFile = setupFile.replace(/^\.\/?/, '');
+            managed.setupTxt = require('!raw!!../samples/' + setupFile)
+            managed.setupFunc = require('../sample-loader!../samples/' + setupFile)
         } else {
-            config.setupTxt = '';
+            managed.setupTxt = '';
+            managed.setupFunc = function () {
+            }
         }
+        var value = {}, errors = null;
+        if (props.useData) {
+            value = managed.data;
+        }
+        if (props.useError) {
+            errors = managed.errors;
+        }
+        managed.schema = cloneDeep(schema);
 
+        managed.loader = provide.defaultLoader = loaderFactory([DefaultLoader]);
+
+        managed.valueManager = ValueManager(value, errors);
 
     }
 
+    schema() {
+        return JSON.stringify(this.managed.schema, null, 2);
+    }
+
+    handleEditClick = ()=>this.setState({edit: !this.state.edit})
+
     render() {
-        var value = {}, errors = null;
-        if (this.props.useData) {
-            value = this.config.example.data;
-        }
-        if (this.props.useError) {
-            errors = this.config.example.errors;
-        }
-        var loader = loaderFactory([DefaultLoader]);
-
-        var valueManager = ValueManager(value, errors);
-
-
+        var schema = this.schema();
         return <div>
             <h3>{this.props.example}</h3>
-            <p>{this.config.example.description}</p>
-
-            <Context valueManager={valueManager} loader={loader} schema={cloneDeep(this.config.example.schema)}>
-                <RenderPreview/>
-                <ValueManagerNode/>
-                <Highlight>
-                    {`
+            <p>{this.managed.description}</p>
+            <RenderPreview {...this.managed}/>
+            <ValueManagerNode valueManager={this.managed.valueManager}/>
+            {this.state.edit ? this.renderEdit() : <Highlight lang="js" key={'highlight-'+this.props.example}
+                                                              onClick={this.handleEditClick}>
+                {
+                    `
 "use strict";
 
 import React from 'react';
 import Subschema from 'subschema';
+import ReactDOM from 'react-dom';
+
+${this.managed.setupTxt}
+
+var schema = ${schema}
+ReactDOM.render(<Form schema={schema} loader={loader} valueManager={valueManager}/>, document.getElementById('content'));
+`}
 
 
-${this.config.setupTxt}
-
-var schema = ${JSON.stringify(this.config.example.schema, null, 2)}
-<Form schema={schema} loader={loader} valueManager={valueManager}/>
-                        `}
-
-
-                </Highlight>
-            </Context>
+            </Highlight>}
         </div>
     }
 
     renderPreview() {
-        return <RenderPreview setupFunc={this.config.setupFunc}/>
+        return <RenderPreview {...this.managed}/>
     }
 
     renderEdit() {
         console.log('render sample');
-        var {data, errors} = this.state;
-        var {schema, setup, setupTxt, props} = this.props;
+        var {schema, setup, setupTxt, props, data,errors, valueManager, loader} = this.managed;
         var valProps = {
-                schema: schema,
-                value: data || {},
-                errors: errors
-            }, valueManager = ValueManager(),
-            FormWrapper = function (props) {
-
-                var {...copy} = props;
-                if (props.valueManager) {
-                    valueManager.setValue(props.valueManager.getValue());
-                    copy.valueManager = valueManager;
-                } else {
-                    valueManager.setValue(copy.value);
-                    copy.valueManager = valueManager
-                }
-                return <Subschema.Form {...copy}/>;
-            }, scope = {React, ReactDOM, Form: FormWrapper, Subschema};
+            schema: schema,
+            value: data || {},
+            errors: errors
+        }, scope = {
+            Form,
+            React,
+            Subschema,
+            loader,
+            valueManager
+        };
         if (setup) {
             setup(scope, valProps);
         }
@@ -181,15 +197,15 @@ var schema = ${JSON.stringify(this.config.example.schema, null, 2)}
             propStr.push(v + '={' + v + '}');
         });
         var codeText = [
-            '(function () {',
-            '//uncomment these if you are using outside of the editor',
-            '//"use strict";',
-            '//' + stringify('React', 'require("react")'),
-            '//' + stringify('Subschema', 'require("subschema")'),
-            '//' + stringify('Form', 'Subschema.Form'),
+            `(function () {
+"use strict";
+//uncomment these if you are using outside of the editor
+//import React, {Component} from "react";
+//import Subschema,{Form} from "Subschema";
+            `,
             vars.join('\n'),
             setupTxt,
-            'return <Form ' + (propStr.join(' ')) + '/>',
+            `return <Form ${propStr.join(' ')} />`,
             '}())'
         ].join('\n');
         //    console.log('example\n\n', codeText, '\n\n');

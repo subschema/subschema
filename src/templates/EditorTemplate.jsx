@@ -12,14 +12,14 @@ export default class EditorTemplate extends Component {
         if (!title) {
             title = ''
         }
-
+        console.log('help', help, error);
         return (<div
             className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  forEditor(this)}>
             <Content content={title} type="label" className={style.label} htmlFor={name}/>
 
             <div className={title ? style.hasTitle : style.noTitle}>
                 {children}
-                {help === false ? null : <Content content={error ? error : help} key='error-block' type='p'
+                {help === false ? null : <Content content={error ? error : help || ''} key='error-block' type='p'
                                                   className={error ? style.error : style.help}/>}
             </div>
         </div>);

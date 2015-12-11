@@ -3,8 +3,8 @@ import {React, into,TestUtils,expect, byId, byTypes, Simulate}  from '../support
 import Subschema from 'Subschema';
 
 
-var loaderTestSetup = require('../../public/samples/Loader-setup.jsx');
-var LoaderTest = require('../../public/samples/Loader.jsx');
+var loaderTestSetup = require('../../public/samples/Loader-setup.js');
+var LoaderTest = require('../../public/samples/Loader.js');
 
 
 describe('Loader Example', ()=> {

@@ -8,6 +8,7 @@ import {forField} from '../css';
 import { FREEZE_OBJ, applyFuncs, each, nextFunc, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
 import substitute from '../types/SubstituteMixin';
 import warning from '../warning';
+import reduce from 'lodash/collection/reduce';
 
 const ERRORS = {
     '.': 'setErrors'
@@ -51,7 +52,7 @@ function valueEngine(value) {
     return {
         listen: [value],
         format(state){
-            return state && state[value]
+            return state[value] == null ? null : state[value];// : 'super';
         }
     }
 }
@@ -61,16 +62,15 @@ function expressionReduce(expression, property) {
         // on this object.  In that case we just wrap and invoke.
         // Otherwise it might be null, fine or it might be a func fine
         var prev = obj[key];
-
         obj[key] = applyFuncs(function expressionReduce$reduce$warp(v) {
-            if (!expression.state) {
-                expression.state = {[key]: v};
+            if (!this._expressionValue) {
+                this._expressionValue = {[key]: v}
             } else {
-                expression.state[key] = v;
+                this._expressionValue[key] = v;
             }
             this.forceUpdate();
         }, typeof prev === 'string' ? function expressionReduce$reduce$wrapString(...args) {
-            this[prev].apply(this, args);
+            return this[prev].apply(this, args);
         } : prev);
 
         return obj;
@@ -114,12 +114,12 @@ export default class Editor extends Component {
             hasChanged: false,
             isValid: false
         };
-        this._substitute = [];
         this.initValidators(props, context);
         this.initPropTypes(props, context);
     }
 
     componentWillReceiveProps(props, context) {
+        this._expressions = {};
         this.initValidators(props, context);
         this.initPropTypes(props, context);
         this.listenTo();
@@ -138,6 +138,9 @@ export default class Editor extends Component {
             warning(this._expressions[property] == null, 'Multiple expressions for the same property %s?', property);
             this._expressions[property] = expression;
         }
+    }
+    handleExpressionValue(val, old, path){
+
     }
 
     initPropTypes(props, context) {
@@ -207,8 +210,10 @@ export default class Editor extends Component {
             return nextFunc(value, this.handleValid);
         } else if (propType === PropTypes.expression || propType === PropTypes.expression.isRequired) {
             this.addExpression(property, Editor.expressionEngine(value));
+            return null;
         } else if (propType === PropTypes.listener || propType === PropTypes.listener.isRequired) {
             this.addExpression(property, Editor.valueEngine(value));
+            return null;
         }
         return this.context.loader.loadByPropType(propType, value);
     }
@@ -351,9 +356,11 @@ export default class Editor extends Component {
         this.setState({valid})
     }
 
-    _invokeExpression(expression, property) {
-        this[property] = expression.format(expression.state);
+    _invokeExpression(obj, expression, property) {
+        obj[property] = expression.format(this);
+        return obj;
     }
+
 
     render() {
         var {field} = this.props, props = this.props;
@@ -366,13 +373,7 @@ export default class Editor extends Component {
             errorClassName = errorClassName == null ? 'has-error' : errorClassName,
             Component = this._Component;
 
-        var expressions;
-        if (this._expressions) {
-            expressions = {};
-            each(this._expressions, this._invokeExpression, expressions);
-        } else {
-            expressions = FREEZE_OBJ;
-        }
+        var expressions = this._expressions ? reduce(this._expressions, this._invokeExpression, {}, this._expressionValue || FREEZE_OBJ) : FREEZE_OBJ;
 
         var child = <Component ref="field" {...this._componentProps} {...expressions}
                                value={this.state.value}/>;
@@ -393,7 +394,8 @@ export default class Editor extends Component {
                          errorClassName={errorClassName}
                          error={error}
                          errors={errors}
-                         help={!this.state.valid && (props.help || rfield.help)}
+                         valid={this.state.valid}
+                         help={props.field.help}
                          onValidate={handleValidate}
         >
             {child}

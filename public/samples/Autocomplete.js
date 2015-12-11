@@ -1,8 +1,8 @@
 module.exports = {
-    description: 'Autocomplete adds static or dynamic autocompletion.<br/>\
-     If options are passed than it behaves mostly like the select component.\
-     If a processor is passed than it can load dynamically.\
-     ',
+    description: `Autocomplete adds static or dynamic autocompletion.
+     If options are passed than it behaves mostly like the select component.
+     If a processor is passed than it can load dynamically.
+     `,
     schema: {
         schema: {
             'simple': {

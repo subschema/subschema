@@ -22,9 +22,10 @@ module.exports = {
                 }
             }
         },
-        fields: "myDefault, favorites"
+        fields: ["myDefault", "favorites"]
     },
     data: {
+        myDefault:'got',
         favorites: [
             {
                 label: 'Game of Thrones',

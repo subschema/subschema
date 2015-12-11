@@ -183,8 +183,11 @@ describe('Editor', function () {
         }
         var cando = ['do'];
         var valueManager = ValueManager({cando});
+
         var customLoader = loaderFactory([loader]);
+
         customLoader.addType('ExpressionTest', ExpressionTest);
+
         var editor = intoWithContext(<Editor
             field={{type:'ExpressionTest', validators:['required'], stuff:'.'}}
             path="test"/>, {
@@ -196,7 +199,7 @@ describe('Editor', function () {
 
         expect(et.props.other).toNotExist();
         expect(et.props.stuff).toNotExist();
-
+        expect(et.props.when).toBe(cando);
         valueManager.update('test', 'super');
         expect(et.props.other).toEqual('super');
         expect(et.props.stuff).toEqual('super');

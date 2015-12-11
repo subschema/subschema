@@ -5,7 +5,7 @@ export default class Highlight extends Component {
     render() {
         var lang = this.props.lang;
         if (lang === 'html') lang = 'xml';
-       return <pre languages={[ lang]} className={lang}>
+       return <pre languages={[ lang]} className={lang} onClick={this.props.onClick}>
             {this.props.children}
         </pre>
     }

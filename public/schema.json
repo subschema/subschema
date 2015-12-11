@@ -2,7 +2,6 @@
   "schema": {
     "useData": {
       "type": "Link",
-      "template": "false",
       "label": "Data",
       "search": "?useData=true",
       "className": " ",
@@ -10,10 +9,9 @@
     },
     "useError": {
       "type": "Link",
-      "template": "false",
       "label": "Errors",
       "className": " ",
-      "search": "?useError=false",
+      "search": "?useError=true",
       "template": false
     },
     "samples": {
@@ -26,7 +24,7 @@
       "template": false,
       "href": "#/develop/{.}"
     },
-    "pathname": {
+    "main": {
       "type": "Main",
       "template": false
     }
@@ -74,7 +72,7 @@
             {
               "className": "col-md-10 col-sm-9 col-xs-12",
               "fields": [
-                "pathname"
+                "main"
               ]
             }
           ]
