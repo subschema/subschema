@@ -28,5 +28,6 @@ module.exports = {
     setup: function(context, props){
         props.loader = 'Subschema.loaderFactory([Subschema.DefaultLoader])';
     },
-    setupTxt:require('!!raw!./Autocomplete-setup.js')
+    setupFile:'Autocomplete-setup.js',
+//    setupTxt:require('!!raw!./Autocomplete-setup.js')
 }

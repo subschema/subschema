@@ -38,6 +38,9 @@ api.placeholder = customPropType(api.string, 'placeholder');
 
 api.arrayString = api.oneOfType([api.string, api.arrayOf(api.string)])
 
+
+api.listener = customPropType(api.any, 'listener');
+
 /**
  * A valueEvent does not expect target.value
  */
@@ -140,7 +143,7 @@ api.fieldset = api.shape({
     buttons: api.buttons,
     template: api.template
 });
-api.literal = api.oneOf(api.string, api.bool, api.number, api.instanceOf(Date))
+api.literal = api.oneOfType([api.string, api.bool, api.number, api.instanceOf(Date)])
 api.options = api.oneOfType([
     api.arrayString,
     api.arrayOf(api.shape({
@@ -186,7 +189,8 @@ api.field = api.oneOfType([api.string, api.shape({
     name: api.string,
     placeholder: api.string,
     className: api.cssClass
-})])
+})]);
+
 api.mixin = {
     events: events,
     field: extend({

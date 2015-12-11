@@ -27,8 +27,8 @@ module.exports = {
     errors: {
         'primary.address': [{message: 'No Such Place'}]
     },
-    setup: function(context, props){
+    setup: function (context, props) {
         props.loader = '//Manually setup a loader\nSubschema.loaderFactory([Subschema.DefaultLoader])';
     },
-    setupTxt:require('!!raw!./Loader-setup.jsx')
+    setupFile: './Loader-setup.jsx'
 }

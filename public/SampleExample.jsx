@@ -4,7 +4,8 @@ var ReactDOM = require('react-dom');
 var Highlight = require('./Highlight.jsx');
 var Playground = require('component-playground/lib/components/playground.js');
 var Subschema = require('subschema');
-var {PropTypes, ValueManager} = Subschema;
+var {PropTypes, Form, ValueManager, decorators} = Subschema;
+var {provide} = decorators;
 require('codemirror/mode/javascript/javascript.js');
 
 function stringify(name, obj) {
@@ -46,7 +47,7 @@ var ValueManagerNode = React.createClass({
 })
 var SampleExample = React.createClass({
     getInitialState(){
-        return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors()};
+        return {data: this.props.valueManager.getValue(), errors: this.props.valueManager.getErrors(), edit: false};
     },
     componentWillMount(){
     },
@@ -75,6 +76,18 @@ var SampleExample = React.createClass({
         this.setState({errors});
     },
     render(){
+        return this.state.edit ? this.renderEdit() : this.renderPreview();
+    },
+    renderPreview(){
+        var loader = provide.defaultLoader = Subschema.loaderFactory([Subschema.DefaultLoader]);
+        var valueManager = Subschema.ValueManager(this.props.valueManager.getValue());
+        if (this.props.setupFunc) {
+            this.props.setupFunc(loader, this.props.schema, Subschema, React, valueManager);
+        }
+
+        return <Form schema={this.props.schema} valueManager={valueManager} loader={loader}/>;
+    },
+    renderEdit(){
         console.log('render sample');
         var {data, errors} = this.state;
         var {schema, setup, setupTxt, props} = this.props;

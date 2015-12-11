@@ -64,7 +64,9 @@ export default class MixedInput extends CollectionMixin {
     createPid() {
         return 'new_property_' + (this.state.wrapped.length);
     }
-
+    createDefValue() {
+        return {};
+    }
     getTemplateItem() {
         var kt = this.props.keyType,
             keyType = isString(kt) ? {

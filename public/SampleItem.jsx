@@ -47,20 +47,22 @@ var SampleItem = React.createClass({
         var file = s.file;
         var state = this.state || {};
         var content = require('./samples/' + s.file);
-/*
-        if (state.content !== content) {
-            if (this._loaded) {
-                Subschema.loader.removeLoader(this._loaded);
-            }
-            this._loaded = content.setup && content.setup(Subschema, this);
+        var contentTxt = require('!raw!!./samples/' + s.file);
+        var setupFunc, setupTxt;
+        if (content.setupFile) {
+            setupFunc = require('./sample-loader.js!./samples/' + content.setupFile)
+            setupTxt = require('!raw!!./samples/' + content.setupFile)
+
         }
 
-*/
 
         return {
             schema: content.schema,
             content,
-            setup:content.setup,
+            contentTxt,
+            setupTxt,
+            setupFunc,
+            setup: content.setup,
             file,
             sample: props.sample
         };
@@ -85,10 +87,10 @@ var SampleItem = React.createClass({
     handleErrors(){
     },
     handleBtn(e, action, component){
-        if (action === 'cancel'){
+        if (action === 'cancel') {
             e && e.preventDefault();
         }
-        alert('button was clicked '+action);
+        alert('button was clicked ' + action);
     },
     render () {
         var schema = this.state.schema;
@@ -106,7 +108,8 @@ var SampleItem = React.createClass({
                     <div className="span10">
                         <div className="container-fluid">
                             <h4>Example:</h4>
-                            <Example valueManager={this.vm} schema={schema} setup={setup} props={props} setupTxt={setupTxt}
+                            <Example valueManager={this.vm} schema={schema} setup={setup} props={props}
+                                     setupTxt={setupTxt}
                                      ref="example" key={`example-${title}`}/>
                         </div>
 

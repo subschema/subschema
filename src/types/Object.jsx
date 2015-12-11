@@ -36,7 +36,8 @@ function normalizeFieldsets(fieldsets, fields) {
             rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
             return rest;
         } else {
-            warning(false, 'do not know what %s this is ', f);
+            return f;
+//            warning(false, 'do not know what %s this is ', f);
         }
     });
     if (fieldsets.length === 0) {
@@ -130,10 +131,9 @@ export default class ObjectType extends Component {
     }
 
     makeFieldset = (f, i)=> {
-        return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} legend={f.legend}
-                         onButtonClick={this.handleButtonClick}
+        return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} {...f}
                          onSubmit={this.handleSubmit}
-                         fields={f.fields}
+                         onButtonClick={this.handleButtonClick}
                          schema={this.schema.schema}>
             {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
         </Template>

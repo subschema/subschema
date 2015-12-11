@@ -15,9 +15,9 @@ module.exports = {
                 title: 'Model',
                 type: 'Select',
                 placeholder: 'Select a make first',
-                conditional:{
-                    'listen':'make',
-                    'operator':'falsey'
+                conditional: {
+                    'listen': 'make',
+                    'operator': 'falsey'
                 }
             }
         },
@@ -34,5 +34,5 @@ module.exports = {
         props.valueManager = 'Subschema.ValueManager(' + JSON.stringify(props.value, null, '\t') + ')';
         delete props.value;
     },
-    setupTxt: require('!!raw!./CarMake-setup.js')
+    setupFile: './CarMake-setup.js'
 }

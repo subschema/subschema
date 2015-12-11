@@ -47,13 +47,42 @@ function uniqueKeyEach(fn, scope, ...args) {
     }
     return uniq;
 }
+function valueEngine(value) {
+    return {
+        listen: [value],
+        format(state){
+            return state && state[value]
+        }
+    }
+}
+function expressionReduce(expression, property) {
+    return expression.listen.reduce(function expressionReduce$reduce(obj, key) {
+        //this might be a string, if so it should reference a function
+        // on this object.  In that case we just wrap and invoke.
+        // Otherwise it might be null, fine or it might be a func fine
+        var prev = obj[key];
+
+        obj[key] = applyFuncs(function expressionReduce$reduce$warp(v) {
+            if (!expression.state) {
+                expression.state = {[key]: v};
+            } else {
+                expression.state[key] = v;
+            }
+            this.forceUpdate();
+        }, typeof prev === 'string' ? function expressionReduce$reduce$wrapString(...args) {
+            this[prev].apply(this, args);
+        } : prev);
+
+        return obj;
+    }, this);
+}
 
 export default class Editor extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
     static expressionEngine = substitute;
-
+    static valueEngine = valueEngine;
     static defaultProps = {
         field: {
             type: 'Text'
@@ -103,7 +132,6 @@ export default class Editor extends Component {
     }
 
     addExpression(property, expression) {
-        expression = Editor.expressionEngine(expression);
         if (!this._expressions) {
             this._expressions = {[property]: expression};
         } else {
@@ -140,7 +168,7 @@ export default class Editor extends Component {
             },
             defaultProps = Node.defaultProps || FREEZE_OBJ,
             generatedDefs = {
-               // className: forField(Node, field.fieldClass),
+                // className: forField(Node, field.fieldClass),
                 name: props.name || path
             };
         var newProps = uniqueKeyEach((propType, key)=> {
@@ -178,7 +206,9 @@ export default class Editor extends Component {
         } else if (propType === PropTypes.validEvent || propType === PropTypes.validEvent.isRequired) {
             return nextFunc(value, this.handleValid);
         } else if (propType === PropTypes.expression || propType === PropTypes.expression.isRequired) {
-            this.addExpression(property, value);
+            this.addExpression(property, Editor.expressionEngine(value));
+        } else if (propType === PropTypes.listener || propType === PropTypes.listener.isRequired) {
+            this.addExpression(property, Editor.valueEngine(value));
         }
         return this.context.loader.loadByPropType(propType, value);
     }
@@ -244,20 +274,7 @@ export default class Editor extends Component {
                 var {...listeners} = VALUES;
             }
             //Go through each property expression pair and store the state.
-            each(this._expressions, (expression, property)=> {
-                expression.listen.reduce((obj, key)=> {
-                    obj[key] = applyFuncs((v)=> {
-                        if (!expression.state) {
-                            expression.state = {[key]: v};
-                        } else {
-                            expression.state[key] = v;
-                        }
-                        this.forceUpdate();
-                    }, obj[key]);
-
-                    return obj;
-                }, listeners);
-            });
+            each(this._expressions, expressionReduce, listeners);
         }
         return listeners || VALUES;
     }

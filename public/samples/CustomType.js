@@ -18,5 +18,5 @@ module.exports = {
             message: 'Name is already taken'
         }]
     },
-    setupTxt: require('!!raw!./CustomType-setup.js')
+    setupFile: './CustomType-setup.js'
 }

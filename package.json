@@ -48,8 +48,10 @@
     "express": "^4.12.3",
     "extract-text-webpack-plugin": "^0.8.2",
     "fbjs": "^0.4.0",
+    "file-loader": "^0.8.5",
     "formatter.js": "^0.1.5",
     "highlight.js": "^8.5.0",
+    "history": "^1.15.0",
     "js-base64": "^2.1.9",
     "jsdoc-to-markdown": "^1.0.3",
     "json-loader": "^0.5.3",
@@ -68,19 +70,19 @@
     "postcss-color-rebeccapurple": "^2.0.0",
     "postcss-loader": "^0.7.0",
     "raw-loader": "^0.5.1",
-    "react": "^0.14.1",
-    "react-addons-css-transition-group": "^0.14.1",
-    "react-addons-test-utils": "^0.14.1",
-    "react-dom": "^0.14.1",
+    "react": "^0.14.3",
+    "react-addons-css-transition-group": "^0.14.3",
+    "react-addons-test-utils": "^0.14.3",
+    "react-dom": "^0.14.3",
     "react-hot-loader": "^1.3.0",
-    "react-router": "^1.0.0-rc3",
+    "react-router": "^1.0.2",
     "source-map": "^0.5.3",
-    "source-map-support": "^0.3.3",
+    "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.0",
     "style-loader": "^0.13.0",
     "supports-color": "^3.1.2",
     "text-loader": "0.0.1",
-    "url-loader": "^0.5.5",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.2",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-dev-server": "^1.11.0"
@@ -89,5 +91,8 @@
     "react": "*",
     "lodash": "*"
   },
-  "dependencies": {}
+  "dependencies": {
+    "fbjs": "^0.4.0",
+    "react-dom": "^0.14.3"
+  }
 }

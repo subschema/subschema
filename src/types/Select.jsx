@@ -10,8 +10,8 @@ export default class Select extends Component {
     static propTypes = {
         options: PropTypes.options,
         multiple: PropTypes.bool,
-        onChange:PropTypes.valueEvent,
-        placeholder:PropTypes.placeholder
+        onChange: PropTypes.valueEvent,
+        placeholder: PropTypes.placeholder
     }
 
     static defaultProps = {
@@ -44,7 +44,7 @@ export default class Select extends Component {
     renderOptions(value) {
         var {multiple, options, placeholder} = this.props;
 
-
+        options = options || [];
         var hasValue = false, ret = options.map(multiple ? (o, i)=> {
             return <option key={'s' + i} value={o.val}>{o.label}</option>;
         } : (o, i)=> {

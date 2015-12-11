@@ -165,4 +165,42 @@ describe('Editor', function () {
         expect(et.props.when).toEqual('do-do');
     });
 
+    it('should update value expressions', function () {
+        class ExpressionTest extends React.Component {
+            static propTypes = {
+                stuff: PropTypes.listener,
+                other: PropTypes.listener,
+                when: PropTypes.listener
+            }
+            static defaultProps = {
+                other: 'test',
+                when: '..cando'
+            }
+
+            render() {
+                return <div>{this.props.stuff}{this.props.other}</div>
+            }
+        }
+        var cando = ['do'];
+        var valueManager = ValueManager({cando});
+        var customLoader = loaderFactory([loader]);
+        customLoader.addType('ExpressionTest', ExpressionTest);
+        var editor = intoWithContext(<Editor
+            field={{type:'ExpressionTest', validators:['required'], stuff:'.'}}
+            path="test"/>, {
+            valueManager,
+            loader: customLoader
+        });
+
+        var et = byType(editor, ExpressionTest);
+
+        expect(et.props.other).toNotExist();
+        expect(et.props.stuff).toNotExist();
+
+        valueManager.update('test', 'super');
+        expect(et.props.other).toEqual('super');
+        expect(et.props.stuff).toEqual('super');
+
+        expect(et.props.when[0]).toEqual(cando[0]);
+    });
 });

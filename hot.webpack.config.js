@@ -47,18 +47,19 @@ module.exports = {
                     join('src'),
                     join('public')
                 ],
-                loaders: ['react-hot', 'babel-loader?stage=0']
+                loaders: ['react-hot', 'babel-loader?stage=0&ignore=buffer']
             },
             {
                 test: /\.js(x)?$/,
                 exclude: [
-                   /node_modules\/(?!(subschema-builder|component-playground|react-))/,
-     //               /babel-core/,
+                    //      /node_modules\/(?!(subschema-builder|component-playground|react-))/,
+                    /babel/,
+                    /react-router/,
                     /codemirror/,
                     join('src'),
                     join('public'),
                 ],
-                loaders: ['babel-loader?stage=0']
+                loaders: ['babel?stage=0&ignore=buffer']
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -75,6 +76,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 loaders: ['style', 'css', 'less']
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
             }
         ]
     },
@@ -88,7 +93,8 @@ module.exports = {
             'subschema': join('src/index.jsx'),
             'Subschema': join('src/index.jsx'),
             'react': join('node_modules/react'),
-            'subschema-styles': join('src/styles')
+            'subschema-styles': join('src/styles'),
+            'react-router': join('node_modules/react-router/umd/ReactRouter')
         }
     },
 

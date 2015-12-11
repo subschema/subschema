@@ -160,7 +160,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>, true);
+        var root = into(<Form schema={schema} value={data}/>);
         var tasks = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);

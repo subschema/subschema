@@ -676,7 +676,7 @@ Example Usage:
 Now when a user changes the selectPage, then the Anchor (link1} will reflect said change.
   
 The default substitution engine can be changed by setting expressionEngine on Editor
-```
+```jsx
   import {Editor} from "Subschema";
   
   Editor.expressionEngine = function() {
@@ -691,6 +691,59 @@ The default substitution engine can be changed by setting expressionEngine on Ed
 
 See the [example](https://subschema.github.io/subschema/#/Expression)
 
+##Listener Properties
+Sometimes you need a property to be dependent on a value in the value manager.  To do that use the listener propType. 
+The property then will be in sync with the value in the value manager.   The value of the property in the configuration
+should be the path to the value that you are interested in.
 
+
+```jsx
+
+var {PropTypes, decorators, types} = Subschema;
+var {provide} = decorators;
+var {type} = provide;
+var {Select} = types;
+
+//copy propTypes (don't ref it will break Select)
+var {options, ...copyPropTypes} = Select.propTypes;
+copyPropTypes.options = PropTypes.listener;
+
+@type
+class SelectListen extends React.Component {
+    static propTypes = copyPropTypes;
+
+    render() {
+        return <Select {...this.props}/>
+    }
+}
+
+
+schema = {
+     schema: {
+              myDefault: {
+                  type: 'SelectListen',
+                  options: 'favorites'
+              },
+              favorites: {
+                  type: 'List',
+                  canAdd: true,
+                  canEdit: true,
+                  canReorder: true,
+                  canDelete: true,
+                  labelKey:'label',
+                  itemType: {
+                      type: 'Object',
+                      subSchema: {
+                          val: 'Text',
+                          label: 'Text'
+                      }
+                  }
+              }
+          },
+          fields: "myDefault, favorites"
+
+}
+//Now the options in myDefault are linked to the values in myFavorites.
+```
 
 

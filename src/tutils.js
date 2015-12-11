@@ -68,9 +68,13 @@ var api = {
     },
     slice: Function.call.bind(Array.prototype.slice),
     clone: function (t) {
+        if (t == null) return t;
         var tt = typeof t;
-        if (t == null || tt == 'boolean' || tt === 'number' || tt === 'string' || tt === 'function') {
+        if (tt == 'boolean' || tt === 'number' || tt === 'string' || tt === 'function' || tt === 'symbol') {
             return t;
+        }
+        if (api.isArray(t)) {
+            return t.concat();
         }
         if (t instanceof Date) {
             return new Date(t.getTime());

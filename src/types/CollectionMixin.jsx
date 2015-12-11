@@ -13,74 +13,18 @@ import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 
-/**
- * This guy sticks the client context into a funky
- * '@'+editPid so we can pull it out the other side,
- * while at the same time modifying the values.
- *
- * We may no longer need to copy the value Manger here...
- * as we can just commit the thing on the thing.
- *
- */
-class EditChildContext extends Component {
-
-    static propTypes = {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader,
-        path: PropTypes.string.isRequired
-    };
-
-    static childContextTypes = {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader,
-        parentValueManager: PropTypes.valueManager
-    };
-
-    getChildContext() {
-        var parentValueManager = this.props.valueManager;
-        var {loader,  editPid} = this.props;
-        var {...orig} = parentValueManager.getValue() || FREEZE_OBJ;
-        var value = clone(parentValueManager.path(path(this.props.path, editPid)));
-
-        var valueManager = this.valueManager = ValueManager(orig, parentValueManager.getErrors());
-        valueManager.update('@' + editPid, {
-            key: editPid,
-            value
-        });
-
-        return {valueManager, parentValueManager, loader};
-    }
-
-    handleSubmit = (e)=> {
-        //t(e, vm.getErrors(), vm.getValue(), this.props.path)
-        var {
-            key,
-            value
-            } = this.valueManager.path('@' + this.props.editPid), errors = this.valueManager.getErrors();
-
-        var currentPath = path(this.props.path, key);
-        if (this.props.onSubmit(e, errors, value, currentPath) !== false) {
-
-            this.props.valueManager.update(currentPath, value);
-            if (key !== this.props.editPid) {
-                this.props.valueManager.update(path(this.props.path, this.props.editPid), void(0));
-            }
-            /*this.props.valueManager.update(currentPath, value.value);
-             if (this.props.childPath && value.key !== this.props.childPath) {
-             this.props.valueManager.update(path(this.props.path, this.props.childPath), void(0));
-             }*/
-        }
-
-        return false;
-    }
-
-    render() {
-        return React.cloneElement(this.props.children, {onSubmit: this.handleSubmit, path: '@' + this.props.editPid});
-    }
-}
-
 function wrapFunc(value, key) {
     return {value, key}
+}
+function remove(obj, key) {
+    if (!obj) return;
+    if (Array.isArray(obj)) {
+        obj.splice(key, 1);
+
+    } else {
+        delete obj[key];
+    }
+    return obj;
 }
 
 export default class CollectionMixin extends Component {
@@ -118,9 +62,7 @@ export default class CollectionMixin extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.value !== this.props.value) {
-            this.setValue(props.value);
-        }
+        this.setValue(props.value);
     }
 
     getValue() {
@@ -154,17 +96,6 @@ export default class CollectionMixin extends Component {
         this.changeValue(values, oval);
     }
 
-    handleEdit = (pos, val, pid) => {
-        this.setState({
-            showAdd: false,
-            showEdit: true,
-            editPid: pid,
-            editValue: {
-                value: val,
-                key: pid
-            }
-        });
-    }
 
     changeValue = (newValue, oldValue)=> {
         if (this.props.onChange(this.unwrap(newValue)) !== false) {
@@ -172,46 +103,85 @@ export default class CollectionMixin extends Component {
             this.setState({
                 wrapped: newValue,
                 showAdd: false,
-                showEdit: false,
-                editValue: null
+                showEdit: false
             });
         }
     }
 
     handleAddBtn = (e) => {
         e && e.preventDefault();
-        this.setState({showAdd: true, editPid: this.createPid()});
+        var editPid = this.createPid()
+        this.context.valueManager.update('@' + this.props.path + '_' + editPid, {
+            key: editPid
+        });
+        this.setState({showAdd: true, editPid});
     }
+
+    handleEdit = (pos, val, pid) => {
+        this.context.valueManager.update('@' + this.props.path + '_' + pid, {
+            value: clone(val),
+            key: pid
+        });
+        this.setState({
+            showAdd: false,
+            showEdit: true,
+            editPid: pid
+        });
+    }
+
 
     handleCancelAdd = (e) => {
         e && e.preventDefault();
-        this.setState({showAdd: false, showEdit: false, editValue: null});
+        this.setState({showAdd: false, showEdit: false});
     }
 
     handleBtnClick = (e, action)=> {
         e && e.preventDefault();
-        if (action !== 'submit') {
+        if (action == 'submit') {
+            this.handleSubmit(e);
+        } else {
             this.setState({
                 showAdd: false,
                 showEdit: false,
-                editValue: null,
                 editPid: null
             });
         }
 
     }
 
-    handleSubmit = (e, errors, value)=> {
+    handleSubmit = (e)=> {
         e && e.preventDefault();
+        var {valueManager} = this.context;
+        var origKey = '@' + this.props.path + '_' + this.state.editPid;
+        var {
+            key,
+            value
+            } = valueManager.path(origKey), errors = valueManager.getErrors();
+
         if (errors == null || Object.keys(errors).length === 0) {
-            this.setState({
-                showAdd: false,
-                showEdit: false,
-                editValue: null,
-                editPid: null
-            });
+            var currentPath = path(this.props.path, key);
+            var clonedValue = this.props.value == null ? this.createDefValue() : clone(this.props.value);
+            if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
+                clonedValue[key] = value;
+                if (key !== this.state.editPid) {
+                    //if the key changed, remove the original.
+                    remove(clonedValue, this.state.editPid);
+                }
+                this.props.onChange(clonedValue);
+            }
+
+            //return false;
+        } else {
+            return false;
         }
+
+        this.setState({
+            showAdd: false,
+            showEdit: false,
+            editPid: null
+        });
     }
+
 
     renderAddEditTemplate(edit, create) {
         var label = '';
@@ -224,17 +194,13 @@ export default class CollectionMixin extends Component {
         }
         var title = this.props.title || '';
         var childPath = path(this.props.path, this.state.editPid);
-        return (
-            <EditChildContext {...this.context} onSubmit={this.handleSubmit} path={this.props.path}
-                                                editPid={this.state.editPid}
-                                                value={this.state.editValue}>
-                <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
-                            onButtonClick={this.handleBtnClick}
-                            schema={this.createItemSchema(childPath)}
-                            title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
+        return <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
+                           onButtonClick={this.handleBtnClick}
+                           schema={this.createItemSchema(childPath)}
+                           path={'@' + this.props.path + '_' + this.state.editPid}
+                           title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
 
-                />
-            </EditChildContext>)
+        />
     }
 
     renderAddBtn() {

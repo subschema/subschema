@@ -26,6 +26,10 @@ export default class ListInput extends CollectionMixin {
         return map(value, 'value');
     }
 
+    createDefValue() {
+        return [];
+    }
+
     createPid() {
         return this.state.wrapped.length || 0;
     }
