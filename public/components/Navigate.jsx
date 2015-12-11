@@ -12,8 +12,8 @@ export default class Navigate extends Component {
     }
     static defaultProps = {
         pathname: "pathname",
-        href: '/{value}',
-        label: '{value}'
+        href: '/{.}',
+        label: '{.}'
     }
     clzName = (name)=> {
         return 'list-group-item ' + ('/' + name.replace(/^#+?\//, '') === this.props.pathname ? 'active' : '');
@@ -25,7 +25,7 @@ export default class Navigate extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (!(props.href == this.props.href && props.label == this.props.label)) {
+        if (!(props.href === this.props.href && props.label === this.props.label)) {
             this._setupFormatters(props);
         }
     }
@@ -38,7 +38,7 @@ export default class Navigate extends Component {
 
     renderLink(value, i) {
         var {...props} = this.props;
-        props.value = value;
+        props['.'] = value;
         var href = this.hrefFormatter.format(props), label = this.labelFormatter.format(props);
         return <a href={href} className={this.clzName(href)} key={'link-'+i}>{label}</a>
     }

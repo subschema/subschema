@@ -3,53 +3,67 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Highlight from './Highlight.jsx';
-import Playground from 'component-playground/lib/components/playground.js';
+//import Playground from 'component-playground/lib/components/playground.js';
 import Subschema from 'Subschema';
 import CodeMirror from 'codemirror/mode/javascript/javascript.js';
-import cloneDeep from 'lodash/object/cloneDeep';
+import cloneDeep from 'lodash/lang/cloneDeep';
 
 var {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, decorators} = Subschema;
-var {provide} = decorators;
+var {provide, listen} = decorators;
 
 function stringify(name, obj) {
 
     var str = !obj ? 'null' : typeof obj === 'string' ? obj : JSON.stringify(obj, null, '\t');
     return `var ${name} = ${str};`;
 }
+var {...contextTypes} =  PropTypes.contextTypes;
+contextTypes.schema = PropTypes.any;
+class Context extends Component {
 
-/*
- var ValueManagerNode = React.createClass({
- componentWillMount(){
- this._setup({}, this.props)
- },
- componentWillReceiveProps(newProps, oldProps){
- this._setup(oldProps, newProps);
- },
- _setup(old, newProps){
- this._listener && this._listener.remove();
- if (newProps.valueManager) {
- this._listener = newProps.valueManager.addListener(null, this.update, this, true);
- } else {
- console.log('no valueManager');
- }
- },
- update(value){
- this.setState({value});
- },
- componentWillUnmount(){
- this._listener && this._listener.remove();
- },
- render(){
- return <div>
- <h3>Values:</h3>
+    static childContextTypes = contextTypes
+    static contextTypes = contextTypes;
+    static propTypes = contextTypes;
+
+    getChildContext() {
+        var {loader, valueManager, schema} = this.props;
+        return {loader, valueManager, schema};
+    }
+
+    render() {
+        return <div>{this.props.children}</div>
+    }
+}
+
+class ValueManagerNode extends Component {
+    @listen("value", null)
+    update(value) {
+        this.setState({value});
+    }
+
+    render() {
+        return <div>
+            <h3>Values:</h3>
  <pre className='value-manager-node'>
  {JSON.stringify(this.state ? this.state.value : null, null, '\t')}
  </pre>
- </div>
- }
+        </div>
+    }
+}
 
- })
- */
+class RenderPreview extends Component {
+    static contextTypes = contextTypes;
+
+    render() {
+        if (this.props.setupFunc) {
+            this.props.setupFunc(this.context.loader, this.context.schema, Subschema, React, this.context.valueManager);
+        }
+        provide.defaultLoader = this.context.loader;
+        var schema = cloneDeep(this.context.schema);
+
+        return <Form schema={schema} valueManager={this.context.valueManager}
+                     loader={this.context.loader}/>;
+    }
+}
 
 export default class Example extends Component {
 
@@ -81,36 +95,16 @@ export default class Example extends Component {
             example
         }
         if (example.setupFile) {
-            config.setupTxt = require('!raw!!../samples/' + example.setupFile.replace(/\.\/?/, ''))
-            config.setupFunc = require('../sample-loader!../samples/' + example.setupFile.replace(/\.\/?/, ''))
+            config.setupTxt = require('!raw!!../samples/' + example.setupFile.replace(/^\.\/?/, ''))
+            config.setupFunc = require('../sample-loader!../samples/' + example.setupFile.replace(/^\.\/?/, ''))
+        } else {
+            config.setupTxt = '';
         }
 
 
     }
 
     render() {
-        return <div>
-            <h3>{this.props.example}</h3>
-            <p>{this.config.example.description}</p>
-            {this.renderPreview()}
-            <Highlight>
-                {`
-"use strict";
-
-import Subschema from 'subschema';
-
-var {loader, ValueManager } = Subschema;
-
-var schema = ${JSON.stringify(this.config.example.schema, null, 2)}
-
-                    `}
-
-
-            </Highlight>
-        </div>
-    }
-
-    renderPreview() {
         var value = {}, errors = null;
         if (this.props.useData) {
             value = this.config.example.data;
@@ -121,14 +115,37 @@ var schema = ${JSON.stringify(this.config.example.schema, null, 2)}
         var loader = loaderFactory([DefaultLoader]);
 
         var valueManager = ValueManager(value, errors);
-        var schema = cloneDeep(this.config.example.schema);
-        if (this.config.setupFunc) {
-            this.config.setupFunc(loader, schema, Subschema, React, valueManager);
-        }
-        provide.defaultLoader = loader;
 
 
-        return <Form schema={schema} valueManager={valueManager} loader={loader}/>;
+        return <div>
+            <h3>{this.props.example}</h3>
+            <p>{this.config.example.description}</p>
+
+            <Context valueManager={valueManager} loader={loader} schema={cloneDeep(this.config.example.schema)}>
+                <RenderPreview/>
+                <ValueManagerNode/>
+                <Highlight>
+                    {`
+"use strict";
+
+import React from 'react';
+import Subschema from 'subschema';
+
+
+${this.config.setupTxt}
+
+var schema = ${JSON.stringify(this.config.example.schema, null, 2)}
+<Form schema={schema} loader={loader} valueManager={valueManager}/>
+                        `}
+
+
+                </Highlight>
+            </Context>
+        </div>
+    }
+
+    renderPreview() {
+        return <RenderPreview setupFunc={this.config.setupFunc}/>
     }
 
     renderEdit() {

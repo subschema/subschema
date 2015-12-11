@@ -20,7 +20,6 @@ loader.addType({
     Main
 });
 loader.addTemplate({
-    NavListTemplate,
     NavTemplate,
     ULTemplate,
     H3(props){
@@ -50,11 +49,14 @@ let unlisten = location.listen(location => {
     valueManager.update('useError', location.query.useError);
 })
 function handleDataError(val, old, path) {
-    if (!val && loc.query[path] == 'true') {
+    if (val == null){
+        return;
+    }
+    if (!val && path in loc.query && loc.query[path] == 'true') {
         delete loc.query[path];
         location.push(loc);
     } else {
-        if (loc.query[path] + '' != '' + val) {
+        if (val && loc.query[path] + '' != '' + val) {
             loc.query[path] = val;
             location.push(loc);
         }

@@ -19,12 +19,12 @@
     "samples": {
       "type": "Navigate",
       "template": false,
-      "href": "#/{value}"
+      "href": "#/{.}"
     },
     "develop": {
       "type": "Navigate",
       "template": false,
-      "href": "#/develop/{value}"
+      "href": "#/develop/{.}"
     },
     "pathname": {
       "type": "Main",

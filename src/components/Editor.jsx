@@ -159,7 +159,7 @@ export default class Editor extends Component {
         var field = props.field || FREEZE_OBJ;
         var path = field.conditional && field.conditional.path || props.path;
         var Node = context.loader.loadType(field.type);
-
+        warning(Node, 'subschema: did not find a type for %s', field.type);
         var propTypes = Node.propTypes || FREEZE_OBJ,
             overrideProps = {
                 className: forField(Node, field.className),

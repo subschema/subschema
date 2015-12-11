@@ -21,11 +21,11 @@ export default class Main extends Component {
         if (/develop/.test(value)) {
             var Develop = this.context.loader.loadTemplate(value);
             if (Develop) {
-                return <Develop/>
+                return <Develop key={value}/>
             }
         } else if (value) {
-            return <Example example={value} useData={this.props.useData} useError={this.props.useError}/>
+            return <Example key={value} example={value} useData={this.props.useData} useError={this.props.useError}/>
         }
-        return <Index/>
+        return <Index key={value}/>
     }
 }

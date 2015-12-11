@@ -20,7 +20,6 @@ export default class Link extends Component {
     }
     handleClick = (e)=> {
         e && e.preventDefault();
-        console.log('location', location);
         this.props.onChange(!this.props.value);
     }
 
