@@ -21,5 +21,8 @@ module.exports = {
     data: {
         selectPage: 'Content'
     },
+    props: {
+        "loader": true
+    },
     setupFile: 'Expression-setup.js'
 }

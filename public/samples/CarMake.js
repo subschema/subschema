@@ -27,12 +27,5 @@ module.exports = {
         make: 'audi',
         model: '4000'
     },
-    props: {
-        valueManager: true
-    },
-    setup: function (scope, props) {
-        props.valueManager = 'Subschema.ValueManager(' + JSON.stringify(props.value, null, '\t') + ')';
-        delete props.value;
-    },
     setupFile: 'CarMake-setup.js'
 }

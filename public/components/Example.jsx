@@ -3,12 +3,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Highlight from './Highlight.jsx';
-import Playground from 'component-playground/lib/components/playground.js';
-import Subschema from 'Subschema';
+import Playground from 'component-playground/src/components/playground.jsx';
+import Subschema, {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, decorators} from 'Subschema';
 import CodeMirror from 'codemirror/mode/javascript/javascript.js';
 import cloneDeep from 'lodash/lang/cloneDeep';
+import ExampleLess from './Example.less';
 
-var {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, decorators} = Subschema;
 var {provide, listen} = decorators;
 
 function stringify(name, obj) {
@@ -59,20 +59,53 @@ class ValueManagerNode extends Component {
         </div>
     }
 }
+/**
+ * Hack to make values appear.
+ */
+class FormContext extends Component {
+    static contextTypes = PropTypes.contextTypes;
 
-class RenderPreview extends Component {
+    componentWillMount() {
+        this.setup(this.props, this.context);
+    }
+
+    componentWillReceiveProp(props, context) {
+        this.setup(props, context);
+    }
+
+    setup(props, context) {
+        this.valueManager = context.valueManager;
+        this.loader = this.context.loader;
+        if (props.value) {
+            this.valueManager.setValue(props.value);
+        }
+        if (props.errors) {
+            this.valueManager.setErrors(props.errors);
+        }
+        if (props.loader) {
+            this.loader.addLoader(props.loader);
+        }
+    }
 
     render() {
-        if (this.props.setupFunc) {
-            this.props.setupFunc(this.props.loader, this.props.schema, Subschema, React, this.props.valueManager);
-        }
-        var schema = cloneDeep(this.props.schema);
-
-        return <Form key={'form-'+this.props.example} schema={schema} valueManager={this.props.valueManager}
-                     loader={this.props.loader}/>;
+        var {children, valueManager, loader, ...rest} = this.props;
+        return <Form {...rest} valueManager={this.valueManager} loader={this.loader}>{this.props.children}</Form>
     }
 }
+class PropContext extends Component {
+    static propTypes = PropTypes.contextTypes;
+    static childContextTypes = PropTypes.contextTypes;
 
+    getChildContext() {
+        var {valueManager, loader} = this.props;
+        return {valueManager, loader};
+    }
+
+    render() {
+        return this.props.children;
+    }
+
+}
 export default class Example extends Component {
 
     static contextTypes = PropTypes.contextTypes;
@@ -137,54 +170,40 @@ export default class Example extends Component {
         return JSON.stringify(this.managed.schema, null, 2);
     }
 
-    handleEditClick = ()=>this.setState({edit: !this.state.edit})
-
     render() {
         var schema = this.schema();
         return <div>
             <h3>{this.props.example}</h3>
             <p>{this.managed.description}</p>
-            <RenderPreview {...this.managed}/>
+            {this.renderEdit()}
             <ValueManagerNode valueManager={this.managed.valueManager}/>
-            {this.state.edit ? this.renderEdit() : <Highlight lang="js" key={'highlight-'+this.props.example}
-                                                              onClick={this.handleEditClick}>
-                {
-                    `
-"use strict";
 
-import React from 'react';
-import Subschema from 'subschema';
-import ReactDOM from 'react-dom';
-
-${this.managed.setupTxt}
-
-var schema = ${schema}
-ReactDOM.render(<Form schema={schema} loader={loader} valueManager={valueManager}/>, document.getElementById('content'));
-`}
-
-
-            </Highlight>}
         </div>
     }
 
-    renderPreview() {
-        return <RenderPreview {...this.managed}/>
-    }
 
     renderEdit() {
-        console.log('render sample');
         var {schema, setup, setupTxt, props, data,errors, valueManager, loader} = this.managed;
         var valProps = {
-            schema: schema,
-            value: data || {},
-            errors: errors
-        }, scope = {
-            Form,
-            React,
-            Subschema,
-            loader,
-            valueManager
-        };
+                schema: schema,
+                value: this.props.useData ? data : {},
+                errors: this.props.useError ? errors : null
+            },
+            context = {
+                valueManager,
+                loader
+            },
+            {Form, ...rest} = Subschema,
+            scope = {
+                Form: FormContext,
+                React,
+                Subschema: rest,
+                loader,
+                valueManager
+            };
+        //Just in case
+        rest.Form = FormContext;
+
         if (setup) {
             setup(scope, valProps);
         }
@@ -194,8 +213,13 @@ ReactDOM.render(<Form schema={schema} loader={loader} valueManager={valueManager
                 return;
             }
             vars.push(stringify(v, valProps[v]));
-            propStr.push(v + '={' + v + '}');
+            propStr.push(`${v}={${v}}`);
         });
+        if (props) {
+            Object.keys(props).forEach((v)=> {
+                propStr.push(`${v}={${v}}`);
+            });
+        }
         var codeText = [
             `(function () {
 "use strict";
@@ -208,15 +232,15 @@ ReactDOM.render(<Form schema={schema} loader={loader} valueManager={valueManager
             `return <Form ${propStr.join(' ')} />`,
             '}())'
         ].join('\n');
-        //    console.log('example\n\n', codeText, '\n\n');
+        console.log('example\n\n', codeText, '\n\n');
         return <div className='sample-example-playground'>
-            <Playground key={'form-'+(data? 'data' :'no-data')}
-                        codeText={codeText} theme='monokai'
-                        collapsableCode={true}
-                        scope={scope}
+                <Playground key={'form-'+this.props.example}
+                            codeText={codeText} theme='monokai'
+                            collapsableCode={true}
+                            scope={scope}
+                            context={context}
 
-            />
-            <ValueManagerNode valueManager={valueManager}/>
+                />
         </div>
     }
 }

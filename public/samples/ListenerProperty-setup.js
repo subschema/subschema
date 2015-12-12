@@ -12,7 +12,6 @@ class SelectListen extends React.Component {
     static propTypes = copyPropTypes;
 
     render() {
-        console.log('select-listen', this.props.options);
         return <Select {...this.props}/>
     }
 }

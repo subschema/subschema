@@ -24,6 +24,9 @@ module.exports = {
         },
         fields: ["myDefault", "favorites"]
     },
+    props: {
+        loader: true
+    },
     data: {
         myDefault:'got',
         favorites: [
