@@ -13,7 +13,7 @@ import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 function makeEditPid(path, pid) {
-    return '@' + path.replace(/\./g, '@') + (pid ? `@${pid}` : '');
+    return '@' + path.replace(/\./g, '@') + (pid  !=  null ? `@${pid}` : '');
 }
 function wrapFunc(value, key) {
     return {value, key}
@@ -167,7 +167,9 @@ export default class CollectionMixin extends Component {
             if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
                 clonedValue[key] = value;
                 //if the key changed, remove the original.
-                remove(clonedValue, origKey);
+                if (origKey !== makeEditPid(currentPath)) {
+                    remove(clonedValue, origKey);
+                }
                 valueManager.update(origKey);
                 this.props.onChange(clonedValue);
             }
