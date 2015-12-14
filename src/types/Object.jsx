@@ -126,7 +126,7 @@ export default class ObjectType extends Component {
         var field = newProps.field || newProps;
         this.schema = normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
         if (oldProps.value !== newProps.value) {
-            this.context.valueManager.setValue(newProps.value);
+            this.context.valueManager.update(this.props.path, newProps.value);
         }
     }
 
