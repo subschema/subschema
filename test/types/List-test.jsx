@@ -26,7 +26,7 @@ describe('List', function () {
 
     function edit(root, c) {
         var tasks = byComponents(root, ListItemTemplate);
-        click(byTag(tasks[c], 'span'));
+        click(byClass(tasks[c], 'clickable'));
         var createTemplate = byComponent(root, CollectionCreateTemplate)
         var input = byName(createTemplate, 'value');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
@@ -99,8 +99,8 @@ describe('List', function () {
         expect(tasks[0]).toExist('task 1');
         expect(tasks[1]).toExist('task 2');
         expect(tasks[2]).toExist('task 3');
-
-        click(byTag(tasks[0], 'span'));
+        var span = byClass(tasks[0], 'clickable')[0];
+        click(span);
 
         var edit = byComponent(root, CollectionCreateTemplate);
         expect(edit).toExist('should not find CollectionCreateTemplate');

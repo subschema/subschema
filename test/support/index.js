@@ -99,17 +99,23 @@ function focus(node) {
 }
 
 function byComponent(node, comp) {
-    return TestUtils.scryRenderedComponentsWithType(node, comp)[0];
+    return TestUtils.scryRenderedComponentsWithType(asNode(node), comp)[0];
 }
 
 function byComponents(node, comp) {
-    return TestUtils.scryRenderedComponentsWithType(node, comp);
+    return TestUtils.scryRenderedComponentsWithType(asNode(node), comp);
 }
 function byClass(node, className) {
-    return TestUtils.scryRenderedDOMComponentsWithClass(node, className);
+    return TestUtils.scryRenderedDOMComponentsWithClass(asNode(node), className);
+}
+function asNode(node) {
+    if (Array.isArray(node) && node.length === 1) {
+        node = node[0];
+    }
+    return node;
 }
 function findNode(n) {
-    return ReactDOM.findDOMNode(n);
+    return ReactDOM.findDOMNode(asNode(n));
 }
 function context(ctx) {
     if (ctx == null) {
