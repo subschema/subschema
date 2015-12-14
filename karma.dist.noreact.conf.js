@@ -41,6 +41,14 @@ module.exports = function (config) {
                     }, {
                         test: /-setup\.js(x)?$/,
                         loader: join('test/support/sample-loader.js')
+                    },
+                    {
+                        test: /\.less$/,
+                        loader: 'style!css!less-loader'
+                    },
+                    {
+                        test: /\.json$/,
+                        loader: 'json'
                     }
                 ]
             },

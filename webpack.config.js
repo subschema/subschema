@@ -26,6 +26,9 @@ function config(filename, externals, extract) {
             test: /\.js(x)?$/,
             exclude: /node_modules/,
             loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
+        }, {
+            test: /\.json$/,
+            loader: 'json'
         }
     ];
     var plugins = [
