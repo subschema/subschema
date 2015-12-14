@@ -17,35 +17,13 @@ function stringify(name, obj) {
     return `var ${name} = ${str};`;
 }
 
-class ValueManagerNode extends Component {
-    componentWillMount() {
-        this.setup(this.props);
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.valueManager !== this.props.valueManager)
-            this.setup(props);
-    }
-
-    setup(props) {
-        this.unlisten();
-        this._listeners = [
-            props.valueManager.addListener(null, this.update, this, true),
-            props.valueManager.addErrorListener(null, this.error, this, true)]
-    }
-
-    unlisten() {
-        if (this._listeners) this._listeners.forEach(v=>v.remove());
-    }
-
-    componentWillUnmount() {
-        this.unlisten();
-    }
-
+class DisplayValueAndErrors extends Component {
+    @listen("error", null)
     error(errors) {
         this.setState({errors});
     }
 
+    @listen("value", null)
     update(value) {
         this.setState({value});
     }
@@ -53,9 +31,14 @@ class ValueManagerNode extends Component {
     render() {
         return <div>
             <h3>Values:</h3>
- <pre className='value-manager-node'>
+ <pre className='value-manager-node-value'>
  {JSON.stringify(this.state ? this.state.value : null, null, '\t')}
  </pre>
+            <h3>Errors:</h3>
+ <pre className='value-manager-node-error'>
+ {JSON.stringify(this.state ? this.state.errors : null, null, '\t')}
+ </pre>
+
         </div>
     }
 }
@@ -176,7 +159,6 @@ export default class Example extends Component {
             <h3>{this.props.example}</h3>
             <p>{this.managed.description}</p>
             {this.renderEdit()}
-            <ValueManagerNode valueManager={this.managed.valueManager}/>
 
         </div>
     }
@@ -193,16 +175,16 @@ export default class Example extends Component {
                 valueManager,
                 loader
             },
-            {Form, ...rest} = Subschema,
             scope = {
-                Form: FormContext,
+                Form,
                 React,
-                Subschema: rest,
+                Subschema,
                 loader,
-                valueManager
+                valueManager,
+                DisplayValueAndErrors
             };
         //Just in case
-        rest.Form = FormContext;
+//        rest.Form = FormContext;
 
         if (setup) {
             setup(scope, valProps);
@@ -229,18 +211,18 @@ export default class Example extends Component {
             `,
             vars.join('\n'),
             setupTxt,
-            `return <Form ${propStr.join(' ')} />`,
+            `return <Form ${propStr.join(' ')}><DisplayValueAndErrors/></Form>`,
             '}())'
         ].join('\n');
         console.log('example\n\n', codeText, '\n\n');
         return <div className='sample-example-playground'>
-                <Playground key={'form-'+this.props.example}
-                            codeText={codeText} theme='monokai'
-                            collapsableCode={true}
-                            scope={scope}
-                            context={context}
+            <Playground key={'form-'+this.props.example}
+                        codeText={codeText} theme='monokai'
+                        collapsableCode={true}
+                        scope={scope}
+                        context={context}
 
-                />
+            />
         </div>
     }
 }

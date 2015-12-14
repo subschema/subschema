@@ -11,6 +11,7 @@ import Link from './components/Link.jsx';
 import Main from './components/Main.jsx';
 import Example from './components/Example.jsx';
 import Index from './Index.jsx';
+import sample from './sample.less';
 
 import history from './location';
 
@@ -52,29 +53,26 @@ let unlisten = history.listen(location => {
     if (!loc || loc.pathname != pathname) {
         valueManager.update('pathname', location.pathname);
     }
-    // if (!loc || loc.query.useData != location.query.useData) {
     valueManager.update('useData', location.query.useData == "true");
-    // }
-    // if (!loc || loc.query.useError != location.query.useError) {
     valueManager.update('useError', location.query.useError == "true");
-    // }
+
     if (/develop/.test(pathname)) {
         valueManager.update('main.component', type);
         valueManager.update('main.conf', null);
     } else if (type) {
-        console.log('update', type);
         valueManager.update('main.component', 'Example');
         valueManager.update('main.example', type);
-        var conf = samples[type];
-        valueManager.update('main.conf', conf);
+        valueManager.update('main.conf', samples[type]);
     } else {
         valueManager.update('main.component', 'Index');
         valueManager.update('main.conf', null);
     }
     loc = location;
 
-})
+});
 
+
+//Handle change of state to showing data or error.
 function handleDataError(val, old, path) {
     //make sure the poll cycle exists first;
     setTimeout(()=> {

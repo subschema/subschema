@@ -12,6 +12,10 @@ class SelectListen extends React.Component {
     static propTypes = copyPropTypes;
 
     render() {
-        return <Select {...this.props}/>
+        var value = this.props.value;
+        if (value == null && this.props.options) {
+            value = this.props.options[0].val;
+        }
+        return <Select {...this.props} value={value}/>
     }
 }

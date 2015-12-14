@@ -7,12 +7,11 @@ import Content from '../types/Content.jsx';
 import listen from '../decorators/listen';
 
 export default class EditorTemplate extends Component {
-    render(){
+    render() {
         var {name, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
         if (!title) {
             title = ''
         }
-        console.log('help', help, error);
         return (<div
             className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  forEditor(this)}>
             <Content content={title} type="label" className={style.label} htmlFor={name}/>

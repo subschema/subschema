@@ -12,14 +12,13 @@ describe('Loader Example', ()=> {
 
     it('should load a custom type', ()=> {
 
-        var {Form, loader, ValueManager, decorators} = Subschema;
-
+        var {Form,  ValueManager, loaderFactory, DefaultLoader, decorators} = Subschema;
+        var loader = decorators.provide.defaultLoader = loaderFactory([DefaultLoader]);
         var schema = LoaderTest.schema;
         var valueManager = ValueManager();
         loaderTestSetup(loader, schema, Subschema, React, valueManager);
-
-        var s = JSON.parse(schema);
-        var form = into(<Form schema={s} loader={loader} />, true);
+        var s = schema;
+        var form = into(<Form schema={s} loader={loader}/>);
 
         var CheckboxSelect = loader.loadType('CheckboxSelect');
         expect(CheckboxSelect).toExist('CheckboxSelect should be found');
