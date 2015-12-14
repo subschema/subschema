@@ -12,7 +12,9 @@ import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
-
+function makeEditPid(path, pid) {
+    return '@' + path.replace(/\./g, '@') + (pid ? `@${pid}` : '');
+}
 function wrapFunc(value, key) {
     return {value, key}
 }
@@ -111,14 +113,14 @@ export default class CollectionMixin extends Component {
     handleAddBtn = (e) => {
         e && e.preventDefault();
         var editPid = this.createPid()
-        this.context.valueManager.update('@' + this.props.path + '_' + editPid, {
+        this.context.valueManager.update(makeEditPid(this.props.path, editPid), {
             key: editPid
         });
         this.setState({showAdd: true, editPid});
     }
 
     handleEdit = (pos, val, pid) => {
-        this.context.valueManager.update('@' + this.props.path + '_' + pid, {
+        this.context.valueManager.update(makeEditPid(this.props.path, pid), {
             value: clone(val),
             key: pid
         });
@@ -137,22 +139,23 @@ export default class CollectionMixin extends Component {
 
     handleBtnClick = (e, action)=> {
         e && e.preventDefault();
+
         if (action == 'submit') {
             this.handleSubmit(e);
         } else {
+            this.context.valueManager.update(makeEditPid(this.props.path, this.state.editPid));
             this.setState({
                 showAdd: false,
                 showEdit: false,
                 editPid: null
             });
         }
-
     }
 
     handleSubmit = (e)=> {
         e && e.preventDefault();
         var {valueManager} = this.context;
-        var origKey = '@' + this.props.path + '_' + this.state.editPid;
+        var origKey = makeEditPid(this.props.path, this.state.editPid);
         var {
             key,
             value
@@ -163,10 +166,9 @@ export default class CollectionMixin extends Component {
             var clonedValue = this.props.value == null ? this.createDefValue() : clone(this.props.value);
             if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
                 clonedValue[key] = value;
-                if (key !== this.state.editPid) {
-                    //if the key changed, remove the original.
-                    remove(clonedValue, this.state.editPid);
-                }
+                //if the key changed, remove the original.
+                remove(clonedValue, origKey);
+                valueManager.update(origKey);
                 this.props.onChange(clonedValue);
             }
 
@@ -197,7 +199,7 @@ export default class CollectionMixin extends Component {
         return <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
                            onButtonClick={this.handleBtnClick}
                            schema={this.createItemSchema(childPath)}
-                           path={'@' + this.props.path + '_' + this.state.editPid}
+                           path={makeEditPid(this.props.path,this.state.editPid)}
                            title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
 
         />

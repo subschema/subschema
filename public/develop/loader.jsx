@@ -1,5 +1,5 @@
 var React = require('react');
-var Highlight = require('../Highlight.jsx');
+var Highlight = require('../components/Highlight.jsx');
 var WebpackSetup = React.createClass({
     render(){
         return (<div>
