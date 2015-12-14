@@ -1,3 +1,18 @@
+Subschema 0.5.6 -> 0.6.0 Upgrade
+##Dependencies
+  * +react-dom
+##API Changes
+  * Forms are no longer use form-horizontal className. To change it back you can set it 
+```js
+
+subschema.styles.FormTemplate.formClass = 'form-horizontal';
+
+```
+  * Listener Properties now exist.  They are similar to expressions, but only listen to the path specified. 
+  * Demo has been reworked to use Subschema, and removed react-router.
+  * Demo now has the value preview built in the Playground component, to fix some nasty state issues using component-playground.
+  * Fixes to ValueManager not creating intermediate objects.
+
 Subschema 0.2x ->0.5 Upgrade
 ##Dependencies
 ##Webpack
