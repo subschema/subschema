@@ -13,7 +13,7 @@ import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
 function makeEditPid(path, pid) {
-    return '@' + path.replace(/\./g, '@') + (pid  !=  null ? `@${pid}` : '');
+    return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
 }
 function wrapFunc(value, key) {
     return {value, key}
@@ -43,18 +43,23 @@ export default class CollectionMixin extends Component {
         canReorder: PropTypes.bool,
         canDelete: PropTypes.bool,
         canAdd: PropTypes.bool,
+        showKey: PropTypes.bool,
         inline: PropTypes.bool,
         labelKey: PropTypes.path,
+        itemType: PropTypes.schema,
         createTemplate: PropTypes.template,
         buttonTemplate: PropTypes.template,
         itemTemplate: PropTypes.template,
-        itemType: PropTypes.schema
+        contentTemplate: PropTypes.template
+
     };
 
     static defaultProps = {
         createTemplate: 'CollectionCreateTemplate',
         buttonTemplate: 'ButtonTemplate',
-        itemTemplate: 'ListItemTemplate'
+        itemTemplate: 'ListItemTemplate',
+        contentTemplate: "ContentItemTemplate",
+        showKey: false
     };
 
     constructor(props, ...rest) {
@@ -168,7 +173,7 @@ export default class CollectionMixin extends Component {
                 clonedValue[key] = value;
                 //if the key changed, remove the original.
                 if (origKey !== makeEditPid(currentPath)) {
-                    remove(clonedValue, origKey);
+                    remove(clonedValue, this.state.editPid);
                 }
                 valueManager.update(origKey);
                 this.props.onChange(clonedValue);
@@ -243,12 +248,12 @@ export default class CollectionMixin extends Component {
         }
     }
 
-    renderRowEach = (data, rowId)=> {
+    renderRowEach(data, rowId) {
         return this.renderRow(data, null, rowId);
     }
 
     renderRow(v, sectionId, i) {
-        var ItemTemplate = this.props.itemTemplate;
+        var ItemTemplate = this.props.itemTemplate, ContentItemTemplate = this.props.contentTemplate;
 
         return <ItemTemplate key={this.props.path+'.'+i} pos={i} path={ path(this.props.path, v.key)}
                              onMoveUp={this.handleMoveUp}
@@ -260,9 +265,14 @@ export default class CollectionMixin extends Component {
                              canEdit={this.props.canEdit}
                              field={v}
                              pid={v.key}
-                             itemToString={this.itemToString()}
                              value={v} errors={this.props.errors} last={i + 1 === this.state.wrapped.length}>
-            {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) : null}
+            {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) :
+            <ContentItemTemplate value={v} labelKey={this.props.labelKey} showKey={this.props.key}
+                                 pos={i}
+                                 pid={v.key}
+                                 value={v}
+                                 showKey={this.props.showKey}
+                                 onClick={this.props.canEdit ? this.handleEdit : null}/> }
         </ItemTemplate>
     }
 
@@ -271,7 +281,7 @@ export default class CollectionMixin extends Component {
         return (<div className={className}>
             {this.renderAdd()}
             <ul>
-                {values.map(this.renderRowEach)}
+                {values.map(this.renderRowEach, this)}
             </ul>
         </div>);
     }

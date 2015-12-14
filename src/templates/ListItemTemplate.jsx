@@ -3,7 +3,6 @@ import {path, noop} from '../tutils';
 import Buttons from './ButtonsTemplate';
 import style from 'subschema-styles/ListItemTemplate-style';
 
-
 export default class ListItemTemplate extends Component {
     static defaultProps = {
         type: 'Text',
@@ -13,10 +12,7 @@ export default class ListItemTemplate extends Component {
         onValidate: noop,
         onValueChange: noop,
         onEdit: noop,
-        last: false,
-        itemToString(v) {
-            return v != null ? v.toString() : '';
-        }
+        last: false
     }
 
     handleMoveUp = (e)=> {
@@ -39,13 +35,6 @@ export default class ListItemTemplate extends Component {
         var val = this.props.value;
 
         this.props.onEdit(this.props.pos, val.value, this.props.pid);
-    }
-
-    renderField() {
-        var field = this.props, content = this.props.itemToString(this.props.value);
-
-        return <span className={style.itemValue} path={path(this.props.path, this.props.value.key)}
-                     onClick={field.canEdit ? this.handleEdit.bind(this) : null} key="content">{content}</span>;
     }
 
     buttons(pos, last, canReorder, canDelete) {
@@ -92,7 +81,6 @@ export default class ListItemTemplate extends Component {
         var {pos,  value, errors, path, onValidate,type, name, canReorder, canDelete, last, onValueChange} = this.props;
         var error = errors && errors[0] && errors[0].message;
         return <li className={style.listGroupItem+' '+(error ? style.hasError : '')}>
-            {this.renderField()}
             { error ? <p ref="error" key="error" className={style.help}>{error}</p> : null }
             <Buttons key="buttons" buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
                      buttonsClass={style.buttonsClass}/>

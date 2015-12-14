@@ -12,13 +12,14 @@ export default class MixedInput extends CollectionMixin {
         labelKey: PropTypes.string,
         keyType: typetype,
         valueType: typetype,
-        value: PropTypes.object
+        value: PropTypes.object,
 
     }, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
+        showKey: true,
         valueType: {type: 'Text'},
-        keyType: {type: 'Text'},
+        keyType: {type: 'Text'}
     }, CollectionMixin.defaultProps)
 
     unwrap(value) {
@@ -30,20 +31,6 @@ export default class MixedInput extends CollectionMixin {
             ret[v.key] = v.value;
         });
         return ret;
-    }
-
-    itemToString() {
-        if (this.props.itemToString) return this.props.itemToString;
-        var labelKey = this.props.labelKey;
-        return function (v) {
-            if (!(v && v.key)) {
-                return null;
-            }
-
-            return <span><h4 className={style.item}>{v.key}</h4>{labelKey ? <span
-                className={style.itemInner}>{ _get(v.value, labelKey, '')}</span> : null}</span>;
-        }
-
     }
 
     uniqueCheck = (value)=> {
@@ -64,9 +51,11 @@ export default class MixedInput extends CollectionMixin {
     createPid() {
         return 'new_property_' + (this.state.wrapped.length);
     }
+
     createDefValue() {
         return {};
     }
+
     getTemplateItem() {
         var kt = this.props.keyType,
             keyType = isString(kt) ? {

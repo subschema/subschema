@@ -125,9 +125,6 @@ export default class ObjectType extends Component {
     updateProps(oldProps, newProps) {
         var field = newProps.field || newProps;
         this.schema = normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
-        if (oldProps.value !== newProps.value) {
-            this.context.valueManager.update(this.props.path, newProps.value);
-        }
     }
 
     makeFieldset = (f, i)=> {
