@@ -124,7 +124,7 @@ export default class ObjectType extends Component {
 
     updateProps(oldProps, newProps) {
         var field = newProps.field || newProps;
-        this.schema = normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
+        this.schema = ObjectType.normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
     }
 
     makeFieldset = (f, i)=> {
@@ -144,7 +144,7 @@ export default class ObjectType extends Component {
         if (field == null) {
             return null;
         }
-        return <Editor ref={f} key={'key-' + f} path={_path(this.props.path, f)}
+        return <Editor key={'key-' + f} path={_path(this.props.path, f)}
                        field={field}
                        name={f}
                        template={field.template}
@@ -181,7 +181,7 @@ export default class ObjectType extends Component {
             }
             if (mappedFields || ref.fields || ref.fieldsets) {
                 var {fieldsets, fields, ...rest} = ref;
-                rest.fieldsets = normalizeFieldsets(fieldsets, fields || mappedFields);
+                rest.fieldsets = ObjectType.normalizeFieldsets(fieldsets, fields || mappedFields);
                 ref = rest;
             }
             return this.addEditor(ref, f);

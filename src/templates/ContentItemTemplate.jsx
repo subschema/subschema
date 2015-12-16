@@ -40,12 +40,13 @@ export default class ContentItemTemplate extends Component {
     }
 
     render() {
-        var {value,showKey, labelKey} = this.props;
+        var {value,showKey, children, labelKey} = this.props;
         var key = value.key || '';
         var label = labelKey ? _get(value.value, labelKey, '') : value.value;
-        return (<span onClick={this.handleClick}  className={this.props.onClick ? 'clickable' : ''}>
+        return (<span onClick={this.handleClick} className={this.props.onClick ? 'clickable' : ''}>
             {showKey ? <h4 className={style.item}>{key}</h4> : null}
             <span className={style.itemInner}>{label }</span>
+            {children}
         </span>);
     }
 }

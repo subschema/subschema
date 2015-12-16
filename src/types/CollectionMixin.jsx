@@ -45,13 +45,14 @@ export default class CollectionMixin extends Component {
         canAdd: PropTypes.bool,
         showKey: PropTypes.bool,
         inline: PropTypes.bool,
-        labelKey: PropTypes.path,
-        itemType: PropTypes.schema,
+        labelKey: PropTypes.string,
+        itemType: PropTypes.type,
         createTemplate: PropTypes.template,
         buttonTemplate: PropTypes.template,
         itemTemplate: PropTypes.template,
-        contentTemplate: PropTypes.template
-
+        contentTemplate: PropTypes.template,
+        buttons: PropTypes.buttons,
+        addButton: PropTypes.button
     };
 
     static defaultProps = {
@@ -59,7 +60,19 @@ export default class CollectionMixin extends Component {
         buttonTemplate: 'ButtonTemplate',
         itemTemplate: 'ListItemTemplate',
         contentTemplate: "ContentItemTemplate",
-        showKey: false
+        showKey: false,
+        itemType: {
+            type: 'Text'
+        },
+        addButton: {
+            "label": "Add",
+            "className": "btn btn-default"
+        },
+        buttons: {
+            buttonsClass: 'btn-group pull-right',
+            buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
+                , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
+        }
     };
 
     constructor(props, ...rest) {
@@ -216,9 +229,12 @@ export default class CollectionMixin extends Component {
         if (!this.props.canAdd) {
             return null;
         }
+        var addButton = this.props.addButton, btn = typeof addButton === 'string' ? {
+            label: addButton
+        } : addButton;
         var Template = this.props.buttonTemplate;
-        return <Template ref="addBtn" key="addBtn" buttonClass={style.addBtn} label="Add"
-                         onClick={this.handleAddBtn}><i className={style.iconAdd}/>
+        return <Template key="addBtn" buttonClass={style.addBtn} {...btn} onClick={this.handleAddBtn}>
+            <i className={style.iconAdd}/>
         </Template>
 
     }
@@ -238,11 +254,7 @@ export default class CollectionMixin extends Component {
             schema: this.getTemplateItem(),
             fieldsets: [{
                 fields: ['key', 'value'],
-                buttons: {
-                    buttonsClass: 'btn-group pull-right',
-                    buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                        , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
-                }
+                buttons: this.props.buttons
             }]
 
         }
@@ -267,7 +279,8 @@ export default class CollectionMixin extends Component {
                              pid={v.key}
                              value={v} errors={this.props.errors} last={i + 1 === this.state.wrapped.length}>
             {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) :
-            <ContentItemTemplate value={v} labelKey={this.props.labelKey} showKey={this.props.key}
+            <ContentItemTemplate value={v}
+                                 labelKey={this.props.labelKey}
                                  pos={i}
                                  pid={v.key}
                                  value={v}
