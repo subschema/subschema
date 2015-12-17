@@ -52,11 +52,11 @@ module.exports = function (config) {
             },
 
             resolve: {
-                extensions: ['', '.js', '.jsx'],
+                extensions: ['', '.jsx', '.js'],
                 alias: {
                     'subschema': join('src/index.jsx'),
                     'subschema-styles': join('src/styles'),
-                    'Subschema': join('src/index.jsx'),
+                    'Subschema': join('src'),
                 }
             },
 

@@ -29,7 +29,7 @@ class DisplayValueAndErrors extends Component {
     }
 
     render() {
-        return <div>
+        return <div className="form-group clearfix">
             <h3>Values:</h3>
  <pre className='value-manager-node-value'>
  {JSON.stringify(this.state ? this.state.value : null, null, '\t')}

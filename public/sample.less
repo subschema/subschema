@@ -70,8 +70,9 @@ pre {
   background: white;
   padding: 10px;
   //  overflow: auto;
-  .form-horizontal .form-group {
+  .form-group {
     margin: 0;
+
   }
 }
 
@@ -80,4 +81,14 @@ pre {
   font-size: 12px;
   color: white;
   background: #F2777A;
+}
+
+.previewArea > div > form > div  {
+  &:before, &:after {
+    display:table;
+    content:' ';
+  }
+  &:after {
+    clear: both;
+  }
 }

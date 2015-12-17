@@ -45,6 +45,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 loaders: ['style','css','less']
+            },
+            {
+                test:/\.json$/,
+                loader:'json'
             }
         ]
     },
@@ -54,9 +58,10 @@ module.exports = {
         require('postcss-color-rebeccapurple')
     ],
     resolve: {
-        extensions:['','.js','.jsx'],
+        extensions:['','.jsx','.js'],
         alias: {
             'subschema': join('src/index.jsx'),
+            'Subschema': join('src'),
             'subschema-styles':join('src/styles'),
             'react': join('node_modules/react')
             //   'component-playground':join('node_modules/component-playground')

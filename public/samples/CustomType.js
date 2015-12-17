@@ -14,5 +14,8 @@ module.exports = {
     data: {
         areYouSure: true
     },
+    props:{
+        loader:true
+    },
     setupFile: 'CustomType-setup.js'
 }
