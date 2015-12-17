@@ -9,22 +9,22 @@ export default class Main extends Component {
     static propTypes = {
         useData: PropTypes.listener,
         useError: PropTypes.listener,
-        component: PropTypes.listener,
-        example: PropTypes.listener,
+        onChange: PropTypes.valueEvent
     }
     static defaultProps = {
         useData: "useData",
-        useError: "useError",
-        conf: ".conf",
-        example: '.example',
-        component: '.component'
+        useError: "useError"
     };
 
     render() {
-        var {component, ...rest}=this.props;
+        if (this.props.value == null) {
+            return null;
+        }
+
+        var {component, ...rest} = this.props.value;
         if (component == null) return null;
         var Component = this.context.loader.loadType(component);
-        return <Component {...rest}/>
+        return <Component {...this.props} {...rest}/>
 
     }
 }

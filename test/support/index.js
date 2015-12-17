@@ -40,19 +40,22 @@ function byTag(node, tag) {
 function byTags(node, tag) {
     return TestUtils.scryRenderedDOMComponentsWithTag(node, tag);
 }
+function onlyOne(node) {
+    if (node.length != 1) {
+        throw new Error(`Found ${node.length} nodes expected 1`)
+    }
+    return node[0];
+}
 function byName(root, name) {
-    var all = TestUtils.findAllInRenderedTree(root, function (inst) {
+    return onlyOne(TestUtils.findAllInRenderedTree(root, function (inst) {
         if (!TestUtils.isDOMComponent(inst)) {
             return false;
         }
         var inode = findNode(inst);
         return inode.name === name;
-    });
-    if (all.length !== 1) {
-        throw new Error('Did not find exactly one match for name:' + name);
-    }
-    return all[0];
+    }));
 }
+
 
 function filterProp(node, property, value) {
     node = Array.isArray(node) ? node : [node];
@@ -74,10 +77,7 @@ function byId(node, id) {
         var inode = findNode(inst);
         return inode.id === id;
     });
-    if (all.length !== 1) {
-        throw new Error('Did not find exactly one match for name:' + name);
-    }
-    return all[0];
+    return onlyOne(all);
 }
 
 function change(node, value) {
@@ -99,7 +99,7 @@ function focus(node) {
 }
 
 function byComponent(node, comp) {
-    return TestUtils.scryRenderedComponentsWithType(asNode(node), comp)[0];
+    return onlyOne(TestUtils.scryRenderedComponentsWithType(asNode(node), comp));
 }
 
 function byComponents(node, comp) {
@@ -109,8 +109,8 @@ function byClass(node, className) {
     return TestUtils.scryRenderedDOMComponentsWithClass(asNode(node), className);
 }
 function asNode(node) {
-    if (Array.isArray(node) && node.length === 1) {
-        node = node[0];
+    if (Array.isArray(node)) {
+        return onlyOne(node);
     }
     return node;
 }

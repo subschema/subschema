@@ -44,11 +44,24 @@ var valueManager = ValueManager({
 });
 
 var loc;
+
+valueManager.addListener('pathname', function(pathname){
+    var type = pathname.replace(/\#?\//, '')
+    if (/develop/.test(pathname)) {
+        valueManager.update('main', {component: type});
+    } else if (type) {
+        valueManager.update('main', {component: 'Example', example: type, conf: samples[type]});
+    } else {
+        valueManager.update('main', {component: 'Index', conf: null});
+    }
+
+});
 // Listen for changes to the current location. The
 // listener is called once immediately.
+
 let unlisten = history.listen(location => {
     console.log('loc', location);
-    var pathname = location.pathname, type = pathname.replace(/\#?\//, '');
+    var pathname = location.pathname;
 
     if (!loc || loc.pathname != pathname) {
         valueManager.update('pathname', location.pathname);
@@ -56,21 +69,9 @@ let unlisten = history.listen(location => {
     valueManager.update('useData', location.query.useData == "true");
     valueManager.update('useError', location.query.useError == "true");
 
-    if (/develop/.test(pathname)) {
-        valueManager.update('main.component', type);
-        valueManager.update('main.conf', null);
-    } else if (type) {
-        valueManager.update('main.component', 'Example');
-        valueManager.update('main.example', type);
-        valueManager.update('main.conf', samples[type]);
-    } else {
-        valueManager.update('main.component', 'Index');
-        valueManager.update('main.conf', null);
-    }
     loc = location;
 
 });
-
 
 //Handle change of state to showing data or error.
 function handleDataError(val, old, path) {

@@ -139,7 +139,8 @@ export default class Editor extends Component {
             this._expressions[property] = expression;
         }
     }
-    handleExpressionValue(val, old, path){
+
+    handleExpressionValue(val, old, path) {
 
     }
 
@@ -214,6 +215,23 @@ export default class Editor extends Component {
         } else if (propType === PropTypes.listener || propType === PropTypes.listener.isRequired) {
             this.addExpression(property, Editor.valueEngine(value));
             return null;
+        } else if (propType === PropTypes.typeDescription || propType === PropTypes.typeDescription.isRequired) {
+            if (isString(value)) {
+                return {
+                    type: value
+                }
+            }
+            return value;
+        } else if (propType === PropTypes.button || propType === PropTypes.button.isRequired) {
+            if (value === false) {
+                return null;
+            }
+            if (isString(value)) {
+                return {
+                    label: value
+                }
+            }
+            return value;
         }
         return this.context.loader.loadByPropType(propType, value);
     }

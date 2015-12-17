@@ -2,8 +2,6 @@ var {types, decorators} = Subschema;
 var {provide} = decorators;
 var {type, template} = provide;
 var {Select, Checkbox} = types;
-//decorators.provide.defaultLoader = loader;
-
 //Provide a template named SimpleTempalte
 
 @template

@@ -61,9 +61,11 @@ api.validEvent = customPropType(api.func, 'validEvent');
 
 api.dataType = customPropType(api.string, 'dataType');
 
-api.type = api.oneOfType([api.string, api.func, api.shape({
-    type: api.string
-})]);
+api.type = api.oneOfType([api.string, api.func]);
+
+api.typeDescription = api.shape({
+    type: api.string.isRequired
+});
 
 /**
  * Signify this property can take an expression.  This

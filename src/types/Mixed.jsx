@@ -9,8 +9,8 @@ export default class MixedInput extends CollectionMixin {
 
     static propTypes = defaults({
         labelKey: PropTypes.string,
-        keyType: PropTypes.type,
-        valueType: PropTypes.type,
+        keyType: PropTypes.typeDescription,
+        valueType: PropTypes.typeDescription,
         value: PropTypes.any
     }, CollectionMixin.propTypes);
 
@@ -55,18 +55,11 @@ export default class MixedInput extends CollectionMixin {
     }
 
     getTemplateItem() {
-        var kt = this.props.keyType,
-            keyType = isString(kt) ? {
-                type: kt
-            } : kt || {},
+        var {keyType, valueType, itemType} = this.props,
             schema = {
                 key: keyType,
-                value: this.props.itemType || this.props.valueType
+                value: valueType || itemType
             };
-
-        if (!keyType.type) {
-            keyType.type = this.props.keyType;
-        }
 
         (keyType.validators || (keyType.validators = [])).unshift('required', this.uniqueCheck);
 

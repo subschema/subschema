@@ -9,7 +9,11 @@ module.exports = {
                 canDelete: true,
                 canReorder: true,
                 canEdit: true,
-                inline:true
+                inline:true,
+                addButton:{
+                    "label": "Add Task",
+                    "className": "btn btn-default btn-add"
+                }
             }
         },
         "fieldsets": [{

@@ -12,6 +12,7 @@ import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
 import listen from '../decorators/listen';
 import template from '../decorators/template';
+import defaults from 'lodash/object/defaults';
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
 }
@@ -46,7 +47,7 @@ export default class CollectionMixin extends Component {
         showKey: PropTypes.bool,
         inline: PropTypes.bool,
         labelKey: PropTypes.string,
-        itemType: PropTypes.type,
+        itemType: PropTypes.typeDescription,
         createTemplate: PropTypes.template,
         buttonTemplate: PropTypes.template,
         itemTemplate: PropTypes.template,
@@ -66,7 +67,7 @@ export default class CollectionMixin extends Component {
         },
         addButton: {
             "label": "Add",
-            "className": "btn btn-default"
+            "className": "btn btn-default btn-add"
         },
         buttons: {
             buttonsClass: 'btn-group pull-right',
@@ -229,11 +230,9 @@ export default class CollectionMixin extends Component {
         if (!this.props.canAdd) {
             return null;
         }
-        var addButton = this.props.addButton, btn = typeof addButton === 'string' ? {
-            label: addButton
-        } : addButton;
+        var btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
         var Template = this.props.buttonTemplate;
-        return <Template key="addBtn" buttonClass={style.addBtn} {...btn} onClick={this.handleAddBtn}>
+        return <Template key="addBtn"  {...btn} onClick={this.handleAddBtn}>
             <i className={style.iconAdd}/>
         </Template>
 

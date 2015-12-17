@@ -103,7 +103,7 @@ describe('List', function () {
         click(span);
 
         var edit = byComponent(root, CollectionCreateTemplate);
-        expect(edit).toExist('should not find CollectionCreateTemplate');
+        expect(edit).toExist('should find CollectionCreateTemplate');
         var input = byName(edit, 'value');
         expect(findNode(input).value).toBe('one', 'value should be one');
 

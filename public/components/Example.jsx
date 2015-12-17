@@ -8,7 +8,7 @@ import Subschema, {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, 
 import CodeMirror from 'codemirror/mode/javascript/javascript.js';
 import cloneDeep from 'lodash/lang/cloneDeep';
 import ExampleLess from './Example.less';
-
+import each from 'lodash/collection/each';
 var {provide, listen} = decorators;
 
 function stringify(name, obj) {
@@ -42,53 +42,7 @@ class DisplayValueAndErrors extends Component {
         </div>
     }
 }
-/**
- * Hack to make values appear.
- */
-class FormContext extends Component {
-    static contextTypes = PropTypes.contextTypes;
 
-    componentWillMount() {
-        this.setup(this.props, this.context);
-    }
-
-    componentWillReceiveProp(props, context) {
-        this.setup(props, context);
-    }
-
-    setup(props, context) {
-        this.valueManager = context.valueManager;
-        this.loader = this.context.loader;
-        if (props.value) {
-            this.valueManager.setValue(props.value);
-        }
-        if (props.errors) {
-            this.valueManager.setErrors(props.errors);
-        }
-        if (props.loader) {
-            this.loader.addLoader(props.loader);
-        }
-    }
-
-    render() {
-        var {children, valueManager, loader, ...rest} = this.props;
-        return <Form {...rest} valueManager={this.valueManager} loader={this.loader}>{this.props.children}</Form>
-    }
-}
-class PropContext extends Component {
-    static propTypes = PropTypes.contextTypes;
-    static childContextTypes = PropTypes.contextTypes;
-
-    getChildContext() {
-        var {valueManager, loader} = this.props;
-        return {valueManager, loader};
-    }
-
-    render() {
-        return this.props.children;
-    }
-
-}
 export default class Example extends Component {
 
     static contextTypes = PropTypes.contextTypes;
@@ -143,7 +97,7 @@ export default class Example extends Component {
         }
         managed.schema = cloneDeep(schema);
 
-        managed.loader = provide.defaultLoader = loaderFactory([DefaultLoader]);
+
 
         managed.valueManager = ValueManager(value, errors);
 
@@ -165,7 +119,8 @@ export default class Example extends Component {
 
 
     renderEdit() {
-        var {schema, setup, setupTxt, props, data,errors, valueManager, loader} = this.managed;
+        var {schema, setup, setupTxt, props, data,errors, valueManager} = this.managed;
+        var loader = provide.defaultLoader = loaderFactory([DefaultLoader]);
         var valProps = {
                 schema: schema,
                 value: this.props.useData ? data : {},
@@ -185,23 +140,23 @@ export default class Example extends Component {
             };
         //Just in case
 //        rest.Form = FormContext;
-
+        props = props || {};
         if (setup) {
             setup(scope, valProps);
         }
         var propStr = [], vars = [];
         Object.keys(valProps).forEach(function (v) {
-            if (!valProps[v]) {
+            if (!valProps[v] || props[v]) {
                 return;
             }
             vars.push(stringify(v, valProps[v]));
             propStr.push(`${v}={${v}}`);
         });
-        if (props) {
-            Object.keys(props).forEach((v)=> {
-                propStr.push(`${v}={${v}}`);
-            });
-        }
+        each(props, (val, v)=> {
+            if (val == true) val = v;
+            else val = JSON.stringify(val);
+            propStr.push(`${v}={${val}}`);
+        });
         var codeText = [
             `(function () {
 "use strict";
