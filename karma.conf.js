@@ -1,12 +1,11 @@
 var webpack = require('webpack'),
     path = require('path'),
     join = path.join.bind(path, __dirname),
-    demoCfg = require('./demo.webpack.config.js')
-    ;
+    demoCfg = require('./demo.webpack.config.js'),
+    files = ['test/index.js'],
+    lifecycle = process.env['npm_lifecycle_event'],
+    isDist = /dist/.test(lifecycle);
 
-var files = ['test/index.js'];
-var lifecycle = process.env['npm_lifecycle_event'];
-var isDist = /dist/.test(lifecycle), isKarma = /karma/.test(lifecycle);
 if (isDist) {
     files.unshift(
         'node_modules/react/dist/react-with-addons.js',
@@ -16,11 +15,11 @@ if (isDist) {
     );
     demoCfg.resolve.alias = {};
     demoCfg.externals = {
-        subschema:'Subschema',
-        Subschema:'Subschema',
-        react:'React',
-        'react-dom':'ReactDOM',
-        'react-addons-test-utils':'React.addons.TestUtils'
+        subschema: 'Subschema',
+        Subschema: 'Subschema',
+        react: 'React',
+        'react-dom': 'ReactDOM',
+        'react-addons-test-utils': 'React.addons.TestUtils'
     };
 } else {
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');

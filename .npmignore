@@ -1,4 +1,5 @@
 public
+jsconfig.json
 .vscode
 npm-debug.*
 .idea
