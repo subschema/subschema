@@ -11,7 +11,7 @@ class Anchor extends React.Component {
     };
     static defaultProps = {
         href: '#/{.}'
-    }
+    };
 
     render() {
         return <a href={this.props.href}>{this.props.label}</a>

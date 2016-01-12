@@ -18,7 +18,7 @@ export default class Button extends Component {
 
     handleClick = (e)=> {
         this.props.onClick(e, this.props.action, this);
-    }
+    };
 
     render() {
         var {buttonClass, title, iconClass, onClick, label, ...props} = this.props;

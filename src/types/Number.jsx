@@ -9,7 +9,7 @@ export default class NumberInput extends Component {
 
     static propTypes = {
         onChange: PropTypes.valueEvent
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -45,7 +45,7 @@ export default class NumberInput extends Component {
             this.forceUpdate();
             return false;
         }
-    }
+    };
 
     render() {
         var {onChange, value, ...props} = this.props

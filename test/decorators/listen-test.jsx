@@ -2,7 +2,8 @@
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
 import {ValueManager, Conditional, loader, decorators, PropTypes} from 'Subschema';
 var listen = decorators.listen;
-describe('decorator.listen', function () {
+
+describe('decorators.listen', function () {
     this.timeout(50000);
     it('should listen to events', function () {
         var valueManager = ValueManager();

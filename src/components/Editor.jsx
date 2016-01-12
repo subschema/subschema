@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import Template from './Template.jsx';
-import {listeners} from './../decorators';
+import listeners from '../decorators/listeners';
 import defaults from 'lodash/object/defaults';
 import {forField} from '../css';
 import { FREEZE_OBJ, applyFuncs, each, nextFunc, FREEZE_ARR, noop, titlelize, isString,toArray,nullCheck} from '../tutils';
@@ -91,7 +91,7 @@ export default class Editor extends Component {
         onBlur: noop,
         onValueChange: noop,
         template: 'EditorTemplate'
-    }
+    };
     /**
      * All Types have the following automatically injected.
      * @type {{name: *, onChange: *, className: *, id: *}}
@@ -105,7 +105,7 @@ export default class Editor extends Component {
         type: PropTypes.dataType,
         fieldAttrs: PropTypes.fieldAttrs,
         placeholder: PropTypes.placeholder
-    }
+    };
 
 
     constructor(props, context, ...rest) {
@@ -238,7 +238,8 @@ export default class Editor extends Component {
 
     handleTargetValue = (e)=> {
         this.handleUpdateValue(e.target.value);
-    }
+    };
+
     handleUpdateValue = (value)=> {
         if (this.props.onChange(value) === false) {
             return false;
@@ -252,7 +253,7 @@ export default class Editor extends Component {
         }
 
         return false;
-    }
+    };
 
     handleValueChange(value, oldValue, name) {
 
@@ -274,7 +275,7 @@ export default class Editor extends Component {
     handleValidate = (value, component, e)=> {
         this.state.hasValidated = true;
         this.validate(value, this.getErrorMessages(value));
-    }
+    };
 
     setErrors(errors) {
         this.setState({errors});
@@ -341,7 +342,7 @@ export default class Editor extends Component {
 
     handleValidateListener = ()=> {
         this.validate(this.state.value, this.getErrorMessages(this.state.value));
-    }
+    };
 
     _validate() {
         this.validate(this.getValue());
@@ -372,7 +373,7 @@ export default class Editor extends Component {
 
     handleValid = (valid)=> {
         this.setState({valid})
-    }
+    };
 
     _invokeExpression(obj, expression, property) {
         obj[property] = expression.format(this);

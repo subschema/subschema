@@ -2,19 +2,7 @@ import React, {Component} from 'react';
 import style  from 'subschema-styles/Mixed-style';
 import PropTypes from '../PropTypes';
 import _get from 'lodash/object/get'
-/**
- *  if (this.props.itemToString) return this.props.itemToString;
- var labelKey = this.props.labelKey;
- return function (v) {
-            if (!(v && v.key)) {
-                return null;
-            }
 
-            return <span><h4 className={style.item}>{v.key}</h4>{labelKey ? <span
-                className={style.itemInner}>{ _get(v.value, labelKey, '')}</span> : null}</span>;
-        }
-
- */
 export default class ContentItemTemplate extends Component {
     static propTypes = {
         showKey: PropTypes.bool,
@@ -32,12 +20,12 @@ export default class ContentItemTemplate extends Component {
                 return PropTypes.node(props, 'key', componentName);
             }
         }
-    }
+    };
     //(pos, val, pid)
     handleClick = (e)=> {
         e && e.preventDefault();
         this.props.onClick(this.props.pos, this.props.value.value, this.props.pid);
-    }
+    };
 
     render() {
         var {value,showKey, children, labelKey} = this.props;

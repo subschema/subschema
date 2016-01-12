@@ -10,12 +10,12 @@ export default class NewChildContext extends Component {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         path: PropTypes.string.isRequired
-    }
+    };
     static childContextTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,
         parentValueManager: PropTypes.valueManager
-    }
+    };
 
     constructor(props, context, ...rest) {
         super(props, context, ...rest);
@@ -48,7 +48,7 @@ export default class NewChildContext extends Component {
             this.props.valueManager.update(this.props.path, value);
         }
         return false;
-    }
+    };
 
 
     render() {

@@ -110,7 +110,7 @@ describe('Form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors}/>);
+        var root = into(<Form value={value} schema={schema} errors={errors}/>, true);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
         Simulate.blur(input);

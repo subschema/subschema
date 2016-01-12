@@ -4,10 +4,10 @@ import Subschema, {PropTypes} from 'Subschema';
 export default class ULTemplate extends Component {
     static propTypes = {
         liClassName: PropTypes.cssClass
-    }
+    };
     static defaultProps = {
         liClassName: 'list-group-item'
-    }
+    };
 
     render() {
         var props = this.props;

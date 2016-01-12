@@ -1,19 +1,31 @@
 import React, {Component} from 'react';
-import { loaderFactory, decorators} from 'Subschema';
+import { loaderFactory, decorators, loader as origLoader} from 'Subschema';
 import expect from 'expect';
-var provide = decorators.provide;
 
-describe('provide', function () {
+const provide = decorators.provide;
+
+describe('decorators.provide', function () {
     this.timeout(50000);
     var loader;
+
     beforeEach(function () {
         loader = provide.defaultLoader = loaderFactory();
     });
+
+    afterEach(function(){
+        loader = origLoader;
+    });
+
     class TestClass extends Component {
 
     }
+
     ['type',  'validator', 'template', 'processor', 'operator' ].forEach(function (test) {
-        var decorator = provide[test];
+        const decorator = provide[test];
+        it(`${test} should exist`, function(){
+           expect(decorator).toExist(`${test} did not exist on ${provide}`);
+        });
+
         var Postfix = test.substring(0, 1).toUpperCase() + test.substring(1), method = 'load' + Postfix;
         it(`should add ${test}`, function () {
 
@@ -47,10 +59,10 @@ describe('provide', function () {
                 }
 
                 @decorator
-                other = TestClass
+                other = TestClass;
 
                 @decorator("whatever")
-                more = TestClass
+                more = TestClass;
 
             }
 

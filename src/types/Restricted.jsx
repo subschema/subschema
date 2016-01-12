@@ -9,12 +9,12 @@ export default class Restricted extends RestrictedMixin {
 
     static defaultProps = {
         onValid: noop
-    }
+    };
     static propTypes = {
         onValid: PropTypes.validEvent,
         onChange: PropTypes.valueEvent,
         formatter: PropTypes.string
-    }
+    };
 
 
     handleSelectionRange = (caret)=> {
@@ -23,10 +23,11 @@ export default class Restricted extends RestrictedMixin {
 
         if (this.state.caret != null)
             input && input.setSelectionRange(this.state.caret, this.state.caret);
-    }
+    };
+
     handleValueChange = (e)=> {
         this._value(e.target.value, false);
-    }
+    };
 
     render() {
         var {onValid,formatter, onChange, onKeyDown,value, ...props} = this.props

@@ -2,22 +2,26 @@ import React, {Component} from 'react';
 import Subschema, {PropTypes,Editor} from 'Subschema';
 
 export default class Navigate extends Component {
+
     static contextTypes = {
         valueManager: PropTypes.valueManager
-    }
+    };
+
     static propTypes = {
         pathname: PropTypes.listener,
         href: PropTypes.string,
         label: PropTypes.string,
-    }
+    };
+
     static defaultProps = {
         pathname: "pathname",
         href: '/{.}',
         label: '{.}'
-    }
+    };
+
     clzName = (name)=> {
         return 'list-group-item ' + ('/' + name.replace(/^#+?\//, '') === this.props.pathname ? 'active' : '');
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);

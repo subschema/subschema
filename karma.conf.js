@@ -1,6 +1,25 @@
-var webpack = require('webpack'), path = require('path'), join = path.join.bind(path, __dirname);
+var webpack = require('webpack'),
+    path = require('path'),
+    join = path.join.bind(path, __dirname),
+    demoCfg = require('./demo.webpack.config.js')
 ;
 
+demoCfg.resolve.alias.Subschema = join('src/index.jsx');
+
+var lifecycle = process.env['npm_lifecycle_event'];
+var isKarma = /karma/.test(lifecycle);
+
+if (isKarma) {
+   // demoCfg.plugins.unshift(new webpack.HotModuleReplacementPlugin());
+    demoCfg.devServer.hot = false;
+    demoCfg.devServer.inline = false;
+}
+delete demoCfg.entry;
+demoCfg.devtool = 'inline-source-map';
+demoCfg.module.loaders.unshift({
+    test:/-setup\.js/,
+    loader:join('./test/support/sample-loader.js')
+});
 module.exports = function (config) {
     config.set({
         browserNoActivityTimeout: 20000,
@@ -15,57 +34,8 @@ module.exports = function (config) {
         },
         reporters: ['dots'], //report results in this format
 
-        webpack: { //kind of a copy of your webpack config
-            cache: true,
-            debug: true,
-            devtool: 'inline-source-map',
+        webpack: demoCfg,
 
-            stats: {
-                colors: true,
-                reasons: true
-            },
-            module: {
-                loaders: [
-                    {
-                        test: /\.js(x)?$/,
-                        exclude: /node_modules/,
-                        include: [
-                            join('src'),
-                            join('test'),
-                            join('public')
-                        ],
-                        loader: 'babel-loader?stage=0'
-                    },
-                    {
-                        test: /-setup\.js(x)?$/,
-                        loader: join('test/support/sample-loader.js')
-                    },
-                    {
-                        test: /\.less$/,
-                        loader: 'style!css!less-loader'
-                    },
-                    {
-                        test: /\.json$/,
-                        loader: 'json'
-                    }
-                ]
-            },
-
-            resolve: {
-                extensions: ['', '.jsx', '.js'],
-                alias: {
-                    'subschema': join('src/index.jsx'),
-                    'subschema-styles': join('src/styles'),
-                    'Subschema': join('src'),
-                }
-            },
-
-            plugins: [
-                new webpack.DefinePlugin({
-                    'process.env.NODE_ENV': JSON.stringify('development')
-                })]
-
-        },
         webpackMiddleware: {
             stats: {
                 colors: true

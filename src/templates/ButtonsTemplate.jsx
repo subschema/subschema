@@ -17,7 +17,7 @@ export default class ButtonsTemplate extends Component {
         onButtonClick: function (event, action, btn, value) {
 
         }
-    }
+    };
 
     makeButtons(buttons) {
         var onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;

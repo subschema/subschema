@@ -12,7 +12,7 @@ function config(filename, externals, extract) {
             test: /\.js(x)?$/,
             excludes: /node_modules/,
             //do this to prevent babel fromt tanslating everything.
-            loader: 'babel-loader?stage=0'
+            loader: 'babel'
         },
         {test: /\.(png|jpe?g|mpe?g[34]?|gif)$/, loader: 'url-loader?limit=100000'},
         {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -116,75 +116,45 @@ function config(filename, externals, extract) {
     }
     return conf;
 };
+var externs = {
+    "react": {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react"
+    },
+    './React': {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react"
+    },
+    "react-dom": {
+        root: "ReactDom",
+        commonjs2: "react-dom",
+        commonjs: "react-dom",
+        amd: "react-dom"
+    },
+    "react-addons-css-transition-group": {
+        "root": "ReactCSSTransitionGroup",
+        "commonjs2": "react-addons-css-transition-group",
+        "commonjs": "react-addons-css-transition-group",
+        "amd": "react-addons-css-transition-group"
+    },
+    "fbjs": {
+        "root": "fbjs",
+        "commonjs2": "fbjs",
+        "commonjs": "fbjs",
+        "amd": "fbjs"
+    }
+};
 
 var configs = [
     config('subschema.js'),
     config('subschema-noreact.js',
-        [{
-            "react": {
-                root: "React",
-                commonjs2: "react",
-                commonjs: "react",
-                amd: "react"
-            },
-            './React': {
-                root: "React",
-                commonjs2: "react",
-                commonjs: "react",
-                amd: "react"
-            },
-            "react-dom": {
-                root: "ReactDom",
-                commonjs2: "react-dom",
-                commonjs: "react-dom",
-                amd: "react-dom"
-            },
-            "react-addons-css-transition-group": {
-                "root": "ReactCSSTransitionGroup",
-                "commonjs2": "react-addons-css-transition-group",
-                "commonjs": "react-addons-css-transition-group",
-                "amd": "react-addons-css-transition-group"
-            },
-            "fbjs": {
-                "root": "fbjs",
-                "commonjs2": "fbjs",
-                "commonjs": "fbjs",
-                "amd": "fbjs"
-            }
-        }]
+        [externs]
     ),
     config('subschema-server.js',
-        [{
-            "react": {
-                root: "React",
-                commonjs2: "react",
-                commonjs: "react",
-                amd: "react"
-            },
-            './React': {
-                root: "React",
-                commonjs2: "react",
-                commonjs: "react",
-                amd: "react"
-            },
-            "react-dom": {
-                root: "ReactDom",
-                commonjs2: "react-dom",
-                commonjs: "react-dom",
-                amd: "react-dom"
-            },
-            "react-addons-css-transition-group": {
-                "root": "ReactCSSTransitionGroup",
-                "commonjs2": "react-addons-css-transition-group",
-                "commonjs": "react-addons-css-transition-group",
-                "amd": "react-addons-css-transition-group"
-            },
-            "fbjs": {
-                "root": "fbjs",
-                "commonjs2": "fbjs",
-                "commonjs": "fbjs",
-                "amd": "fbjs"
-            }
-        }], true
+        [externs], true
     )];
 module.exports = configs;

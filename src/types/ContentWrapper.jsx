@@ -15,14 +15,15 @@ export default class ContentWrapper extends Component {
     static defaultProps = {
         type: 'span',
         content: ''
-    }
+    };
+
     static propTypes = {
         content: PropTypes.string
-    }
+    };
 
     static contextTypes = {
         loader: PropTypes.loader
-    }
+    };
 
     constructor(props) {
         super(props);

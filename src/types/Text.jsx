@@ -3,9 +3,11 @@
 import React, {Component} from 'react';
 
 export default class TextInput extends Component {
+
     static defaultProps = {
-        type:'text'
-    }
+        type: 'text'
+    };
+
     render() {
         return <input {...this.props}
         />

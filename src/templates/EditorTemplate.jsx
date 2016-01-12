@@ -1,10 +1,8 @@
 "use strict";
 import React, {Component} from 'react';
 import style from 'subschema-styles/EditorTemplate-style';
-import PropTypes from '../PropTypes';
 import {forEditor} from '../css';
 import Content from '../types/Content.jsx';
-import listen from '../decorators/listen';
 
 export default class EditorTemplate extends Component {
     render() {
@@ -23,4 +21,4 @@ export default class EditorTemplate extends Component {
             </div>
         </div>);
     }
-}
+};

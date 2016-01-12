@@ -67,7 +67,7 @@ export default class Conditional extends Component {
         operator: '!=',
         value: null,
         animate: false
-    }
+    };
 
     static propTypes = {
         path: PropTypes.path,
@@ -114,7 +114,7 @@ export default class Conditional extends Component {
          * Listen to an error rather than the mutually exclusive with listen.
          */
         error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -149,7 +149,7 @@ export default class Conditional extends Component {
 
     handleMatch = (value)=> {
         this.setState({matched: value});
-    }
+    };
 
     @listeners('error')
     errorListeners(props) {
@@ -187,7 +187,7 @@ export default class Conditional extends Component {
     handleValue = (value)=> {
         var matched = this.evaluate(value, this.props.value);
         this.setState({matched});
-    }
+    };
 
 
     compile(operator) {

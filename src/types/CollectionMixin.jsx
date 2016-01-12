@@ -5,7 +5,7 @@ import Editor from '../components/Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import NewChildContext from '../components/NewChildContext.jsx';
-import tu, {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
+import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
 import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
@@ -102,20 +102,20 @@ export default class CollectionMixin extends Component {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
-    }
+    };
 
     handleMoveDown = (pos, val)=> {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.min(pos + 1, values.length), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
 
-    }
+    };
 
     handleDelete = (pos, val, pid)=> {
         var values = this.state.wrapped, oval = values && values.concat();
         values.splice(pos, 1);
         this.changeValue(values, oval);
-    }
+    };
 
 
     changeValue = (newValue, oldValue)=> {
@@ -127,7 +127,7 @@ export default class CollectionMixin extends Component {
                 showEdit: false
             });
         }
-    }
+    };
 
     handleAddBtn = (e) => {
         e && e.preventDefault();
@@ -136,7 +136,7 @@ export default class CollectionMixin extends Component {
             key: editPid
         });
         this.setState({showAdd: true, editPid});
-    }
+    };
 
     handleEdit = (pos, val, pid) => {
         this.context.valueManager.update(makeEditPid(this.props.path, pid), {
@@ -148,13 +148,13 @@ export default class CollectionMixin extends Component {
             showEdit: true,
             editPid: pid
         });
-    }
+    };
 
 
     handleCancelAdd = (e) => {
         e && e.preventDefault();
         this.setState({showAdd: false, showEdit: false});
-    }
+    };
 
     handleBtnClick = (e, action)=> {
         e && e.preventDefault();
@@ -169,7 +169,7 @@ export default class CollectionMixin extends Component {
                 editPid: null
             });
         }
-    }
+    };
 
     handleSubmit = (e)=> {
         e && e.preventDefault();
@@ -203,7 +203,7 @@ export default class CollectionMixin extends Component {
             showEdit: false,
             editPid: null
         });
-    }
+    };
 
 
     renderAddEditTemplate(edit, create) {

@@ -6,8 +6,15 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
 module.exports = {
-
-    devtool: 'source-map',
+    devServer: {
+        noInfo: true,
+        hot: true,
+        inline: true,
+        contentBase: join('public'),
+        publicPath: '/',
+        port: 8084
+    },
+    devtool: '#inline-source-map',
     entry: {
         app: './public/app.jsx'
     },
@@ -24,11 +31,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.js(x)?$/,
-                exclude: [
-                    /node_modules\/(?!(subschema-builder|component-playground|react-))/,
-                    /babel-core/
-                ],
-                loaders: ['babel-loader?stage=0']
+                exclude:/node_modules\/(?!(component-playground))/,
+                loaders: ['babel']
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -63,8 +67,9 @@ module.exports = {
             'subschema': join('src/index.jsx'),
             'Subschema': join('src'),
             'subschema-styles':join('src/styles'),
-            'react': join('node_modules/react')
-            //   'component-playground':join('node_modules/component-playground')
+            'component-playground':join('node_modules/component-playground/src'),
+            'babel-core/browser':join('babel-standalone'),
+            'babel/polyfill':join('src/null.js')
         }
     },
 

@@ -14,13 +14,13 @@ export default class Checkboxes extends Component {
         options: PropTypes.options,
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template,
-    }
+    };
 
     static defaultProps = {
         options: FREEZE_ARR,
         itemTemplate: 'CheckboxesTemplate',
         groupTemplate: 'CheckboxesGroupTemplate',
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -44,7 +44,7 @@ export default class Checkboxes extends Component {
         }
 
         this.props.onChange(newValues);
-    }
+    };
 
 
     _createCheckbox(option, index, group, CheckboxTemplate) {

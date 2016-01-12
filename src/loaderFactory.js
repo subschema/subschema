@@ -1,9 +1,10 @@
-var tu = require('./tutils'), concat = Function.apply.bind(Array.prototype.concat, []);
-var PropTypes = require('./PropTypes');
-var warning = require('./warning');
-var {isArray,toArray,isFunction, isString, isRegExp} = tu;
+import PropTypes from './PropTypes';
+import {isArray,toArray,isFunction, isString, isRegExp} from './tutils';
+import warning from './warning';
 
-module.exports = function loaderFactory(loaders) {
+const concat = Function.apply.bind(Array.prototype.concat, []);
+
+export default function loaderFactory(loaders) {
     loaders = loaders || [];
     var types = {load, list, add},
         api = {
@@ -190,7 +191,7 @@ module.exports = function loaderFactory(loaders) {
                 ret = this.loadType(value);
             } else if (processor === propType || prprocessor === propType) {
                 ret = this.loadProcessor(value);
-            } else  if (operator === propType || properator === propType) {
+            } else if (operator === propType || properator === propType) {
                 ret = this.loadOperator(value);
             } else if (validator === propType || prvalidator === propType) {
                 ret = initValidators.call(this, value);

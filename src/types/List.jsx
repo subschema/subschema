@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import tu, {noop} from '../tutils';
+import {noop, isString} from '../tutils';
 import CollectionMixin from './CollectionMixin.jsx';
 import style from 'subschema-styles/List-style';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -35,7 +35,7 @@ export default class ListInput extends CollectionMixin {
     }
 
     getTemplateItem() {
-        var value = tu.isString(this.props.itemType) ? {
+        var value = isString(this.props.itemType) ? {
             type: this.props.itemType
         } : this.props.itemType || {};
         value.title = false;

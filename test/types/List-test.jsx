@@ -4,7 +4,7 @@ var {templates, Form} = require('Subschema');
 var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
 
-describe('List', function () {
+describe('types/List', function () {
     this.timeout(50000);
     function add(root, c) {
         var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
@@ -14,7 +14,8 @@ describe('List', function () {
         var create = byComponent(root, CollectionCreateTemplate);
         var input = byName(create, 'value');
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate)
+        var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate);
+        expect(buttons[0]).toExist('buttons[0] does not exist');
         var btn = findNode(filterProp(buttons, 'action', 'submit')[0]);
         Simulate.click(btn);
 
@@ -160,7 +161,7 @@ describe('List', function () {
         }, data = {
             tasks: []
         }
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);

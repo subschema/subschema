@@ -10,9 +10,9 @@ export default class FieldSetTemplate extends Component {
         className: PropTypes.cssClass,
         onButtonClick: PropTypes.event,
         onClick: PropTypes.event
-    }
+    };
 
-    static defaultProps = {}
+    static defaultProps = {};
 
 
     renderButtons(buttons) {

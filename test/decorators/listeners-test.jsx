@@ -1,9 +1,9 @@
-"use strict";
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
-
 import {ValueManager, Conditional, loader, decorators, PropTypes} from 'Subschema';
-var listeners = decorators.listeners;
-describe('decorator.listeners', function () {
+
+const listeners = decorators.listeners;
+
+describe('decorators.listeners', function () {
     this.timeout(50000);
     it('should listen to events', function () {
         var valueManager = ValueManager();
@@ -16,7 +16,7 @@ describe('decorator.listeners', function () {
                 merror: function (...args) {
                     _error.push(args);
                 }
-            }
+            };
 
             @listeners
             listen() {

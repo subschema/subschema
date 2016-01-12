@@ -4,7 +4,6 @@ import warning from '../warning';
 import PropTypes from '../PropTypes'
 import decorator from './decorator';
 import Content from '../types/Content.jsx'
-import Template from '../components/Template.jsx';
 
 function loadCtx(v) {
     if (v === false) {
@@ -15,23 +14,23 @@ function loadCtx(v) {
     if (typeof v === 'string') {
         var props = this.props;
 
-        var template = props && props.field && props.field[v] || props[v];
+        var tmpl = props && props.field && props.field[v] || props[v];
 
-        warning(template, 'There was no template for "%s" in props or in props.field on component "%s"', v, this.constructor.name);
+        warning(tmpl, 'There was no template for "%s" in props or in props.field on component "%s"', v, this.constructor.name);
 
         //allow for singly nested templates to be resolved.
-        if (template && typeof template.template === 'string') {
-            template = this.context.loader.loadTemplate(template.template);
-        } else if (typeof template === 'string') {
-            template = this.context.loader.loadTemplate(template);
+        if (tmpl && typeof tmpl.template === 'string') {
+            tmpl = this.context.loader.loadTemplate(tmpl.template);
+        } else if (typeof tmpl === 'string') {
+            tmpl = this.context.loader.loadTemplate(tmpl);
         }
 
-        if (!template) {
+        if (!tmpl) {
             warning(false, 'There was no template for property "%s" in the loader named "%s" on component "%s"', v, props && props.field && props.field[v] || props[v], this.constructor.name);
         }
-        return template;
+        return tmpl;
     }
-    return Template;
+    return template.Template;
 }
 /**
  * This injects a template into your method.  It can take variable length
@@ -43,7 +42,7 @@ function loadCtx(v) {
  * @returns {template$wrap}
  */
 const DEFAULT_TEMPLATE_PROP = ["template"];
-function template(...rest) {
+const template = decorator(function template$inner(...rest) {
     if (rest == null || rest.length === 0) {
         rest = DEFAULT_TEMPLATE_PROP;
     }
@@ -65,6 +64,6 @@ function template(...rest) {
         return description;
 
     }
-}
+});
 
-export default decorator(template);
+export default template;

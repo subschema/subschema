@@ -5,10 +5,11 @@ export default class DateInput extends Component {
 
     static propTypes = {
         onChange: PropTypes.valueEvent
-    }
+    };
+
     static defaultProps = {
         type: "date"
-    }
+    };
 
     asInputValue(value) {
         if (value == null) {
@@ -19,9 +20,9 @@ export default class DateInput extends Component {
 
 
     handleDateChange = (e)=> {
-        var value = e.target.value
+        var value = e.target.value;
         this.props.onChange(new Date(value).getTime());
-    }
+    };
 
 
     render() {

@@ -154,4 +154,4 @@ export const MapTypes = {
     'addSubmitListener': 'addSubmitListener',
     'addStateListener': 'addStateListener',
     'addValidateListener': 'addValidateListener'
-}
+};

@@ -1,16 +1,17 @@
 "use strict";
 import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
-
 import {ValueManager, Conditional, loader, decorators} from 'Subschema';
-var template = decorators.template;
-describe('template', function () {
+
+const template = decorators.template;
+
+describe('decorators.template', function () {
     var context = {
         loader: {
             loadTemplate(templ){
                 return templ;
             }
         }
-    }
+    };
     it('should do a method', function () {
 
         class Stuff {
@@ -39,7 +40,7 @@ describe('template', function () {
 
             props = {
                 template:'stuff'
-            }
+            };
             //resolvve against props['junk']
             @template()
             method(first, second) {
@@ -51,7 +52,7 @@ describe('template', function () {
         expect(result).toExist();
         expect(result[0]).toEqual('stuff');
 
-    })
+    });
     it('should default to template without invoke', function () {
 
         class Stuff {
@@ -59,7 +60,7 @@ describe('template', function () {
 
             props = {
                 template:'stuff'
-            }
+            };
             //resolvve against props['junk']
             @template
             method(first, second) {

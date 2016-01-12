@@ -4,6 +4,7 @@ import Content from './../types/Content.jsx';
 import {FREEZE_OBJ} from './../tutils';
 import Conditional from './Conditional.jsx';
 import template from '../decorators/template';
+
 /**
  * This meta template resolves templates, and allows
  * properties to be assigned to a a template object.
@@ -12,12 +13,12 @@ import template from '../decorators/template';
  *
  * @type {*|Function}
  */
-export default class Template extends Component {
+class Template extends Component {
     static propTypes = {
         path: PropTypes.path,
         template: PropTypes.template,
         wrap: PropTypes.bool
-    }
+    };
 
     static contextTypes = PropTypes.contextTypes;
 
@@ -66,3 +67,6 @@ export default class Template extends Component {
         </Conditional>);
     }
 }
+template.Template = Template;
+
+export default Template;

@@ -13,10 +13,11 @@ export default class WizardMixin extends Component {
     static contextTypes = {
         loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
-    }
+    };
+
     static defaultProps = {
         buttonsTemplate: 'ButtonsTemplate'
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -48,7 +49,7 @@ export default class WizardMixin extends Component {
                 return;
             }
         });
-    }
+    };
 
     previous = ()=> {
         var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState - 1;
@@ -58,7 +59,7 @@ export default class WizardMixin extends Component {
             this.setState({disabled: false});
             return;
         }
-    }
+    };
 
 
     go = (pos, resp)=> {
@@ -67,7 +68,7 @@ export default class WizardMixin extends Component {
             return;
         }
         this.setNavState(resp == null ? pos : resp);
-    }
+    };
 
     _validate(done) {
         this.context.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
@@ -80,7 +81,7 @@ export default class WizardMixin extends Component {
             this.setNavState(value, true);
         }
 
-    }
+    };
 
 
     handleKeyDown = (e)=> {
@@ -91,11 +92,11 @@ export default class WizardMixin extends Component {
                 return this.handleBtn(e, 'submit');
             }
         }
-    }
+    };
 
 
     handleValidate = () => {
-    }
+    };
 
     handleSubmit = (e)=> {
         this._validate((errors)=> {
@@ -107,7 +108,7 @@ export default class WizardMixin extends Component {
                 return;
             }
         })
-    }
+    };
 
     @template('buttonsTemplate')
     renderBtns(ButtonsTemplate, compState) {
@@ -161,18 +162,18 @@ export default class WizardMixin extends Component {
             }
         }
 
-    }
+    };
 
 
     handleEnter = ()=> {
         this.setState({animating: true})
-    }
+    };
 
 
     handleLeave = (done)=> {
         this.setState({animating: false})
         done();
-    }
+    };
 
 
 }

@@ -13,15 +13,17 @@ export default class Link extends Component {
         "search": PropTypes.expression,
         "label": PropTypes.expression,
         "onChange": PropTypes.valueEvent
-    }
+    };
+
     static defaultProps = {
         "pathname": "pathname",
         "label": "{.}"
-    }
+    };
+
     handleClick = (e)=> {
         e && e.preventDefault();
         this.props.onChange(!this.props.value);
-    }
+    };
 
     render() {
         return <a href={this.props.href+this.props.search}

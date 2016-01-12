@@ -75,7 +75,7 @@ describe('Editor', function () {
              */
             static propTypes = {
                 cool: React.PropTypes.bool
-            }
+            };
 
             /**
              * Input class can be overriden
@@ -133,11 +133,11 @@ describe('Editor', function () {
                 stuff: PropTypes.expression,
                 other: PropTypes.expression,
                 when: PropTypes.expression
-            }
+            };
             static defaultProps = {
                 other: '{..test}-abc',
                 when: '{..cando}-do'
-            }
+            };
 
             render() {
                 return <div>{this.props.stuff}{this.props.other}</div>
@@ -171,11 +171,11 @@ describe('Editor', function () {
                 stuff: PropTypes.listener,
                 other: PropTypes.listener,
                 when: PropTypes.listener
-            }
+            };
             static defaultProps = {
                 other: 'test',
                 when: '..cando'
-            }
+            };
 
             render() {
                 return <div>{this.props.stuff}{this.props.other}</div>

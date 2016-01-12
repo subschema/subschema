@@ -1,9 +1,8 @@
 "use strict";
 
-import tutils from './tutils';
+import {isFunction, returnFirst} from './tutils';
 import warning from './warning';
 
-var { isFunction, returnFirst } = tutils;
 /**
  * This callback is displayed as a global member.
  * It will call them in order of most distant to least distance path.

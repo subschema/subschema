@@ -15,12 +15,12 @@ export default class FormTemplate extends Component {
         method: PropTypes.oneOf(['get', 'post']),
         name: PropTypes.string,
         novalidate: PropTypes.bool,
-        target: PropTypes.string,
-    }
+        target: PropTypes.string
+    };
 
     static defaultProps = {
         className: styles.formClass,
-    }
+    };
 
     render() {
         var {children, name, fieldAttrs, enctype, className, action, method, onSubmit, ...props} = this.props;

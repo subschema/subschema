@@ -9,12 +9,12 @@ export default class AutocompleteItemTemplate extends Component {
         focus: false,
         onSelect () {
         }
-    }
+    };
 
     handleClick = (e)=> {
         e && e.preventDefault();
         this.props.onSelect(this.props.data);
-    }
+    };
 
     render() {
         var {data, focus, value, processor} = this.props;

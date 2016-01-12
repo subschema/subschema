@@ -7,7 +7,7 @@ var loaderTestSetup = require('../../public/samples/Loader-setup.js');
 var LoaderTest = require('../../public/samples/Loader.js');
 
 
-describe('Loader Example', ()=> {
+describe('public/loader', ()=> {
 
 
     it('should load a custom type', ()=> {

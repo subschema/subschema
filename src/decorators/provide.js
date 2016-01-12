@@ -88,7 +88,9 @@ function _type(type, prefix = 'add', postfix = '') {
 }, provide);
 
 provide.schema = decorator(provideClass.bind(null, 'schema'), provideSchemaClass);
-export default provide;
+
+//export const {type, validator, template, processor, operator, schema} = provide;
+export default (provide);
 /*
 
  export var type =  decorator(provideProperty.bind(null, 'type'), provideClass.bind(null, 'type'));

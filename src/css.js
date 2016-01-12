@@ -91,4 +91,11 @@ export function removeClass(node, className) {
     return node;
 }
 
-export default {};
+export default {
+    hasClass,
+    removeClass,
+    addClass,
+    addClasses,
+    forField,
+    forEditor
+};

@@ -14,12 +14,12 @@ export default class Hidden extends Component {
     // so that it can be used to hold hidden state of complex structures.
     static propTypes = {
         asJSON: PropTypes.bool
-    }
+    };
 
     static defaultProps = {
         type: "hidden",
         asJSON: false
-    }
+    };
 
     render() {
         var {value,asJSON, ...props} =this.props;

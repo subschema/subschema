@@ -23,11 +23,11 @@ class ModalTemplate extends Component {
     static defaultProps = {
         onCommit(){
         }
-    }
+    };
     handleClose = (e)=> {
         e && e.preventDefault();
         this.context.parentValueManager.update(this.props.dismiss, false);
-    }
+    };
     handleBtnClose = (e, action) => {
         switch (action) {
             case 'submit':
@@ -40,7 +40,7 @@ class ModalTemplate extends Component {
                 break;
         }
 
-    }
+    };
 
     renderFooter(buttons) {
         if (!buttons) return null;
@@ -79,7 +79,7 @@ export default class ModalTemplateWrapper extends Component {
         title: PropTypes.node,
         buttons: PropTypes.buttons,
         path: PropTypes.path,
-    }
+    };
 
     render() {
         var {...context} = this.context;

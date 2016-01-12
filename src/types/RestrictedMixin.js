@@ -348,7 +348,7 @@ export default class RestrictedMixin extends Component {
         creditcard: '#### #### #### ####',
         mm20YY: shortDate,
         shortDate
-    }
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -458,7 +458,7 @@ export default class RestrictedMixin extends Component {
             nvalue.splice(pos, Math.max(end - pos, 1), char);
             this._value(nvalue.join(''), false, pos);
         }
-    }
+    };
 
     handleState(str, isBackspace, caret) {
         var value = this.formatter(str, isBackspace, caret) || {isValid: false};

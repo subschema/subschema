@@ -18,7 +18,7 @@ export default class MixedInput extends CollectionMixin {
         showKey: true,
         valueType: {type: 'Text'},
         keyType: {type: 'Text'}
-    }, CollectionMixin.defaultProps)
+    }, CollectionMixin.defaultProps);
 
     unwrap(value) {
         var ret = {}
@@ -44,7 +44,7 @@ export default class MixedInput extends CollectionMixin {
 
         }
         return null;
-    }
+    };
 
     createPid() {
         return 'new_property_' + (this.state.wrapped.length);

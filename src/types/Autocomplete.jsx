@@ -12,7 +12,8 @@ export default class Autocomplete extends Component {
 
     static contextTypes = {
         loader: PropTypes.loader
-    }
+    };
+
     static propTypes = {
         inputType: PropTypes.type,
         onChange: PropTypes.valueEvent,
@@ -30,7 +31,7 @@ export default class Autocomplete extends Component {
         input: PropTypes.string,
         options: PropTypes.options
 
-    }
+    };
 
     static inputClassName = 'form-control';
 
@@ -53,8 +54,7 @@ export default class Autocomplete extends Component {
         onValid: noop,
         onValidate: noop,
         showing: 'Searching...'
-    }
-
+    };
 
     constructor(props, ...rest) {
         super(props, ...rest);
@@ -178,7 +178,7 @@ export default class Autocomplete extends Component {
             this.setState({showing: false, focus: -1, suggestions: []}, this.un)
         }
         //        this.props.onBlur();
-    }
+    };
 
 
     bindDocument = ()=> {
@@ -195,7 +195,7 @@ export default class Autocomplete extends Component {
 
         this._onDocumentKeydownListener =
             Dom.listen(this, 'keypress', this.handleDocumentEnter);
-    }
+    };
 
     @lifecycle("componentWillUnmount")
     unbindDocument() {
@@ -220,7 +220,7 @@ export default class Autocomplete extends Component {
             e.stopPropagation();
             this.hide(true);
         }
-    }
+    };
 
 
     handleDocumentKeyUp = (e)=> {
@@ -228,7 +228,7 @@ export default class Autocomplete extends Component {
         if (e.keyCode === 27) {
             this.hide(false);
         }
-    }
+    };
 
 
     handleDocumentClick = (e)=> {
@@ -239,18 +239,16 @@ export default class Autocomplete extends Component {
         }
 
         this.hide(false);
-    }
+    };
 
 
     processor() {
         return this.props.processor;
     }
 
-
     handleSuggestionClick = (o)=> {
         this.onSelect(o);
-    }
-
+    };
 
     onSelect = (o)=> {
         if (this.props.onSelect(o) === false) {
@@ -269,8 +267,7 @@ export default class Autocomplete extends Component {
                 input
             });
         }
-    }
-
+    };
 
     _handleDispatch = (input)=> {
         this.setState({
@@ -295,7 +292,7 @@ export default class Autocomplete extends Component {
                 });
             }
         });
-    }
+    };
 
 
     handleKeyUp = (e)=> {
@@ -343,11 +340,11 @@ export default class Autocomplete extends Component {
                 this.setState({focus});
             }
         }
-    }
+    };
 
     handleChange = (e) => {
         this._handleDispatch(e.target.value);
-    }
+    };
 
 
     handlePaste = (event) => {
@@ -356,7 +353,7 @@ export default class Autocomplete extends Component {
 
             this.setState({input, suggestions: [], showing: false});
         });
-    }
+    };
 
 
     handleBlur = (event)=> {
@@ -366,7 +363,7 @@ export default class Autocomplete extends Component {
         }
         this.props.onValidate(event);
         this.props.onBlur(event);
-    }
+    };
 
     renderSuggestions() {
         var suggestions = this.state.suggestions || [];

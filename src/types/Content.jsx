@@ -1,6 +1,6 @@
 "use strict";
 
-import React, {Component} from 'react';
+import React, {Component, DOM} from 'react';
 import DefaultContentWrapper from './ContentWrapper.jsx';
 import map from 'lodash/collection/map';
 import {isString,isObject, isArray, toArray} from '../tutils';
@@ -12,18 +12,18 @@ export default class Content extends Component {
 
     static contextTypes = {
         loader: PropTypes.loader
-    }
+    };
     static propTypes = {
-        content:PropTypes.content,
-    }
+        content: PropTypes.content
+    };
 
     //Expose for react-native subschema.
     static defaultProps = {
         type: 'span',
         content: ''
-    }
+    };
 
-    static Types = React.DOM || {}
+    static Types = DOM || {};
 
     renderChildren(props, children) {
         if (!(children && props.children)) {

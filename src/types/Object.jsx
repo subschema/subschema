@@ -134,7 +134,7 @@ export default class ObjectType extends Component {
                          schema={this.schema.schema}>
             {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
         </Template>
-    }
+    };
 
     getValue() {
         return this.state.value;
@@ -198,11 +198,11 @@ export default class ObjectType extends Component {
                 this.props.onSubmit(e, ...rest);
             }
         }
-    }
+    };
 
     handleSubmit = (...rest)=> {
         this.props.onSubmit(...rest);
-    }
+    };
 
     render() {
         //capture the things that should not fall through.

@@ -12,7 +12,7 @@ templateContext.keys().forEach(function (path) {
     templates[name] = {
         name: name,
         path: path,
-        template: templateContext(path)
+        template: templateContext(path).default
     }
 });
 processorContext.keys().forEach(function (path) {
@@ -20,7 +20,7 @@ processorContext.keys().forEach(function (path) {
     processors[name] = {
         name: name,
         path: path,
-        processor: processorContext(path)
+        processor: processorContext(path).default
     }
 
 });
@@ -29,12 +29,11 @@ typeContext.keys().forEach(function (path) {
     types[name] = {
         name: name,
         path: path,
-        type: typeContext(path)
+        type: typeContext(path).default
     }
-})
+});
 
-//console.log('Templates', Object.keys(templates), 'Types', Object.keys(types));
-module.exports = {
+export default {
     loadTemplate (template) {
         return templates[template] && templates[template].template;
     },
@@ -71,4 +70,4 @@ module.exports = {
         });
     }
 
-}
+};

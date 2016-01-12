@@ -11,7 +11,7 @@ export default class WizardProgressTemplate extends Component {
         fieldsets: [],
         onClick(e){
         }
-    }
+    };
 
     getStyle(i) {
         var length = this.props.fieldsets.length, indx = this.props.index;

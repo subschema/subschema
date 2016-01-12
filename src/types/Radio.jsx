@@ -1,7 +1,7 @@
 "use strict";
 
 import React, {Component} from 'react';
-import tu, {returnFirst} from '../tutils';
+import {returnFirst, path as tpath} from '../tutils';
 
 import PropTypes from '../PropTypes';
 
@@ -23,7 +23,7 @@ export default class RadioInput extends Component {
         itemTemplate: 'RadioItemTemplate',
         options: [],
         forceSelection: false
-    }
+    };
 
     static propTypes = {
         onChange: PropTypes.valueEvent,
@@ -31,7 +31,7 @@ export default class RadioInput extends Component {
         forceSelection: PropTypes.bool,
         checkedClass: PropTypes.cssClass,
         options: PropTypes.options.isRequired
-    }
+    };
 
 
     handleCheckChange = (e)=> {
@@ -41,7 +41,7 @@ export default class RadioInput extends Component {
         } else {
             this.props.onChange(e.target.value);
         }
-    }
+    };
 
     makeOptions = (options)=> {
         options = options || [];
@@ -50,7 +50,7 @@ export default class RadioInput extends Component {
         var path = this.props.path;
         return options.map((option, index)=> {
             var {val, label, labelHTML} = option;
-            var path = tu.path(path, index);
+            var path = tpath(path, index);
             return {
                 val,
                 path,
@@ -60,7 +60,7 @@ export default class RadioInput extends Component {
                 checked: compare(value, val)
             }
         });
-    }
+    };
 
     render() {
         var {name,itemTemplate,path, className, checkedClass, value, options, field} = this.props;

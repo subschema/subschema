@@ -13,7 +13,7 @@ var allPropTypes = {
 export default class DevelopTypes extends Component {
     static contextTypes = {
         loader: PropTypes.loader
-    }
+    };
 
     renderPropType(type, i) {
 

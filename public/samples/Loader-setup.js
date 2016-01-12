@@ -53,8 +53,8 @@ class Address {
             type: 'Text',
             dataType: 'number'
         }
-    }
-    fields = ['address', 'city', 'state', 'zipCode']
+    };
+    fields = ['address', 'city', 'state', 'zipCode'];
 }
 //Adding a schema manually, this can also be done for types, templates,validators, etc...
 loader.addSchema({

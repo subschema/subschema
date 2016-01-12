@@ -1,9 +1,10 @@
 import {decorators} from 'Subschema';
 import expect from 'expect';
 
-var decorator = decorators.decorator;
-var originalWarning = decorator.warning;
-describe('decorator', function () {
+const decorator = decorators.decorator;
+const originalWarning = decorator.warning;
+
+describe('decorators.decorator', function () {
     beforeEach(function () {
         decorator.warning = originalWarning;
     })

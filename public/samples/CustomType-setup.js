@@ -15,12 +15,12 @@ class SwitchButton extends React.Component {
         onText: React.PropTypes.string,
         offText: React.PropTypes.string,
         value: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.oneOf(['on', 'off', 0, 1])])   //Values can be (true, 1, '1', 'ON')
-    }
+    };
 
     static defaultProps = {
         onText: "ON",
         offText: "OFF"
-    }
+    };
     //In case you have "special" value handling.
     isChecked(value) {
         return value === true || value === 1 || value === 'on';
@@ -30,7 +30,7 @@ class SwitchButton extends React.Component {
     handleClick = (e)=> {
         //This updates the valueManager
         this.props.onChange(this.isChecked(this.props.value) ? '' : 'on');
-    }
+    };
 
     render() {
         var props = this.props;

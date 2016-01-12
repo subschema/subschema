@@ -1,11 +1,7 @@
 "use strict";
 
-import tutils from './tutils';
+import {push, path as tpath, unique, noop, extend, isBoolean, isString, isDate, isArray, isNumber} from './tutils';
 import eventable from './eventable';
-
-var {push, path, unique, noop, extend, isBoolean, isString, isDate, isArray, isNumber} = tutils;
-
-const tpath = path;
 
 function reduceKeys(arr, v, b, c) {
     if (canDescend(v)) {

@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Highlight from './Highlight.jsx';
-import Playground from 'component-playground/src/components/playground.jsx';
+import Playground from 'component-playground/components/playground.jsx';
 import Subschema, {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, decorators} from 'Subschema';
 import CodeMirror from 'codemirror/mode/javascript/javascript.js';
 import cloneDeep from 'lodash/lang/cloneDeep';

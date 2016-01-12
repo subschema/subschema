@@ -12,12 +12,12 @@ export default class Select extends Component {
         multiple: PropTypes.bool,
         onChange: PropTypes.valueEvent,
         placeholder: PropTypes.placeholder
-    }
+    };
 
     static defaultProps = {
         options: [],
         multiple: false
-    }
+    };
 
     handleSelect = (e)=> {
         var {multiple, placeholder} = this.props;
@@ -39,7 +39,7 @@ export default class Select extends Component {
         }
         this.props.onChange(e.target.value);
 
-    }
+    };
 
     renderOptions(value) {
         var {multiple, options, placeholder} = this.props;
