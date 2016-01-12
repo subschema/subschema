@@ -16,22 +16,22 @@ import each from 'lodash/collection/each';
 import values from 'lodash/object/values';
 
 //re-exports
-
-export extend from 'lodash/object/extend';
-export isFunction from 'lodash/lang/isFunction';
-export isString from 'lodash/lang/isString';
-export isRegExp from 'lodash/lang/isRegExp';
-export isDate from 'lodash/lang/isDate';
-export isBoolean from 'lodash/lang/isBoolean';
-export isArray from 'lodash/lang/isArray';
-export isNumber from 'lodash/lang/isNumber';
-export find from 'lodash/collection/find';
-export unique from 'lodash/array/unique';
-export noop from 'lodash/utility/noop';
-export each from 'lodash/collection/each';
-export values from 'lodash/object/values';
-export isObject from 'lodash/lang/isObject';
-
+export {
+    extend,
+    isFunction,
+    isString,
+    isRegExp,
+    isDate,
+    isBoolean,
+    isArray,
+    isNumber,
+    find,
+    unique,
+    noop,
+    each,
+    values,
+    isObject
+};
 
 export const FREEZE_OBJ = Object.freeze({});
 export const FREEZE_ARR = Object.freeze([]);
