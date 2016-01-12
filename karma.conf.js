@@ -15,27 +15,28 @@ if (isDist) {
         {pattern: 'dist/subschema-noreact.js.map', included: false, served: true}
     );
     demoCfg.resolve.alias = {};
-    demoCfg.externals = {};
-    demoCfg.externals.subschema = 'Subschema';
-    demoCfg.externals.Subschema = 'Subschema';
-    demoCfg.externals.react = 'React';
-    demoCfg.externals['react-dom'] = 'ReactDOM';
-    demoCfg.externals['react-addons-test-utils'] = 'React.addons.TestUtils';
-
-//    demoCfg.resolve.alias.subschema = demoCfg.resolve.alias.Subschema = join('dist/subschema-noreact.js');
+    demoCfg.externals = {
+        subschema:'Subschema',
+        Subschema:'Subschema',
+        react:'React',
+        'react-dom':'ReactDOM',
+        'react-addons-test-utils':'React.addons.TestUtils'
+    };
 } else {
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');
 }
+
 demoCfg.devServer.hot = false;
 demoCfg.devServer.inline = false;
+
 delete demoCfg.entry;
+
 demoCfg.devtool = 'inline-source-map';
 
 demoCfg.module.loaders.unshift({
     test: /-setup\.js/,
     loader: join('./test/support/sample-loader.js')
 });
-console.log('files', files);
 
 module.exports = function (config) {
     config.set({
