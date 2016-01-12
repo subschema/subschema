@@ -15,35 +15,17 @@ import noop from 'lodash/utility/noop';
 import each from 'lodash/collection/each';
 import values from 'lodash/object/values';
 
-//re-exports
-export {
-    extend,
-    isFunction,
-    isString,
-    isRegExp,
-    isDate,
-    isBoolean,
-    isArray,
-    isNumber,
-    find,
-    unique,
-    noop,
-    each,
-    values,
-    isObject
-};
+const FREEZE_OBJ = Object.freeze({});
+const FREEZE_ARR = Object.freeze([]);
+const flatten = Function.apply.bind(Array.prototype.concat, []);
+const push = Function.apply.bind(Array.prototype.push);
+const slice = Function.call.bind(Array.prototype.slice);
 
-export const FREEZE_OBJ = Object.freeze({});
-export const FREEZE_ARR = Object.freeze([]);
-export const flatten = Function.apply.bind(Array.prototype.concat, []);
-export const push = Function.apply.bind(Array.prototype.push);
-export const slice = Function.call.bind(Array.prototype.slice);
-
-export function returnFirst(value) {
+function returnFirst(value) {
     return value;
 }
 
-export function result(scope, key) {
+function result(scope, key) {
     if (!key) {
         return null;
     }
@@ -56,7 +38,7 @@ export function result(scope, key) {
     return key;
 }
 
-export function path() {
+function path() {
     var args = slice(arguments), l = args.length, i = 0, j = 0, p;
     var ret = '';
     for (; i < l; i++) {
@@ -67,8 +49,7 @@ export function path() {
     return ret;
 }
 
-
-export function toArray(v) {
+function toArray(v) {
     if (isArray(v)) {
         return v;
     }
@@ -81,7 +62,7 @@ export function toArray(v) {
     return [v];
 }
 
-export function xtend(dest, args) {
+function xtend(dest, args) {
     dest = dest || {};
     for (var i = 1, l = arguments.length; i < l; i++) {
         var arg = arguments[1];
@@ -93,8 +74,7 @@ export function xtend(dest, args) {
     return dest;
 }
 
-
-export function clone(t) {
+function clone(t) {
     if (t == null) return t;
     var tt = typeof t;
     if (tt == 'boolean' || tt === 'number' || tt === 'string' || tt === 'function' || tt === 'symbol') {
@@ -109,7 +89,7 @@ export function clone(t) {
     return extend({}, t);
 }
 
-export function debounce(fn, to) {
+function debounce(fn, to) {
     var ti;
 
     return function f() {
@@ -121,23 +101,23 @@ export function debounce(fn, to) {
     }
 }
 
-export function nullCheck(v) {
+function nullCheck(v) {
     return v != null;
 }
 
-export function emptyCheck(v) {
+function emptyCheck(v) {
     return v != null && v.length > 0;
 }
 
-export function uppercase(v) {
+function uppercase(v) {
     return v.toUpperCase();
 }
 
-export function titlelize(value) {
+function titlelize(value) {
     return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, uppercase);
 }
 
-export function applyFuncs(f1, f2) {
+function applyFuncs(f1, f2) {
     if (f1 && !f2) return f1;
     if (!f1 && f2) return f2;
     return function applyFuncs$bothFuncs(...args) {
@@ -160,12 +140,82 @@ export function applyFuncs(f1, f2) {
  * @param f2
  * @returns {function}
  */
-export function nextFunc(f1, f2) {
+function nextFunc(f1, f2) {
     if (f1 && !f2) return f1;
     if (f2 && !f1) return f2;
     return function nextFunc$wrapper(...args) {
-        if (f1(...args) !== false) {
-            return f2(...args);
+        if (f1.apply(this, args) !== false) {
+            return f2.apply(this, args);
         }
     };
+}
+
+//re-exports
+export {
+    extend,
+    isFunction,
+    isString,
+    isRegExp,
+    isDate,
+    isBoolean,
+    isArray,
+    isNumber,
+    find,
+    unique,
+    noop,
+    each,
+    values,
+    isObject,
+    FREEZE_OBJ,
+    FREEZE_ARR,
+    flatten,
+    push,
+    slice,
+    returnFirst,
+    result,
+    path,
+    toArray,
+    xtend,
+    clone,
+    debounce,
+    nullCheck,
+    emptyCheck,
+    uppercase,
+    titlelize,
+    applyFuncs,
+    nextFunc
+};
+export default {
+    extend,
+    isFunction,
+    isString,
+    isRegExp,
+    isDate,
+    isBoolean,
+    isArray,
+    isNumber,
+    find,
+    unique,
+    noop,
+    each,
+    values,
+    isObject,
+    FREEZE_OBJ,
+    FREEZE_ARR,
+    flatten,
+    push,
+    slice,
+    returnFirst,
+    result,
+    path,
+    toArray,
+    xtend,
+    clone,
+    debounce,
+    nullCheck,
+    emptyCheck,
+    uppercase,
+    titlelize,
+    applyFuncs,
+    nextFunc
 }

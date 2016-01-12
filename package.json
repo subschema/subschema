@@ -13,13 +13,14 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "test": "karma start --single-run --browsers Firefox",
-    "test-dist": "karma start ./karma.dist.noreact.conf.js --single-run --browsers Firefox",
+    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
+    "test-dist": "NODE_ENV=test karma start ./karma.conf.js --single-run --browsers Firefox",
     "hot": "NODE_ENV=development webpack-dev-server --hot --inline --config ./demo.webpack.config.js --entry ./public/app.jsx --output-filename=app.entry.js",
     "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
-    "karma-dist": "karma start ./karma.dist.noreact.conf.js --no-single-run --colors --auto-watch",
+    "karma-dist": "NODE_ENV=test karma start ./karma.conf.js --no-single-run --colors --auto-watch",
     "compile": "NODE_ENV=production webpack --config ./webpack.config.js -p --verbose",
-    "prepublish": "NODE_ENV=production npm run test && NODE_ENV=production webpack --config ./webpack.config.js -p && npm run test-dist && node ./scripts/test-node.js",
+    "build-dist":"NODE_ENV=production webpack --config ./webpack.config.js -p",
+    "prepublish": "npm prune && NODE_ENV=production npm run test && npm run build-dist && npm run test-dist && node ./scripts/test-node.js",
     "demo": "webpack   --optimize-minimize  --optimize-occurence-order  --optimize-dedupe  --config ./demo.webpack.config.js"
   },
   "keywords": [
@@ -48,15 +49,11 @@
     "babel-standalone": "^1.0.0",
     "codemirror": "^5.10.0",
     "component-playground": "git+https://github.com/subschema/component-playground.git",
-    "compression-webpack-plugin": "^0.2.0",
     "css-loader": "^0.23.1",
     "es6-promise": "^3.0.2",
     "expect": "^1.13.4",
-    "express": "^4.12.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
-    "formatter.js": "^0.1.5",
-    "highlight.js": "^9.1.0",
     "history": "^2.0.0-rc2",
     "json-loader": "^0.5.3",
     "karma": "^0.13.9",
@@ -76,6 +73,7 @@
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^0.14.6",
     "react-transform-hmr": "^1.0.1",
+    "rimraf": "^2.5.0",
     "source-map": "^0.5.3",
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
@@ -84,7 +82,6 @@
     "text-loader": "0.0.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.11",
-    "webpack-dev-middleware": "^1.2.0",
     "webpack-dev-server": "^1.11.0"
   },
   "peerDependencies": {

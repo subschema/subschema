@@ -18,7 +18,7 @@ export default class Restricted extends RestrictedMixin {
 
 
     handleSelectionRange = (caret)=> {
-        var input = ReactDOM.findDOMNode(this.refs.input);
+        var input = this.refs && ReactDOM.findDOMNode(this.refs.input);
         if (!input)return;
 
         if (this.state.caret != null)

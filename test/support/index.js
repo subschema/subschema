@@ -1,5 +1,5 @@
 "use strict";
-import React from 'react';
+import React, {Component} from 'react';
 import { PropTypes, ValueManager, loader} from 'Subschema';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
@@ -168,7 +168,7 @@ function select(composit, index) {
     });
     return node;
 }
-class StateWrapper extends React.Component {
+class StateWrapper extends Component {
     render() {
         return React.cloneElement(this.props.children, this.state);
     }

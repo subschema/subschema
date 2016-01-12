@@ -1,4 +1,5 @@
 require('es6-promise').polyfill();
+
 var path = require('path');
 var webpack = require('webpack');
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
@@ -7,6 +8,7 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
 
 
 function config(filename, externals, extract) {
+    console.log('building', filename);
     var loaders = [
         {
             test: /\.js(x)?$/,
@@ -123,14 +125,8 @@ var externs = {
         commonjs: "react",
         amd: "react"
     },
-    './React': {
-        root: "React",
-        commonjs2: "react",
-        commonjs: "react",
-        amd: "react"
-    },
     "react-dom": {
-        root: "ReactDom",
+        root: "ReactDOM",
         commonjs2: "react-dom",
         commonjs: "react-dom",
         amd: "react-dom"
@@ -156,5 +152,6 @@ var configs = [
     ),
     config('subschema-server.js',
         [externs], true
-    )];
+    )
+];
 module.exports = configs;
