@@ -43,6 +43,7 @@ function config(filename, externals, extract) {
         function () {
             this.plugin("done", function (stats) {
                 stats = stats.toJson();
+                console.error('done with filename', filename);
                 console.error(JSON.stringify({
                     assetsByChunkName: stats.assetsByChunkName
                 }));
@@ -120,6 +121,12 @@ function config(filename, externals, extract) {
 };
 var externs = {
     "react": {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react"
+    },
+    './React': {
         root: "React",
         commonjs2: "react",
         commonjs: "react",

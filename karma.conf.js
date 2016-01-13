@@ -14,13 +14,13 @@ if (isDist) {
         {pattern: 'dist/subschema-noreact.js.map', included: false, served: true}
     );
     demoCfg.resolve.alias = {};
-    demoCfg.externals = {
-        subschema: 'Subschema',
-        Subschema: 'Subschema',
-        react: 'React',
-        'react-dom': 'ReactDOM',
-        'react-addons-test-utils': 'React.addons.TestUtils'
-    };
+    demoCfg.externals = [
+        {subschema: 'Subschema'},
+        {Subschema: 'Subschema'},
+        {react: 'React'},
+        {'react-dom': 'ReactDOM'},
+        {'react-addons-test-utils': 'React.addons.TestUtils'}
+        ];
 } else {
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');
 }
