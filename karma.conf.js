@@ -20,7 +20,7 @@ if (isDist) {
         {react: 'React'},
         {'react-dom': 'ReactDOM'},
         {'react-addons-test-utils': 'React.addons.TestUtils'}
-        ];
+    ];
 } else {
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');
 }
@@ -34,7 +34,8 @@ demoCfg.devtool = 'inline-source-map';
 
 demoCfg.module.loaders.unshift({
     test: /-setup\.js/,
-    loader: join('./test/support/sample-loader.js')
+    include: join("node_modules/subschema-test-support/samples"),
+    loader: 'subschema-test-support'
 });
 
 module.exports = function (config) {

@@ -1,4 +1,4 @@
-import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
+import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from 'subschema-test-support';
 import {ValueManager, Conditional, loader, decorators, PropTypes} from 'Subschema';
 
 const listeners = decorators.listeners;

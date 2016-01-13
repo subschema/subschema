@@ -1,5 +1,5 @@
-import {React, into,TestUtils,expect, Simulate} from '../support';
-import {ValueManager, loader, Editor, types} from 'subschema';
+import {React, into,TestUtils,expect, Simulate} from 'subschema-test-support';
+import {ValueManager, loader, Editor, types} from 'Subschema';
 
 var Text = types.Text;
 

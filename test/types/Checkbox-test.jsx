@@ -1,8 +1,9 @@
 "use strict";
 
-import {React, check, intoWithState, into, byType, findNode, change, TestUtils,expect, Simulate} from '../support';
+import {React, check, intoWithState, into, byType, findNode, change, TestUtils,expect, Simulate} from 'subschema-test-support';
 import {Form, ValueManager, types} from 'Subschema';
-var {Checkbox} = types;
+
+const {Checkbox} = types;
 
 
 describe('Checkbox', function () {

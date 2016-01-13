@@ -1,10 +1,10 @@
 "use strict";
 
-import {React, check, intoWithState, change, into, byType, click, byTypes, byTag, findNode,expect} from '../support';
+import {React, check, intoWithState, change, into, byType, click, byTypes, byTag, findNode,expect} from 'subschema-test-support';
 import {Form, ValueManager, processors, templates, types} from 'Subschema';
-var {Autocomplete} = types;
-var {OptionsProcessor} = processors;
-var {AutocompleteItemTemplate} = templates;
+const {Autocomplete} = types;
+const {OptionsProcessor} = processors;
+const {AutocompleteItemTemplate} = templates;
 
 describe('Autocomplete', function() {
     this.timeout(50000);

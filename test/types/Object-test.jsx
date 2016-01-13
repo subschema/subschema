@@ -1,10 +1,11 @@
 "use strict";
-import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from '../support';
+
+import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from 'subschema-test-support';
 import {ValueManager,loaderFactory, Form, types} from 'Subschema';
 
-var NestedMixin = types.Object;
-var ObjectType = types.Object
-var TextInput = types.Text;
+const NestedMixin = types.Object;
+const ObjectType = types.Object
+const TextInput = types.Text;
 
 describe('ObjectType', function () {
 

@@ -1,8 +1,8 @@
 "use strict";
-import {React, into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from '../support';
-import each from '../../node_modules/lodash/collection/each';
+import {React, into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from 'subschema-test-support';
+import each from 'lodash/collection/each';
 import {ValueManager, types, Form, Conditional, loader} from 'Subschema';
-var {Select} = types;
+const {Select} = types;
 describe('Conditional', function () {
     this.timeout(30000);
 

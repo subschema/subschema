@@ -31,8 +31,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.js(x)?$/,
-                exclude:/node_modules\/(?!(component-playground))/,
-                loaders: ['babel']
+                exclude:/node_modules\/(?!(component-playground|subschema-test-support))/,
+                loader: 'babel'
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},

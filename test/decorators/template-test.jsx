@@ -1,5 +1,5 @@
 "use strict";
-import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from '../support';
+import {React, into, intoWithContext, TestUtils,expect, Simulate, byType, notByType} from 'subschema-test-support';
 import {ValueManager, Conditional, loader, decorators} from 'Subschema';
 
 const template = decorators.template;

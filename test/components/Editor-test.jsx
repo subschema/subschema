@@ -1,7 +1,7 @@
 "use strict";
-import {React, intoWithContext, findNode, TestUtils,expect, change, focus,blur, Simulate,byTag, byType, notByType} from '../support';
+import {React, intoWithContext, findNode, TestUtils,expect, change, focus,blur, Simulate,byTag, byType, notByType} from 'subschema-test-support';
 import {loader, loaderFactory, PropTypes, Editor, ValueManager, types, templates} from 'Subschema';
-var {Text} = types;
+const {Text} = types;
 
 describe('Editor', function () {
     this.timeout(50000);

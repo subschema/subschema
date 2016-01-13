@@ -1,7 +1,7 @@
 import expect from 'expect';
 import {types} from 'Subschema';
 
-var {SubstituteMixin} = types;
+const {SubstituteMixin} = types;
 
 describe('Substitute', function () {
     this.timeout(50000);

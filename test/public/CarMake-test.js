@@ -1,9 +1,8 @@
-import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from '../support';
+import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, loaderFactory, DefaultLoader} from 'Subschema';
-
-var Select = types.Select;
-var CarMakeSetup = require('../../public/samples/CarMake-setup.js');
-var CarMake = require('../../public/samples/CarMake.js');
+import CarMakeSetup from 'subschema-test-support/samples/CarMake-setup.js';
+import CarMake from 'subschema-test-support/samples/CarMake.js';
+const Select = types.Select;
 
 describe('CarMake', function () {
     it('should not be selectable', function () {

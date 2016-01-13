@@ -1,1 +1,0 @@
-module.exports = require('../../public/sample-loader');

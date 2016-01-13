@@ -1,6 +1,6 @@
-import {React, into,TestUtils,expect,byTypes, select, byId, Simulate}  from '../support';
+import {React, into,TestUtils,expect,byTypes, select, byId, Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager} from 'Subschema';
-var NestedForms = require('../../public/samples/NestedForms.js');
+var NestedForms = require('subschema-test-support/samples/NestedForms.js');
 
 describe('NestedForms', function () {
 

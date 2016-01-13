@@ -1,31 +1,33 @@
-var React = require('react');
-var Highlight = require('../components/Highlight.jsx');
-var WebpackSetup = React.createClass({
-    render(){
-        return (<div>
-            <h3>Loader</h3>
-            <fieldset>
-                <legend></legend>
-                <p className="lead">
-                    Loaders are the key part to extending subschema. I am going to write something about it here.
-                    Until then here is some loader zen.
-                </p>
+"use strict";
 
-                <div className="panel">
-                    <div className="panel-heading">
-                        <h3>Writing a loader</h3>
-                    </div>
-                    <div className="panel-body">
+import React from 'react';
+import Highlight from '../components/Highlight';
+import samples from 'subschema-test-support';
 
-                        <Highlight lang="javascript">
-                            {require('!!raw!./../samples/Loader-setup.js')}
-                        </Highlight>
-                    </div>
+export default function Loader() {
+    return (<div>
+        <h3>Loader</h3>
+        <fieldset>
+            <legend></legend>
+            <p className="lead">
+                Loaders are the key part to extending subschema. I am going to write something about it here.
+                Until then here is some loader zen.
+            </p>
+
+            <div className="panel">
+                <div className="panel-heading">
+                    <h3>Writing a loader</h3>
                 </div>
+                <div className="panel-body">
 
-            </fieldset>
-        </div>);
-    }
-});
-module.exports = WebpackSetup;
+                    <Highlight lang="javascript">
+                        {samples.Loader.setupTxt}
+                    </Highlight>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>);
+
+};
 

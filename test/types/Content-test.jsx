@@ -1,8 +1,8 @@
-import {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} from '../support';
+import {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} from 'subschema-test-support';
 import ReactServer from 'react-dom/server';
 import {ValueManager, loader, types, Editor,Form} from 'Subschema';
 
-var {Text, Content} = types;
+const { Content} = types;
 
 describe('Content', function () {
     before(function () {

@@ -1,7 +1,10 @@
-var {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} = require('../support');
+"use strict";
 
-var {templates, Form} = require('Subschema');
-var {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
+import {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} from 'subschema-test-support';
+import {templates, Form} from 'Subschema';
+import Todos, {schema as Schema} from 'subschema-test-support/samples/Todos';
+
+const {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
 
 describe('types/List', function () {
@@ -38,7 +41,6 @@ describe('types/List', function () {
         return tasks[c];
     }
 
-    var Todos = require('../../public/samples/Todos'), Schema = Todos.schema;
     it('should render a list', function () {
         var root = into(<Form schema={Schema}/>);
         expect(root).toExist();
@@ -172,27 +174,27 @@ describe('types/List', function () {
         expect(byClass(a0, 'btn-delete')[0]).toExist();
         expect(byClass(a0, 'btn-down')[0]).toNotExist();
 
-    /*
-        var a1 = add(root, 1);
-        expect(byClass(a1, 'btn-up')[0]).toExist();
-        expect(byClass(a1, 'btn-delete')[0]).toExist();
-        expect(byClass(a1, 'btn-down')[0]).toNotExist();
+        /*
+         var a1 = add(root, 1);
+         expect(byClass(a1, 'btn-up')[0]).toExist();
+         expect(byClass(a1, 'btn-delete')[0]).toExist();
+         expect(byClass(a1, 'btn-down')[0]).toNotExist();
 
-        var a2 = add(root, 2);
-        expect(byClass(a2, 'btn-up')[0]).toExist();
-        expect(byClass(a0, 'btn-delete')[0]).toExist();
-        expect(byClass(a2, 'btn-down')[0]).toNotExist();
-        expect(byClass(a1, 'btn-down')[0]).toExist();
+         var a2 = add(root, 2);
+         expect(byClass(a2, 'btn-up')[0]).toExist();
+         expect(byClass(a0, 'btn-delete')[0]).toExist();
+         expect(byClass(a2, 'btn-down')[0]).toNotExist();
+         expect(byClass(a1, 'btn-down')[0]).toExist();
 
 
-        click(byClass(a0, 'btn-delete')[0]);
-        expect(root.getValue().tasks.length).toEqual(2);
+         click(byClass(a0, 'btn-delete')[0]);
+         expect(root.getValue().tasks.length).toEqual(2);
 
-        click(byClass(a1, 'btn-delete')[0]);
-        expect(root.getValue().tasks.length).toEqual(1);
+         click(byClass(a1, 'btn-delete')[0]);
+         expect(root.getValue().tasks.length).toEqual(1);
 
-        click(byClass(a2, 'btn-delete')[0]);
-        expect(root.getValue().tasks.length).toEqual(0);*/
+         click(byClass(a2, 'btn-delete')[0]);
+         expect(root.getValue().tasks.length).toEqual(0);*/
 
 
     });

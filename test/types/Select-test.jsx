@@ -1,6 +1,9 @@
-import {React, findNode, into, TestUtils,expect, Simulate,select, byTags} from '../support';
+"use strict";
+
+import {React, findNode, into, TestUtils,expect, Simulate,select, byTags} from 'subschema-test-support';
 import {types, ValueManager} from 'Subschema';
-var Select = types.Select;
+
+const {Select} = types;
 
 describe('Select', function () {
     this.timeout(50000);

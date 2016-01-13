@@ -1,9 +1,10 @@
-import {React, into,TestUtils,expect,byTypes, byId, select,  Simulate}  from '../support';
-import Subschema, {Form, types, ValueManager} from 'Subschema';
+"use strict";
 
-var Select = types.Select;
-var CustomTypeSetup = require('../../public/samples/CarMake-setup.js');
-var CustomType = require('../../public/samples/CarMake.js');
+import {React, into,TestUtils,expect,byTypes, byId, select,  Simulate}  from 'subschema-test-support';
+import Subschema, {Form, types, ValueManager} from 'Subschema';
+import CustomTypeSetup from 'subschema-test-support/samples/CarMake-setup.js';
+import CustomType from 'subschema-test-support/samples/CarMake.js';
+const  {Select} = types;
 
 describe('CustomType', function () {
     it('should render', function () {

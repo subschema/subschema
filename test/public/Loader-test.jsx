@@ -1,18 +1,15 @@
-import {React, into,TestUtils,expect, byId, byTypes, Simulate}  from '../support';
+"use strict";
 
-import Subschema from 'Subschema';
-
-
-var loaderTestSetup = require('../../public/samples/Loader-setup.js');
-var LoaderTest = require('../../public/samples/Loader.js');
+import {React, into,TestUtils,expect, byId, byTypes, Simulate}  from 'subschema-test-support';
+import loaderTestSetup from 'subschema-test-support/samples/Loader-setup.js';
+import LoaderTest from 'subschema-test-support/samples/Loader.js'
+import Subschema,{Form,  ValueManager, loaderFactory, DefaultLoader, decorators}  from 'Subschema';
 
 
 describe('public/loader', ()=> {
 
 
     it('should load a custom type', ()=> {
-
-        var {Form,  ValueManager, loaderFactory, DefaultLoader, decorators} = Subschema;
         var loader = decorators.provide.defaultLoader = loaderFactory([DefaultLoader]);
         var schema = LoaderTest.schema;
         var valueManager = ValueManager();

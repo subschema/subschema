@@ -77,6 +77,7 @@
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
     "style-loader": "^0.13.0",
+    "subschema-test-support": "git+https://github.com/subschema/subschema-test-support.git",
     "supports-color": "^3.1.2",
     "text-loader": "0.0.1",
     "url-loader": "^0.5.7",

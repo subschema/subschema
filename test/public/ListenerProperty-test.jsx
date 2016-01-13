@@ -1,9 +1,9 @@
-import {React, into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from '../support';
+import {React, into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, decorators,loaderFactory, DefaultLoader,ValueManager} from 'Subschema';
-var {provide} = decorators;
-var {Select} = types;
-var ListenerPropertySetup = require('../../public/samples/ListenerProperty-setup.js');
-var ListenerProperty = require('../../public/samples/ListenerProperty.js');
+import ListenerPropertySetup from 'subschema-test-support/samples/ListenerProperty-setup.js';
+import ListenerProperty from 'subschema-test-support/samples/ListenerProperty.js';
+const {provide} = decorators;
+const {Select} = types;
 
 describe('ListenerProperty', function () {
     this.timeout(50000);

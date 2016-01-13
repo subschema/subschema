@@ -1,7 +1,9 @@
-import {React, ReactDOM, into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from '../support';
+"use strict";
+
+import {React, ReactDOM, into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from 'subschema-test-support';
 import {types, ValueManager} from 'Subschema';
 
-var Restricted = types.Restricted;
+const {Restricted} = types;
 
 
 describe('Restricted', function () {

@@ -1,6 +1,10 @@
-import {React, findNode, into, expect, change} from '../support';
+"use strict";
+
+import {React, findNode, into, expect, change} from 'subschema-test-support';
 import {types} from 'Subschema';
-var Text = types.Text;
+
+const {Text} = types;
+
 describe('Text', function () {
     it('should create a input with a value', function () {
         var text = into(<Text value="abc" onChange={(e)=>e}/>);
