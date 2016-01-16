@@ -400,10 +400,16 @@ export default class Editor extends Component {
             title = '';
         }
         var template = this.props.template
-        if (field.template === false || Component.noTemplate === true) {
+        if (field.template === false || Component.noTemplate === true || Component.template === false) {
             template = null;
-        } else if (field.template != null) {
-            template = field.template;
+        } else {
+            if (field.template != null) {
+                template = field.template;
+            }
+            if (typeof template === 'string') {
+                template = {template};
+            }
+            template = (Component.template) ? defaults(template, Component.template) : template;
         }
         var errors = this.state.errors, error;
         if (errors) error = errors[0] && errors[0].message || errors[0];

@@ -161,10 +161,6 @@ describe('ObjectType', function () {
             expect(fieldsets[0].fieldsets[0].fieldsets[0].fields).toEqual(['a']);
             expect(fieldsets[0].fieldsets[1].fieldsets[0].fields).toEqual(['b']);
         });
-        it('should normalize public/schema.json', function () {
-            var schema = require('../../public/schema.json');
-            var out = NestedMixin.normalizeFieldsets(schema.fieldsets);
-            expect(out).toExist();
-        });
+
     });
 });
