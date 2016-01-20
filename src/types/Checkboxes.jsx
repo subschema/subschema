@@ -51,9 +51,10 @@ export default class Checkboxes extends Component {
 
 
         var id = path(this.props.path, index, group);
-        var {val, labelHTML} = option;
+        var {val, labelHTML, label} = option;
+        label = labelHTML || label;
         var value = this.state.value;
-        var labelContent = labelHTML ? <span dangerouslySetInnerHTML={{__html:labelHTML}}/> : val;
+        var labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
         var opts = {
             onChange: this.handleCheckChange,
             name: this.props.name,

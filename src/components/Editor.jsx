@@ -209,6 +209,8 @@ export default class Editor extends Component {
             return nextFunc(value, this.handleValidateListener);
         } else if (propType === PropTypes.validEvent || propType === PropTypes.validEvent.isRequired) {
             return nextFunc(value, this.handleValid);
+        } else if (propType === PropTypes.errorEvent || propType === PropTypes.errorEvent.isRequired) {
+            return nextFunc(value, this.handeUpdateError);
         } else if (propType === PropTypes.expression || propType === PropTypes.expression.isRequired) {
             this.addExpression(property, Editor.expressionEngine(value));
             return null;
@@ -253,6 +255,15 @@ export default class Editor extends Component {
         }
 
         return false;
+    };
+
+    handleUpdateError = (value)=> {
+        if (this.props.onChange(value) === false) {
+            return false;
+        }
+        var field = this.props.field || FREEZE_OBJ;
+        var path = field.conditional && field.conditional.path || this.props.path;
+        return this.context.valueManager.updateErrors(path, value);
     };
 
     handleValueChange(value, oldValue, name) {
@@ -386,7 +397,6 @@ export default class Editor extends Component {
         var pConditional = conditional;
         var {type,fieldClass, conditional, editorClass, errorClassName, ...rfield} = field;
         conditional = conditional || pConditional;
-        //err = errors, //&& errors[path] && errors[path][0] && errors[path],
         var title = this.title(),
             handleValidate = this.handleValidate,
             errorClassName = errorClassName == null ? 'has-error' : errorClassName,
@@ -399,7 +409,7 @@ export default class Editor extends Component {
         if (title === false) {
             title = '';
         }
-        var template = this.props.template
+        var template;
         if (field.template === false || Component.noTemplate === true || Component.template === false) {
             template = null;
         } else {
@@ -409,11 +419,16 @@ export default class Editor extends Component {
             if (typeof template === 'string') {
                 template = {template};
             }
+            if (template == null){
+                template = {};
+            }
+
             template = (Component.template) ? defaults(template, Component.template) : template;
         }
+
         var errors = this.state.errors, error;
         if (errors) error = errors[0] && errors[0].message || errors[0];
-        return <Template field={rfield} {...props} template={template} conditional={conditional}
+        return <Template field={rfield} {...props} template={this.props.template} {...template} conditional={conditional}
                          title={title}
                          fieldClass={fieldClass}
                          errorClassName={errorClassName}

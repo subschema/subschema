@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
 import PropTypes from  '../PropTypes';
 import {noop} from '../tutils';
+import defaults from 'lodash/object/defaultsDeep';
 
 export default class FieldSetTemplate extends Component {
     static propTypes = {
@@ -28,7 +29,7 @@ export default class FieldSetTemplate extends Component {
     }
 
     render() {
-        var {legend, buttons, className, ...rest} = this.props.field || {};
+        var {legend, buttons, className, ...rest} = defaults({}, this.props.field, this.props);
         return legend ?
             <fieldset className={className}>
                 <legend>{legend}</legend>
