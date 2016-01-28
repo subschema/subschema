@@ -47,8 +47,13 @@ var fields = schema.fieldsets[0].fields;
  * Create the schema programatically.
  */
 schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key) {
-    fields.push(key);
+    //fields.push(key);
     var {name, models} = CAR_MAKES_AND_MODELS[key];
+    var pathName = 'model';
+    var pathIndex = fields.indexOf(pathName);
+    //fields.push(key);
+    fields.splice(pathIndex,0, key);
+
     //setup the key values of them all.
     schema.schema[key] = {
         title: 'Model',
@@ -62,7 +67,7 @@ schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key
             //We want the conditional to update the 'model' path.  This is a bit
             // experimental at the time, but may be the future of how to handle these
             // situations.
-            path: 'model'
+            path: pathName //'model'
         },
         type: 'Select',
         placeholder:'Select a model of '+name,
