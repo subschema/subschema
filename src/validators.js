@@ -21,7 +21,7 @@ module.exports = (function (_) {
     validators.required = function (options) {
         options = _.extend({
             type: 'required',
-            message: this.errMessages.required
+            message: validators.errMessages.required
         }, options);
 
         return function required(value) {
@@ -42,7 +42,7 @@ module.exports = (function (_) {
         options = _.extend({
             type: 'regexp',
             match: true,
-            message: this.errMessages.regexp
+            message: validators.errMessages.regexp
         }, options);
 
         return function regexp(value) {
@@ -53,7 +53,7 @@ module.exports = (function (_) {
                 message: _.isFunction(options.message) ? options.message(options) : options.message
             };
 
-            //Don't check empty values (add a 'required' validator for this)
+            //Don't check empty values (add a 'required' validator for validators)
             if (value === null || value === undefined || value === '') return;
 
             //Create RegExp from string if it's valid
@@ -66,7 +66,7 @@ module.exports = (function (_) {
     validators.number = function (options) {
         options = _.extend({
             type: 'number',
-            message: this.errMessages.number,
+            message: validators.errMessages.number,
             regexp: /^[0-9]*\.?[0-9]*?$/
         }, options);
 
@@ -76,7 +76,7 @@ module.exports = (function (_) {
     validators.email = function (options) {
         options = _.extend({
             type: 'email',
-            message: this.errMessages.email,
+            message: validators.errMessages.email,
             regexp: /^[\w\-]{1,}([\w\-\+.]{1,1}[\w\-]{1,}){0,}[@][\w\-]{1,}([.]([\w\-]{1,})){1,3}$/
         }, options);
 
@@ -86,7 +86,7 @@ module.exports = (function (_) {
     validators.url = function (options) {
         options = _.extend({
             type: 'url',
-            message: this.errMessages.url,
+            message: validators.errMessages.url,
             regexp: /^(http|https):\/\/(([A-Z0-9][A-Z0-9_\-]*)(\.[A-Z0-9][A-Z0-9_\-]*)+)(:(\d+))?\/?/i
         }, options);
 
@@ -98,7 +98,7 @@ module.exports = (function (_) {
 
         options = _.extend({
             type: 'match',
-            message: this.errMessages.match
+            message: validators.errMessages.match
         }, options);
 
         return function match(value, attrs) {
@@ -109,7 +109,7 @@ module.exports = (function (_) {
                 message: _.isFunction(options.message) ? options.message(options) : options.message
             };
 
-            //Don't check empty values (add a 'required' validator for this)
+            //Don't check empty values (add a 'required' validator for validators)
             if (value === null || value === undefined || value === '') return;
 
             if (value !== attrs.path(options.field)) return err;

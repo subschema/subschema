@@ -17,7 +17,7 @@ function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
 }
 function wrapFunc(value, key) {
-    return {value, key}
+    return {value, key: '' + key}
 }
 function remove(obj, key) {
     if (!obj) return;
@@ -40,6 +40,7 @@ export default class CollectionMixin extends Component {
     static propTypes = {
         onChange: PropTypes.valueEvent,
         path: PropTypes.path,
+        showAdd: PropTypes.bool,
         canEdit: PropTypes.bool,
         canReorder: PropTypes.bool,
         canDelete: PropTypes.bool,
@@ -53,7 +54,8 @@ export default class CollectionMixin extends Component {
         itemTemplate: PropTypes.template,
         contentTemplate: PropTypes.template,
         buttons: PropTypes.buttons,
-        addButton: PropTypes.button
+        addButton: PropTypes.button,
+        listContainerClassName: PropTypes.cssClass
     };
 
     static defaultProps = {
@@ -62,6 +64,7 @@ export default class CollectionMixin extends Component {
         itemTemplate: 'ListItemTemplate',
         contentTemplate: "ContentItemTemplate",
         showKey: false,
+        showAdd: false,
         itemType: {
             type: 'Text'
         },
@@ -79,11 +82,20 @@ export default class CollectionMixin extends Component {
     constructor(props, ...rest) {
         super(props, ...rest);
         var state = this.state || (this.state = {});
-        state.wrapped = map(props.value, wrapFunc);
+        state.showAdd = props.showAdd;
+        state.wrapped = this.wrapValues(props.value);
+    }
+
+    wrapValues(values) {
+        return map(values, wrapFunc);
     }
 
     componentWillReceiveProps(props) {
         this.setValue(props.value);
+        const {showAdd} = props;
+        if (showAdd !== this.props.showAdd) {
+            this.setState({showAdd});
+        }
     }
 
     getValue() {
@@ -91,7 +103,7 @@ export default class CollectionMixin extends Component {
     }
 
     setValue(value) {
-        this.setState({wrapped: map(value, wrapFunc)});
+        this.setState({wrapped: this.wrapValues(value)});
     }
 
     setErrors(errors) {
@@ -123,7 +135,7 @@ export default class CollectionMixin extends Component {
 
             this.setState({
                 wrapped: newValue,
-                showAdd: false,
+                showAdd: this.props.showAdd,
                 showEdit: false
             });
         }
@@ -153,7 +165,7 @@ export default class CollectionMixin extends Component {
 
     handleCancelAdd = (e) => {
         e && e.preventDefault();
-        this.setState({showAdd: false, showEdit: false});
+        this.setState({showAdd: this.props.showAdd, showEdit: false});
     };
 
     handleBtnClick = (e, action)=> {
@@ -161,10 +173,11 @@ export default class CollectionMixin extends Component {
 
         if (action == 'submit') {
             this.handleSubmit(e);
+
         } else {
             this.context.valueManager.update(makeEditPid(this.props.path, this.state.editPid));
             this.setState({
-                showAdd: false,
+                showAdd: this.props.showAdd,
                 showEdit: false,
                 editPid: null
             });
@@ -175,21 +188,28 @@ export default class CollectionMixin extends Component {
         e && e.preventDefault();
         var {valueManager} = this.context;
         var origKey = makeEditPid(this.props.path, this.state.editPid);
+        const origValue = valueManager.path(origKey) || {}
         var {
             key,
             value
-            } = valueManager.path(origKey), errors = valueManager.getErrors();
+            } = origValue
+        const errors = valueManager.getErrors();
 
         if (errors == null || Object.keys(errors).length === 0) {
             var currentPath = path(this.props.path, key);
             var clonedValue = this.props.value == null ? this.createDefValue() : clone(this.props.value);
             if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
-                clonedValue[key] = value;
-                //if the key changed, remove the original.
-                if (origKey !== makeEditPid(currentPath)) {
-                    remove(clonedValue, this.state.editPid);
+                if (key) {
+                    clonedValue[key] = value;
+                    //if the key changed, remove the original.
+                    if (origKey !== makeEditPid(currentPath)) {
+                        remove(clonedValue, this.state.editPid);
+                    }
+                } else {
+                    clonedValue.unshift(value);
                 }
                 valueManager.update(origKey);
+
                 this.props.onChange(clonedValue);
             }
 
@@ -199,7 +219,7 @@ export default class CollectionMixin extends Component {
         }
 
         this.setState({
-            showAdd: false,
+            showAdd: this.props.showAdd,
             showEdit: false,
             editPid: null
         });
@@ -278,21 +298,21 @@ export default class CollectionMixin extends Component {
                              pid={v.key}
                              value={v} errors={this.props.errors} last={i + 1 === this.state.wrapped.length}>
             {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) :
-            <ContentItemTemplate value={v}
-                                 labelKey={this.props.labelKey}
-                                 pos={i}
-                                 pid={v.key}
-                                 value={v}
-                                 showKey={this.props.showKey}
-                                 onClick={this.props.canEdit ? this.handleEdit : null}/> }
+                <ContentItemTemplate value={v}
+                                     labelKey={this.props.labelKey}
+                                     pos={i}
+                                     pid={v.key}
+                                     value={v}
+                                     showKey={this.props.showKey}
+                                     onClick={this.props.canEdit ? this.handleEdit : null}/> }
         </ItemTemplate>
     }
 
     render() {
-        var {name,  itemType, errors,className, canReorder, canDelete, itemTemplate, canEdit, canAdd } = this.props, values = this.state.wrapped || EMPTY_ARR, length = values.length;
+        var {name,  itemType, errors,className, listContainerClassName, canReorder, canDelete, itemTemplate, canEdit, canAdd } = this.props, values = this.state.wrapped || FREEZE_ARR, length = values.length;
         return (<div className={className}>
             {this.renderAdd()}
-            <ul>
+            <ul className={listContainerClassName}>
                 {values.map(this.renderRowEach, this)}
             </ul>
         </div>);
