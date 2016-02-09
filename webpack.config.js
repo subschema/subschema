@@ -12,7 +12,7 @@ function config(filename, externals, extract) {
     var loaders = [
         {
             test: /\.js(x)?$/,
-            excludes: /node_modules/,
+            include: /node_modules/,
             //do this to prevent babel fromt tanslating everything.
             loader: 'babel'
         },

@@ -4,6 +4,7 @@ import { PropTypes } from 'react';
 import extend   from 'lodash/object/extend';
 import find     from 'lodash/collection/find';
 import map      from 'lodash/collection/map';
+import {PropTypes as IP} from 'subschema-injection/src/index';
 
 //we'll re-export these for convenience in the babel6 world.
 const {string,bool,number,object,func, any, node,shape, arrayOf,instanceOf,oneOf, oneOfType} = PropTypes;
@@ -15,7 +16,7 @@ function customPropType(type, name) {
 
     customPropType$return.isRequired = function customPropType$return$isRequired(...args) {
         return type.isRequired.apply(type, args);
-    }
+    };
     if (name)
         customPropType$return.propTypeName = name;
 
@@ -43,6 +44,22 @@ function propTypesToNames(props) {
     return ret;
 }
 
+const fields = customPropType(arrayOf(string), 'fields');
+
+const title = customPropType(oneOfType([string, bool]), 'title');
+
+const injector = IP.injector;
+
+const blurValidate = customPropType(func, 'blurValidate');
+
+const validate = customPropType(func, 'validate');
+
+const value = customPropType(any, 'value');
+
+const message = customPropType(any, 'message');
+
+const error = customPropType(any, 'error');
+
 const promise = shape({then: func});
 
 const id = customPropType(string, 'id');
@@ -50,6 +67,11 @@ const id = customPropType(string, 'id');
 const fieldAttrs = customPropType(object, 'fieldAttrs');
 
 const cssClass = customPropType(string, 'cssClass');
+
+const typeClass = customPropType(cssClass, 'typeClass');
+
+const templateClass = customPropType(cssClass, 'templateClass');
+
 
 const event = customPropType(func, 'event');
 
@@ -221,7 +243,7 @@ const events = {
 };
 
 const field = oneOfType([string, shape({
-    type: string.isRequired,
+    type: string,
     title: string,
     name: string,
     placeholder: string,
@@ -243,8 +265,9 @@ const mixin = {
 };
 
 const contextTypes = Object.freeze({
-    valueManager: valueManager,
-    loader: loader
+    valueManager,
+    loader,
+    injector
 });
 
 
@@ -255,10 +278,12 @@ const processor = oneOfType([string, shape({
 })]);
 
 const api = {
+    blurValidate,
     promise,
     id,
     fieldAttrs,
     cssClass,
+    error,
     event,
     validator,
     path,
@@ -279,11 +304,14 @@ const api = {
     template,
     button,
     buttons,
+    fields,
     fieldset,
     literal,
     options,
     optionsGroup,
     schema,
+    value,
+    validate,
     validators,
     operator,
     events,
@@ -291,7 +319,7 @@ const api = {
     mixin,
     contextTypes,
     processor,
-    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType,oneOf
+    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 
 };
 
@@ -299,10 +327,13 @@ export default
 ({
     propTypesToNames,
     propTypeToName,
+    customPropType,
+    blurValidate,
     promise,
     id,
     fieldAttrs,
     cssClass,
+    error,
     event,
     valueEvent,
     targetEvent,
@@ -324,7 +355,9 @@ export default
     template,
     button,
     buttons,
+    fields,
     fieldset,
+    injector,
     literal,
     options,
     optionsGroup,
@@ -336,6 +369,9 @@ export default
     mixin,
     contextTypes,
     processor,
+    value,
+    validate,
     array,
-    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType,oneOf
+    title,
+    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });

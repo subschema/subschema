@@ -19,6 +19,7 @@ import * as decorators from './decorators/index';
 import Constants from './Constants';
 import transitions from './transition/EventCSSTransitionGroup.jsx';
 import loader from './loader';
+import injector from './injector';
 export {
     Conditional,
     Editor,
@@ -32,6 +33,7 @@ export {
     css,
     decorators,
     eventable,
+    injector,
     listenUtil,
     loader,
     loaderFactory,
@@ -53,6 +55,7 @@ export default {
     css,
     decorators,
     eventable,
+    injector,
     listenUtil,
     loader,
     loaderFactory,

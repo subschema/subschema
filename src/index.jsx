@@ -18,6 +18,7 @@ import Subschema, {Conditional as _C,
     css as _c,
     decorators as _d,
     eventable as _e,
+    injector as _i,
     listenUtil as _l,
     loaderFactory as _loaderFactory,
     tutils as _t,
@@ -51,7 +52,7 @@ export const types = _types;
 export const processors = _processors;
 export const styles = _styles;
 export const DefaultLoader = _DefaultLoader;
-
+export const injector = _i;
 Subschema.types = _types;
 Subschema.templates = _templates;
 Subschema.processors = _processors;

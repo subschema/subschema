@@ -2,9 +2,17 @@
 import React, {Component} from 'react';
 import style from 'subschema-styles/EditorTemplate-style';
 import {forEditor} from '../css';
+import PropTypes from '../PropTypes';
 import Content from '../types/Content.jsx';
 
 export default class EditorTemplate extends Component {
+    static propTypes = {
+        error: PropTypes.error,
+        title: PropTypes.title,
+        name: PropTypes.string,
+        help: PropTypes.node
+    };
+
     render() {
         var {name, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
         if (!title) {

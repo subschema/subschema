@@ -31,7 +31,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.js(x)?$/,
-                exclude:/node_modules\/(?!(component-playground|subschema-test-support))/,
+                exclude:/node_modules\/(?!(component-playground|subschema.*))/,
                 loader: 'babel'
             },
             {test: /\.(png|jpe?g|mpe?g|gif)$/, loader: 'url-loader?limit=100000'},
