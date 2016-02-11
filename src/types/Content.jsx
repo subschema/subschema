@@ -1,7 +1,6 @@
 "use strict";
 
 import React, {Component, DOM} from 'react';
-import DefaultContentWrapper from './ContentWrapper.jsx';
 import map from 'lodash/collection/map';
 import {isString,isObject, isArray, toArray} from '../tutils';
 import defaults from 'lodash/object/defaults';
@@ -14,13 +13,24 @@ export default class Content extends Component {
         loader: PropTypes.loader
     };
     static propTypes = {
-        content: PropTypes.content
+        content: PropTypes.any,
+        contentWrapper: PropTypes.type,
+        value: PropTypes.any,
+        onChange: PropTypes.any,
+        title: PropTypes.any,
+        className: PropTypes.cssClass,
+        id: PropTypes.any,
+        name: PropTypes.any,
+        injected: PropTypes.injectedClass
+
+
     };
 
     //Expose for react-native subschema.
     static defaultProps = {
         type: 'span',
-        content: ''
+        content: '',
+        contentWrapper: 'ContentWrapper'
     };
 
     static Types = DOM || {};
@@ -55,10 +65,10 @@ export default class Content extends Component {
             return null;
         }
         if (isString(content)) {
-            var ContentWrapper = this.DefaultContentWrapper || (this.DefaultContentWrapper = this.context.loader.loadType('ContentWrapper'));
+            var ContentWrapper = this.props.contentWrapper;
             return <ContentWrapper {...props} key={'content-'+prefix} content={content}/>
         }
-
+        const Content = this.props.injected;
 
         if (isArray(content)) {
             //TODO - check if we need to flatten this.

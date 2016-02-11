@@ -44,6 +44,8 @@ function propTypesToNames(props) {
     return ret;
 }
 
+const domType = customPropType(node, 'domType');
+
 const fields = customPropType(arrayOf(string), 'fields');
 
 const title = customPropType(oneOfType([string, bool]), 'title');
@@ -74,6 +76,7 @@ const typeClass = customPropType(cssClass, 'typeClass');
 
 const templateClass = customPropType(cssClass, 'templateClass');
 
+const injectedClass = customPropType(any, "injectedClass");
 
 const event = customPropType(func, 'event');
 
@@ -117,9 +120,9 @@ const dataType = customPropType(string, 'dataType');
 
 const type = oneOfType([string, func]);
 
-const typeDescription = shape({
+const typeDescription = oneOfType([string, shape({
     type: string.isRequired
-});
+})]);
 
 /**
  * Signify this property can take an expression.  This
@@ -244,13 +247,14 @@ const events = {
     onChange: oneOfType(targetEvent, valueEvent)
 };
 
-const field = oneOfType([string, shape({
-    type: func,
+const field = customPropType(any, 'field');/*oneOfType([string, shape({
+    type: any,
+    template:any,
     title: string,
     name: string,
     placeholder: string,
     className: cssClass
-})]);
+})]);*/
 
 const animation = PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.object]);
 const mixin = {
@@ -285,6 +289,7 @@ const api = {
     blurValidate,
     promise,
     id,
+    injectedClass,
     fieldAttrs,
     cssClass,
     error,
@@ -301,6 +306,7 @@ const api = {
     validEvent,
     dataType,
     type,
+    domType,
     typeDescription,
     expression,
     loader,
@@ -352,6 +358,7 @@ export default
     blurEvent,
     validEvent,
     dataType,
+    domType,
     type,
     typeDescription,
     expression,
@@ -363,6 +370,7 @@ export default
     buttons,
     fields,
     fieldset,
+    injectedClass,
     injector,
     literal,
     htmlFor,
