@@ -8,7 +8,7 @@ const propTypes = {
     onBlur: PropTypes.blurValidate,
     value: PropTypes.value,
     id: PropTypes.id,
-    name: PropTypes.name,
+    name: PropTypes.htmlFor,
     className: PropTypes.typeClass,
     placeholder: PropTypes.string
 };

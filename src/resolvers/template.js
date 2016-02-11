@@ -7,7 +7,8 @@ import {inherits, isFunction} from '../tutils';
 
 const propTypes = {
     className: PropTypes.cssClass,
-    id: PropTypes.id
+    id: PropTypes.id,
+    fieldClass: PropTypes.fieldClass
 };
 
 

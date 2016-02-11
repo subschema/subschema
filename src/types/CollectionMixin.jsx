@@ -91,11 +91,14 @@ export default class CollectionMixin extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setValue(props.value);
+        if(props.value !== this.props.value) {
+            this.setValue(props.value);
+        }
         const {showAdd} = props;
         if (showAdd !== this.props.showAdd) {
             this.setState({showAdd});
         }
+
     }
 
     getValue() {

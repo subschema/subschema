@@ -1,5 +1,6 @@
 "use strict";
 import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
 
 export default class Button extends Component {
 
@@ -8,6 +9,9 @@ export default class Button extends Component {
         label: 'Submit',
         buttonClass: 'btn',
         iconClass: null
+    };
+    static propTypes = {
+        onClick: PropTypes.func
     };
 
     constructor(props, ...rest) {
@@ -23,7 +27,7 @@ export default class Button extends Component {
     render() {
         var {buttonClass, title, iconClass, onClick, label, ...props} = this.props;
         return <button className={buttonClass} title={title} disabled={this.state.disabled}
-                       onClick={this.handleClick} {...props}>
+                       onClick={this::this.handleClick} {...props}>
             {iconClass ? <i className={iconClass}/> : null}
             {label}</button>
     }

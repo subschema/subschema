@@ -28,7 +28,8 @@ describe('ObjectType', function () {
                 validators: ["required"]
             }
         }
-    }
+    };
+
     it('should not other objects', function () {
         var form = into(<Form schema={schema}/>, true);
 

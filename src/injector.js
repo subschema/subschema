@@ -3,7 +3,7 @@
 import injectorFactory from 'subschema-injection/src/injectorFactory';
 import PropTypes from './PropTypes';
 import resolvers from './resolvers';
-
+import cached from './cachedInjector';
 const injector = injectorFactory();
 
 Object.keys(resolvers).forEach((r)=> {
@@ -14,4 +14,4 @@ Object.keys(resolvers).forEach((r)=> {
     }
 });
 
-export default injector;
+export default cached(injector);

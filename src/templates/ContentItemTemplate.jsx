@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import style  from 'subschema-styles/Mixed-style';
 import PropTypes from '../PropTypes';
-import _get from 'lodash/object/get'
+import _get from 'lodash/object/get';
+
 
 export default class ContentItemTemplate extends Component {
+
     static propTypes = {
+        onClick: PropTypes.func,
+        pid: PropTypes.any,
+        pos: PropTypes.number,
         showKey: PropTypes.bool,
         labelKey: PropTypes.string,
         value(props, propName, componentName) {
