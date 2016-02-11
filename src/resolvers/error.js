@@ -9,7 +9,7 @@ function handleErrorListeners(value, key, props, context) {
 
     return context.valueManager.addErrorListener(resolvedPath, (err)=> {
         injected[key] = err && err[0] && err[0].message;
-        this.forceUpdate();
+        this.mounted && this.forceUpdate();
     }, this, true).remove;
 }
 

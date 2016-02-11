@@ -1,6 +1,6 @@
 "use strict";
 import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType, click} from 'subschema-test-support';
-import {loader,Form, templates} from 'Subschema';
+import {loader,Form, templates, ValueManager} from 'Subschema';
 var {EditorTemplate, ButtonTemplate} = templates;
 
 describe('Form', function () {
@@ -10,12 +10,13 @@ describe('Form', function () {
             schema: {
                 name: {
                     type: 'Text',
-                    validators: ['email']
+                    validators: ['email'],
+                    help:'I need help'
                 }
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>);
+        var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>, true);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0];
         var input = byTag(edit, 'input');
         Simulate.blur(input);
@@ -101,7 +102,7 @@ describe('Form', function () {
     });
 
     it('should create a form with a schema and value and triggered error', function () {
-        var value = {}, schema = {
+        var valueManager = ValueManager({}), schema = {
             schema: {
                 name: {
                     type: 'Text',
@@ -110,11 +111,13 @@ describe('Form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors}/>, true);
+        var root = into(<Form valueManager={valueManager} schema={schema} errors={errors}/>, true);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
-        Simulate.blur(input);
-        expect(edit.props.error).toEqual('Required');
+     //   Simulate.blur(input);
+        expect(edit.props.error).toNotExist('No value no trigger no error');
+        valueManager.validate();
+        expect(edit.props.error).toEqual('Required', 'No value no trigger no error');
     });
 
     it('should create a nested form with multiple errors', function () {

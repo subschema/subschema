@@ -7,7 +7,7 @@ describe('NestedForms', function () {
     it('should render nested forms', ()=> {
         var valueManager = ValueManager(NestedForms.data);
 
-        var form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>);
+        var form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>, true);
 
         var street = byId(form, 'address.street');
 
@@ -16,7 +16,7 @@ describe('NestedForms', function () {
         expect(street.value).toBe('1 First St');
 
         valueManager.update('address.street', 'Something');
-
+        var street = byId(form, 'address.street');
         expect(street.value).toBe('Something');
 
     });

@@ -9,7 +9,8 @@ const propTypes = {
     value: PropTypes.value,
     id: PropTypes.id,
     name: PropTypes.name,
-    className: PropTypes.typeClass
+    className: PropTypes.typeClass,
+    placeholder: PropTypes.string
 };
 
 //Expose for configurability
@@ -38,7 +39,6 @@ export default function type(Clazz, key, propList, OrigClazz) {
 
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz.contextTypes.injector = PropTypes.injector;
-
 
 
     Clazz::prop(key, loadType);

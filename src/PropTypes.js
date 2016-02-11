@@ -64,6 +64,8 @@ const promise = shape({then: func});
 
 const id = customPropType(string, 'id');
 
+const htmlFor = customPropType(id, 'htmlFor');
+
 const fieldAttrs = customPropType(object, 'fieldAttrs');
 
 const cssClass = customPropType(string, 'cssClass');
@@ -243,13 +245,14 @@ const events = {
 };
 
 const field = oneOfType([string, shape({
-    type: string,
+    type: func,
     title: string,
     name: string,
     placeholder: string,
     className: cssClass
 })]);
 
+const animation = PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.object]);
 const mixin = {
     events: events,
     field: extend({
@@ -278,6 +281,7 @@ const processor = oneOfType([string, shape({
 })]);
 
 const api = {
+    animation,
     blurValidate,
     promise,
     id,
@@ -285,6 +289,7 @@ const api = {
     cssClass,
     error,
     event,
+    htmlFor,
     validator,
     path,
     placeholder,
@@ -328,6 +333,7 @@ export default
     propTypesToNames,
     propTypeToName,
     customPropType,
+    animation,
     blurValidate,
     promise,
     id,
@@ -359,6 +365,7 @@ export default
     fieldset,
     injector,
     literal,
+    htmlFor,
     options,
     optionsGroup,
     schema,

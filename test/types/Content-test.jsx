@@ -1,17 +1,19 @@
-import {React,findNode, intoWithContext,context,TestUtils,expect, Simulate} from 'subschema-test-support';
+"use strict";
+import React, {Component} from 'react';
+import {findNode, intoWithContext,context,TestUtils,expect, Simulate} from 'subschema-test-support';
 import ReactServer from 'react-dom/server';
-import {ValueManager, loader, types, Editor,Form} from 'Subschema';
+import {ValueManager, loader as _loader, loaderFactory, types, Editor,Form} from 'Subschema';
 
+const loader = loaderFactory([_loader]);
 const { Content} = types;
 
 describe('Content', function () {
     before(function () {
-        loader.addType('Test', React.createClass({
-            displayName: 'Test',
-            render(){
+        loader.addType('Test', class extends Component {
+            render() {
                 return <div><span>hello</span>{this.props.children}</div>
             }
-        }));
+        });
     });
 
     it('should do simple subsitution', function () {
@@ -160,7 +162,7 @@ describe('Content', function () {
         var valueManager = ValueManager({hello: 'Joe'});
         var Context = context({valueManager, loader});
         var node = ReactServer.renderToStaticMarkup(<Context><Content content={content} className='panel panel-default'
-            /></Context>);
+        /></Context>);
 
         expect(node).toEqual('<span class="panel panel-default" type="span">' +
             '<span class="clz-left" type="span">' +

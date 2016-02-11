@@ -8,6 +8,7 @@ import _set from 'lodash/object/set';
 import {noop} from './../tutils';
 import warning from '../warning';
 import loader from '../loader';
+import injector from '../injector';
 
 export default class Form extends Component {
     static  childContextTypes = PropTypes.contextTypes;
@@ -15,6 +16,7 @@ export default class Form extends Component {
     static propTypes = {
         schema: PropTypes.schema.isRequired,
         loader: PropTypes.loader,
+        injector: PropTypes.injector,
         valueManager: PropTypes.valueManager,
         template: PropTypes.template,
         method: PropTypes.string,
@@ -32,13 +34,14 @@ export default class Form extends Component {
 
     getChildContext() {
         return {
-            valueManager: this.valueManager, loader: this.loader
+            valueManager: this.valueManager, loader: this.loader, injector: this.injector
         };
     }
 
     constructor(props, context, whatever) {
         super(props, context, whatever);
         this.loader = props.loader || loader;
+        this.injector = props.injector || injector;
         if (!props.valueManager) {
             this.valueManager = ValueManager(this.props.value, this.props.errors);
         } else {
@@ -50,7 +53,7 @@ export default class Form extends Component {
                 this.valueManager.setErrors(this.props.errors);
             }
         }
-
+        this.ObjectWrapper = this.injector.inject(ObjectType);
     }
 
     componentWillReceiveProps(newProps) {
@@ -91,8 +94,9 @@ export default class Form extends Component {
 
     render() {
 
-        var {valueManager, template, onSubmit, loader, ...props} = this.props;
-        return <ObjectType ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
+        var {valueManager, injector, template, onSubmit, loader, ...props} = this.props;
+        const ObjectWrapper = this.ObjectWrapper;
+        return <ObjectWrapper ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
     }
 
 }

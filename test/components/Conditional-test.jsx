@@ -1,16 +1,21 @@
 "use strict";
 import {React, into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from 'subschema-test-support';
 import each from 'lodash/collection/each';
-import {ValueManager, types, Form, Conditional, loader} from 'Subschema';
+import {ValueManager, PropTypes, loaderFactory, types, Form, Conditional as _Conditional, loader as _loader, injector} from 'Subschema';
 const {Select} = types;
+
 describe('Conditional', function () {
     this.timeout(30000);
+    const Conditional = injector.inject(_Conditional);
+    const loader = loaderFactory([_loader]);
 
-    var Hello = React.createClass({
-        displayName: 'Test',
-        render(){
+    class Hello extends React.Component {
+        render() {
             return <div>Hello</div>;
         }
+    }
+    loader.addTemplate({
+        Hello
     });
     var schema = {
         'menu': {
@@ -36,11 +41,16 @@ describe('Conditional', function () {
         }
 
 
-    }
+    };
     it('should render conditional with regex', function () {
         var vm = ValueManager();
-        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
-                                                operator={/stuff/}/>, {valueManager: vm, loader: loader}, false);
+        var cond = intoWithContext(<Conditional template='Hello'
+                                                animate={false} path='hot'
+                                                operator={/stuff/}/>, {
+            valueManager: vm,
+            loader: loader,
+            injector
+        }, false, PropTypes.contextTypes);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -51,8 +61,12 @@ describe('Conditional', function () {
     });
     it('should render conditional with negated regex', function () {
         var vm = ValueManager();
-        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
-                                                operator={'!/stuff/i'}/>, {valueManager: vm}, false);
+        var cond = intoWithContext(<Conditional template='Hello' animate={false} path='hot'
+                                                operator={'!/stuff/i'}/>, {
+            valueManager: vm,
+            injector,
+            loader
+        }, false, PropTypes.contextTypes);
         expect(cond).toExist();
         byType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -60,11 +74,16 @@ describe('Conditional', function () {
         vm.update('hot', 'ColDd');
         byType(cond, Hello);
 
-    })
+    });
+
     it('should render conditional with str regex', function () {
         var vm = ValueManager();
-        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot' operator={'/stuff/i'}
-            />, {valueManager: vm}, false);
+        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot' operator='/stuff/i'
+        />, {
+            valueManager: vm,
+            injector,
+            loader
+        }, false, PropTypes.contextTypes);
         expect(cond).toExist();
         notByType(cond, Hello);
         vm.update('hot', 'stuff');
@@ -72,23 +91,32 @@ describe('Conditional', function () {
         vm.update('hot', 'ColDd');
         notByType(cond, Hello);
 
-    })
+    });
+
     it('should render conditional with null', function () {
-        var vm = ValueManager();
-        var cond = intoWithContext(<Conditional template={Hello} animate={false} path='hot'
-            />, {valueManager: vm}, false);
+        var valueManager = ValueManager();
+        var cond = intoWithContext(<Conditional template={'Hello'} animate={false} path='hot'
+        />, {
+            valueManager,
+            injector,
+            loader
+        }, true, PropTypes.contextTypes);
         expect(cond).toExist();
         notByType(cond, Hello);
-        vm.update('hot', 'stuff');
+        valueManager.update('hot', 'stuff');
         byType(cond, Hello);
-        vm.update('hot', null);
+        valueManager.update('hot', null);
         notByType(cond, Hello);
 
-    })
+    });
     it('should render children or not', function () {
         var vm = ValueManager();
         var cond = intoWithContext(<Conditional animate={false} path='hot'
-            ><Hello/></Conditional>, {valueManager: vm}, false);
+        ><Hello/></Conditional>, {
+            valueManager: vm,
+            injector,
+            loader
+        }, false, PropTypes.contextTypes);
 
         expect(cond).toExist();
         notByType(cond, Hello);
@@ -98,41 +126,7 @@ describe('Conditional', function () {
         notByType(cond, Hello);
 
     });
-    describe('operators', function () {
-        /**
-         * Test the operator.
-         * if even position than false, odd position than true.
-         */
-        each({
-            '==': [0, 1, 0, 2],
-            '===': [0, 1],
-            '!=': [1, ''],
-            '!==': ['', 0],
-            '>': [-1, 0],
-            '>=': [0, 1],
-            '<': [1, 0],
-            '<=': [0, -1],
-            'truthy': [1, 0, true, false, '1', ''],
-            'falsey': [0, 1, false, true, '', '1']
 
-        }, function (v, k) {
-            it('should "' + k + '" work', function () {
-                var valueManager = ValueManager({
-                    hot: 0
-                });
-
-                var cond = intoWithContext(<Conditional template={Hello} animate={false} value={0} operator={k}
-                                                        path='hot'
-                    />, {valueManager}, false);
-                each(v, function (nv, i) {
-                    valueManager.update('hot', nv);
-                    ((i + 1) % 2 ? byType : notByType)(cond, Hello);
-                    valueManager.update('hot', 0);
-                });
-            })
-        });
-
-    });
     describe('ModelAndMake', function () {
         var schema = {
             "schema": {
@@ -140,7 +134,7 @@ describe('Conditional', function () {
                     "title": "Make",
                     "type": "Select",
                     "placeholder": "Select a make",
-                    "options": [{"label": "AMC", "val": "amc"}]
+                    "options": [{"label": "AMC", "val": "amc"}, {"label": "Buick", "val": "buick"}]
                 },
                 "model": {
                     "title": "Model",
@@ -149,30 +143,37 @@ describe('Conditional', function () {
                     "conditional": {"listen": "make", "operator": "falsey"}
                 },
                 "amc": {
-                    "title": "Model",
-                    "conditional": {"listen": "make", "value": "amc", "operator": "===", "path": "model"},
+                    "title": "Model of AMC",
+                    "conditional": {"listen": "make", "value": "amc", "operator": "===", path: "model"},
                     "type": "Select",
                     "placeholder": "Select a model of AMC",
                     "options": ["AMX", "Concord", "Eagle", "Gremlin", "Matador", "Pacer"]
                 },
+                "buick": {
+                    "title": "Model of Buick",
+                    "conditional": {"listen": "make", "value": "buick", "operator": "===", path: "model"},
+                    "type": "Select",
+                    "placeholder": "Select a model of Buick",
+                    "options": ["LeMans", "Skylark"]
+                }
 
             },
             "fieldsets": [{
                 "legend": "Make And Model Linked Selects",
-                "fields": ["make", "model", "amc"]
+                "fields": ["make", "model", "amc", "buick"]
             }]
         };
         it('should render make and model', function () {
-            var valueManager = ValueManager();
-            var form = into(<Form schema={schema} valueManager={valueManager}/>)
+            var valueManager = ValueManager({});
+            var form = into(<Form schema={schema} valueManager={valueManager}/>, true);
             var selects = byTypes(form, Select);
 
             expect(selects.length).toBe(2, 'Should have 2 selects');
             select(selects[0], 1);
-            expect(valueManager.path('make')).toBe('amc', 'should update the make');
             var selects = byTypes(form, Select);
             expect(selects[1].props.placeholder).toBe('Select a model of AMC', 'should update placeholder');
             select(selects[1], 1);
+
             expect(valueManager.path('model')).toBe('AMX', 'should update the model');
 
 

@@ -1,12 +1,13 @@
 "use strict";
 
-import React, {Component} from 'react';
-import {PropTypes} from 'subschema';
+import PropTypes from '../PropTypes';
 import {prop, resolveKey} from 'subschema-injection/src/util';
 
 function resolve(value, key, props, context) {
-    const resolvedPath = resolveKey(path, value);
-    return (v) => context.valueManager.update(resolvedPath, v);
+    const resolvedPath = resolveKey(props.path, value);
+    return function (v) {
+        context.valueManager.update(resolvedPath, v);
+    }
 }
 
 export default function valueEvent(Clazz, key) {

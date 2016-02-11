@@ -3,7 +3,7 @@
 import React, {Component}  from 'react';
 import PropTypes  from '../PropTypes';
 import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path, clone, noop}  from '../tutils';
-import Editor  from '../components/Editor';
+import Field  from '../components/Field';
 import ValueManager  from '../ValueManager';
 import map  from 'lodash/collection/map';
 import Template  from '../components/Template.jsx';
@@ -98,7 +98,10 @@ export default class ObjectType extends Component {
         onButtonClick: PropTypes.event,
         onSubmit: PropTypes.event,
         buttons: PropTypes.buttons,
-        path: PropTypes.path
+        path: PropTypes.path,
+        fieldsets: PropTypes.any,
+        fields: PropTypes.any
+
     };
 
     static defaultProps = {
@@ -113,7 +116,10 @@ export default class ObjectType extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
-
+    constructor(props, context, ...rest){
+        super(props, context, ...rest);
+        this.Editor = context.injector.inject(Field);
+    }
     componentWillMount() {
         this.updateProps(FREEZE_OBJ, this.props);
     }
@@ -144,11 +150,8 @@ export default class ObjectType extends Component {
         if (field == null) {
             return null;
         }
-        return <Editor key={'key-' + f} path={_path(this.props.path, f)}
-                       field={field}
-                       name={f}
-                       template={field.template}
-        />
+        const Editor = this.Editor;
+        return <Editor key={'key-' + f} path={_path(this.props.path, f)} field={field}/>
     }
 
     makeFields(fields) {

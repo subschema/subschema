@@ -48,7 +48,7 @@ describe('types/List', function () {
         expect(tasks.length).toEqual(0);
 
     });
-    it('should render a list with data the canAdd', function () {
+    it.only('should render a list with data the canAdd', function () {
         var data = {
             tasks: [
                 'one',

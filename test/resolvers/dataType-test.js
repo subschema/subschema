@@ -104,7 +104,6 @@ describe('resolvers/dataType', function () {
     it('should set dataType by defaultProps overrider by component with overrides with defaults and configs', function () {
         class TargetTest extends Component {
             static propTypes = propTypes;
-            static defaultProps = defaultProps;
 
             render() {
                 return <span>{this.props.type}</span>

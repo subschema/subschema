@@ -6,6 +6,7 @@ import {FREEZE_OBJ} from '../tutils';
 import {loadTemplate} from './template';
 import {loadType} from './type';
 import {loadValidators} from './validate';
+import Conditional from '../components/Conditional.jsx';
 
 export const settings = {
     type: 'Text',
@@ -21,9 +22,10 @@ function spreadable(value, key = 'template') {
     if (value == null) {
         return FREEZE_OBJ;
     }
-    if (typeof value === 'string') {
+    if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'function') {
         return {[key]: value}
     }
+
     if ((!key in value)) {
         return FREEZE_OBJ;
     }
@@ -51,8 +53,11 @@ export default function field(Clazz, key, propList) {
             if (value.validators) {
                 value.validators = loadValidators(value.validators, key, props, context);
             }
-
-
+            if (value.conditional) {
+                if (value.conditional === 'string') {
+                    value.conditional = {operator: value.conditional}
+                }
+            }
             const Type = loadType(value.type, null, null, context);
             let Template;
             if ('template' in Type) {

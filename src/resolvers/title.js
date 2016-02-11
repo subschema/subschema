@@ -10,7 +10,9 @@ function resolve(value, key, props) {
     if (value) {
         return value;
     }
-    return titlelize(props.name || props.id || props.path);
+    const val = props.name || props.id || props.path || '';
+
+    return titlelize(val.split(/\./).pop());
 }
 
 export default function valueEvent(Clazz, key) {

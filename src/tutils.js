@@ -121,12 +121,21 @@ function applyFuncs(f1, f2) {
     if (f1 && !f2) return f1;
     if (!f1 && f2) return f2;
     return function applyFuncs$bothFuncs(...args) {
-        f1.apply(this, args);
-        f2.apply(this, args);
+        this::f1(...args);
+        this::f2(...args);
     };
 }
 
-
+function inherits(Clazz) {
+    let Proto = this;
+    do {
+        if (Proto === Clazz) {
+            return true;
+        }
+        Proto = Object.getPrototypeOf(Proto);
+    } while (Proto !== Object && Proto != null);
+    return false;
+}
 /**
  * When f1 and f2 are defined-
  *
@@ -144,8 +153,8 @@ function nextFunc(f1, f2) {
     if (f1 && !f2) return f1;
     if (f2 && !f1) return f2;
     return function nextFunc$wrapper(...args) {
-        if (f1.apply(this, args) !== false) {
-            return f2.apply(this, args);
+        if (this::f1(...args) !== false) {
+            return this::f2(...args);
         }
     };
 }
@@ -183,7 +192,8 @@ export {
     uppercase,
     titlelize,
     applyFuncs,
-    nextFunc
+    nextFunc,
+    inherits
 };
 export default {
     extend,
@@ -205,6 +215,7 @@ export default {
     flatten,
     push,
     slice,
+    inherits,
     returnFirst,
     result,
     path,

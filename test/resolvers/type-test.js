@@ -5,7 +5,6 @@ import {PropTypes, decorators, ValueManager, loaderFactory} from 'subschema';
 import support, {intoWithContext, byComponent,findNode, change} from 'subschema-test-support/src/index.js';
 import resolvers from '../../src/resolvers';
 import injectorFactory from 'subschema-injection/src/injectorFactory';
-import {injector as injectorPropType} from '../../src/PropTypes';
 
 const injector = injectorFactory();
 
@@ -42,11 +41,6 @@ describe('resolvers/type', function () {
         }
 
     }
-    const contextTypes = {
-        valueManager: PropTypes.valueManager,
-        loader: PropTypes.loader,
-        injector: injectorPropType
-    };
 
     injector.resolver(PropTypes.type, resolvers.type);
     injector.resolver(PropTypes.value, resolvers.value);
@@ -58,7 +52,7 @@ describe('resolvers/type', function () {
             valueManager,
             loader,
             injector
-        }, true, contextTypes);
+        }, true, PropTypes.contextTypes);
 
         const et = byComponent(inst, TargetTest);
         const stuff = byComponent(inst, TestStuff);
@@ -77,7 +71,7 @@ describe('resolvers/type', function () {
             valueManager,
             loader,
             injector
-        }, true, contextTypes);
+        }, true, PropTypes.contextTypes);
 
         const et = byComponent(inst, TargetTest);
         const stuff = byComponent(inst, TestStuff);

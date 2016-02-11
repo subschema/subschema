@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
+import {inherits, isFunction} from '../tutils';
 
 const propTypes = {
     className: PropTypes.cssClass,
@@ -16,7 +17,7 @@ export function normalize(template, settings = {}) {
         return settings;
     }
 
-    if (typeof template === 'string') {
+    if (typeof template === 'string' || typeof template === 'function') {
         return {template}
     }
     if (template === false) {
@@ -30,26 +31,20 @@ export function normalize(template, settings = {}) {
     if (template.template === false) {
         return template;
     }
-    if (!template.template) {
-        if (settings == null) {
-            return template;
-        }
-        return {
-            ...template,
-            ...settings
-        }
+    return {
+        ...settings,
+        ...template
     }
-
-    return template;
 }
 
 export function loadTemplate(value, key, props, context) {
     const {template, ...rest} = normalize(value);
-    if (template === false) {
+
+    if (template == null || template === false) {
         return null;
     }
 
-    const Template = context.loader.loadTemplate(template);
+    const Template = isFunction(template) ? template : context.loader.loadTemplate(template);
 
     return context.injector.inject(Template, propTypes, rest);
 }

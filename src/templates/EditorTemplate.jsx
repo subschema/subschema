@@ -10,17 +10,18 @@ export default class EditorTemplate extends Component {
         error: PropTypes.error,
         title: PropTypes.title,
         name: PropTypes.string,
-        help: PropTypes.node
+        help: PropTypes.node,
+        htmlFor: PropTypes.htmlFor
     };
 
     render() {
-        var {name, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
+        var {name, htmlFor, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
         if (!title) {
             title = ''
         }
         return (<div
             className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  forEditor(this)}>
-            <Content content={title} type="label" className={style.label} htmlFor={name}/>
+            <Content content={title} type="label" className={style.label} htmlFor={htmlFor}/>
 
             <div className={title ? style.hasTitle : style.noTitle}>
                 {children}
