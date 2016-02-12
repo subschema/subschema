@@ -13,7 +13,6 @@ import validators from './validators';
 import warning from './warning';
 import * as tutils from './tutils';
 import ValueManager from './ValueManager';
-import * as listenUtil from './listenUtil';
 import css from './css';
 import * as decorators from './decorators/index';
 import Constants from './Constants';
@@ -34,7 +33,6 @@ export {
     decorators,
     eventable,
     injector,
-    listenUtil,
     loader,
     loaderFactory,
     tutils,
@@ -56,7 +54,6 @@ export default {
     decorators,
     eventable,
     injector,
-    listenUtil,
     loader,
     loaderFactory,
     tutils,
