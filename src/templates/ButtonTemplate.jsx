@@ -1,6 +1,5 @@
 "use strict";
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
+import React, {Component, PropTypes} from 'react';
 
 export default class Button extends Component {
 
@@ -8,17 +7,14 @@ export default class Button extends Component {
         action: 'Submit',
         label: 'Submit',
         buttonClass: 'btn',
-        iconClass: null
+        iconClass: null,
+        disabled: false
     };
     static propTypes = {
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        disabled: PropTypes.bool,
+        title: PropTypes.string
     };
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        if (!this.state) this.state = {};
-        this.state.disabled = props && props.disabled || false
-    }
 
     handleClick = (e)=> {
         this.props.onClick(e, this.props.action, this);
@@ -26,8 +22,7 @@ export default class Button extends Component {
 
     render() {
         var {buttonClass, title, iconClass, onClick, label, ...props} = this.props;
-        return <button className={buttonClass} title={title} disabled={this.state.disabled}
-                       onClick={this::this.handleClick} {...props}>
+        return <button className={buttonClass}  {...props} onClick={this::this.handleClick}>
             {iconClass ? <i className={iconClass}/> : null}
             {label}</button>
     }

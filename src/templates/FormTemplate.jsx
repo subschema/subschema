@@ -15,7 +15,9 @@ export default class FormTemplate extends Component {
         method: PropTypes.oneOf(['get', 'post']),
         name: PropTypes.string,
         novalidate: PropTypes.bool,
-        target: PropTypes.string
+        target: PropTypes.string,
+        fieldAttrs: PropTypes.any,
+        buttons:PropTypes.any
     };
 
     static defaultProps = {

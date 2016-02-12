@@ -5,6 +5,7 @@ import * as _templates from './templates';
 import * as _types from './types';
 import * as _processors from './processors';
 import * as _styles from './styles';
+import * as _resolvers from './resolvers';
 import _loader from './loader';
 import Subschema, {Conditional as _C,
     Editor as _E,
@@ -53,10 +54,12 @@ export const processors = _processors;
 export const styles = _styles;
 export const DefaultLoader = _DefaultLoader;
 export const injector = _i;
+export const resolvers = _resolvers;
 Subschema.types = _types;
 Subschema.templates = _templates;
 Subschema.processors = _processors;
 Subschema.styles = _styles;
 Subschema.loader = _loader;
+Subschema.resolvers = _resolvers;
 Subschema.DefaultLoader = _DefaultLoader;
 export default Subschema;

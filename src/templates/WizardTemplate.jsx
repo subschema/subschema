@@ -46,9 +46,9 @@ export default class WizardTemplate extends WizardMixin {
     }, WizardMixin.defaultProps);
 
     setNavState(next) {
-        var len = this.schema.fieldsets.length, compState = this.state.compState;
+        var len = this.props.schema.fieldsets.length, compState = this.state.compState;
         next = Math.max(Math.min(len - 1, next), 0);
-        if (this.props.onNavChange(next, compState, this.schema.fieldsets[next]) !== false) {
+        if (this.props.onNavChange(next, compState, this.props.schema.fieldsets[next]) !== false) {
             this.setState({
                 compState: next,
                 disabled: false,
@@ -63,9 +63,8 @@ export default class WizardTemplate extends WizardMixin {
                          onClick={this.handleOnClick}/>
     }
     render() {
-        var {...schema} = this.schema.schema;
-        var fieldsets = this.schema.fieldsets,
-            compState = this.state.compState,
+        var {fieldsets, schema} = this.props.schema;
+        var compState = this.state.compState,
             fields = fieldsets[compState].fields,
             transition = compState < this.state.prevState ? style.switchBack : style.switch;
 

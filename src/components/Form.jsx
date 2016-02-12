@@ -57,10 +57,10 @@ export default class Form extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.loader && newProps.loader !== this.loader) {
+        if (newProps.loader !== this.props.loader) {
             this.loader = newProps.loader;
         }
-        if (newProps.valueManager && newProps.valueManager !== this.valueManager) {
+        if (newProps.valueManager !== this.props.valueManager) {
             this.valueManager = newProps.valueManager;
         }
 
@@ -69,6 +69,10 @@ export default class Form extends Component {
         }
         if (this.props.errors !== newProps.errors) {
             this.valueManager.setErrors(newProps.errors);
+        }
+        if (this.props.injector !== newProps.injector) {
+            this.injector = newProps.injector;
+            this.ObjectWrapper = this.injector.inject(ObjectType);
         }
     }
 
@@ -94,7 +98,7 @@ export default class Form extends Component {
 
     render() {
 
-        var {valueManager, injector, template, onSubmit, loader, ...props} = this.props;
+        var {valueManager, injector, loader, template, onSubmit, ...props} = this.props;
         const ObjectWrapper = this.ObjectWrapper;
         return <ObjectWrapper ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
     }

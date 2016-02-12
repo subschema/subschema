@@ -5,6 +5,7 @@ import map from 'lodash/collection/map';
 import {isString,isObject, isArray, toArray} from '../tutils';
 import defaults from 'lodash/object/defaults';
 import PropTypes from '../PropTypes';
+import DefaultWrapper from './ContentWrapper.jsx';
 
 export default class Content extends Component {
     static isContainer = true;
@@ -14,7 +15,7 @@ export default class Content extends Component {
     };
     static propTypes = {
         content: PropTypes.any,
-        contentWrapper: PropTypes.type,
+        contentWrapper: PropTypes.injectClass,
         value: PropTypes.any,
         onChange: PropTypes.any,
         title: PropTypes.any,
@@ -30,7 +31,7 @@ export default class Content extends Component {
     static defaultProps = {
         type: 'span',
         content: '',
-        contentWrapper: 'ContentWrapper'
+        contentWrapper: DefaultWrapper
     };
 
     static Types = DOM || {};

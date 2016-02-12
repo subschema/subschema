@@ -3,93 +3,18 @@
 import React, {Component}  from 'react';
 import PropTypes  from '../PropTypes';
 import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path, clone, noop}  from '../tutils';
-import Field  from '../components/Field';
-import ValueManager  from '../ValueManager';
 import map  from 'lodash/collection/map';
-import Template  from '../components/Template.jsx';
+import UninjectedField  from '../components/Field';
+import UninjectedTemplate  from '../components/Template.jsx';
+import UninjectedFieldSet from '../components/FieldSet.jsx';
 import warning from '../warning';
-var _path = path;
 
-function normalizeFieldsets(fieldsets, fields) {
-    if (!(fieldsets || fields)) return {};
-    fields = toArray(fields);
-    //fields trump fieldsets
-    //otherwise recurse
-    fieldsets = toArray(fieldsets).map((f)=> {
-        if (f.fields) {
-            var {...rest} = f;
-            rest.fields = toArray(rest.fields);
-            fields.push.apply(fields, rest.fields);
-            return rest;
-        } else if (f.fieldsets) {
-            var {fieldsets, ...rest} = f;
-            rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
-            return rest;
-        } else if (isString(f) || isArray(f)) {
-            var processFields = toArray(f);
-            push(fields, processFields);
-            return {
-                fields: processFields
-            }
-        } else if (f.fieldsets) {
-            var {fieldsets, ...rest} = f;
-            rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
-            return rest;
-        } else {
-            return f;
-//            warning(false, 'do not know what %s this is ', f);
-        }
-    });
-    if (fieldsets.length === 0) {
-        fieldsets = [{fields: fields}];
-    }
-    return {
-        fieldsets,
-        fields
-    }
-}
+const _path = path;
 
-function normalizeSchema(oschema, loader, fs, f) {
-    if (oschema == null) {
-        return {};
-    }
-
-    if (isString(oschema)) {
-        return normalizeSchema(loader.loadSchema(oschema), loader, fs, f);
-    } else if (isString(oschema.schema)) {
-        return normalizeSchema(loader.loadSchema(oschema.schema), loader, fs, f);
-    } else if (oschema.subSchema) {
-        var {subSchema, ...rest} = oschema;
-        rest.schema = subSchema;
-        return normalizeSchema(rest, loader);
-    }
-    if (!oschema.schema) {
-        return normalizeSchema({
-            schema: oschema
-        }, loader);
-    }
-    var {fields, fieldsets, ...schema} = oschema;
-    if (fs) {
-        fieldsets = fs;
-    }
-    if (f) {
-        fields = f;
-    }
-    if (!(fieldsets || fields)) {
-        fields = Object.keys(schema.schema);
-    }
-    var {fieldsets, fields} = normalizeFieldsets(fieldsets, fields);
-    schema.fieldsets = fieldsets;
-    schema.fields = fields;
-    return schema;
-}
 
 export default class ObjectType extends Component {
-    static inputClassName = ' ';
 
-    static isContainer = true;
-
-    static noTemplate = true;
+    static template = false;
 
     static propTypes = {
         objectTemplate: PropTypes.template,
@@ -99,65 +24,49 @@ export default class ObjectType extends Component {
         onSubmit: PropTypes.event,
         buttons: PropTypes.buttons,
         path: PropTypes.path,
-        fieldsets: PropTypes.any,
-        fields: PropTypes.any
+        fieldsets: PropTypes.fieldset,
+        fields: PropTypes.fields,
+        FieldSet: PropTypes.injectClass,
+        Field: PropTypes.injectClass
 
     };
 
     static defaultProps = {
         onButtonClick: noop,
         onSubmit: noop,
-        objectTemplate: 'ObjectTemplate'
+        objectTemplate: 'ObjectTemplate',
+        FieldSet: UninjectedFieldSet,
+        Field: UninjectedField
     };
 
-    static normalizeSchema = normalizeSchema;
-
-    static normalizeFieldsets = normalizeFieldsets;
 
     static contextTypes = PropTypes.contextTypes;
 
-    constructor(props, context, ...rest){
-        super(props, context, ...rest);
-        this.Editor = context.injector.inject(Field);
-    }
-    componentWillMount() {
-        this.updateProps(FREEZE_OBJ, this.props);
-    }
 
-    componentWillReceiveProps(newProps) {
-        this.updateProps(this.props, newProps);
-    }
+    addEditor(f, field, fields, Field) {
 
-    updateProps(oldProps, newProps) {
-        var field = newProps.field || newProps;
-        this.schema = ObjectType.normalizeSchema(field.subSchema || field.schema, this.context.loader, field.fields, field.fieldsets);
-    }
-
-    makeFieldset = (f, i)=> {
-        return <Template template={f.template || 'FieldSetTemplate'} key={'f' + i} field={f} {...f}
-                         onSubmit={this.handleSubmit}
-                         onButtonClick={this.handleButtonClick}
-                         schema={this.schema.schema}>
-            {f.fields ? this.makeFields(f.fields) : map(f.fieldsets, this.makeFieldset)}
-        </Template>
-    };
-
-    getValue() {
-        return this.state.value;
-    }
-
-    addEditor(field, f) {
         if (field == null) {
+            warning(true, 'No field found for %s probably a key in fields does not match in schema', f)
             return null;
         }
-        const Editor = this.Editor;
-        return <Editor key={'key-' + f} path={_path(this.props.path, f)} field={field}/>
+
+        f = typeof f === 'string' ? f : f.name || f;
+
+        return <Field key={'key-' + f} path={_path(this.props.path, f)} field={field} fields={fields}/>
     }
 
-    makeFields(fields) {
-        var fieldMap = {}, schema = this.schema.schema;
+    makeFieldset(f, i, schema, FieldSet, Field) {
+        return <FieldSet key={`fieldset-${i}`} {...f} field={f} legend={f.legend}
+                         onSubmit={this.handleSubmit}
+                         onButtonClick={this.handleButtonClick}>
+            {f.fields ? this.makeFields(f.fields, schema, Field) : this.makeFieldsets(f.fieldsets, schema, FieldSet, Field)}
+        </FieldSet>
+    };
 
-        fields = toArray(fields).map((field) => {
+
+    makeFields(fields, schema, Field) {
+        const fieldMap = {};
+        const mappedfields = fields.map((field) => {
             var [f, rest] = field.split('.', 2);
             if (rest) {
                 (fieldMap[f] || (fieldMap[f] = [])).push(rest);
@@ -165,34 +74,18 @@ export default class ObjectType extends Component {
             return f;
         });
 
-
-        return unique(fields).map((f, i) => {
-            f = isString(f) ? f : f && f.name || 'field-' + i;
-            var ref = isString(f) ? clone(schema[f]) : f, mappedFields = fieldMap[f];
-            if (isString(ref)) {
-                ref = {
-                    type: ref
-                }
-            } else {
-                if (ref == null) {
-                    warning(false, 'No type info for "%s" probably a typo in fieldsets', f);
-                    return null;
-                }
-                if (!ref.type) {
-                    ref.type = 'Text';
-                }
-            }
-            if (mappedFields || ref.fields || ref.fieldsets) {
-                var {fieldsets, fields, ...rest} = ref;
-                rest.fieldsets = ObjectType.normalizeFieldsets(fieldsets, fields || mappedFields);
-                ref = rest;
-            }
-            return this.addEditor(ref, f);
-        });
+        return unique(mappedfields).map((f, i) => this.addEditor(f, schema[f] || f, fieldMap[f], Field));
     }
 
-    renderSchema() {
-        return map(this.schema.fieldsets, this.makeFieldset);
+    makeFieldsets(fieldsets, schema, FieldSet, Field) {
+        if (fieldsets == null) {
+            return null;
+        }
+        return fieldsets.map((f, i)=>this.makeFieldset(f, i, schema, FieldSet, Field));
+    }
+
+    renderSchema(schema, FieldSet, Field) {
+        return this.makeFieldsets(schema.fieldsets, schema.schema, FieldSet, Field);
     }
 
     handleButtonClick = (e, action, ...rest)=> {
@@ -203,26 +96,17 @@ export default class ObjectType extends Component {
         }
     };
 
-    handleSubmit = (...rest)=> {
-        this.props.onSubmit(...rest);
-    };
 
     render() {
         //capture the things that should not fall through.
-        var {schema, subSchema, title, fields, submitButton, conditional, template, ...props} = this.props;
-        return <Template template={this.schema.template || this.props.objectTemplate}
-                         onValidate={this.handleValidate}
-                         schema={this.schema}
-                         className={this.props.className}
-                         title={title === false ?'' : title}
-            {...props}
-                         onButtonClick={this.handleButtonClick}
-                         onSubmit={this.handleSubmit || this.props.onSubmit}
-        >
-            {this.schema && this.schema.schema ? this.renderSchema() : null}
+        let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, template, ...props} = this.props;
+        const ObjectTemplate = objectTemplate;
+        const rschema = schema || subSchema;
 
-            {this.props.children}
-        </Template>
+        return <ObjectTemplate schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
+            {rschema != null ? this.renderSchema(rschema, FieldSet, Field) : null}
+            {children}
+        </ObjectTemplate>
     }
 
 }

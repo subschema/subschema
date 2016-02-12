@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import _Conditional from './Conditional.jsx';
+import UninjectedConditional from './Conditional.jsx';
 export default class Field extends Component {
 
     static contextTypes = {
@@ -11,34 +11,33 @@ export default class Field extends Component {
 
     static propTypes = {
         path: PropTypes.path.isRequired,
-        field: PropTypes.field
+        field: PropTypes.field,
+        Conditional: PropTypes.injectClass
+    };
+    static defaultProps = {
+        Conditional: UninjectedConditional
     };
 
-    constructor(props, context, ...rest) {
-        super(props, context, ...rest);
-        this.Conditional = context.injector.inject(_Conditional);
-
-    }
-
-    renderField(field) {
+    renderField(field, propPath) {
         const {Template, Type, validators,  conditional, path, ...rest} = field;
-        const cpath = (conditional && conditional.path) ? conditional.path : this.props.path;
-        return (Template ? <Template path={cpath} {...rest} >
+        const cpath = propPath || path;
+        const FieldTemplate = Template;
+        return (FieldTemplate ? <FieldTemplate path={cpath} {...rest} >
             <Type path={cpath} onBlur={validators} {...rest}/>
-        </Template> : <Type path={cpath} {...rest}/>);
+        </FieldTemplate> : <Type path={cpath} {...rest}/>);
 
     }
 
-    renderConditional(conditional) {
+    renderConditional(conditional, Conditional) {
+        const {field, path} = this.props;
         if (!conditional) {
-            return this.renderField(this.props.field);
+            return this.renderField(field, path);
         }
-        const Conditional = this.Conditional;
-        return <Conditional path={this.props.path} {...conditional}>{this.renderField(this.props.field)}</Conditional>
+        return <Conditional path={path} {...conditional}>{this.renderField(field, conditional.path || path)}</Conditional>
     }
 
     render() {
-        const {type, path, field} =this.props;
-        return this.renderConditional(field.conditional);
+        const {Conditional, field} =this.props;
+        return this.renderConditional(field.conditional, Conditional);
     }
 }

@@ -1,9 +1,8 @@
 import React, {Component, Children} from 'react';
 import PropTypes from './../PropTypes';
-import Content from './../types/Content.jsx';
 import {FREEZE_OBJ} from './../tutils';
-import Conditional from './Conditional.jsx';
-import template from '../decorators/template';
+import UninjectedConditional from './Conditional.jsx';
+import UninjectedContent from './../types/Content.jsx';
 
 /**
  * This meta template resolves templates, and allows
@@ -17,19 +16,19 @@ class Template extends Component {
     static propTypes = {
         path: PropTypes.path,
         template: PropTypes.template,
-        wrap: PropTypes.bool
+        wrap: PropTypes.bool,
+        Conditional: PropTypes.injectClass,
+        Content: PropTypes.injectClass
+    };
+    static defaultProps = {
+        Conditional: UninjectedConditional,
+        Content: UninjectedContent
     };
 
-    static contextTypes = PropTypes.contextTypes;
-
-    @template('template')
-    template(Template){
-        return Template;
-    }
 
     renderContent(rest, children) {
         var more = {};
-        var Template = this.props.template ? this.template() : null;
+        let {Template, Content, ...rest} = this.props;
         if (Template == null || Template === false) return children;
 
         if (rest.content) {
@@ -37,16 +36,16 @@ class Template extends Component {
             more = typeof rest.content === 'string' ? {content: rest.content} : rest.content;
         }
 
-        return this.props.wrap ? Children.map(children, (child)=><Template {...more} {...rest}>
+        return this.props.wrap ? Children.map(children, (child)=><Template field={rest} {...more} {...rest}>
             {child}
-        </Template>) : <Template {...more} {...rest}>
+        </Template>) : <Template field={rest} {...more} {...rest}>
             {children}
         </Template>
 
     }
 
     render() {
-        var {field,  path, conditional, children, template,...props} = this.props;
+        var {field,  path, conditional, Conditional, children, template,...props} = this.props;
         if (field && field.conditional) {
             var {conditional, ...rest} = field;
             field = props.field = rest;
@@ -67,6 +66,5 @@ class Template extends Component {
         </Conditional>);
     }
 }
-template.Template = Template;
 
 export default Template;

@@ -3,7 +3,7 @@
 import {extend, push, prop} from 'subschema-injection/src/util';
 import {toArray,isString} from '../tutils';
 
-function normalizeFieldsets(fieldsets, fields) {
+export function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
     fields = toArray(fields);
     //fields trump fieldsets

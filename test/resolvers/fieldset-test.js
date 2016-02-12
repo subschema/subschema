@@ -72,4 +72,55 @@ describe('resolvers/fieldset', function () {
         expect(fs.fields).toEqual('abcdef'.split(''));
         expect(fs.fieldsets[0].fieldsets[0].className).toBe('stuff');
     });
+    //TODO - reenable.
+    describe.skip('should normalize fields and fieldsets', function () {
+        it('should normilize fieldsets', function () {
+            var inFieldsets = [{
+                fields: ['a', 'b', 'c']
+            }, {
+                fields: ['d', 'e', 'f']
+            }];
+            var {fields}  = normalizeFieldsets(inFieldsets, null, {fieldsets: []}, context);
+            expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+        });
+        it('should normilize string fieldsets', function () {
+            var inFieldsets = [{
+                fields: 'a, b, c'
+            }, 'd, e, f'
+            ];
+            var {fieldsets, fields}  = normalizeFieldsets(inFieldsets, null, {}, context);
+            expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+            expect(fieldsets[0].fields).toEqual(['a', 'b', 'c']);
+            expect(fieldsets[1].fields).toEqual(['d', 'e', 'f']);
+        });
+
+        it('should normalize nested fieldsets', function () {
+            var inFieldsets = [{
+                fieldsets: [
+                    {fields: 'a'},
+                    {fields: 'b'},
+                    {fields: 'c'}]
+            }, 'd, e, f'
+            ];
+            var {fieldsets, fields}  = normalizeFieldsets(inFieldsets, null, {}, context);
+            expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+            expect(fieldsets[0].fieldsets[0].fields).toEqual(['a']);
+            expect(fieldsets[0].fieldsets[1].fields).toEqual(['b']);
+            expect(fieldsets[0].fieldsets[2].fields).toEqual(['c']);
+        });
+        it('should normalize nested fieldsets with fieldsets', function () {
+            var inFieldsets = [{
+                fieldsets: [
+                    {fieldsets: [{fields: 'a'}]},
+                    {fieldsets: [{fields: 'b'}]},
+                    {fields: 'c'}]
+            }, 'd, e, f'
+            ];
+            var {fieldsets, fields}  = normalizeFieldsets(inFieldsets, null, {}, context);
+            expect(fields).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+            expect(fieldsets[0].fieldsets[0].fieldsets[0].fields).toEqual(['a']);
+            expect(fieldsets[0].fieldsets[1].fieldsets[0].fields).toEqual(['b']);
+        });
+
+    });
 });

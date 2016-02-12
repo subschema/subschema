@@ -284,7 +284,19 @@ const processor = oneOfType([string, shape({
     format: func
 })]);
 
+const injectClass = oneOfType([
+    func,
+    array,
+    shape({
+        target:func,
+        propTypes:object,
+        propvalues:object,
+        strict:bool
+    })
+]);
+
 const api = {
+    injectClass,
     animation,
     blurValidate,
     promise,
@@ -388,5 +400,6 @@ export default
     validate,
     array,
     title,
+    injectClass,
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });

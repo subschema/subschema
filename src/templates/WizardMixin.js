@@ -18,26 +18,20 @@ export default class WizardMixin extends Component {
     static defaultProps = {
         buttonsTemplate: 'ButtonsTemplate'
     };
+    static propTypes = {
+        schema: PropTypes.any
+    };
+    state = {};
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        var state = this.state || (this.state = {});
-        state.compState = 0;
-        state.prevState = 0;
-        state.maxState = 0;
-        this.assignSchema(props);
-    }
-
-    componentWillReceiveProps(props) {
-        this.assignSchema(props);
-    }
-
-    assignSchema(props) {
-        this.schema = ObjectType.normalizeSchema(props.schema || props.subSchema, this.context.loader);
+        this.state.compState = 0;
+        this.state.prevState = 0;
+        this.state.maxState = 0;
     }
 
     next = ()=> {
-        var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState + 1;
+        var compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState + 1;
         this.setState({disabled: true});
         this._validate((e)=> {
             if (e) {
@@ -52,7 +46,7 @@ export default class WizardMixin extends Component {
     };
 
     previous = ()=> {
-        var compState = this.state.compState, current = this.schema.fieldsets[compState], next = compState - 1;
+        var compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState - 1;
         this.setState({disabled: true});
 
         if (this.props.onPrevious((resp)=>this.go(next, resp), next, current) === false) {
@@ -71,12 +65,12 @@ export default class WizardMixin extends Component {
     };
 
     _validate(done) {
-        this.context.valueManager.validatePaths(this.schema.fieldsets[this.state.compState].fields, done)
+        this.context.valueManager.validatePaths(this.props.schema.fieldsets[this.state.compState].fields, done)
     }
 
 
     handleOnClick = (evt)=> {
-        var steps = this.schema.fieldsets.length, value = evt.target.value;
+        var steps = this.props.schema.fieldsets.length, value = evt.target.value;
         if (value < steps && value <= this.state.maxState) {
             this.setNavState(value, true);
         }
@@ -86,7 +80,7 @@ export default class WizardMixin extends Component {
 
     handleKeyDown = (e)=> {
         if (e.which === 13) {
-            if (this.state.compState < this.schema.fieldsets.length - 1) {
+            if (this.state.compState < this.props.schema.fieldsets.length - 1) {
                 return this.handleBtn(e, 'next');
             } else {
                 return this.handleBtn(e, 'submit');
@@ -104,7 +98,7 @@ export default class WizardMixin extends Component {
                     if (submit !== false) {
                         this.props.onSubmit(e, errors, this.context.valueManager.getValue());
                     }
-                }, e, this.schema.fieldsets[this.state.compState]) === false) {
+                }, e, this.props.schema.fieldsets[this.state.compState]) === false) {
                 return;
             }
         })
@@ -112,10 +106,10 @@ export default class WizardMixin extends Component {
 
     @template('buttonsTemplate')
     renderBtns(ButtonsTemplate, compState) {
-        var buttons = this.schema.fieldsets[compState].buttons;
+        var buttons = this.props.schema.fieldsets[compState].buttons;
         if (!buttons && buttons !== false) {
             buttons = [];
-            var isFirst = compState === 0, isLast = compState === this.schema.fieldsets.length - 1;
+            var isFirst = compState === 0, isLast = compState === this.props.schema.fieldsets.length - 1;
             if (!isFirst) {
                 buttons.push(this.props.buttons.previous);
             }

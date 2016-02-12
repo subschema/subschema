@@ -11,7 +11,7 @@ describe('Form', function () {
                 name: {
                     type: 'Text',
                     validators: ['email'],
-                    help:'I need help'
+                    help: 'I need help'
                 }
             }
         }, errors = {};
@@ -114,7 +114,7 @@ describe('Form', function () {
         var root = into(<Form valueManager={valueManager} schema={schema} errors={errors}/>, true);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
-     //   Simulate.blur(input);
+        //   Simulate.blur(input);
         expect(edit.props.error).toNotExist('No value no trigger no error');
         valueManager.validate();
         expect(edit.props.error).toEqual('Required', 'No value no trigger no error');

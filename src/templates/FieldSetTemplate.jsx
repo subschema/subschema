@@ -1,44 +1,32 @@
+"use strict";
+
 import React, {Component} from 'react';
-import ButtonsTemplate from './ButtonsTemplate.jsx';
 import PropTypes from  '../PropTypes';
-import {noop} from '../tutils';
-import defaults from 'lodash/object/defaultsDeep';
+import {FREEZE_OBJ, noop} from '../tutils';
 
 export default class FieldSetTemplate extends Component {
     static propTypes = {
         buttons: PropTypes.buttons,
         legend: PropTypes.node,
         className: PropTypes.cssClass,
-        onButtonClick: PropTypes.event,
-        onClick: PropTypes.event
+        //      onButtonClick: PropTypes.event,
+        //      onClick: PropTypes.event,
+        field: PropTypes.any,
+        //       buttonsTemplate: PropTypes.template
+    };
+    static defaultProps = {
+        field: FREEZE_OBJ
     };
 
-    static defaultProps = {};
-
-
-    renderButtons(buttons) {
-        if (!buttons) {
-            return null;
-        }
-        if (buttons.buttons) {
-            return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                {...buttons}/>
-        }
-        return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                                buttons={buttons}/>
-    }
-
     render() {
-        var {legend, buttons, className, ...rest} = defaults({}, this.props.field, this.props);
+        var {legend, buttons, className, ...rest} =  {...this.props.field, ...this.props};
         return legend ?
             <fieldset className={className}>
                 <legend>{legend}</legend>
                 {this.props.children}
-                {this.renderButtons(buttons)}
             </fieldset> :
             <div className={className}>
                 {this.props.children}
-                {this.renderButtons(buttons)}
             </div>
     }
 }
