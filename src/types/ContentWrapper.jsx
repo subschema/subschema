@@ -1,9 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import listeners from '../decorators/listeners';
-import substitute from './SubstituteMixin';
-import {FREEZE_OBJ} from '../tutils';
 import PropTypes from '../PropTypes';
 
 export default class ContentWrapper extends Component {

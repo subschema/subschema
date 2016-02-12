@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import CSSTransitionGroup  from 'react-addons-css-transition-group';
-import listeners from './../decorators/listeners';
 import {FREEZE_OBJ} from '../tutils';
 
 export default class Conditional extends Component {

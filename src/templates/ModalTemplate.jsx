@@ -4,7 +4,6 @@ import Buttons from './ButtonsTemplate.jsx';
 import Content from '../types/Content.jsx'
 import styles from 'subschema-styles/ModalTemplate-style';
 import ValueManager from '../ValueManager';
-import Editor from '../components/Editor';
 import PropTypes from '../PropTypes';
 import NewChildContext from '../components/NewChildContext.jsx';
 

@@ -1,10 +1,14 @@
 "use strict";
 import React, {Component} from 'react';
-import Editor from '../components/Editor.jsx';
 import Content from '../types/Content.jsx';
 import style from 'subschema-styles/CollectionCreateTemplate-style';
+import PropTypes from '../PropTypes';
 
 export default class CollectionCreateTemplate extends Component {
+    static propType = {
+        title: PropTypes.content
+    };
+
     render() {
         var title = this.props.title;
         if (typeof title === 'string') {

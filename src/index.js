@@ -1,7 +1,7 @@
 "use strict";
 
 import Conditional from './components/Conditional.jsx';
-import Editor from './components/Editor.jsx';
+import Editor from './components/Field.jsx';
 import NewChildContext from './components/NewChildContext.jsx';
 import Template from './components/Template.jsx';
 import Form from './components/Form.jsx';

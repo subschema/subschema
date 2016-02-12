@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
-import listen from '../decorators/listen';
 
 export default class NewChildContext extends Component {
     static propTypes = {
@@ -29,11 +28,6 @@ export default class NewChildContext extends Component {
             parentValueManager: this.props.valueManager,
             loader: this.props.loader
         };
-    }
-
-    @listen("submit")
-    cancelSubmit() {
-        return false;
     }
 
     handleSubmit = (e)=> {

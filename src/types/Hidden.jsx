@@ -1,7 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import listen from '../decorators/listen';
 import PropTypes from '../PropTypes';
 
 /**

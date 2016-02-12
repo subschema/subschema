@@ -1,7 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import Editor from '../components/Editor';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import NewChildContext from '../components/NewChildContext.jsx';
@@ -10,7 +9,6 @@ import ObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
-import listen from '../decorators/listen';
 import template from '../decorators/template';
 import defaults from 'lodash/object/defaults';
 function makeEditPid(path, pid) {
