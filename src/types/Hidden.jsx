@@ -15,6 +15,8 @@ export default class Hidden extends Component {
         asJSON: PropTypes.bool
     };
 
+    static template = false;
+
     static defaultProps = {
         type: "hidden",
         asJSON: false

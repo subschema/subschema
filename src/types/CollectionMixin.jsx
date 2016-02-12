@@ -5,7 +5,7 @@ import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import NewChildContext from '../components/NewChildContext.jsx';
 import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
-import ObjectType from './Object.jsx';
+import UninjectedObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
@@ -53,7 +53,8 @@ export default class CollectionMixin extends Component {
         contentTemplate: PropTypes.template,
         buttons: PropTypes.buttons,
         addButton: PropTypes.button,
-        listContainerClassName: PropTypes.cssClass
+        listContainerClassName: PropTypes.cssClass,
+        ObjectType:PropTypes.injectClass
     };
 
     static defaultProps = {
@@ -74,7 +75,8 @@ export default class CollectionMixin extends Component {
             buttonsClass: 'btn-group pull-right',
             buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
                 , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
-        }
+        },
+        ObjectType:UninjectedObjectType
     };
 
     constructor(props, ...rest) {
@@ -228,7 +230,7 @@ export default class CollectionMixin extends Component {
 
 
     renderAddEditTemplate(edit, create) {
-        var label = '';
+        let label = '';
         if (edit) {
             label = 'Save';
         } else if (create) {
@@ -236,8 +238,9 @@ export default class CollectionMixin extends Component {
         } else {
             return null;
         }
-        var title = this.props.title || '';
-        var childPath = path(this.props.path, this.state.editPid);
+        const title = this.props.title || '';
+        const childPath = path(this.props.path, this.state.editPid);
+        const {ObjectType} = this.props;
         return <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
                            onButtonClick={this.handleBtnClick}
                            schema={this.createItemSchema(childPath)}
@@ -253,9 +256,7 @@ export default class CollectionMixin extends Component {
         }
         var btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
         var Template = this.props.buttonTemplate;
-        return <Template key="addBtn"  {...btn} onClick={this.handleAddBtn}>
-            <i className={style.iconAdd}/>
-        </Template>
+        return <Template key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={style.iconAdd}/>
 
     }
 
