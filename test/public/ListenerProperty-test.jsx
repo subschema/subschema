@@ -5,7 +5,7 @@ import ListenerProperty from 'subschema-test-support/samples/ListenerProperty.js
 const {provide} = decorators;
 const {Select} = types;
 
-describe('ListenerProperty', function () {
+describe('public/ListenerProperty', function () {
     this.timeout(50000);
     it('should render', function () {
         var schema = ListenerProperty.schema;

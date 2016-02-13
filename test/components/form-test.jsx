@@ -3,7 +3,7 @@ import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType, click} 
 import {loader,Form, templates, ValueManager} from 'Subschema';
 var {EditorTemplate, ButtonTemplate} = templates;
 
-describe('Form', function () {
+describe('components/Form', function () {
     this.timeout(50000);
     it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
         var value = {}, schema = {

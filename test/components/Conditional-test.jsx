@@ -4,7 +4,7 @@ import each from 'lodash/collection/each';
 import {ValueManager, PropTypes, loaderFactory, types, Form, Conditional as _Conditional, loader as _loader, injector} from 'Subschema';
 const {Select} = types;
 
-describe('Conditional', function () {
+describe('components/Conditional', function () {
     this.timeout(30000);
     const Conditional = injector.inject(_Conditional);
     const loader = loaderFactory([_loader]);

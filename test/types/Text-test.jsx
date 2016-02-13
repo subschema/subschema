@@ -5,7 +5,7 @@ import {types} from 'Subschema';
 
 const {Text} = types;
 
-describe('Text', function () {
+describe('types/Text', function () {
     it('should create a input with a value', function () {
         var text = into(<Text value="abc" onChange={(e)=>e}/>);
         expect(text).toExist();

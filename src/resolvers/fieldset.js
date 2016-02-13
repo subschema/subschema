@@ -45,6 +45,8 @@ export function normalizeFieldsets(fieldsets, fields) {
 function normal(value) {
     return normalizeFieldsets(value, []);
 }
-export default function fieldsets(Clazz, key) {
+function fieldsets(Clazz, key) {
     Clazz::prop(key, normal);
 }
+fieldsets.normalizeFieldsets = normalizeFieldsets;
+export default fieldsets;

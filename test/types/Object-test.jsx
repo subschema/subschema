@@ -3,11 +3,10 @@
 import {React, into, intoWithContext, TestUtils,expect, findNode, Simulate} from 'subschema-test-support';
 import {ValueManager,loaderFactory, Form, types} from 'Subschema';
 
-const NestedMixin = types.Object;
 const ObjectType = types.Object
 const TextInput = types.Text;
 
-describe('ObjectType', function () {
+describe('types/ObjectType', function () {
 
     var schema = {
         schema: {

@@ -3,14 +3,13 @@
 import React, {Component} from 'react';
 import Constants from '../Constants';
 import ValueManager from '../ValueManager';
-import NewChildContext from '../components/NewChildContext.jsx';
 import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
 import UninjectedObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import style from 'subschema-styles/CollectionMixin-style';
-import template from '../decorators/template';
 import defaults from 'lodash/object/defaults';
+
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
 }
@@ -33,7 +32,7 @@ export default class CollectionMixin extends Component {
 
     static inputClassName = Constants.listClassName;
 
-    static contextTypes = PropTypes.contextTypes;
+    static contextTypes = {valueManager: PropTypes.valueManager};
 
     static propTypes = {
         onChange: PropTypes.valueEvent,
@@ -54,7 +53,7 @@ export default class CollectionMixin extends Component {
         buttons: PropTypes.buttons,
         addButton: PropTypes.button,
         listContainerClassName: PropTypes.cssClass,
-        ObjectType:PropTypes.injectClass
+        ObjectType: PropTypes.injectClass
     };
 
     static defaultProps = {
@@ -76,12 +75,13 @@ export default class CollectionMixin extends Component {
             buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
                 , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
         },
-        ObjectType:UninjectedObjectType
+        ObjectType: UninjectedObjectType
     };
+    state = {};
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        var state = this.state || (this.state = {});
+        const state = this.state;
         state.showAdd = props.showAdd;
         state.wrapped = this.wrapValues(props.value);
     }
@@ -91,7 +91,7 @@ export default class CollectionMixin extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if(props.value !== this.props.value) {
+        if (props.value !== this.props.value) {
             this.setValue(props.value);
         }
         const {showAdd} = props;

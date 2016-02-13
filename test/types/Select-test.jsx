@@ -5,12 +5,13 @@ import {types, ValueManager} from 'Subschema';
 
 const {Select} = types;
 
-describe('Select', function () {
+describe('types/Select', function () {
     this.timeout(50000);
     var values = [];
     var onChange = function (e) {
         values.push(e);
-    }
+    };
+
     beforeEach(function () {
         values.length = 0;
     });

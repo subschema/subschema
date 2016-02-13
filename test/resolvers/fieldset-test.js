@@ -1,11 +1,12 @@
 "use strict";
 import React, {Component} from 'react';
 import expect from 'expect';
-import {PropTypes, decorators, ValueManager} from 'subschema';
+import {PropTypes, resolvers, ValueManager} from 'subschema';
 import support, {intoWithContext, byComponent,findNode, change} from 'subschema-test-support/src/index';
 import resolvers from '../../src/resolvers';
 import injectorFactory from 'subschema-injection/src/injectorFactory';
 const injector = injectorFactory();
+const {normalizeFieldsets} = resolvers.fieldset;
 
 describe('resolvers/fieldset', function () {
     this.timeout(50000);
@@ -73,7 +74,7 @@ describe('resolvers/fieldset', function () {
         expect(fs.fieldsets[0].fieldsets[0].className).toBe('stuff');
     });
     //TODO - reenable.
-    describe.skip('should normalize fields and fieldsets', function () {
+    describe('should normalize fields and fieldsets', function () {
         it('should normilize fieldsets', function () {
             var inFieldsets = [{
                 fields: ['a', 'b', 'c']

@@ -4,7 +4,7 @@ import CarMakeSetup from 'subschema-test-support/samples/CarMake-setup.js';
 import CarMake from 'subschema-test-support/samples/CarMake.js';
 const Select = types.Select;
 
-describe('CarMake', function () {
+describe('public/CarMake', function () {
     it('should not be selectable', function () {
         var schema = CarMake.schema;
         //loader, schema, Subschema, React

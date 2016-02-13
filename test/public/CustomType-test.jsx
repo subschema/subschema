@@ -6,7 +6,7 @@ import CustomTypeSetup from 'subschema-test-support/samples/CarMake-setup.js';
 import CustomType from 'subschema-test-support/samples/CarMake.js';
 const  {Select} = types;
 
-describe('CustomType', function () {
+describe('public/CustomType', function () {
     it('should render', function () {
         var schema = CustomType.schema;
         //loader, schema, Subschema, React

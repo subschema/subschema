@@ -6,7 +6,7 @@ import support, {into,change, blur, intoWithContext, byTag, byComponent,findNode
 
 import Field from '../../src/components/Field.jsx';
 
-describe('Field', function () {
+describe('components/Field', function () {
     this.timeout(50000);
 
     const validators = ['required', function (val) {

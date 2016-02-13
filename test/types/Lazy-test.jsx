@@ -3,7 +3,7 @@ import {ValueManager, loader, Editor, types} from 'Subschema';
 
 var Text = types.Text;
 
-describe.skip('Lazy', function () {
+describe.skip('types/Lazy', function () {
     this.timeout(3000);
     var remove;
     before(function () {

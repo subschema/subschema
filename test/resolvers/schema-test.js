@@ -1,9 +1,10 @@
 "use strict";
 import {loaderFactory, resolvers} from 'subschema';
+import expect from 'expect';
 
 const {normalizeSchema  } = resolvers.schema;
 //TODO -fix
-describe.skip('resolver/schema', function () {
+describe('resolvers/schema', function () {
     const loader = loaderFactory();
     const context = {loader};
     loader.addSchema({

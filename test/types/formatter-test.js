@@ -4,7 +4,7 @@ import expect from 'expect';
 
 const formatter = types.RestrictedMixin.makeFormatter;
 
-describe('should create a formatter from a a pattern', function () {
+describe('types/RestrictedMixin', function () {
     describe('1 (###) ###-####', function(){
         var pattern = formatter('1 (###) ###-####'), result;
         it('should format correctly as typed', function(){

@@ -6,7 +6,7 @@ import {types, ValueManager} from 'Subschema';
 const {Restricted} = types;
 
 
-describe('Restricted', function () {
+describe('types/Restricted', function () {
     this.timeout(50000);
     var Form = require('subschema').Form;
 

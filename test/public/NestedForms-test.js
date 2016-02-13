@@ -2,9 +2,9 @@ import {React, into,TestUtils,expect,byTypes, byComponents, select, byId, Simula
 import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
 var NestedForms = require('subschema-test-support/samples/NestedForms.js');
 
-describe('NestedForms', function () {
+describe('public/NestedForms', function () {
     it('should render simple nested with seperate templates', function () {
-        var form = into(<Form
+        const form = into(<Form
             schema={{schema:{first:'Text',
               second:{type:'Object',
               subSchema:{
@@ -18,7 +18,7 @@ describe('NestedForms', function () {
         expect(byComponents(form, templates.FieldSetTemplate).length).toBe(3)
     });
     it('should render simple nested', function () {
-        var form = into(<Form
+        const form = into(<Form
             schema={{schema:{first:'Text',
               second:{type:'Object',
               subSchema:{
@@ -31,20 +31,18 @@ describe('NestedForms', function () {
         expect(byComponents(form, templates.FieldSetTemplate).length).toBe(2)
     });
     it('should render nested forms', ()=> {
-        var valueManager = ValueManager(NestedForms.data);
+        const valueManager = ValueManager(NestedForms.data);
 
-        console.log('schema', NestedForms.schema);
-        var form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>, true);
+        const form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>, true);
 
-        var street = byId(form, 'address.street');
+        const street = byId(form, 'address.street');
 
         expect(street).toExist('should render street');
 
         expect(street.value).toBe('1 First St');
 
         valueManager.update('address.street', 'Something');
-        var street = byId(form, 'address.street');
-        expect(street.value).toBe('Something');
+        expect(byId(form, 'address.street').value).toBe('Something');
 
     });
 });

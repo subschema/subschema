@@ -112,8 +112,10 @@ export function normalizeSchema(oschema, key, props, context) {
     return normalize(oschema, props.fieldsets, props.fields, context);
 
 }
-
-export default function schema(Clazz, key) {
+function schema(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz::prop(key, normalizeSchema);
 }
+
+schema.normalizeSchema = normalizeSchema;
+export default schema;

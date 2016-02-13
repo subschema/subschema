@@ -3,7 +3,6 @@
 import React, {Component} from 'react'
 import Constants from '../Constants'
 import PropTypes from '../PropTypes'
-import template from '../decorators/template';
 import tu, {path, toArray, FREEZE_ARR,returnFirst,  isArray} from '../tutils';
 
 export default class Checkboxes extends Component {
@@ -82,10 +81,11 @@ export default class Checkboxes extends Component {
      *                      or as an array of objects e.g. [{val: 543, label: 'Title for object 543'}]
      * @return {String} HTML
      */
-    @template('itemTemplate', 'groupTemplate')
-    makeOptions(CheckboxTemplate, CheckboxesGroupTemplate, array, group) {
+    makeOptions( array, group) {
         array = array || FREEZE_ARR;
         var name = this.props.name;
+        const CheckboxTemplate = this.props.itemTemplate;
+        const CheckboxesGroupTemplate = this.props.groupTemplate;
         return array.map((option, index)=> {
             return (
                 <div

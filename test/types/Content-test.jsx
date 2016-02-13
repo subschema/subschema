@@ -12,7 +12,7 @@ loader.addType('Test', class extends Component {
         return <div><span>hello</span>{this.props.children}</div>
     }
 });
-describe('Content', function () {
+describe('types/Content', function () {
 
     it('should do simple subsitution', function () {
 

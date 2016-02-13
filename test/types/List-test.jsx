@@ -32,10 +32,10 @@ describe('types/List', function () {
         const tasks = byComponents(root, ListItemTemplate);
         const item = byClass(tasks[c], 'clickable')[0];
         click(item);
-        const createTemplate = byComponent(root, CollectionCreateTemplate)
+        const createTemplate = byComponent(root, CollectionCreateTemplate);
         const input = byName(createTemplate, `@tasks@${c}.value`);
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        const btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, ButtonTemplate), 'action', 'submit')
+        const btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, ButtonTemplate), 'action', 'submit');
         Simulate.submit(btns[0]);
         const value = root.getValue();
         expect(input.value).toEqual('Hello, world ' + c);
@@ -97,7 +97,7 @@ describe('types/List', function () {
                 'two',
                 'three'
             ]
-        }
+        };
         var root = into(<Form schema={schema} value={data}/>, true);
         var tasks = byComponents(root, ListItemTemplate);
         var addBtn = byClass(root, 'btn-add')[0];
@@ -129,7 +129,7 @@ describe('types/List', function () {
                 'two',
                 'three'
             ]
-        }
+        };
         var root = into(<Form schema={schema} value={data}/>);
         var addBtn = byClass(root, 'btn-add')[0];
 
@@ -236,9 +236,9 @@ describe('types/List', function () {
             tasks: ['one', 'two']
         }, errors = {
             'tasks.1': [{message: 'Can not be 2'}]
-        }
+        };
         var root = into(<Form schema={schema} value={data} errors={errors}/>, true);
         var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
         expect(found[0].props.error).toEqual('Can not be 2');
     });
-})
+});

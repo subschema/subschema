@@ -5,7 +5,7 @@ import {types, ValueManager, loader} from 'Subschema';
 
 const Radio = types.Radio;
 
-describe('Radio', function () {
+describe('types/Radio', function () {
 
     it('should create a radios', function () {
 

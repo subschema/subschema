@@ -6,7 +6,7 @@ import {Form, ValueManager, types} from 'Subschema';
 const {Checkbox} = types;
 
 
-describe('Checkbox', function () {
+describe('types/Checkbox', function () {
     it('should create a form', function () {
         var valueManager = ValueManager();
         var root = into(<Form valueManager={valueManager} schema={{schema:{

@@ -6,7 +6,7 @@ const {Autocomplete} = types;
 const {OptionsProcessor} = processors;
 const {AutocompleteItemTemplate} = templates;
 
-describe('Autocomplete', function() {
+describe('types/Autocomplete', function() {
     this.timeout(50000);
     var options = [
         {label: 'ABC', val: 'abc'},
