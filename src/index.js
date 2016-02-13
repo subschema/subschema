@@ -3,7 +3,6 @@
 import Conditional from './components/Conditional.jsx';
 import Editor from './components/Field.jsx';
 import NewChildContext from './components/NewChildContext.jsx';
-import Template from './components/Template.jsx';
 import Form from './components/Form.jsx';
 import Dom from './Dom';
 import eventable from './eventable';
@@ -27,7 +26,6 @@ export {
     Constants,
     Dom,
     PropTypes,
-    Template,
     ValueManager,
     css,
     decorators,
@@ -48,7 +46,6 @@ export default {
     Constants,
     Dom,
     PropTypes,
-    Template,
     ValueManager,
     css,
     decorators,

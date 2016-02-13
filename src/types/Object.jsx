@@ -5,7 +5,6 @@ import PropTypes  from '../PropTypes';
 import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path, clone, noop}  from '../tutils';
 import map  from 'lodash/collection/map';
 import UninjectedField  from '../components/Field';
-import UninjectedTemplate  from '../components/Template.jsx';
 import UninjectedFieldSet from '../components/FieldSet.jsx';
 import warning from '../warning';
 

@@ -6,7 +6,6 @@ import Dom from '../Dom';
 import style from 'subschema-styles/Autocomplete-style';
 import PropTypes from '../PropTypes';
 import lifecycle from '../decorators/lifecycle';
-import template from '../decorators/template';
 
 export default class Autocomplete extends Component {
 

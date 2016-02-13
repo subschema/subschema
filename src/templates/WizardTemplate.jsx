@@ -1,15 +1,13 @@
 'use strict'
 import React, {Component} from 'react'
-import ObjectType from '../types/Object.jsx';
+import UninjectedObjectType from '../types/Object.jsx';
 import WizardMixin from './WizardMixin';
-import tu from '../tutils';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
 import EventCSSTransitionGroup from '../transition/EventCSSTransitionGroup.jsx';
 import cssUtil from '../css';
 import style from 'subschema-styles/WizardTemplate-style';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
-import template from '../decorators/template';
 
 function donner(done) {
     done();
@@ -42,8 +40,15 @@ export default class WizardTemplate extends WizardMixin {
         onAction: function (pos, action, wizard) {
         },
         onNavChange(current, previous, wizard){
-        }
+        },
+        ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
+
+    static propTypes = {
+        ...WizardMixin.propTypes,
+        ObjectType: PropTypes.injectClass,
+        wizardProgressTemplate: PropTypes.template
+    };
 
     setNavState(next) {
         var len = this.props.schema.fieldsets.length, compState = this.state.compState;
@@ -57,14 +62,16 @@ export default class WizardTemplate extends WizardMixin {
         }
     }
 
-    @template('wizardProgressTemplate')
-    renderProgress(Template, fieldsets) {
-        return <Template fieldsets={fieldsets} index={this.state.compState}
-                         onClick={this.handleOnClick}/>
+    renderProgress(fieldsets) {
+        const Template = this.props.wizardProgressTemplate;
+        return Template ? <Template fieldsets={fieldsets} index={this.state.compState}
+                                    onClick={this.handleOnClick}/> : null;
     }
+
     render() {
-        var {fieldsets, schema} = this.props.schema;
-        var compState = this.state.compState,
+        const {ObjectType} = this.props;
+        const {fieldsets, schema} = this.props.schema;
+        const compState = this.state.compState,
             fields = fieldsets[compState].fields,
             transition = compState < this.state.prevState ? style.switchBack : style.switch;
 

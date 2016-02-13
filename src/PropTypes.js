@@ -124,6 +124,7 @@ const typeDescription = oneOfType([string, shape({
     type: string.isRequired
 })]);
 
+
 /**
  * Signify this property can take an expression.  This
  * allows properties to be tied to the valueManager.  So
@@ -342,6 +343,7 @@ const api = {
     mixin,
     contextTypes,
     processor,
+    typeClass,
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 
 };
@@ -401,5 +403,7 @@ export default
     array,
     title,
     injectClass,
+    typeClass,
+
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });

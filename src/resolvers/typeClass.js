@@ -2,7 +2,7 @@
 
 import {prop} from 'subschema-injection/src/util';
 import {isString,isArray, slice, isFunction, push} from '../tutils';
-
+import {inputClassName} from '../Constants';
 
 export function addClasses(classes, ...rest) {
     if (rest == null || rest.length === 0) {
@@ -43,7 +43,7 @@ export function addClasses(classes, ...rest) {
  * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
  */
 export function forType(OrigClazz, ...classes) {
-    return addClasses(classes, OrigClazz.inputClassName).join(' ');
+    return addClasses(classes, OrigClazz.inputClassName || inputClassName).join(' ');
 }
 
 export default function typeClass(Clazz, key, propList, OrigClazz) {

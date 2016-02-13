@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import ObjectType from '../types/Object.jsx';
 import PropTypes from '../PropTypes';
-import template from '../decorators/template';
 
 function donner(done) {
     if (typeof done === 'function')
@@ -19,7 +18,8 @@ export default class WizardMixin extends Component {
         buttonsTemplate: 'ButtonsTemplate'
     };
     static propTypes = {
-        schema: PropTypes.any
+        schema: PropTypes.any,
+        buttonsTemplate: PropTypes.template
     };
     state = {};
 
@@ -104,8 +104,8 @@ export default class WizardMixin extends Component {
         })
     };
 
-    @template('buttonsTemplate')
-    renderBtns(ButtonsTemplate, compState) {
+    renderBtns(compState) {
+        const ButtonsTemplate = this.props.buttonsTemplate;
         var buttons = this.props.schema.fieldsets[compState].buttons;
         if (!buttons && buttons !== false) {
             buttons = [];

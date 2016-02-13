@@ -5,8 +5,6 @@ import {returnFirst, path as tpath} from '../tutils';
 
 import PropTypes from '../PropTypes';
 
-import template from '../decorators/template';
-
 function compare(val, val2) {
     if (val == null && val2 == null) {
         return true;

@@ -20,7 +20,7 @@ export default function blurValidate(Clazz, key) {
 
         let hasChanged = false, hasBlurred = false;
 
-        this._validateListener = context.valueManager.addValidateListener(path, ()=>validate()).remove;
+        this._validateListener = context.valueManager.addValidateListener(path, () => validate()).remove;
 
 
         this._validateChangeListeners = context.valueManager.addListener(path, (val)=> {
