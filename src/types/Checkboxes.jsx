@@ -6,36 +6,33 @@ import PropTypes from '../PropTypes'
 import tu, {path, toArray, FREEZE_ARR,returnFirst,  isArray} from '../tutils';
 
 export default class Checkboxes extends Component {
-
+    //override added input Class Names.
     static inputClassName = ' ';
+
     static propTypes = {
-        onChange:PropTypes.valueEvent,
+        onChange: PropTypes.valueEvent,
         options: PropTypes.options,
+        item:PropTypes.type,
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template,
+
     };
 
     static defaultProps = {
         options: FREEZE_ARR,
+        item:'Checkbox',
         itemTemplate: 'CheckboxesTemplate',
         groupTemplate: 'CheckboxesGroupTemplate',
+        //make the value an array regardless of input
+        value: {
+            processor: toArray
+        }
     };
 
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        var state = this.state || (this.state = {});
-        state.value = props.value == null ? FREEZE_ARR : toArray(props.value)
-    }
 
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.value !== this.props.value) {
-            this.setState({value: newProps.value == null ? FREEZE_ARR : toArray(newProps.value)});
-        }
-    }
 
     handleCheckChange = (e)=> {
-        var newValues = (this.state.value).concat();
+        var newValues = this.props.value.concat();
         if (e.target.checked) {
             newValues.push(e.target.value);
         } else {
@@ -52,17 +49,19 @@ export default class Checkboxes extends Component {
         var id = path(this.props.path, index, group);
         var {val, labelHTML, label} = option;
         label = labelHTML || label;
-        var value = this.state.value;
+        var value = this.props.value;
         var labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
         var opts = {
-            onChange: this.handleCheckChange,
-            name: this.props.name,
+         //   onChange: this::this.handleCheckChange,
+            name: group,
             checked: value ? !!~value.indexOf(val) : false,
             id,
+            path:id,
             value: val
-        }
+        };
+        const Checkbox = this.props.item;
         return (<CheckboxTemplate label={labelContent} {...opts}>
-            <input type="checkbox" {...opts}/>
+            <Checkbox {...opts}/>
         </CheckboxTemplate>);
 
     }
@@ -81,7 +80,7 @@ export default class Checkboxes extends Component {
      *                      or as an array of objects e.g. [{val: 543, label: 'Title for object 543'}]
      * @return {String} HTML
      */
-    makeOptions( array, group) {
+    makeOptions(array, group) {
         array = array || FREEZE_ARR;
         var name = this.props.name;
         const CheckboxTemplate = this.props.itemTemplate;
@@ -89,7 +88,8 @@ export default class Checkboxes extends Component {
         return array.map((option, index)=> {
             return (
                 <div
-                    key={name+'-'+option.val+'-'+group}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate) : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
+                    key={`${name}-${index}-${group}`}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate)
+                    : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
 
         });
     }
@@ -97,6 +97,6 @@ export default class Checkboxes extends Component {
     render() {
 
         return <div
-            className={this.props.className}>{this.makeOptions(this.props.options, 1)}</div>
+            className={this.props.className}>{this.makeOptions(this.props.options, this.props.name)}</div>
     }
 }

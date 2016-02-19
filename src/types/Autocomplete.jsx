@@ -9,14 +9,10 @@ import lifecycle from '../decorators/lifecycle';
 
 export default class Autocomplete extends Component {
 
-    static contextTypes = {
-        loader: PropTypes.loader
-    };
 
     static propTypes = {
         inputType: PropTypes.type,
         onChange: PropTypes.valueEvent,
-        onInputChange: PropTypes.event,
         onSelect: PropTypes.event,
         minLength: PropTypes.number,
         autoSelectSingle: PropTypes.bool,
@@ -27,9 +23,8 @@ export default class Autocomplete extends Component {
         showing: PropTypes.content,
         foundCls: PropTypes.cssClass,
         notFoundCls: PropTypes.cssClass,
-        input: PropTypes.string,
-        options: PropTypes.options
-
+        options: PropTypes.options,
+        onInputChange: PropTypes.event
     };
 
     static inputClassName = 'form-control';
@@ -43,31 +38,18 @@ export default class Autocomplete extends Component {
         minLength: 1,
         maxInputLength: 200,
         itemTemplate: 'AutocompleteItemTemplate',
-        inputType: 'Text',
+        inputType: {
+            type: 'Text', propTypes: {value: PropTypes.any}
+        },
         processor: 'OptionsProcessor',
-        onInputChange: noop,
-        onChange: noop,
-        onSelect: noop,
-        onBlur: noop,
-        onFocus: noop,
-        onValid: noop,
-        onValidate: noop,
-        showing: 'Searching...'
+        showing: 'Searching...',
+        input: 'input',
+        inputValue: 'input'
     };
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        var state = this.state || (this.state = {});
-
-        state.suggestions = [];
-        state.showing = false;
-        state.focus = -1;
-
-    }
+    state = {suggestions: [], showing: false, focus: -1};
 
     componentWillMount() {
         this._processProps(this.props);
-
     }
 
     componentWillReceiveProps(props, context) {
@@ -277,14 +259,16 @@ export default class Autocomplete extends Component {
         if (this._fetch && this._fetch.cancel) {
             this._fetch.cancel();
         }
+        const _this = this;
         this._fetch = this.processor().fetch(this.props.url, input, this, (err, suggestions) => {
             if (err) {
                 return;
             }
-            if (this.props.autoSelectSingle && suggestions && suggestions.length === 1) {
-                this.onSelect(suggestions[0]);
+            if (_this.props.autoSelectSingle && suggestions && suggestions.length === 1) {
+                _this.onSelect(suggestions[0]);
             } else {
-                this.setState({
+                _this.props.onInputChange(input);
+                _this.setState({
                     suggestions: suggestions || [],
                     showing: true,
                     input
@@ -388,17 +372,20 @@ export default class Autocomplete extends Component {
     }
 
     render() {
-        var suggestions = this.state.suggestions || [];
-        var {foundCls, inputType, notFoundCls, ...props} = this.props;
-        props.onChange = this.handleChange;
-        props.onPaste = this.handlePaste;
-        props.onKeyDown = this.handleKeyUp;
-        props.onBlur = this.handleBlur;
-
+        const suggestions = this.state.suggestions || [];
+        const {foundCls,  inputType, input, notFoundCls} = this.props;
+        // props.onChange = this::this.handleChange;
+        const inputProps = {
+            onPaste: this::this.handlePaste,
+            onKeyDown: this::this.handleKeyUp,
+            onBlur: this::this.handleBlur,
+            onChange: this::this.handleChange,
+            value: this.state.input
+        };
         var Input = inputType;
         return <div
             className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)}>
-            <Input {...props} ref="input" value={this.state.input}/>
+            <Input {...inputProps} ref="input"/>
             {this.renderSuggestions()}
         </div>
     }

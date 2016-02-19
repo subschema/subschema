@@ -3,26 +3,36 @@
 import PropTypes from '../PropTypes';
 import {prop} from 'subschema-injection/src/util';
 
-const propTypes = {
+export const defaultPropTypes = {
     onChange: PropTypes.targetEvent,
     onBlur: PropTypes.blurValidate,
+    onKeyDown: PropTypes.event,
+    onKeyUp: PropTypes.event,
+    onFocus: PropTypes.event,
+    onPaste: PropTypes.event,
     value: PropTypes.value,
     id: PropTypes.id,
     name: PropTypes.htmlFor,
     className: PropTypes.typeClass,
-    placeholder: PropTypes.string
-};
-
+    placeholder: PropTypes.string,
+    fieldAttrs: PropTypes.fieldAttrs
+}
 //Expose for configurability
 export const settings = {
     type: 'Text'
 };
 
 export function loadType(val, key, props, context) {
-    const {type, ...rest} = typeof val === 'string' ? {
+    let {type, propTypes, ...rest} = typeof val === 'string' ? {
         ...settings,
         type: val
     } : val == null ? settings : {...settings, ...val};
+
+    if (!propTypes) {
+        propTypes = defaultPropTypes;
+    } else {
+        propTypes = {...defaultPropTypes, ...propTypes};
+    }
 
     const Type = context.loader.loadType(type);
 

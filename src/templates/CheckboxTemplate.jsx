@@ -1,12 +1,21 @@
-import React from 'react';
+"use strict"
+import React, {Component, PropTypes} from 'react';
 import Content from '../types/Content.jsx';
 import style  from 'subschema-styles/CheckboxTemplate-style';
-function CheckboxTemplate(props){
+
+
+export default class CheckboxTemplate extends Component {
+    static propTypes = {
+        label: PropTypes.node
+    };
+
+    render() {
+        const {children, label} = this.props;
         return (<div className={style.checkbox}>
             <label>
-                {props.children}
-                {props.label}
+                {children}
+                {label}
             </label>
         </div>);
+    }
 }
-export default CheckboxTemplate;

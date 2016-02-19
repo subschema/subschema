@@ -19,7 +19,7 @@ export function normalizeFieldsets(fieldsets, fields) {
             rest.fieldsets = normalizeFieldsets(fieldsets, fields).fieldsets;
 
             return rest;
-        } else if (isString(f) || isArray(f)) {
+        } else if (isString(f) || Array.isArray(f)) {
             var processFields = toArray(f);
             push(fields, processFields);
             return {

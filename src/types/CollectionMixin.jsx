@@ -114,20 +114,20 @@ export default class CollectionMixin extends Component {
     }
 
     handleMoveUp = (pos, val) => {
-        var values = this.state.wrapped, oval = values && values.concat();
+        const values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
     };
 
     handleMoveDown = (pos, val)=> {
-        var values = this.state.wrapped, oval = values && values.concat();
+        const values = this.state.wrapped, oval = values && values.concat();
         values.splice(Math.min(pos + 1, values.length), 0, values.splice(pos, 1)[0]);
         this.changeValue(values, oval);
 
     };
 
     handleDelete = (pos, val, pid)=> {
-        var values = this.state.wrapped, oval = values && values.concat();
+        const values = this.state.wrapped, oval = values && values.concat();
         values.splice(pos, 1);
         this.changeValue(values, oval);
     };
@@ -146,11 +146,11 @@ export default class CollectionMixin extends Component {
 
     handleAddBtn = (e) => {
         e && e.preventDefault();
-        var editPid = this.createPid()
-        this.context.valueManager.update(makeEditPid(this.props.path, editPid), {
-            key: editPid
+        const key = this.createPid()
+        this.context.valueManager.update(makeEditPid(this.props.path, key), {
+            key
         });
-        this.setState({showAdd: true, editPid});
+        this.setState({showAdd: true, editPid: key});
     };
 
     handleEdit = (pos, val, pid) => {
@@ -191,7 +191,7 @@ export default class CollectionMixin extends Component {
         e && e.preventDefault();
         var {valueManager} = this.context;
         var origKey = makeEditPid(this.props.path, this.state.editPid);
-        const origValue = valueManager.path(origKey) || {}
+        const origValue = valueManager.path(origKey) || {};
         var {
             key,
             value
@@ -254,9 +254,9 @@ export default class CollectionMixin extends Component {
         if (!this.props.canAdd) {
             return null;
         }
-        var btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
-        var Template = this.props.buttonTemplate;
-        return <Template key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={style.iconAdd}/>
+        const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
+        const ButtonTemplate = this.props.buttonTemplate;
+        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={style.iconAdd}/>
 
     }
 

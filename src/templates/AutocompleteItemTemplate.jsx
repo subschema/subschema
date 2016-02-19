@@ -1,17 +1,22 @@
 "use strict";
 import React, {Component} from 'react';
 import style  from 'subschema-styles/AutocompleteItemTemplate-style';
+import PropTypes from '../PropTypes';
 
 export default class AutocompleteItemTemplate extends Component {
     static defaultProps = {
         data: null,
         value: null,
         focus: false,
-        onSelect () {
-        }
+        processor: null
     };
 
-    handleClick = (e)=> {
+    static propTypes = {
+        onSelect: PropTypes.event
+    };
+
+
+    handleClick(e) {
         e && e.preventDefault();
         this.props.onSelect(this.props.data);
     };
@@ -21,6 +26,6 @@ export default class AutocompleteItemTemplate extends Component {
         var cls = style.item + (focus ? style.focused : '');
         var html = processor.format(data, value, true);
         return html == null ? null :
-            <li ref="item" className={cls} onClick={this.handleClick} dangerouslySetInnerHTML={{__html: html}}/>
+            <li ref="item" className={cls} onClick={this::this.handleClick} dangerouslySetInnerHTML={{__html: html}}/>
     }
 }

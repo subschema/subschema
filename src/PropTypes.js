@@ -111,6 +111,7 @@ const errorEvent = customPropType(func, 'errorEvent');
  */
 const blurEvent = customPropType(func, 'blurEvent');
 
+
 /**
  * Signify this is a onValid Event listener.
  */
@@ -165,7 +166,7 @@ let contentShape = {
 
 let pContentShape = shape(contentShape);
 
-let contentType = oneOfType([pContentShape, string, bool, arrayOf(oneOfType([string, pContentShape]))]);
+let contentType = oneOfType([pContentShape, string, bool, func,number, arrayOf(oneOfType([string,string, bool, number,func,  pContentShape]))]);
 
 contentShape.content = contentType;
 
@@ -248,14 +249,15 @@ const events = {
     onChange: oneOfType(targetEvent, valueEvent)
 };
 
-const field = customPropType(any, 'field');/*oneOfType([string, shape({
-    type: any,
-    template:any,
-    title: string,
-    name: string,
-    placeholder: string,
-    className: cssClass
-})]);*/
+const field = customPropType(any, 'field');
+/*oneOfType([string, shape({
+ type: any,
+ template:any,
+ title: string,
+ name: string,
+ placeholder: string,
+ className: cssClass
+ })]);*/
 
 const animation = PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.object]);
 const mixin = {
@@ -289,10 +291,10 @@ const injectClass = oneOfType([
     func,
     array,
     shape({
-        target:func,
-        propTypes:object,
-        propvalues:object,
-        strict:bool
+        target: func,
+        propTypes: object,
+        propvalues: object,
+        strict: bool
     })
 ]);
 
@@ -404,6 +406,5 @@ export default
     title,
     injectClass,
     typeClass,
-
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });
