@@ -12,65 +12,74 @@ export default class Checkboxes extends Component {
     static propTypes = {
         onChange: PropTypes.valueEvent,
         options: PropTypes.options,
-        item:PropTypes.type,
+        item: PropTypes.type,
+        name: PropTypes.string,
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template,
-
+        path: PropTypes.path,
+        dataType: PropTypes.dataType
     };
 
     static defaultProps = {
         options: FREEZE_ARR,
-        item:'Checkbox',
+        item: 'Text',
         itemTemplate: 'CheckboxesTemplate',
         groupTemplate: 'CheckboxesGroupTemplate',
         //make the value an array regardless of input
         value: {
             processor: toArray
-        }
+        },
+        dataType: "checkbox"
     };
 
 
-
     handleCheckChange = (e)=> {
+        if (this.props.dataType === 'radio') {
+            this.props.onChange(e.target.checked ? e.target.value : null);
+            return;
+        }
         var newValues = this.props.value.concat();
+        const idx = newValues.indexOf(e.target.value);
+
         if (e.target.checked) {
-            newValues.push(e.target.value);
+            if (idx < 0)
+                newValues.push(e.target.value);
         } else {
-            newValues.splice(newValues.indexOf(e.target.value), 1);
+            if (idx > -1)
+                newValues.splice(idx, 1);
         }
 
         this.props.onChange(newValues);
     };
 
 
-    _createCheckbox(option, index, group, CheckboxTemplate) {
+    _createCheckbox(option, index, group) {
 
-
-        var id = path(this.props.path, index, group);
+        const CheckboxTemplate = this.props.itemTemplate;
+        const id = path(this.props.path, group, index);
         var {val, labelHTML, label} = option;
         label = labelHTML || label;
-        var value = this.props.value;
-        var labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
-        var opts = {
-         //   onChange: this::this.handleCheckChange,
+        const value = this.props.value;
+        const labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
+        const opts = {
+            onChange: this.handleCheckChange,
             name: group,
             checked: value ? !!~value.indexOf(val) : false,
             id,
-            path:id,
             value: val
         };
-        const Checkbox = this.props.item;
-        return (<CheckboxTemplate label={labelContent} {...opts}>
-            <Checkbox {...opts}/>
+        return (<CheckboxTemplate key={`checkbox-${index}-${group}`} label={labelContent} type="checkbox" {...opts}>
+            <input type={this.props.type} {...opts}/>
         </CheckboxTemplate>);
 
     }
 
-    _createGroup(option, index, group, Template, CheckboxTemplate) {
-        return <Template group={option.group}>
-            {this.makeOptions(option.options, group == null ? 0 : group, CheckboxTemplate)}
-        </Template>
-
+    _createGroup(option, index, group) {
+        const {Checkboxes, groupTemplate, name, value, ...rest} = this.props;
+        const GroupTemplate = groupTemplate;
+        return (<GroupTemplate key={`checkbox-group-${index}-${option.group}`} legend={option.legend || option.group}>
+            {this.makeOptions(option.options, group + '-' + index)}
+        </GroupTemplate>);
     }
 
 
@@ -81,22 +90,12 @@ export default class Checkboxes extends Component {
      * @return {String} HTML
      */
     makeOptions(array, group) {
-        array = array || FREEZE_ARR;
-        var name = this.props.name;
-        const CheckboxTemplate = this.props.itemTemplate;
-        const CheckboxesGroupTemplate = this.props.groupTemplate;
-        return array.map((option, index)=> {
-            return (
-                <div
-                    key={`${name}-${index}-${group}`}>{ option.group ? this._createGroup(option, index, group ? group++ : 0, CheckboxesGroupTemplate, CheckboxTemplate)
-                    : this._createCheckbox(option, index, group, CheckboxTemplate)}</div>)
-
-        });
+        return array.map((option, index)=> option.group ? this._createGroup(option, index, group) : this._createCheckbox(option, index, group));
     }
+
 
     render() {
 
-        return <div
-            className={this.props.className}>{this.makeOptions(this.props.options, this.props.name)}</div>
+        return <div className={this.props.className}>{this.makeOptions(this.props.options, this.props.path)}</div>
     }
 }

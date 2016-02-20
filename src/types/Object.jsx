@@ -2,14 +2,11 @@
 
 import React, {Component}  from 'react';
 import PropTypes  from '../PropTypes';
-import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path, clone, noop}  from '../tutils';
-import map  from 'lodash/collection/map';
+import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path as _path, clone, noop}  from '../tutils';
+import map from 'lodash/collection/map';
 import UninjectedField  from '../components/Field';
 import UninjectedFieldSet from '../components/FieldSet.jsx';
 import warning from '../warning';
-
-const _path = path;
-
 
 export default class ObjectType extends Component {
 

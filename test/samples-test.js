@@ -5,7 +5,7 @@ import samples from 'subschema-test-support/samples';
 import {into} from 'subschema-test-support';
 import Subschema, {ValueManager, Form, loaderFactory, DefaultLoader, decorators, injector} from 'subschema';
 
-describe.only('samples', function () {
+describe('samples', function () {
     let oloader = decorators.provide.defaultLoader;
     let loader = null;
     let listen = null;

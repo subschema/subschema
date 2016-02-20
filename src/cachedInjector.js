@@ -3,27 +3,39 @@
 import {HashBuilder} from './hash';
 
 export default function cachedInject(injector) {
-    const cache = [];
+    let cache = new WeakMap();
+
 
     function resolver(propType, resolver) {
         if (propType && resolver) {
             //invalidate cache with new resolver
-            cache.length = 0;
+            cache = new WeakMap();
         }
         return injector.resolver(propType, resolver);
     }
 
     function inject(Clazz, extraPropTypes, extraProps, strictProps) {
         const hash = new HashBuilder(strictProps).addObject(extraPropTypes).addObject(extraProps).toString();
-        const length = cache.length;
-        for (let i = 0; i < length; i++) {
-            const cur = cache[i];
-            if (cur[1] === Clazz && cur[2] === hash) {
-                return cur[0];
+        const cur = cache.get(Clazz);
+
+        if (cur) {
+            for (let k in cur) {
+                if (k.$hash === hash) {
+                    return k;
+                }
             }
         }
+
         const injected = injector.inject(Clazz, extraPropTypes, extraProps, strictProps);
-        cache.push([injected, Clazz, hash]);
+        injected.$hash = hash;
+
+        if (cur) {
+            cur.add(injected);
+        } else {
+            const nwm = new WeakSet();
+            nwm.add(injected);
+            cache.set(Clazz, nwm);
+        }
         return injected;
     }
 

@@ -6,6 +6,9 @@ const {Autocomplete} = types;
 const {OptionsProcessor} = processors;
 const {AutocompleteItemTemplate} = templates;
 
+function noop(){
+
+}
 describe('types/Autocomplete', function() {
     this.timeout(50000);
     var options = [
@@ -15,7 +18,7 @@ describe('types/Autocomplete', function() {
     ]
     it('should render an autocomplete and select suggested', function () {
         var {child, state} = intoWithState(<Autocomplete inputType={types.Text} itemTemplate={AutocompleteItemTemplate}
-                                                         options={options} processor={OptionsProcessor}/>, {});
+                                                         options={options} processor={OptionsProcessor} onInputChange={noop} onChange={noop} onSelect={noop}/>, {});
         expect(child).toExist('should render autocomplete');
         var input = byTag(child, 'input');
         expect(input).toExist('should show input');
@@ -35,7 +38,7 @@ describe('types/Autocomplete', function() {
                                                          inputType={types.Text}
                                                          value="abc"
                                                          autoSelectSingle={true}
-                                                         options={options} processor={OptionsProcessor}/>, {});
+                                                         options={options} processor={OptionsProcessor}   onInputChange={noop} onChange={noop} onSelect={noop}/> , {});
         expect(child).toExist('should render autocomplete');
         var input = byTag(child, 'input');
         expect(input).toExist('should show input');
