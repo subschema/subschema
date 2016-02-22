@@ -7,7 +7,6 @@ export default class Button extends Component {
         action: 'Submit',
         label: 'Submit',
         buttonClass: 'btn',
-        className: '',
         iconClass: null,
         disabled: false
     };
@@ -18,7 +17,8 @@ export default class Button extends Component {
         buttonClass: PropTypes.string,
         iconClass: PropTypes.string,
         action: PropTypes.string,
-        label: PropTypes.string
+        label: PropTypes.string,
+        className: PropTypes.string
     };
 
     handleClick = (e)=> {
@@ -26,8 +26,8 @@ export default class Button extends Component {
     };
 
     render() {
-        const { buttonClass,  title, iconClass, onClick,  label, ...props} = this.props;
-        return <button className={buttonClass} {...props} onClick={this::this.handleClick}>
+        const { buttonClass, className, title, iconClass, onClick,  label, ...props} = this.props;
+        return <button className={className || buttonClass} {...props} onClick={this::this.handleClick}>
             {iconClass ? <i className={iconClass}/> : null}
             {label}</button>
     }

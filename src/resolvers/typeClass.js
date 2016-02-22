@@ -42,8 +42,8 @@ export function addClasses(classes, ...rest) {
  * @param {Reactnode} node - node to create for.
  * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
  */
-export function forType(OrigClazz, ...classes) {
-    return addClasses(classes, OrigClazz.inputClassName || inputClassName).join(' ');
+export function forType(OrigClazz, value) {
+    return addClasses([], value || OrigClazz.inputClassName || inputClassName).join(' ');
 }
 
 export default function typeClass(Clazz, key, propList, OrigClazz) {

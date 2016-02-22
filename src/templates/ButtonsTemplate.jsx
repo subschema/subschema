@@ -14,21 +14,21 @@ export default class ButtonsTemplate extends Component {
             label: 'Submit',
             template: 'Button'
         }],
-        onButtonClick: function (event, action, btn, value) {
+        onButtonClick (event, action, btn, value) {
 
         }
     };
 
     static propTypes = {
         buttonTemplate: PropTypes.template,
-        buttonClass:PropTypes.cssClass,
+        buttonClass:PropTypes.cssClass
     };
 
     makeButtons(buttons) {
-        var onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
+        let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
         return buttons.map((b)=> {
             onClick = b.onClick || onClick;
-            var btn = isString(b) ? {
+            let btn = isString(b) ? {
                 action: b,
                 label: b,
                 onClick
@@ -41,7 +41,7 @@ export default class ButtonsTemplate extends Component {
     }
 
     render() {
-        var {buttons, buttonTemplate,buttonsClass} = this.props;
+        let {buttons, buttonTemplate,buttonsClass} = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
