@@ -18,6 +18,7 @@ export default class FieldSet extends Component {
         buttons: PropTypes.any,
         onButtonClick: PropTypes.event,
         onSubmit: PropTypes.event,
+        onCancel: PropTypes.event,
         field: PropTypes.any,
         legend: PropTypes.any,
         template: PropTypes.template,
@@ -35,22 +36,20 @@ export default class FieldSet extends Component {
             return null;
         }
         const ButtonsTemplate = this.props.buttonsTemplate;
-        if (buttons.buttons) {
-            return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                {...buttons}/>
+        if (!buttons.buttons) {
+            buttons = {
+                buttons
+            };
         }
-        return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}
-                                buttons={buttons}/>
+        return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}  {...buttons}/>
     }
 
     render() {
 
-        const {template,children, buttonsTemplate, buttons, field, ...rest}  = this.props;
+        const {template,children, buttons, field, ...rest}  = this.props;
         const FieldSetTemplate = template;
-
-        return <FieldSetTemplate  {...rest} {...field}>
+        return <FieldSetTemplate  {...rest} {...field} buttons={this.renderButtons(buttons)}>
             {children}
-            {this.renderButtons(buttons)}
         </FieldSetTemplate>
     }
 

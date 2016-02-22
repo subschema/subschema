@@ -19,10 +19,10 @@ export default class Field extends Component {
     };
 
     renderField(field, propPath) {
-        const {Template, Type, validators,  conditional, path, ...rest} = field;
+        const {Template, Type, validators,  path, ...rest} = field;
         const cpath = propPath || path;
         const FieldTemplate = Template;
-        return (FieldTemplate ? <FieldTemplate path={cpath} {...rest} >
+        return (FieldTemplate ? <FieldTemplate path={cpath}  {...rest} >
             <Type path={cpath} onBlur={validators} {...rest}/>
         </FieldTemplate> : <Type path={cpath} {...rest}/>);
 
@@ -33,7 +33,7 @@ export default class Field extends Component {
         if (!conditional) {
             return this.renderField(field, path);
         }
-        return <Conditional path={path} {...conditional}>{this.renderField(field, conditional.path || path)}</Conditional>
+        return <Conditional path={path} {...conditional} field={field}>{this.renderField(field, conditional.path || path)}</Conditional>
     }
 
     render() {

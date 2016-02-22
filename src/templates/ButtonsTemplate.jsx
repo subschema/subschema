@@ -20,7 +20,8 @@ export default class ButtonsTemplate extends Component {
     };
 
     static propTypes = {
-        buttonTemplate: PropTypes.template
+        buttonTemplate: PropTypes.template,
+        buttonClass:PropTypes.cssClass,
     };
 
     makeButtons(buttons) {

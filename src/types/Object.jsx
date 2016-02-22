@@ -12,6 +12,8 @@ export default class ObjectType extends Component {
 
     static template = false;
 
+    static inputClassName = ' ';
+
     static propTypes = {
         objectTemplate: PropTypes.template,
         schema: PropTypes.schema,

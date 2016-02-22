@@ -32,7 +32,7 @@ function _keys(...args) {
  * @returns {ValueManager}
  * @constructor
  */
-function ValueManager(value, errors) {
+export default function ValueManager(value, errors) {
     if (!(this instanceof ValueManager)) {
         return new ValueManager(value, errors);
     }
@@ -397,5 +397,3 @@ ValueManager.prototype = {
         return new ValueManager(this.getValue(), this.getErrors());
     }
 }
-
-export default ValueManager;

@@ -17,10 +17,11 @@ function handleListeners(value, key, props, context) {
     }
     const {injected} = this;
 
-    return context.valueManager.addListener(resolvedPath, (v)=> {
+    const listener = context.valueManager.addListener(resolvedPath, (v)=> {
         injected[key] = value.processor(v);
         this.mounted && this.forceUpdate();
-    }, this, true).remove;
+    }, this, true);
+    return listener.remove.bind(listener);
 }
 
 export const settings = {

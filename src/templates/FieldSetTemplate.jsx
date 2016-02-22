@@ -6,13 +6,10 @@ import {FREEZE_OBJ, noop} from '../tutils';
 
 export default class FieldSetTemplate extends Component {
     static propTypes = {
-        buttons: PropTypes.buttons,
+        buttons: PropTypes.node,
         legend: PropTypes.node,
         className: PropTypes.cssClass,
-        //      onButtonClick: PropTypes.event,
-        //      onClick: PropTypes.event,
         field: PropTypes.any,
-        //       buttonsTemplate: PropTypes.template
     };
     static defaultProps = {
         field: FREEZE_OBJ
@@ -24,9 +21,11 @@ export default class FieldSetTemplate extends Component {
             <fieldset className={className}>
                 <legend>{legend}</legend>
                 {this.props.children}
+                {buttons}
             </fieldset> :
             <div className={className}>
                 {this.props.children}
+                {buttons}
             </div>
     }
 }

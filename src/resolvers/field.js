@@ -60,20 +60,21 @@ export default function field(Clazz, key, propList) {
             }
             const Type = loadType(value.type, null, null, context);
             let Template;
-            if ('template' in Type) {
-                //template is false with no override.
-                if (Type.template === false && (value.template == null)) {
-                    return {
-                        ...setts,
-                        ...value,
-                        Type
-                    };
-                }
-                const lookup = {...spreadable(settings.template), ...spreadable(value.template), ...spreadable(Type.template)};
-                Template = loadTemplate(lookup, key, props, context);
-            } else {
+            if (value.template === false){
+                Template = null;
+            }else if (value.template){
                 const lookup = {...spreadable(settings.template), ...spreadable(value.template)};
                 Template = loadTemplate(lookup, key, props, context);
+            }else if ('template' in Type) {
+                //template is false with no override.
+                if (Type.template === false) {
+                    Template = null;
+                }else {
+                    const lookup = {...spreadable(settings.template), ...spreadable(value.template), ...spreadable(Type.template)};
+                    Template = loadTemplate(lookup, key, props, context);
+                }
+            } else {
+                Template = loadTemplate({template:settings.template}, key, props, context);
             }
 
             return {

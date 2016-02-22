@@ -29,7 +29,7 @@ export default function eventable(listeners, find = returnFirst, findOld = retur
             var ret = listener.apply(this, arguments);
             self.remove();
             return ret;
-        }
+        };
         return this;
     }
 
@@ -44,8 +44,8 @@ export default function eventable(listeners, find = returnFirst, findOld = retur
             warning(listener, 'trying to add a null listener %s', path)
             return;
         }
-        var obj = {path, listener, scope, remove, once};
-
+        var obj = {path, listener, scope, once};
+        obj.remove = obj::remove;
         init = init === true ? obj.listener : isFunction(init) ? init : null;
         if (init) {
             init.call(obj.scope, find(path), findOld(path), path)

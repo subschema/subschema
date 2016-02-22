@@ -6,35 +6,80 @@ import styles from 'subschema-styles/ModalTemplate-style';
 import ValueManager from '../ValueManager';
 import PropTypes from '../PropTypes';
 import NewChildContext from '../components/NewChildContext.jsx';
+import cloneDeep from 'lodash/lang/cloneDeep';
 
-class ModalTemplate extends Component {
-
-    static contextTypes = {
-        valueManager: PropTypes.valueManager,
-        parentValueManager: PropTypes.valueManager,
-        loader: PropTypes.loader
-    };
+export default class ModalTemplate extends Component {
 
     static propTypes = {
-        onCommit: PropTypes.event,
-
+        title: PropTypes.node,
+        buttons: PropTypes.buttons,
+        path: PropTypes.path,
+        value: PropTypes.value,
+        onChange: PropTypes.valueEvent,
+        ModalTemplate: PropTypes.injectClass,
+        dismiss: PropTypes.valueEvent,
+        buttonsTemplate: PropTypes.template
     };
+
     static defaultProps = {
-        onCommit(){
+        buttonsTemplate: 'ButtonsTemplate',
+        onCancel(){
+        },
+        buttons: {
+            buttonsClass: 'pull-right btn-group',
+            buttons: [
+                {
+                    label: "Cancel",
+                    action: 'cancel',
+                    className: 'btn'
+                },
+                {
+                    label: "Save",
+                    action: 'submit',
+                    className: 'btn btn-primary'
+                }
+            ]
         }
     };
+
+
+    handleCancel() {
+        this.props.onChange(this.value);
+        this.props.dismiss();
+    }
+
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        this.value = cloneDeep(props.value);
+    }
+
+    renderButtons(buttons) {
+        if (!buttons) {
+            return null;
+        }
+        const ButtonsTemplate = this.props.buttonsTemplate;
+        if (!buttons.buttons) {
+            buttons = {
+                buttons
+            };
+        }
+        return <ButtonsTemplate onButtonClick={this.handleBtnClose} {...buttons}/>
+    }
+
     handleClose = (e)=> {
         e && e.preventDefault();
-        this.context.parentValueManager.update(this.props.dismiss, false);
+        this.props.dismiss();
     };
     handleBtnClose = (e, action) => {
         switch (action) {
             case 'submit':
             {
-                this.props.onSubmit(e);
+                this.props.dismiss();
+                break;
             }
             case 'close':
             case 'cancel':
+                this.props.onChange(this.value);
                 this.handleClose(e);
                 break;
         }
@@ -43,7 +88,7 @@ class ModalTemplate extends Component {
 
     renderFooter(buttons) {
         if (!buttons) return null;
-        return <div className={styles.footer}><Buttons buttons={buttons} onButtonClick={this.handleBtnClose}/></div>
+        return <div className={styles.footer}>{this.renderButtons(buttons)}</div>
     }
 
     render() {
@@ -65,26 +110,5 @@ class ModalTemplate extends Component {
                 </div>
             </div>
         </div>
-    }
-}
-
-//module.exports = ModalTemplate;
-export default class ModalTemplateWrapper extends Component {
-    static contextTypes = {
-        loader: PropTypes.loader,
-        valueManager: PropTypes.valueManager
-    };
-    static propTypes = {
-        title: PropTypes.node,
-        buttons: PropTypes.buttons,
-        path: PropTypes.path,
-    };
-
-    render() {
-        var {...context} = this.context;
-        var {conditional, ...props} = this.props;
-        return <NewChildContext {...context} path={props.path}>
-            <ModalTemplate {...props}/>
-        </NewChildContext>
     }
 }

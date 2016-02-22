@@ -1,5 +1,5 @@
 "use strict";
-import React, {Component} from 'react';
+import React, {Component, Children} from 'react';
 import PropTypes from './../PropTypes';
 import CSSTransitionGroup  from 'react-addons-css-transition-group';
 import {FREEZE_OBJ} from '../tutils';
@@ -62,20 +62,32 @@ export default class Conditional extends Component {
         /**
          * Listen to an error rather than the mutually exclusive with listen.
          */
-        error: PropTypes.error
+        error: PropTypes.error,
+        /**
+         * Path to update to make conditional false.
+         */
+        dismiss: PropTypes.path,
+
+        buttons: PropTypes.buttons,
+        field:PropTypes.any
     };
 
     renderTemplate() {
         const Template = this.props.template;
-        const {children, ...props} = this.props;
+        let {value, listen, error, template, falseTemplate, dismiss, operator, animate,children, ...props} = this.props;
+        if (dismiss) {
+            children = React.cloneElement(children, {dismiss});
+        }
         return Template ?
             <Template key='true-conditional' {...props}>{children}</Template> : children;
 
     }
 
     renderFalseTemplate() {
-        var FalseTemplate = this.props.falseTemplate;
-        var {value, listen, error, template, falseTemplate, operator, animate,children, ...props} = this.props;
+        const FalseTemplate = this.props.falseTemplate;
+
+        let {value, listen, error, template, falseTemplate, dismiss, operator, animate,children, ...props} = this.props;
+
         return FalseTemplate ?
             <FalseTemplate key='false-conditional' {...props} >{children}</FalseTemplate> :
             <span key='false-conditional'/>;
@@ -84,7 +96,7 @@ export default class Conditional extends Component {
     renderContent() {
 
         const isMatch = this.props.operator(this.props.listen, this.props.value);
-       // console.log('isMatch', this.props.listen, this.props.value);
+        // console.log('isMatch', this.props.listen, this.props.value);
         return isMatch ? this.renderTemplate() : this.renderFalseTemplate();
 
     }
