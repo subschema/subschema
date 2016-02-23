@@ -6,7 +6,14 @@ import {toArray, noop, FREEZE_OBJ} from '../tutils';
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
 
-export default function blurValidate(Clazz, key) {
+/**
+ * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
+ * the behaviour is different.
+ *
+ * @param Clazz
+ * @param key
+ */
+export default function changeValidate(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
     Clazz.contextTypes.loader = PropTypes.loader;
@@ -18,30 +25,18 @@ export default function blurValidate(Clazz, key) {
 
         const {path} = props;
 
-        let hasChanged = false, hasBlurred = false;
-
         this._validateListener = context.valueManager.addValidateListener(path, () => {
-                console.log('validating');
                 return validate()
             }
         ).remove;
 
-
         this._validateChangeListeners = context.valueManager.addListener(path, (val)=> {
-            //fires onChange so its true.
-            hasChanged = true;
-            //at some point it has blurred
-            if (hasBlurred) {
-                validate(val);
-            }
+            validate(val);
         }, this, false).remove;
 
         //blur event if its changed we will validate.
-        return this::function handleBlur(e) {
-            hasBlurred = true;
-            if (hasChanged) {
-                validate();
-            }
+        return this::function handleChange(e) {
+            validate();
         }
 
     });

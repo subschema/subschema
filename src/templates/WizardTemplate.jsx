@@ -20,7 +20,7 @@ export default class WizardTemplate extends WizardMixin {
         onPrevious: donner,
         onDone: donner,
         buttons: {
-            'buttonsStyle': style.buttons,
+            'buttonsClass': style.buttons,
             'previous': {
                 label: 'Previous',
                 action: 'previous',
@@ -51,7 +51,7 @@ export default class WizardTemplate extends WizardMixin {
     };
 
     setNavState(next) {
-        var len = this.props.schema.fieldsets.length, compState = this.state.compState;
+        const len = this.props.schema.fieldsets.length, compState = this.state.compState;
         next = Math.max(Math.min(len - 1, next), 0);
         if (this.props.onNavChange(next, compState, this.props.schema.fieldsets[next]) !== false) {
             this.setState({
@@ -72,9 +72,11 @@ export default class WizardTemplate extends WizardMixin {
         const {ObjectType} = this.props;
         const {fieldsets, schema} = this.props.schema;
         const compState = this.state.compState,
-            fields = fieldsets[compState].fields,
+            current = fieldsets[compState],
+            fields = current.fields,
             transition = compState < this.state.prevState ? style.switchBack : style.switch;
-
+        const buttons = current.buttons ? current.buttons : this.createButtons(compState);
+        const currentSchema = {schema, fieldsets: [{fields, buttons}]};
         return (
             <div className={style.namespace+" "+(this.state.animating ? style.animating : '') }
                  onKeyDown={this.handleKeyDown}>
@@ -87,11 +89,13 @@ export default class WizardTemplate extends WizardMixin {
                     <ObjectType ref="form"
                                 className={style.componentState+compState}
                                 key={"form-"+compState}
-                                schema={{schema, fields}}
-                                onSubmit={this.handleSubmit}>
-                        {this.renderBtns(compState)}
+                                template="ObjectTemplate"
+                                schema={currentSchema}
+                                onButtonClick={this::this.handleBtn}
+                               >
                     </ObjectType>
                 </EventCSSTransitionGroup>
+
             </div>
         );
     }

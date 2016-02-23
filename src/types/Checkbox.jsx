@@ -2,15 +2,15 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import {returnFirst} from '../tutils';
 
 export default class Checkbox extends Component {
 
     static inputClassName = ' ';
 
     static propTypes = {
-        onChange:PropTypes.valueEvent,
-        checkedClass: PropTypes.cssClass
+        onChange: PropTypes.valueEvent,
+        checkedClass: PropTypes.cssClass,
+        onBlur: PropTypes.changeValidate
     };
 
     static defaultProps = {
@@ -19,16 +19,18 @@ export default class Checkbox extends Component {
     };
 
 
-    handleChange = (e)=> {
-        var {value} = this.props;
-        this.props.onChange(e.target.checked ? value == null || value === false ? true : value : value == null || value == true ? false : null);
+    handleChange(e) {
+        const {value} = this.props;
+        //Blur does not get called on checkbox, so we do check on change anyways.
+        const val = e.target.checked ? value == null || value === false ? true : value : value == null || value == true ? false : null;
+        this.props.onChange(val);
     };
 
     render() {
-        var {onChange, value, className, checkedClass, ...props} = this.props;
+        const {onChange, value, className, checkedClass, ...props} = this.props;
 
-        var checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
+        const checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
         return <input {...props} value={value} className={className+' '+(checked ? checkedClass : '')}
-                                 checked={checked} onChange={this.handleChange}/>
+                                 checked={checked} onChange={this::this.handleChange}/>
     }
 }

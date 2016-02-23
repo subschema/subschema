@@ -278,6 +278,30 @@ describe('components/Form', function () {
         expect(error.test[0].type).toBe('required', 'Should have an error');
         expect(error.test.length).toBe(1);
         expect(count).toBe(2);
-    })
+    });
+
+    it('should validate checkbox on submit', function () {
+        const valueManager = ValueManager({});
+        var root = into(<Form valueManager={valueManager} schema={{
+            schema:{
+                c1:{type:'Checkbox',validators:['required']}
+            },
+            fieldsets:[{
+                buttons:[{
+                   action:"submit",
+                   label:"Submit"
+                }],
+                legend:"C1",
+                fields:"c1"
+            }]
+        }}/>, true);
+        expect(root).toExist();
+        let submit = byTag(root, 'button');
+        click(submit);
+        expect(byTag(root, 'p').innerHTML).toBe('Required');
+        valueManager.update('c1', true);
+        expect(byTag(root, 'p').innerHTML).toBe('');
+
+    });
 
 });

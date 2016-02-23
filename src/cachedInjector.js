@@ -30,10 +30,9 @@ export default function cachedInject(injector) {
         injected.$hash = hash;
 
         if (cur) {
-            cur.add(injected);
+            cur.push(injected);
         } else {
-            const nwm = new WeakSet();
-            nwm.add(injected);
+            const nwm = [injected];
             cache.set(Clazz, nwm);
         }
         return injected;

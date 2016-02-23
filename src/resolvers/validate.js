@@ -31,7 +31,7 @@ export function loadValidators(value, key, props, context) {
         const length = validators.length;
         const errors = [];
         for (let i = 0; i < length; i++) {
-            const error = validators[i](v);
+            const error = validators[i](v, valueManager);
             if (error != null) {
                 errors.push(error);
             }

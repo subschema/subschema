@@ -54,6 +54,8 @@ const injector = IP.injector;
 
 const blurValidate = customPropType(func, 'blurValidate');
 
+const changeValidate = customPropType(func, 'changeValidate');
+
 const validate = customPropType(func, 'validate');
 
 const value = customPropType(any, 'value');
@@ -302,6 +304,7 @@ const api = {
     injectClass,
     animation,
     blurValidate,
+    changeValidate,
     promise,
     id,
     injectedClass,
@@ -357,6 +360,7 @@ export default
     customPropType,
     animation,
     blurValidate,
+    changeValidate,
     promise,
     id,
     fieldAttrs,

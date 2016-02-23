@@ -2,12 +2,9 @@
 import React, {Component} from 'react';
 import ObjectType from '../types/Object.jsx';
 import PropTypes from '../PropTypes';
-
-function donner(done) {
-    if (typeof done === 'function')
-        done();
+function donner(d){
+    d && d();
 }
-
 export default class WizardMixin extends Component {
     static contextTypes = {
         loader: PropTypes.loader,
@@ -17,23 +14,35 @@ export default class WizardMixin extends Component {
     static defaultProps = {
         buttonsTemplate: 'ButtonsTemplate'
     };
+
     static propTypes = {
         schema: PropTypes.any,
-        buttonsTemplate: PropTypes.template
+        buttonsTemplate: PropTypes.template,
+        onSubmit: PropTypes.event
     };
-    state = {};
 
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this.state.compState = 0;
-        this.state.prevState = 0;
-        this.state.maxState = 0;
-    }
+    state = {compState: 0, prevState: 0, maxState: 0};
+
+    handleSubmit(e) {
+    //    e && e.preventDefault();
+        /*this._validate(function (errors) {
+            if (errors) {
+
+                this.setState({disabled: false});
+                return;
+            }
+
+            if (!errors && this.props.onDone(donner, e, this.props.schema.fieldsets[this.state.compState]) === false) {
+                return;
+            }
+        }.bind(this));*/
+        this.props.onSubmit(e);
+    };
 
     next = ()=> {
-        var compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState + 1;
+        const compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState + 1;
         this.setState({disabled: true});
-        this._validate((e)=> {
+        this._validate(function (e) {
             if (e) {
                 this.setState({disabled: false});
                 return;
@@ -42,11 +51,11 @@ export default class WizardMixin extends Component {
                 this.setState({disabled: false, maxState: Math.max(next, this.state.maxState)});
                 return;
             }
-        });
+        }.bind(this));
     };
 
     previous = ()=> {
-        var compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState - 1;
+        const compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState - 1;
         this.setState({disabled: true});
 
         if (this.props.onPrevious((resp)=>this.go(next, resp), next, current) === false) {
@@ -70,7 +79,7 @@ export default class WizardMixin extends Component {
 
 
     handleOnClick = (evt)=> {
-        var steps = this.props.schema.fieldsets.length, value = evt.target.value;
+        const steps = this.props.schema.fieldsets.length, value = evt.target.value;
         if (value < steps && value <= this.state.maxState) {
             this.setNavState(value, true);
         }
@@ -92,46 +101,51 @@ export default class WizardMixin extends Component {
     handleValidate = () => {
     };
 
-    handleSubmit = (e)=> {
-        this._validate((errors)=> {
-            if (!errors && this.props.onDone((submit)=> {
-                    if (submit !== false) {
-                        this.props.onSubmit(e, errors, this.context.valueManager.getValue());
-                    }
-                }, e, this.props.schema.fieldsets[this.state.compState]) === false) {
-                return;
-            }
-        })
-    };
 
-    renderBtns(compState) {
-        const ButtonsTemplate = this.props.buttonsTemplate;
-        var buttons = this.props.schema.fieldsets[compState].buttons;
-        if (!buttons && buttons !== false) {
-            buttons = [];
-            var isFirst = compState === 0, isLast = compState === this.props.schema.fieldsets.length - 1;
-            if (!isFirst) {
-                buttons.push(this.props.buttons.previous);
-            }
-            if (isLast) {
-                buttons.push(this.props.buttons.last);
-            } else {
-                buttons.push(this.props.buttons.next);
-            }
-        }
+    createButtons(state) {
+        let {buttons} = this.props.schema.fieldsets[state];
+        let rest = {};
         if (buttons) {
-            buttons.forEach(function (b) {
-                if (b.action === 'next' || b.action === 'submit') {
-                    b.disabled = this.disabled;
-                }
-            }, this.state);
+            if (buttons.buttons) {
+                ({buttons, ...rest} = buttons);
+            }
+            if (!Array.isArray(buttons)) {
+                buttons = [buttons];
+            }
         }
-        return <ButtonsTemplate key={'btn-'+compState} className={this.props.buttons.buttonsStyle} buttons={buttons}
-                                onButtonClick={this.handleBtn}/>
+        else {
+            buttons = [];
+            const {next, previous, last, ...restBtns} = this.props.buttons;
+            rest = restBtns;
+            const isFirst = state == 0,
+                isLast = (state + 1 === this.props.schema.fieldsets.length);
+
+            if (isLast) {
+                if (!isFirst) {
+                    buttons.push(previous);
+                }
+                buttons.push(last);
+            } else if (isFirst) {
+                buttons.push(next);
+            } else {
+                buttons.push(previous, next);
+            }
+
+        }
+
+        buttons.forEach(function (b) {
+            if (b.action === 'next' || b.action === 'submit') {
+                b.disabled = this.disabled;
+            }
+        }, this.state);
+        return {
+            ...rest,
+            buttons
+        }
     }
 
 
-    handleBtn = (e, action, btn)=> {
+    handleBtn(e, action, btn) {
         e && e.preventDefault();
         switch (action) {
 

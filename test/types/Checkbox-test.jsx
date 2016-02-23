@@ -1,9 +1,10 @@
 "use strict";
 
-import {React, check, intoWithState, into, byType, findNode, change, TestUtils,expect, Simulate} from 'subschema-test-support';
-import {Form, ValueManager, types} from 'Subschema';
+import {React, check, intoWithState, into, byType, byTags, findNode, byComponent, change, TestUtils,expect, Simulate} from 'subschema-test-support';
+import {Form, ValueManager,templates, types} from 'Subschema';
 
 const {Checkbox} = types;
+const {EditorTemplate} = templates;
 
 
 describe('types/Checkbox', function () {
@@ -37,7 +38,24 @@ describe('types/Checkbox', function () {
         expect(state.state.value).toBe(null, 'state should update');
         expect(findNode(checkbox).checked).toBe(false, 'should not be checked');
 
+    });
+    it('should validate on change', function () {
+        var valueManager = ValueManager();
+        var root = into(<Form valueManager={valueManager} schema={{schema:{
+            checkbox:{
+                type:'Checkbox',
+                validators:['required']
+            }
+        }}}/>, true);
+        const template = byComponent(root, EditorTemplate);
+        expect(root).toExist('form should exist');
+        const checkbox = byComponent(root, Checkbox);
+        expect(byTags(template, 'p')[0].innerHTML).toBe('');
+        valueManager.validate();
+        let p = byTags(template, 'p')[0];
+        expect(p.innerHTML).toBe('Required');
+        check(checkbox, true);
+        expect(byTags(template, 'p')[0].innerHTML).toBe('');
 
     });
-
 });

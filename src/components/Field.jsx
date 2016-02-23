@@ -19,7 +19,8 @@ export default class Field extends Component {
     };
 
     renderField(field, propPath) {
-        const {Template, Type, validators,  path, ...rest} = field;
+        const {Template, Type,   path, ...rest} = field;
+        const validators = field.validators;
         const cpath = propPath || path;
         const FieldTemplate = Template;
         return (FieldTemplate ? <FieldTemplate path={cpath}  {...rest} >
@@ -28,8 +29,8 @@ export default class Field extends Component {
 
     }
 
-    renderConditional(conditional, Conditional) {
-        const {field, path} = this.props;
+    renderConditional(conditional) {
+        const {Conditional, field, path} = this.props;
         if (!conditional) {
             return this.renderField(field, path);
         }
@@ -37,7 +38,6 @@ export default class Field extends Component {
     }
 
     render() {
-        const {Conditional, field} =this.props;
-        return this.renderConditional(field.conditional, Conditional);
+        return this.renderConditional(this.props.field.conditional);
     }
 }

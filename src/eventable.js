@@ -23,11 +23,11 @@ export default function eventable(listeners, find = returnFirst, findOld = retur
     }
 
     function once() {
-        var self = this, listener = self.listener;
+        const rem = this.remove, listener = this.listener, self = this;
 
-        this.listener = function () {
-            var ret = listener.apply(this, arguments);
-            self.remove();
+        this.listener = function (...args) {
+            var ret = listener.apply(self, ...args);
+            rem();
             return ret;
         };
         return this;

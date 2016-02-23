@@ -3,12 +3,10 @@
 import PropTypes from '../PropTypes';
 import {listener, resolveKey} from 'subschema-injection/src/util';
 
-function handleErrorListeners(value, key, props, context) {
+function handleErrorListeners(value, key, props, {valueManager}) {
     const resolvedPath = resolveKey(props.path, value);
-    const {injected} = this;
-
-    return context.valueManager.addErrorListener(resolvedPath, (err)=> {
-        injected[key] = err && err[0] && err[0].message;
+    return valueManager.addErrorListener(resolvedPath, (err)=> {
+        this.injected[key] = err && err[0] && err[0].message;
         this.mounted && this.forceUpdate();
     }, this, true).remove;
 }
