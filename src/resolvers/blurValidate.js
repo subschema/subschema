@@ -6,6 +6,16 @@ import {toArray, noop, FREEZE_OBJ} from '../tutils';
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
 
+/**
+ * Blur validate follows the behaviour
+ *
+ * if a field has not changed and blurred no validation.
+ * if a field has changed and blurred validate.
+ * if a validate listener is called validate.
+ *
+ * @param Clazz
+ * @param key
+ */
 export default function blurValidate(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
@@ -20,11 +30,7 @@ export default function blurValidate(Clazz, key) {
 
         let hasChanged = false, hasBlurred = false;
 
-        this._validateListener = context.valueManager.addValidateListener(path, () => {
-                console.log('validating');
-                return validate()
-            }
-        ).remove;
+        this._validateListener = context.valueManager.addValidateListener(path, () =>validate()).remove;
 
 
         this._validateChangeListeners = context.valueManager.addListener(path, (val)=> {

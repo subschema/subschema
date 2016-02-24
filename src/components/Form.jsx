@@ -18,7 +18,7 @@ export default class Form extends Component {
         loader: PropTypes.loader,
         injector: PropTypes.injector,
         valueManager: PropTypes.valueManager,
-        template: PropTypes.template,
+        template: PropTypes.string,
         method: PropTypes.string,
         action: PropTypes.string,
         enctype: PropTypes.string,
@@ -27,7 +27,7 @@ export default class Form extends Component {
     };
 
     static defaultProps = {
-        template: 'FormTemplate',
+        fallbackTemplate: 'FormTemplate',
         onSubmit: noop,
         noValidate: false
     };

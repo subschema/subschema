@@ -353,23 +353,23 @@ ValueManager.prototype = {
      * Trigger Validators And Callback with Errors for paths.
      */
     validatePaths(paths, callback){
-        var copyPaths = paths && paths.concat() || [];
-        var errors;
-        paths.forEach(function validatePaths$forEach(path) {
-            function error$callback(error) {
-                if (error) {
-                    errors = errors || {};
-                    errors[path] = error;
+        let errors = null;
+        paths.forEach(path => {
+            //validate does not return the error, it just triggers the error handler,
+            // so we add a listener for that path, trigger it and remove the listener.
+            //  so that we can get the listener.  We should probably change validate
+            // to return the error (or a promise) but not today.
+            this.addErrorListener(path, (e)=> {
+                if (e) {
+                    (errors == null ? (errors = {}) : errors)[path] = e;
                 }
-                copyPaths.splice(copyPaths.indexOf(path), 1);
-                if (copyPaths.length === 0 && callback) {
-                    callback(errors);
-                }
-            }
-
-            this.addErrorListener(path, error$callback, this).once();
+            }).once();
             this.validate(path);
         }, this);
+
+        if (callback) {
+            callback(errors);
+        }
         return errors;
     },
     /**

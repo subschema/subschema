@@ -15,7 +15,7 @@ export default class ObjectType extends Component {
     static inputClassName = ' ';
 
     static propTypes = {
-        objectTemplate: PropTypes.template,
+        objectTemplate: PropTypes.string,
         schema: PropTypes.schema,
         subSchema: PropTypes.schema,
         onButtonClick: PropTypes.event,
@@ -32,9 +32,10 @@ export default class ObjectType extends Component {
     static defaultProps = {
         onButtonClick: noop,
         onSubmit: noop,
-        objectTemplate: 'ObjectTemplate',
+        fallbackTemplate: 'ObjectTemplate',
         FieldSet: UninjectedFieldSet,
-        Field: UninjectedField
+        Field: UninjectedField,
+        subSchema:{}
     };
 
 
@@ -99,12 +100,11 @@ export default class ObjectType extends Component {
         //capture the things that should not fall through.
         let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, template, ...props} = this.props;
         const ObjectTemplate = objectTemplate;
-        const rschema = schema || subSchema;
-
-        return <ObjectTemplate schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
+        const {Template, ...rschema} = schema || subSchema;
+        return <Template schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
             {rschema != null ? this.renderSchema(rschema, FieldSet, Field) : null}
             {children}
-        </ObjectTemplate>
+        </Template>
     }
 
 }

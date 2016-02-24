@@ -2,76 +2,85 @@
 import React, {Component} from 'react';
 import ObjectType from '../types/Object.jsx';
 import PropTypes from '../PropTypes';
-function donner(d){
+import UninjectedField from '../components/Field.jsx';
+import UninjectedFieldSet from '../components/FieldSet.jsx';
+function donner(d) {
     d && d();
 }
 export default class WizardMixin extends Component {
     static contextTypes = {
-        loader: PropTypes.loader,
         valueManager: PropTypes.valueManager
     };
 
     static defaultProps = {
-        buttonsTemplate: 'ButtonsTemplate'
+        buttonsTemplate: 'ButtonsTemplate',
+        Field: UninjectedField,
+        FieldSet: UninjectedFieldSet
     };
 
     static propTypes = {
         schema: PropTypes.any,
         buttonsTemplate: PropTypes.template,
-        onSubmit: PropTypes.event
+        onSubmit: PropTypes.event,
+        FieldSet: PropTypes.injectClass,
+        Field: PropTypes.injectClass
     };
 
-    state = {compState: 0, prevState: 0, maxState: 0};
+    state = {compState: 0, prevState: 0, maxState: 0, done: false};
 
     handleSubmit(e) {
-    //    e && e.preventDefault();
-        /*this._validate(function (errors) {
+        //    e && e.preventDefault();
+        this._validate(function (errors) {
             if (errors) {
 
-                this.setState({disabled: false});
+                this.setState({disabled: false, done: false});
                 return;
             }
 
-            if (!errors && this.props.onDone(donner, e, this.props.schema.fieldsets[this.state.compState]) === false) {
-                return;
-            }
-        }.bind(this));*/
-        this.props.onSubmit(e);
-    };
+            this.setState({done: true});
+            this.props.onSubmit(e);
+            return;
+        }.bind(this));
 
-    next = ()=> {
-        const compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState + 1;
+    }
+
+    next() {
+        const compState = this.state.compState,
+            nextState = compState + 1,
+            current = this.props.schema.fieldsets[compState];
         this.setState({disabled: true});
         this._validate(function (e) {
             if (e) {
-                this.setState({disabled: false});
+                this.setState({disabled: false, done: false});
                 return;
             }
-            if (this.props.onNext((resp)=>this.go(next, resp), next, current) === false) {
-                this.setState({disabled: false, maxState: Math.max(next, this.state.maxState)});
+            if (this.props.onNext((resp)=>this.go(nextState, resp), nextState, current) === false) {
+                this.setState({disabled: false, done: false, maxState: Math.max(nextState, this.state.maxState)});
                 return;
             }
         }.bind(this));
-    };
+    }
 
-    previous = ()=> {
-        const compState = this.state.compState, current = this.props.schema.fieldsets[compState], next = compState - 1;
+    previous() {
+        const compState = this.state.compState,
+            nextState = compState - 1,
+            current = this.props.schema.fieldsets[compState];
+
         this.setState({disabled: true});
-
-        if (this.props.onPrevious((resp)=>this.go(next, resp), next, current) === false) {
-            this.setState({disabled: false});
+        if (this.props.onPrevious((resp)=>this.go(nextState, resp), nextState, current) === false) {
+            this.setState({disabled: false, done: false});
             return;
         }
     };
 
 
-    go = (pos, resp)=> {
+    go(pos, resp) {
         if (resp === false) {
-            this.setState({disabled: false});
+            this.setState({disabled: false, done: false});
             return;
         }
         this.setNavState(resp == null ? pos : resp);
-    };
+    }
 
     _validate(done) {
         this.context.valueManager.validatePaths(this.props.schema.fieldsets[this.state.compState].fields, done)

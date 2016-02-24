@@ -1,6 +1,6 @@
 'use strict'
 import React, {Component} from 'react'
-import UninjectedObjectType from '../types/Object.jsx';
+import ObjectType from '../types/Object.jsx';
 import WizardMixin from './WizardMixin';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
 import EventCSSTransitionGroup from '../transition/EventCSSTransitionGroup.jsx';
@@ -16,6 +16,7 @@ function donner(done) {
 export default class WizardTemplate extends WizardMixin {
     static defaultProps = defaults({
         wizardProgressTemplate: 'WizardProgressTemplate',
+        Template: 'ObjectTemplate',
         onNext: donner,
         onPrevious: donner,
         onDone: donner,
@@ -41,13 +42,13 @@ export default class WizardTemplate extends WizardMixin {
         },
         onNavChange(current, previous, wizard){
         },
-        ObjectType: UninjectedObjectType
+        // ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
 
     static propTypes = {
         ...WizardMixin.propTypes,
-        ObjectType: PropTypes.injectClass,
-        wizardProgressTemplate: PropTypes.template
+        wizardProgressTemplate: PropTypes.template,
+        Template: PropTypes.template
     };
 
     setNavState(next) {
@@ -64,19 +65,18 @@ export default class WizardTemplate extends WizardMixin {
 
     renderProgress(fieldsets) {
         const Template = this.props.wizardProgressTemplate;
-        return Template ? <Template fieldsets={fieldsets} index={this.state.compState}
+        return Template ? <Template fieldsets={fieldsets} index={this.state.done ? fieldsets.length : this.state.compState}
                                     onClick={this.handleOnClick}/> : null;
     }
 
     render() {
-        const {ObjectType} = this.props;
-        const {fieldsets, schema} = this.props.schema;
-        const compState = this.state.compState,
+        let {className, Template, template, fieldsets, fields, onButtonClick, children, schema, ...rest} = this.props;
+        ({fieldsets, schema} = this.props.schema);
+        let compState = this.state.compState,
             current = fieldsets[compState],
-            fields = current.fields,
             transition = compState < this.state.prevState ? style.switchBack : style.switch;
         const buttons = current.buttons ? current.buttons : this.createButtons(compState);
-        const currentSchema = {schema, fieldsets: [{fields, buttons}]};
+        const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], Template};
         return (
             <div className={style.namespace+" "+(this.state.animating ? style.animating : '') }
                  onKeyDown={this.handleKeyDown}>
@@ -87,15 +87,13 @@ export default class WizardTemplate extends WizardMixin {
                                          className={style.transitionContainer} onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
                     <ObjectType ref="form"
+                        {...rest}
                                 className={style.componentState+compState}
                                 key={"form-"+compState}
-                                template="ObjectTemplate"
                                 schema={currentSchema}
                                 onButtonClick={this::this.handleBtn}
-                               >
-                    </ObjectType>
+                    />
                 </EventCSSTransitionGroup>
-
             </div>
         );
     }

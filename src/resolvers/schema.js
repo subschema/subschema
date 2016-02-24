@@ -4,6 +4,7 @@ import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {toArray, FREEZE_OBJ} from '../tutils';
 import {normalizeFieldsets} from './fieldset';
+import {loadTemplate} from './template';
 /**
  * So a schema can be
  * EX: {
@@ -109,9 +110,18 @@ export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE
 }
 
 export function normalizeSchema(oschema, key, props, context) {
-    return normalize(oschema, props.fieldsets, props.fields, context);
-
+    if (oschema == null) return oschema;
+    const schema = normalize(oschema, props.fieldsets, props.fields, context);
+    if (props.objectTemplate) {
+        schema.Template = loadTemplate(props.objectTemplate, key, props, context);
+    } else if (schema.template) {
+        schema.Template = loadTemplate(schema.template, key, props, context);
+    } else {
+        schema.Template = loadTemplate(props.fallbackTemplate, key, props, context);
+    }
+    return schema;
 }
+
 function schema(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz::prop(key, normalizeSchema);
