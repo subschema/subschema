@@ -17,8 +17,12 @@ import warning from './warning';
 export default function eventable(listeners, find = returnFirst, findOld = returnFirst) {
     listeners = listeners || [];
 
+    //Remove if called more than once don't do anything.
     function remove() {
-        listeners.splice(listeners.indexOf(this), 1);
+        const idx = listeners.indexOf(this);
+        if (idx > -1) {
+            listeners.splice(idx, 1);
+        }
         return this;
     }
 

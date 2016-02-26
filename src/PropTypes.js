@@ -64,6 +64,8 @@ const message = customPropType(any, 'message');
 
 const error = customPropType(any, 'error');
 
+const errors = customPropType(any, 'errors');
+
 const promise = shape({then: func});
 
 const id = customPropType(string, 'id');
@@ -311,6 +313,7 @@ const api = {
     fieldAttrs,
     cssClass,
     error,
+    errors,
     event,
     htmlFor,
     validator,
@@ -366,6 +369,7 @@ export default
     fieldAttrs,
     cssClass,
     error,
+    errors,
     event,
     valueEvent,
     targetEvent,

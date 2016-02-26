@@ -223,6 +223,8 @@ function shortDate(value, isBackspace, caret) {
             str = mmInt + '/';
         } else if (mmInt > 1) {
             str = '0' + mmInt + '/';
+        } else if (!mm) {
+            //swallow
         } else if (mm.length === 2) {
             str = mm + '/';
         } else {

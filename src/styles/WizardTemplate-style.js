@@ -1,7 +1,7 @@
 require('./wizard.less');
 module.exports = {
     namespace: 'wizard-container',
-    buttons: 'form-group col-sm-12 ',
+    buttons: 'btn-group col-sm-12 ',
     switchBack: 'wizardSwitchBack',
     switch: 'wizardSwitch',
     animating: 'overflow-hidden',

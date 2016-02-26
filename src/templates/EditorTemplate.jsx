@@ -14,19 +14,25 @@ export default class EditorTemplate extends Component {
         htmlFor: PropTypes.htmlFor
     };
 
+
+    static defaultProps = Object.keys(style).reduce(function (obj, key) {
+        obj[key + 'Class'] = style[key];
+        return obj;
+    }, {fieldClass: style.group,   errorClassName: style.hasError});
+
     render() {
-        var {name, htmlFor, title, help, error, errorClassName, message, fieldClass,  children} = this.props;
+        var {name, htmlFor, title, help,labelClass, hasTitleClass,noTitleClass, errorClass, helpClass, error, errorClassName, message, fieldClass,  children} = this.props;
         if (!title) {
             title = ''
         }
         return (<div
-            className={style.group+" " + (error != null ? errorClassName || '' : '') + ' ' +  forEditor(this)}>
-            <Content content={title} type="label" className={style.label} htmlFor={htmlFor}/>
+            className={fieldClass+" " + (error != null ? errorClassName || '' : '')}>
+            <Content content={title} type="label" className={labelClass} htmlFor={htmlFor}/>
 
-            <div className={title ? style.hasTitle : style.noTitle}>
+            <div className={title ? hasTitleClass : noTitleClass}>
                 {children}
                 {help === false ? null : <Content content={error ? error : help || ''} key='error-block' type='p'
-                                                  className={error ? style.error : style.help}/>}
+                                                  className={error ? errorClass : helpClass}/>}
             </div>
         </div>);
     }

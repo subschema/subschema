@@ -15,7 +15,7 @@ export default class ObjectType extends Component {
     static inputClassName = ' ';
 
     static propTypes = {
-        objectTemplate: PropTypes.string,
+        objectTemplate: PropTypes.oneOfType([PropTypes.string,PropTypes.func]),
         schema: PropTypes.schema,
         subSchema: PropTypes.schema,
         onButtonClick: PropTypes.event,

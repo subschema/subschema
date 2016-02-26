@@ -109,6 +109,10 @@ export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE
 
 }
 
+export const settings = {
+    template: 'ObjectTemplate'
+};
+
 export function normalizeSchema(oschema, key, props, context) {
     if (oschema == null) return oschema;
     const schema = normalize(oschema, props.fieldsets, props.fields, context);
@@ -116,8 +120,10 @@ export function normalizeSchema(oschema, key, props, context) {
         schema.Template = loadTemplate(props.objectTemplate, key, props, context);
     } else if (schema.template) {
         schema.Template = loadTemplate(schema.template, key, props, context);
-    } else {
+    } else if (props.fallbackTemplate) {
         schema.Template = loadTemplate(props.fallbackTemplate, key, props, context);
+    } else {
+        schema.Template = loadTemplate(settings.template,  key, props, context);
     }
     return schema;
 }

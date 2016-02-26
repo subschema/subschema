@@ -3,6 +3,8 @@
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
 import UninjectedConditional from './Conditional.jsx';
+import {FREEZE_ARR} from '../tutils';
+
 export default class Field extends Component {
 
     static contextTypes = {
@@ -20,7 +22,7 @@ export default class Field extends Component {
 
     renderField(field, propPath) {
         const {Template, Type,   path, ...rest} = field;
-        const validators = field.validators;
+        const validators = field.validators || FREEZE_ARR;
         const cpath = propPath || path;
         const FieldTemplate = Template;
         return (FieldTemplate ? <FieldTemplate path={cpath}  {...rest} >
@@ -34,7 +36,8 @@ export default class Field extends Component {
         if (!conditional) {
             return this.renderField(field, path);
         }
-        return <Conditional path={path} {...conditional} field={field}>{this.renderField(field, conditional.path || path)}</Conditional>
+        return <Conditional path={path} {...conditional}
+                            field={field}>{this.renderField(field, conditional.path || path)}</Conditional>
     }
 
     render() {

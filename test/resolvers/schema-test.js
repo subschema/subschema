@@ -1,12 +1,12 @@
 "use strict";
-import {loaderFactory, resolvers} from 'subschema';
+import {loaderFactory, DefaultLoader, resolvers, injector} from 'subschema';
 import expect from 'expect';
 
 const {normalizeSchema  } = resolvers.schema;
-//TODO -fix
+
 describe('resolvers/schema', function () {
-    const loader = loaderFactory();
-    const context = {loader};
+    const loader = loaderFactory([DefaultLoader]);
+    const context = {loader, injector};
     loader.addSchema({
         Address: {
             schema: {

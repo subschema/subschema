@@ -14,17 +14,9 @@ function initValidators(nval) {
     }
     return this.loadValidator(nval.type)(nval);
 }
-function toValidators(val, loader) {
-    return toArray(val).map(initValidators, loader)
-}
 
-export function loadValidators(value, key, props, context) {
-    const validators = toValidators(value, context.loader);
-    if (validators.length === 0) {
-        return void(0);
-    }
-    const {valueManager} = context;
-
+export function loadValidators(value, key, props, {loader, valueManager}) {
+    const validators = toArray(value).map(initValidators, loader)
     return (...args)=> {
 
         const v = args.length === 0 ? valueManager.path(props.path) : args[0];
@@ -53,5 +45,5 @@ export default function validate(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::prop(key, loadValidators);
+    Clazz::this.property(key, loadValidators);
 }

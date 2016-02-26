@@ -1,13 +1,13 @@
 "use strict";
 
 import {prop} from 'subschema-injection/src/util';
-import PropTypes from '../PropTypes';
 import {toArray} from '../tutils';
 
 function toOptions(nval) {
     if (typeof nval === 'string') {
         return {label: nval, val: nval};
     }
+
     if (('label' in nval ) && ('val' in nval)) {
         return nval;
     }

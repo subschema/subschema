@@ -1,10 +1,9 @@
 "use strict";
 
-import React, {Component} from 'react';
 import {prop, extend, unmount, removeListeners, resolveKey} from 'subschema-injection/src/util';
-import {toArray, noop, FREEZE_OBJ} from '../tutils';
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
+import noop from '../tutils';
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
@@ -20,7 +19,7 @@ export default function changeValidate(Clazz, key) {
 
 
     Clazz::prop(key, function blurValidate$prop(validate, key, props, context) {
-        if (validate == null) return void(0);
+        if (validate == null) return noop;
         validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
 
         const {path} = props;
@@ -35,10 +34,7 @@ export default function changeValidate(Clazz, key) {
         }, this, false).remove;
 
         //blur event if its changed we will validate.
-        return this::function handleChange(e) {
-            validate();
-        }
-
+        return validate;
     });
 
     Clazz::unmount(function () {

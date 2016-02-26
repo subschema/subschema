@@ -16,7 +16,9 @@ describe('templates/WizardTemplate', function () {
         expect(root).toExist();
         let template = byComponent(root, templates.WizardTemplate);
         expect(template).toExist('should have the template');
-        let next = byTag(template, 'button');
+        let buttons = byComponent(template, templates.ButtonsTemplate);
+        let next = byTag(buttons, 'button');
+        click(next);
 
     });
     it('should create a new form with a wizard and stuff', function (done) {

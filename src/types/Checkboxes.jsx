@@ -17,7 +17,8 @@ export default class Checkboxes extends Component {
         itemTemplate: PropTypes.template,
         groupTemplate: PropTypes.template,
         path: PropTypes.path,
-        dataType: PropTypes.dataType
+        dataType: PropTypes.dataType,
+        onBlur: PropTypes.changeValidate
     };
 
     static defaultProps = {
@@ -33,9 +34,10 @@ export default class Checkboxes extends Component {
     };
 
 
-    handleCheckChange = (e)=> {
+    handleCheckChange(e) {
         if (this.props.dataType === 'radio') {
             this.props.onChange(e.target.checked ? e.target.value : null);
+            this.props.onBlur();
             return;
         }
         var newValues = this.props.value.concat();
@@ -50,19 +52,22 @@ export default class Checkboxes extends Component {
         }
 
         this.props.onChange(newValues);
-    };
+        this.props.onBlur();
+
+    }
 
 
     _createCheckbox(option, index, group) {
 
         const CheckboxTemplate = this.props.itemTemplate;
         const id = path(this.props.path, group, index);
-        var {val, labelHTML, label} = option;
+        let {val, labelHTML, label} = option;
+        val = val == null ? label || labelHTML : val;
         label = labelHTML || label;
         const value = this.props.value;
         const labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
         const opts = {
-            onChange: this.handleCheckChange,
+            onChange: this::this.handleCheckChange,
             name: group,
             checked: value ? !!~value.indexOf(val) : false,
             id,

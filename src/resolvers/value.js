@@ -4,8 +4,7 @@ import PropTypes from '../PropTypes';
 import {listener, resolveKey} from 'subschema-injection/src/util';
 import isPlainObject from 'lodash/lang/isPlainObject';
 
-
-function handleListeners(value, key, props, {valueManager}) {
+export function handleListeners(value, key, props, {valueManager}) {
     let resolvedPath;
     if (value == null || typeof value === 'string') {
         resolvedPath = resolveKey(props.path, value);
@@ -19,18 +18,20 @@ function handleListeners(value, key, props, {valueManager}) {
     return valueManager.addListener(resolvedPath, (v)=> {
         this.injected[key] = value.processor(v);
         this.mounted && this.forceUpdate();
-    }, this, true).remove;
+    }, this, value.init).remove;
 }
 
 export const settings = {
     processor: function (v) {
         return v;
-    }
+    },
+    //fire the listener immediately, do not wait for a change.
+    init: true
 };
 
 export default function value(Clazz, key) {
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::listener(key, handleListeners);
+    Clazz::this.listener(key, handleListeners);
 
 }

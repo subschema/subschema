@@ -3,6 +3,24 @@
 import {isString,isArray, slice, isFunction, push} from './tutils';
 import Constants from './Constants';
 
+/**
+ * Takes the keys of a style object and converts them to an object
+ * suitable to default props with the default value being the styles
+ * resolved default style.
+ *
+ * @param styles
+ * @param props
+ * @param preFix
+ * @param postFix
+ * @returns {*}
+ */
+export function styleToProps(styles, props = {}, preFix='', postFix = "Class") {
+    return Object.keys(styles).reduce((ret, key) => {
+        ret[`${preFix}${key}${postFix}`] = styles[key];
+        return ret
+    }, props);
+}
+
 export function addClasses(classes, str) {
     if (str == null) {
         return;

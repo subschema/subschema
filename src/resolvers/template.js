@@ -47,7 +47,9 @@ export function loadTemplate(value, key, props, context) {
 
     const Template = isFunction(template) ? template : context.loader.loadTemplate(template);
 
-    return context.injector.inject(Template, propTypes, rest);
+    const InjectedTemplate =  context.injector.inject(Template, propTypes, rest);
+
+    return InjectedTemplate;
 }
 
 export default function template(Clazz, key) {
