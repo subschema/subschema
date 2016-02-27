@@ -6,17 +6,20 @@ const {Select} = types;
 
 describe('components/Conditional', function () {
     this.timeout(30000);
-    const Conditional = injector.inject(_Conditional);
-    const loader = loaderFactory([_loader]);
-
+    let Conditional;
+    let loader;
+    before(function(){
+        Conditional  = injector.inject(_Conditional);
+        loader = loaderFactory([_loader]);
+        loader.addTemplate({
+            Hello
+        });
+    });
     class Hello extends React.Component {
         render() {
             return <div>Hello</div>;
         }
     }
-    loader.addTemplate({
-        Hello
-    });
     var schema = {
         'menu': {
             type: 'Radio',

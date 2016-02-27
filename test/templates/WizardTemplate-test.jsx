@@ -100,7 +100,7 @@ describe('templates/WizardTemplate', function () {
 
 
     });
-    it.only('should render multiple wizards', function (done) {
+    it('should render multiple wizards', function (done) {
         const valueManager = ValueManager({
             //  c1: true
         });

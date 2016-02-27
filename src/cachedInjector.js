@@ -3,25 +3,36 @@
 import {HashBuilder} from './hash';
 
 export default function cachedInject(injector) {
-    let cache = new WeakMap();
+    let cache;
 
-
+    /**
+     * Resolver gets called  a bunch of times,
+     * rather than initing WeakMap a million times,
+     * let's just do it in the main inject loop.
+     *
+     * @param propType
+     * @param resolver
+     * @returns {*}
+     */
     function resolver(propType, resolver) {
         if (propType && resolver) {
             //invalidate cache with new resolver
-            cache = new WeakMap();
+            cache = null;
         }
         return injector.resolver(propType, resolver);
     }
 
     function inject(Clazz, extraPropTypes, extraProps, strictProps) {
+        if (cache == null) {
+            cache = new WeakMap();
+        }
         const hash = new HashBuilder(strictProps).addObject(extraPropTypes).addObject(extraProps).toString();
         const cur = cache.get(Clazz);
 
         if (cur) {
-            for (let k in cur) {
-                if (k.$hash === hash) {
-                    return k;
+            for (let klazz of cur) {
+                if (klazz && klazz.$hash === hash) {
+                    return klazz;
                 }
             }
         }
@@ -32,8 +43,7 @@ export default function cachedInject(injector) {
         if (cur) {
             cur.push(injected);
         } else {
-            const nwm = [injected];
-            cache.set(Clazz, nwm);
+            cache.set(Clazz, [injected]);
         }
         return injected;
     }

@@ -5,15 +5,23 @@ import ReactServer from 'react-dom/server';
 import {ValueManager, PropTypes, loader as _loader, loaderFactory, types, Editor,Form} from 'Subschema';
 import injector from '../../src/injector';
 
-const loader = loaderFactory([_loader]);
-const Content = injector.inject(types.Content);
-loader.addType('Test', class extends Component {
-    render() {
-        return <div><span>hello</span>{this.props.children}</div>
-    }
-});
 describe('types/Content', function () {
+    let loader;
+    let Content;
 
+    class TestClass extends Component {
+        render() {
+            return <div><span>hello</span>{this.props.children}</div>
+        }
+
+    }
+
+    before(function(){
+        loader = loaderFactory([_loader]);
+        loader.addType('Test', TestClass);
+        Content = injector.inject(types.Content);
+
+    });
     it('should do simple subsitution', function () {
 
         var valueManager = ValueManager({test: 2});
