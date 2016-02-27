@@ -5,4 +5,4 @@ module.exports = {
     listGroup: "list-group",
     notFound: 'notfound',
     found: 'found'
-}
+};

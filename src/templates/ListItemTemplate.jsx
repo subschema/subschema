@@ -47,14 +47,14 @@ export default class ListItemTemplate extends Component {
 
     buttons(pos, last, canReorder, canDelete) {
         var buttons = [];
-        var buttonClass = style.button;
+        var buttonClass = this.props.buttonClass;
         if (canReorder) {
             if (pos > 0) {
                 buttons.push({
                     onClick: this.handleMoveUp,
                     title: 'Move Up',
                     label: '',
-                    iconClass: style.moveUp,
+                    iconClass: this.props.moveUpClass,
                     buttonClass,
                     ref: 'upBtn'
                 });
@@ -63,7 +63,7 @@ export default class ListItemTemplate extends Component {
                 buttons.push({
                     onClick: this.handleMoveDown,
                     title: 'Move Down',
-                    iconClass: style.moveDown,
+                    iconClass: this.props.moveDownClass,
                     buttonClass,
                     label: '',
                     ref: 'downBtn'
@@ -76,7 +76,7 @@ export default class ListItemTemplate extends Component {
             buttons.push({
                 onClick: this.handleDelete,
                 title: 'Delete',
-                iconClass: style.delete,
+                iconClass: this.props.deleteClass,
                 buttonClass,
                 label: '',
                 ref: 'deleteBtn'
@@ -86,12 +86,12 @@ export default class ListItemTemplate extends Component {
     }
 
     render() {
-        var {pos,  value, errors, path, onValidate,type, name, canReorder, canDelete, last, onValueChange} = this.props;
+        var {pos,  value, errors, path, buttonsClass, listGroupItemClass,helpClass, onValidate,type, name, hasErrorClass, canReorder, canDelete, last, onValueChange} = this.props;
         var error = errors && errors[0] && errors[0].message;
-        return <li className={style.listGroupItem+' '+(error ? style.hasError : '')}>
-            { error ? <p ref="error" key="error" className={style.help}>{error}</p> : null }
+        return <li className={`${listGroupItemClass} ${(error ? hasErrorClass : '')}`}>
+            { error ? <p ref="error" key="error" className={helpClass}>{error}</p> : null }
             <Buttons key="buttons" buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
-                     buttonsClass={style.buttonsClass}/>
+                     buttonsClass={buttonsClass}/>
             {this.props.children}
         </li>
 

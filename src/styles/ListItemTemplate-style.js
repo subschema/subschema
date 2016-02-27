@@ -8,6 +8,7 @@ module.exports = {
     listGroupItem: 'list-group-item',
     hasError: 'has-error',
     help: "help-block",
-    buttonsClass: 'btn-group ctrl-buttons'
+    buttons: 'btn-group ctrl-buttons',
+    clickable: 'clickable'
 
-}
+};

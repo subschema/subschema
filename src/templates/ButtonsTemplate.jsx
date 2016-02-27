@@ -1,26 +1,26 @@
 "use strict";
 import React, {Component} from 'react';
 import {isString, extend} from '../tutils';
-import style from 'subschema-styles/ButtonsTemplate-style';
-import {styleToProps} from '../css';
 import PropTypes from '../PropTypes';
 
 export default class ButtonsTemplate extends Component {
-    static defaultProps = styleToProps(style, {
+    static defaultProps = {
         buttonTemplate: 'ButtonTemplate',
         buttons: [{
             action: 'submit',
             label: 'Submit',
-            template: 'Button'
+            template: 'Button',
+            primary: true
         }],
         onButtonClick (event, action, btn, value) {
 
         }
-    });
+    };
 
     static propTypes = {
         buttonTemplate: PropTypes.template,
-        buttonClass: PropTypes.cssClass
+        buttonClass: PropTypes.cssClass,
+        style: PropTypes.style
     };
 
     makeButtons(buttons) {
@@ -34,6 +34,9 @@ export default class ButtonsTemplate extends Component {
             } : extend({}, b, {onClick, template: buttonTemplate});
             if (this.props.buttonClass) {
                 btn.buttonClass = `${btn.buttonClass || ''} ${this.props.buttonClass || ''}`;
+            }
+            if (btn.primary) {
+                btn.buttonClass = `${btn.buttonClass} ${this.props.primaryClass}`;
             }
             return btn;
         });

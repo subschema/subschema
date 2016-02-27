@@ -4,37 +4,9 @@ import warning from './warning';
 
 const concat = Function.apply.bind(Array.prototype.concat, []);
 
-export default function loaderFactory(loaders) {
-    loaders = loaders || [];
-    var types = {load, list, add},
+export default function loaderFactory(loaders = []) {
+    const types = {load, list, add},
         api = {
-            /**
-             * @param template String - looks for a template named something.
-             */
-
-            addTemplate: add('Template'),
-            loadTemplate: load('Template'),
-            listTemplates: list('Template'),
-
-            addType: add('Type'),
-            loadType: load('Type'),
-            listTypes: list('Type'),
-
-            addSchema: add('Schema'),
-            loadSchema: load('Schema'),
-            listSchemas: list('Schema'),
-
-            addValidator: add('Validator'),
-            loadValidator: load('Validator'),
-            listValidators: list('Validator'),
-
-            addProcessor: add('Processor'),
-            loadProcessor: load('Processor'),
-            listProcessors: list('Processor'),
-
-            addOperator: add('Operator'),
-            loadOperator: load('Operator'),
-            listOperators: list('Operator'),
 
             addLoader(loader){
                 if (isArray(loader)) {
@@ -124,82 +96,18 @@ export default function loaderFactory(loaders) {
             return _api;
         }
     }
-
-    function initValidators(v) {
-        if (isString(v)) {
-            if (v[0] === '/' && v[v.length - 1] === '/') {
-                v = new RegExp(v);
-            } else {
-                var validator = this.loadValidator(v);
-                warning(validator, 'Validator was not found for "%s"', v);
-                return this.loadValidator(v)();
-            }
+    function loaderType(name, addF = add, loadF = load, listF = list) {
+        if (addF) {
+            this[`add${name}`] = addF(name);
         }
-        //If it is a RegExp than init ReExp
-        if (isRegExp(v)) {
-            return this.loadValidator('regexp')({
-                regexp: v
-            });
+        if (loadF) {
+            this[`load${name}`] = loadF(name);
         }
-
-        //If it has a type init it
-        if (v.type) {
-            var validator = this.loadValidator(v.type);
-            return validator(v);
+        if (listF) {
+            this[`list${name}s`] = listF(name);
         }
-
-        //If its a function just return it.
-        if (isFunction(v)) {
-            return v;
-        }
-        //otherwise lets try initing it.
-        return this.loadValidator(v)();
+        return this;
     }
-
-    function toLabelVal(v) {
-        if (isString(v)) {
-            return {
-                label: v,
-                val: v
-            }
-        }
-        return v;
-    }
-
-    api.loadByPropType = (function () {
-        var {operator, options, processor, schema, template,  type,  validator, validators} = PropTypes;
-        var properator = operator.isRequired,
-            proptions = options.isRequired,
-            prprocessor = processor.isRequired,
-            prschema = schema.isRequired,
-            prtemplate = template.isRequired,
-            prtype = type.isRequired,
-            prvalidator = validator.isRequired,
-            prvalidators = validators.isRequired;
-
-
-        return function loadByPropType(propType, value) {
-            var ret = null;
-
-            if (options === propType || proptions === propType) {
-                ret = toArray(value).map(toLabelVal);
-            } else if (template === propType || prtemplate === propType) {
-                ret = this.loadTemplate(value)
-            } else if (schema === propType || prschema === propType) {
-                ret = this.loadSchema(value);
-            } else if (type === propType || prtype === propType) {
-                ret = this.loadType(value);
-            } else if (processor === propType || prprocessor === propType) {
-                ret = this.loadProcessor(value);
-            } else if (operator === propType || properator === propType) {
-                ret = this.loadOperator(value);
-            } else if (validator === propType || prvalidator === propType) {
-                ret = initValidators.call(this, value);
-            } else if (validators === propType || prvalidators === propType) {
-                ret = toArray(value).map(initValidators, this);
-            }
-            return (ret == null) ? value : ret;
-        }
-    }());
+    ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style'].forEach(v => api::loaderType(v));
     return api;
 }

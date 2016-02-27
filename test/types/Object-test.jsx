@@ -8,7 +8,7 @@ const TextInput = types.Text;
 
 describe('types/ObjectType', function () {
 
-    var schema = {
+    const schema = {
         schema: {
             nested: {
                 "type": "Object",

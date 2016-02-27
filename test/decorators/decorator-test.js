@@ -7,12 +7,12 @@ const originalWarning = decorator.warning;
 describe('decorators.decorator', function () {
     beforeEach(function () {
         decorator.warning = originalWarning;
-    })
+    });
     it('should be able to detect a class decorator with a function', function () {
         var warning;
         decorator.warning = function (check, message) {
             warning = message;
-        }
+        };
         var newdecorator = decorator(function test(...help) {
             console.log('help', help);
 
@@ -23,7 +23,8 @@ describe('decorators.decorator', function () {
 
         var a = function () {
 
-        }
+        };
+
         @newdecorator(a)
         class Stuff {
 
@@ -90,7 +91,7 @@ describe('decorators.decorator', function () {
         var warning, parameters, invokers;
         decorator.warning = function (check, message) {
             warning = message;
-        }
+        };
         var newdecorator = decorator.property(function test(...help) {
             parameters = help;
 

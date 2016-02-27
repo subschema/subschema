@@ -1,7 +1,5 @@
 "use strict";
 import React, {Component} from 'react';
-import style from 'subschema-styles/EditorTemplate-style';
-import {forEditor} from '../css';
 import PropTypes from '../PropTypes';
 import Content from '../types/Content.jsx';
 
@@ -11,20 +9,20 @@ export default class EditorTemplate extends Component {
         title: PropTypes.title,
         name: PropTypes.string,
         help: PropTypes.node,
+        style: PropTypes.style,
         htmlFor: PropTypes.htmlFor
     };
 
 
-    static defaultProps = Object.keys(style).reduce(function (obj, key) {
-        obj[key + 'Class'] = style[key];
-        return obj;
-    }, {fieldClass: style.group,   errorClassName: style.hasError});
-
     render() {
-        var {name, htmlFor, title, help,labelClass, hasTitleClass,noTitleClass, errorClass, helpClass, error, errorClassName, message, fieldClass,  children} = this.props;
+        let {name, htmlFor, title, help,labelClass, hasTitleClass,noTitleClass, errorClass, helpClass, error, hasErrorClass, errorClassName, message, fieldClass,  children} = this.props;
+        if (hasErrorClass) {
+            errorClassName = hasErrorClass;
+        }
         if (!title) {
             title = ''
         }
+
         return (<div
             className={fieldClass+" " + (error != null ? errorClassName || '' : '')}>
             <Content content={title} type="label" className={labelClass} htmlFor={htmlFor}/>

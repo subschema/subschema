@@ -36,7 +36,7 @@ export function loadType(val, key, props, context) {
 
     const Type = context.loader.loadType(type);
 
-    const injectedClazz = context.injector.inject(Type, propTypes, rest);
+    const injectedClazz = context.injector.inject(Type, propTypes, rest.defaultProps);
 
     if ('template' in Type) {
         injectedClazz.template = Type.template;

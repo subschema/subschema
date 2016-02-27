@@ -111,7 +111,7 @@ describe('resolvers/field', function () {
             valueManager,
             loader:nloader,
             injector
-        }, true, PropTypes.contextTypes)
+        }, true, PropTypes.contextTypes);
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;

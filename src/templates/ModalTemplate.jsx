@@ -2,7 +2,7 @@
 import React, {Component, Children} from 'react';
 import Buttons from './ButtonsTemplate.jsx';
 import Content from '../types/Content.jsx'
-import styles from 'subschema-styles/ModalTemplate-style';
+//import styles from 'subschema-styles/ModalTemplate-style';
 import ValueManager from '../ValueManager';
 import PropTypes from '../PropTypes';
 import NewChildContext from '../components/NewChildContext.jsx';
@@ -11,6 +11,7 @@ import cloneDeep from 'lodash/lang/cloneDeep';
 export default class ModalTemplate extends Component {
 
     static propTypes = {
+        style: PropTypes.style,
         title: PropTypes.node,
         buttons: PropTypes.buttons,
         path: PropTypes.path,
@@ -88,22 +89,22 @@ export default class ModalTemplate extends Component {
 
     renderFooter(buttons) {
         if (!buttons) return null;
-        return <div className={styles.footer}>{this.renderButtons(buttons)}</div>
+        return <div className={this.props.footerClass}>{this.renderButtons(buttons)}</div>
     }
 
     render() {
-        var {title, buttons, path,value, children, ...rest} = this.props;
-        return <div className={`${styles.namespace} ${styles.overlay}`} style={{display:'block'}}>
-            <div className={styles.backdrop}></div>
-            <div className={styles.dialog} role="document" style={{zIndex:2000}}>
-                <div className={styles.content}>
-                    <div className={styles.header}>
-                        <button onClick={this.handleClose} className={styles.close} name={this.props.dismiss}
+        const {title, buttons, path,value,bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+        return <div className={`${namespaceClass} ${overlayClass}`} style={{display:'block'}}>
+            <div className={backdropClass}></div>
+            <div className={dialogClass} role="document" style={{zIndex:2000}}>
+                <div className={contentClass}>
+                    <div className={headerClass}>
+                        <button onClick={this.handleClose} className={closeClass} name={this.props.dismiss}
                                 value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         {title ? <Content type='h4'  {...rest} content={title}/> : null }
                     </div>
-                    <div className={styles.body}>
+                    <div className={bodyClass}>
                         {children}
                     </div>
                     {this.renderFooter(buttons)}

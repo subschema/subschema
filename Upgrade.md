@@ -1,3 +1,21 @@
+Subschema 0.6.0 -> 1.0 Upgrade
+
+##API Changes
+ * Listener decorators are gone.   They where a bad idea, and have been replaced with injection.
+ * Resolvers are new.   More on that later.
+ * Conditional, not sure what I was thinking with the original api/example but it was a bit insane. Has been
+   changed to just an configuration object. To match the condition, rather than object properties.
+ * You can call a eventables remove more than once.  You shouldn't but it should not break anything.
+ * Wizard - Buttons are passed as objects, rather than rendered.
+ * Editor has been replaced with Field, much much simpler.
+ * Nearly everything is injectable now.  Not just types but templates, content.
+ * Most css classes are replacing what not in addition to.   This makes things easier but will break some UI.  Just include
+   the original css class in with your additionally configured one to fix. 
+ * CSS class injection now ends in Class.  May need to fix some components but it should be buttonClass, modalClass, etc.   
+ 
+   
+
+
 Subschema 0.5.6 -> 0.6.0 Upgrade
 ##Dependencies
   * +react-dom

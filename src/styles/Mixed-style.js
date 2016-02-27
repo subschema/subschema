@@ -4,4 +4,4 @@ module.exports = {
     buttonsClass:'btn-group pull-right',
     buttonCancel: 'btn btn-default',
     buttonSave:'btn-primary btn'
-}
+};

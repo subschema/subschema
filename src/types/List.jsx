@@ -3,7 +3,6 @@
 import React from 'react';
 import {noop, isString} from '../tutils';
 import CollectionMixin from './CollectionMixin.jsx';
-import style from 'subschema-styles/List-style';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import _get from 'lodash/object/get';
 import map from 'lodash/collection/map';
@@ -15,11 +14,10 @@ export default class ListInput extends CollectionMixin {
     static inputClassName = CollectionMixin.inputClassName;
 
 
-    static propTypes = defaults({
+    static propTypes = {
+        ...CollectionMixin.propTypes,
         value: PropTypes.value
-    }, CollectionMixin.propTypes);
-
-    static defaultProps = defaults({}, CollectionMixin.defaultProps);
+    };
 
 
     unwrap(value) {

@@ -1,12 +1,12 @@
 "use strict";
 import React, {Component} from 'react';
 import Content from '../types/Content.jsx';
-import style from 'subschema-styles/CollectionCreateTemplate-style';
 import PropTypes from '../PropTypes';
 
 export default class CollectionCreateTemplate extends Component {
     static propType = {
-        title: PropTypes.content
+        title: PropTypes.node,
+        style: PropTypes.style
     };
 
     render() {
@@ -15,16 +15,13 @@ export default class CollectionCreateTemplate extends Component {
             title = {
                 type: 'h3',
                 content: title,
-                className: style.panelTitle
+                className: this.props.panelTitleClass
             }
         }
-        return (<div className={style.panel}>
-
-
-            <Content content={title} type='div' className={style.panelHeading}/>
-
-            <div className={style.panelBody}>
-                <div className={style.group}>
+        return (<div className={this.props.panelClass}>
+            <Content content={title} type='div' className={this.props.panelHeadingClass}/>
+            <div className={this.props.panelBodyClass}>
+                <div className={this.props.groupClass}>
                     {this.props.children}
                 </div>
             </div>

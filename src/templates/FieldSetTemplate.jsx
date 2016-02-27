@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from  '../PropTypes';
-import {FREEZE_OBJ, noop} from '../tutils';
+import {FREEZE_OBJ as field} from '../tutils';
 
 export default class FieldSetTemplate extends Component {
     static propTypes = {
@@ -11,15 +11,16 @@ export default class FieldSetTemplate extends Component {
         className: PropTypes.cssClass,
         field: PropTypes.any,
     };
+
     static defaultProps = {
-        field: FREEZE_OBJ
+        field
     };
 
     render() {
-        var {legend, buttons, className, ...rest} =  {...this.props.field, ...this.props};
+        const {legend, legendClass, buttons, className, ...rest} =  {...this.props.field, ...this.props};
         return legend ?
             <fieldset className={className}>
-                <legend>{legend}</legend>
+                <legend className={legendClass}>{legend}</legend>
                 {this.props.children}
                 {buttons}
             </fieldset> :

@@ -131,13 +131,13 @@ export default class WizardMixin extends Component {
 
             if (isLast) {
                 if (!isFirst) {
-                    buttons.push(previous);
+                    buttons.push({buttonClass: this.props.previousClass, ...previous});
                 }
-                buttons.push(last);
+                buttons.push({buttonClass: this.props.lastClass, primary:true, ...last});
             } else if (isFirst) {
-                buttons.push(next);
+                buttons.push({buttonClass: this.props.nextClass, primary:true, ...next});
             } else {
-                buttons.push(previous, next);
+                buttons.push({buttonClass: this.props.previousClass, ...previous}, {buttonClass: this.props.nextClass, primary:true,  ...next});
             }
 
         }

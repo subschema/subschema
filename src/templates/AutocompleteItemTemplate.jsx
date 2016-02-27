@@ -1,6 +1,5 @@
 "use strict";
 import React, {Component} from 'react';
-import style  from 'subschema-styles/AutocompleteItemTemplate-style';
 import PropTypes from '../PropTypes';
 
 export default class AutocompleteItemTemplate extends Component {
@@ -12,7 +11,8 @@ export default class AutocompleteItemTemplate extends Component {
     };
 
     static propTypes = {
-        onSelect: PropTypes.event
+        onSelect: PropTypes.event,
+        style: PropTypes.style
     };
 
 
@@ -22,10 +22,10 @@ export default class AutocompleteItemTemplate extends Component {
     };
 
     render() {
-        var {data, focus, value, processor} = this.props;
-        var cls = style.item + (focus ? style.focused : '');
-        var html = processor.format(data, value, true);
-        return html == null ? null :
-            <li ref="item" className={cls} onClick={this::this.handleClick} dangerouslySetInnerHTML={{__html: html}}/>
+        const {data, focus, itemClass, focusedClass, value, processor} = this.props;
+        const __html = processor.format(data, value, true);
+        return __html == null ? null :
+            <li ref="item" className={ `${itemClass}  ${focus ? focusedClass : ''}`} onClick={this::this.handleClick}
+                dangerouslySetInnerHTML={{__html}}/>
     }
 }

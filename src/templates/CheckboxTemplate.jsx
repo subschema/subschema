@@ -1,17 +1,19 @@
 "use strict"
-import React, {Component, PropTypes} from 'react';
-import Content from '../types/Content.jsx';
-import style  from 'subschema-styles/CheckboxTemplate-style';
-
+import React, {Component} from 'react';
+import PropTypes from '../PropTypes';
 
 export default class CheckboxTemplate extends Component {
     static propTypes = {
-        label: PropTypes.node
+        label: PropTypes.node,
+        checkboxClass: PropTypes.style
+    };
+    static defaultProps = {
+        checkBoxClass: "CheckboxTemplate"
     };
 
     render() {
-        const {children, label} = this.props;
-        return (<div className={style.checkbox}>
+        const {children,checkBoxClass, label} = this.props;
+        return (<div className={checkBoxClass}>
             <label>
                 {children}
                 {label}

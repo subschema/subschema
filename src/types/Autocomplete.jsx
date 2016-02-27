@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import {noop, applyFuncs } from '../tutils';
 import Dom from '../Dom';
-import style from 'subschema-styles/Autocomplete-style';
 import PropTypes from '../PropTypes';
 import lifecycle from '../decorators/lifecycle';
 
@@ -21,10 +20,11 @@ export default class Autocomplete extends Component {
         itemTemplate: PropTypes.template,
         processor: PropTypes.processor,
         showing: PropTypes.content,
-        foundCls: PropTypes.cssClass,
-        notFoundCls: PropTypes.cssClass,
+        foundClass: PropTypes.cssClass,
+        notFoundClass: PropTypes.cssClass,
         options: PropTypes.options,
-        onInputChange: PropTypes.event
+        onInputChange: PropTypes.event,
+        style: PropTypes.style
     };
 
     static inputClassName = 'form-control';
@@ -32,20 +32,21 @@ export default class Autocomplete extends Component {
     static defaultProps = {
         country: 'US',
         locale: 'en_US',
-        foundCls: style.found,
-        notFoundCls: style.notFound,
         useshowing: true,
         minLength: 1,
         maxInputLength: 200,
         itemTemplate: 'AutocompleteItemTemplate',
         inputType: {
-            type: 'Text', propTypes: {value: PropTypes.any}
+            type: 'Text',
+            propTypes: {value: PropTypes.any},
+            defaultProps: {value: ''}
         },
         processor: 'OptionsProcessor',
         showing: 'Searching...',
         input: 'input',
         inputValue: 'input'
     };
+
     state = {suggestions: [], showing: false, focus: -1};
 
     componentWillMount() {
@@ -358,7 +359,7 @@ export default class Autocomplete extends Component {
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
         var CompleteItem = this.props.itemTemplate;
-        return <ul className={style.listGroup}>
+        return <ul className={this.props.listGroupClass}>
             {suggestions.map((item, i) => <CompleteItem
                 key={item.val}
                 focus={focus === i}
@@ -373,18 +374,18 @@ export default class Autocomplete extends Component {
 
     render() {
         const suggestions = this.state.suggestions || [];
-        const {foundCls,  inputType, input, notFoundCls} = this.props;
+        const {foundClass,  namespaceClass, inputType, id, input, notFoundClass} = this.props;
         // props.onChange = this::this.handleChange;
         const inputProps = {
             onPaste: this::this.handlePaste,
             onKeyDown: this::this.handleKeyUp,
             onBlur: this::this.handleBlur,
             onChange: this::this.handleChange,
-            value: this.state.input
+            value: this.state.input,
+            id
         };
         var Input = inputType;
-        return <div
-            className={style.namespace+' '+(suggestions.length > 0 ? foundCls : notFoundCls)}>
+        return <div className={`${namespaceClass} ${(suggestions.length > 0 ? foundClass : notFoundClass)}`}>
             <Input {...inputProps} ref="input"/>
             {this.renderSuggestions()}
         </div>

@@ -22,6 +22,7 @@ if (isDist) {
         {'react-addons-test-utils': 'React.addons.TestUtils'}
     ];
 } else {
+    files.unshift({pattern:'./test/with-bootstrap.js', included: true, served: true});
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');
 }
 

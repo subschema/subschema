@@ -1,10 +1,11 @@
 "use strict";
 
 import React, {Component} from 'react';
-import styles from 'subschema-styles/FormTemplate-style';
 import PropTypes from '../PropTypes';
 export default class FormTemplate extends Component {
+
     static propTypes = {
+        style: PropTypes.style,
         onSubmit: PropTypes.event,
         accept: PropTypes.string,
         acceptCharset: PropTypes.string,
@@ -16,18 +17,17 @@ export default class FormTemplate extends Component {
         name: PropTypes.string,
         novalidate: PropTypes.bool,
         target: PropTypes.string,
-        fieldAttrs: PropTypes.any,
-        buttons:PropTypes.any
+        fieldAttrs: PropTypes.any
     };
 
     static defaultProps = {
-        className: styles.formClass,
+        className: ''
     };
 
     render() {
-        var {children, name, fieldAttrs, enctype, className, action, method, onSubmit, ...props} = this.props;
+        var {children, name, fieldAttrs, enctype,formClass, className, action, method, onSubmit, ...props} = this.props;
         return (<form name={name} action={action} enctype={enctype} method={method} onSubmit={onSubmit}
-                      className={className} {...fieldAttrs}>
+                      className={className || formClass} {...fieldAttrs}>
             {children}
         </form>);
     }

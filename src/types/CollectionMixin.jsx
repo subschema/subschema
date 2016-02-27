@@ -7,7 +7,6 @@ import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tuti
 import UninjectedObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
-import style from 'subschema-styles/CollectionMixin-style';
 import defaults from 'lodash/object/defaults';
 
 function makeEditPid(path, pid) {
@@ -53,7 +52,8 @@ export default class CollectionMixin extends Component {
         buttons: PropTypes.buttons,
         addButton: PropTypes.button,
         listContainerClassName: PropTypes.cssClass,
-        ObjectType: PropTypes.injectClass
+        ObjectType: PropTypes.injectClass,
+
     };
 
     static defaultProps = {
@@ -61,6 +61,7 @@ export default class CollectionMixin extends Component {
         buttonTemplate: 'ButtonTemplate',
         itemTemplate: 'ListItemTemplate',
         contentTemplate: "ContentItemTemplate",
+        iconAdd:"btn-add",
         showKey: false,
         showAdd: false,
         itemType: {
@@ -256,7 +257,7 @@ export default class CollectionMixin extends Component {
         }
         const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
         const ButtonTemplate = this.props.buttonTemplate;
-        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={style.iconAdd}/>
+        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={this.props.iconAdd}/>
 
     }
 

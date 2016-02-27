@@ -76,6 +76,8 @@ const fieldAttrs = customPropType(object, 'fieldAttrs');
 
 const cssClass = customPropType(string, 'cssClass');
 
+const style = customPropType(object, 'style');
+
 const typeClass = customPropType(cssClass, 'typeClass');
 
 const templateClass = customPropType(cssClass, 'templateClass');
@@ -349,6 +351,7 @@ const api = {
     events,
     field,
     mixin,
+    style,
     contextTypes,
     processor,
     typeClass,
@@ -414,5 +417,6 @@ export default
     title,
     injectClass,
     typeClass,
+    style,
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });

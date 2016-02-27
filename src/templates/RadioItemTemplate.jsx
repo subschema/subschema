@@ -1,7 +1,6 @@
 "use strict";
 import React, {Component} from 'react';
 import Content from '../types/Content.jsx';
-import styles from 'subschema-styles/RadioItemTemplate-style';
 import PropTypes from '../PropTypes';
 
 export default class RadioItemTemplate extends Component {
@@ -11,7 +10,8 @@ export default class RadioItemTemplate extends Component {
         checked: PropTypes.bool,
         checkedClass: PropTypes.string,
         id: PropTypes.id,
-        Content: PropTypes.injectClass
+        Content: PropTypes.injectClass,
+        style: PropTypes.style
     };
 
     static defaultProps = {
@@ -19,11 +19,11 @@ export default class RadioItemTemplate extends Component {
     };
 
     render() {
-        let {label, labelHTML,children, checked, checkedClass, id} = this.props;
+        let {label,namespaceClass, labelHTML,children, checked, checkedClass, uncheckedClass, id} = this.props;
         label = labelHTML ? labelHTML : label;
         checkedClass = checkedClass || '';
         label = typeof label === 'string' ? [{children: true}, label] : label;
-        return (<div className={styles.namespace+' '+(checked ? checkedClass || styles.checked : styles.unchecked)}>
+        return (<div className={`${namespaceClass} ${checked ? checkedClass : uncheckedClass}`}>
             <Content type='label' content={label}>
                 {children}
             </Content>

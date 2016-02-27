@@ -4,6 +4,7 @@ import templates from './templates';
 import types from './types';
 import processors from './processors';
 import validators from './validators';
+import styles from './styles';
 
 const loader = loaderFactory();
 
@@ -16,7 +17,7 @@ loader.addType(Object.keys(types).reduce((ret, key)=> {
     ret[key] = types[key];
     return ret;
 }, {}));
-
+loader.addStyle(styles);
 loader.addValidator(validators);
 
 export default loader;

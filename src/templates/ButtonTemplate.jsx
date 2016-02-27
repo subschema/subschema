@@ -22,7 +22,8 @@ export default class Button extends Component {
     };
 
     handleClick = (e)=> {
-        this.props.onClick(e, this.props.action, this);
+        const {value, action, label} = this.props;
+        this.props.onClick(e, value || action || label, this);
     };
 
     render() {
