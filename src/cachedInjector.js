@@ -23,28 +23,34 @@ export default function cachedInject(injector) {
     }
 
     function inject(Clazz, extraPropTypes, extraProps, strictProps) {
+        if (Clazz == null) {
+            return Clazz;
+        }
+        //we need to generate the hash regardless of having a cache.
+        const hash = new HashBuilder(strictProps).addObject(extraPropTypes).addObject(extraProps).toString();
+        let cur;
+        //no cache so no point in checking it.
         if (cache == null) {
             cache = new WeakMap();
-        }
-        const hash = new HashBuilder(strictProps).addObject(extraPropTypes).addObject(extraProps).toString();
-        const cur = cache.get(Clazz);
-
-        if (cur) {
-            for (let klazz of cur) {
-                if (klazz && klazz.$hash === hash) {
-                    return klazz;
+            cur = [];
+            cache.set(Clazz, cur);
+        } else {
+            cur = cache.get(Clazz);
+            if (cur) {
+                for (let klazz of cur) {
+                    if (klazz && klazz.$hash === hash) {
+                        return klazz;
+                    }
                 }
+            } else {
+                cur = [];
+                cache.set(Clazz, cur);
             }
         }
 
         const injected = injector.inject(Clazz, extraPropTypes, extraProps, strictProps);
         injected.$hash = hash;
-
-        if (cur) {
-            cur.push(injected);
-        } else {
-            cache.set(Clazz, [injected]);
-        }
+        cur.push(injected);
         return injected;
     }
 
