@@ -13,7 +13,7 @@ import PropTypes from '../PropTypes';
  * @param postFix
  * @returns {*}
  */
-export function styleToProps(styles, props = {}, preFix='', postFix = "Class") {
+export function styleToProps(styles, props = {}, preFix = '', postFix = "Class") {
     return Object.keys(styles).reduce((ret, key) => {
         ret[`${preFix}${key}${postFix}`] = styles[key];
         return ret
@@ -41,6 +41,9 @@ export default function style(Clazz, key, propList, OrigClazz) {
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
         const {injected} = this;
         const Style = value == null || typeof value === 'string' ? loader.loadStyle(value || OrigClazz.name) : value;
+        if (Style == null) {
+            return Style;
+        }
         const obj = styleToProps(Style, {});
         Object.keys(obj).forEach((key)=> {
             if (key in props) {

@@ -15,8 +15,6 @@ export default class WizardProgressTemplate extends Component {
 
     getStyle(i) {
         const {fieldsets:{length}, index, doneClass, doingClass, todoClass} = this.props;
-//        const {length} = fieldsets;
-
         if (i < index || index == length) {
             return doneClass;
         }

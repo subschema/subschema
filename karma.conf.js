@@ -5,6 +5,7 @@ var webpack = require('webpack'),
     files = ['test/index.js'],
     lifecycle = process.env['npm_lifecycle_event'],
     isDist = /dist/.test(lifecycle);
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 if (isDist) {
     files.unshift(
@@ -22,7 +23,7 @@ if (isDist) {
         {'react-addons-test-utils': 'React.addons.TestUtils'}
     ];
 } else {
-  //  files.unshift({pattern:'./test/with-bootstrap.js', included: true, served: true});
+    files.unshift({pattern:'./test/with-bootstrap.js', included: true, served: true});
     demoCfg.resolve.alias.Subschema = join('src/index.jsx');
 }
 

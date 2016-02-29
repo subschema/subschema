@@ -1,7 +1,6 @@
 import React from 'react';
 import CollectionMixin from './CollectionMixin.jsx';
 import {isString} from '../tutils';
-import style from 'subschema-styles/Mixed-style';
 import _get from 'lodash/object/get';
 import defaults from 'lodash/object/defaults';
 import PropTypes from '../PropTypes';

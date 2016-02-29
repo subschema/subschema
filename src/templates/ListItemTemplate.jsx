@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {path, noop} from '../tutils';
 import Buttons from './ButtonsTemplate';
-import style from 'subschema-styles/ListItemTemplate-style';
 
 export default class ListItemTemplate extends Component {
     static defaultProps = {
@@ -17,10 +16,8 @@ export default class ListItemTemplate extends Component {
         canEdit: false,
         canDelete: false,
         last: false,
-        errors: null
-    };
-    static propTypes = {
-        pos: PropTypes.number
+        errors: null,
+        pos:0
     };
 
     handleMoveUp = (e)=> {

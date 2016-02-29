@@ -8,6 +8,7 @@ var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
 
 
 function config(filename, externals, extract) {
+    extract = true;
     console.log('building', filename);
     var loaders = [
         {
@@ -94,11 +95,11 @@ function config(filename, externals, extract) {
         var ExtractTextPlugin = require("extract-text-webpack-plugin");
         loaders.push({
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css?modules!' + AUTOPREFIXER_LOADER)
+                loader: ExtractTextPlugin.extract('style-loader', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!' + AUTOPREFIXER_LOADER)
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css?modules!less-loader!' + AUTOPREFIXER_LOADER)
+                loader: ExtractTextPlugin.extract('style-loader', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader!' + AUTOPREFIXER_LOADER)
             });
         plugins.unshift(new webpack.DefinePlugin({
                 "window": '{}'
@@ -108,11 +109,11 @@ function config(filename, externals, extract) {
     } else {
         loaders.push({
                 test: /\.css$/,
-                loader: 'style-loader!css-loader!' + AUTOPREFIXER_LOADER
+                loader: 'style-loader!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!' + AUTOPREFIXER_LOADER
             },
             {
                 test: /\.less$/,
-                loader: 'style!css!less-loader!' + AUTOPREFIXER_LOADER
+                loader: 'style!css!less?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!' + AUTOPREFIXER_LOADER
             });
         plugins.unshift(new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
     }

@@ -25,17 +25,21 @@ export default class WizardTemplate extends WizardMixin {
             },
             'next': {
                 label: 'Next',
-                action: 'next'
+                action: 'next',
+                primary:true
             },
             'last': {
                 label: 'Done',
-                action: 'submit'
+                action: 'submit',
+                primary:true
             }
         },
         onAction: function (pos, action, wizard) {
         },
         onNavChange(current, previous, wizard){
         },
+        transitionEnterTimeout:4500,
+        transitionLeaveTimeout:4500
         // ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
 
@@ -65,12 +69,38 @@ export default class WizardTemplate extends WizardMixin {
                       onClick={this.handleOnClick}/> : null;
     }
 
+    makeTransition(compState) {
+        /*        enter: PropTypes.string,
+         enterActive: PropTypes.string,
+         leave: PropTypes.string,
+         leaveActive: PropTypes.string,
+         appear: PropTypes.string,
+         appearActive: PropTypes.string    */
+        if (compState < this.state.prevState) {
+            return {
+                enter: this.props.switchBackEnterClass,
+                enterActive: this.props.switchBackActiveClass,
+                leave: this.props.switchBackLeaveClass,
+                leaveActive: this.props.switchBackLeaveActiveClass
+            }
+
+        } else {
+            return {
+                enter: this.props.switchEnterClass,
+                enterActive: this.props.switchEnterActiveClass,
+                leave: this.props.switchLeaveClass,
+                leaveActive: this.props.switchLeaveActiveClass
+            }
+
+        }
+    }
+
     render() {
         let {className, Template, template, fieldsets, fields, onButtonClick, children, schema, ...rest} = this.props;
         ({fieldsets, schema} = this.props.schema);
-        let compState = this.state.compState,
+        const compState = this.state.compState,
             current = fieldsets[compState],
-            transition = compState < this.state.prevState ? this.props.switchBackClass : this.props.switchClass;
+            transition = this.makeTransition(compState);
         const buttons = current.buttons ? current.buttons : this.createButtons(compState);
         const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], Template};
         return (
@@ -78,13 +108,17 @@ export default class WizardTemplate extends WizardMixin {
                  onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets)}
 
-                <EventCSSTransitionGroup ref="anim" transitionName={transition} transitionEnter={true}
-                                         transitionLeave={true}
-                                         className={this.props.transitionContainerClass} onEnter={this.handleEnter}
+                <EventCSSTransitionGroup ref="anim"
+                                         style={this.state.animating ? {overflow:'hidden'} : {}}
+                                         transitionName={transition}
+                                         transitionEnterTimeout={this.props.transitionEnterTimeout}
+                                         transitionLeaveTimeout={this.props.transitionLeaveTimeout}
+                                         className={`${this.state.animating ? this.props.componentStateClass : ''} ${this.props.transitionContainerClass}`} onEnter={this.handleEnter}
                                          onDidLeave={this.handleLeave}>
+
                     <ObjectType ref="form"
                         {...rest}
-                                className={this.props.componentStateClass+compState}
+                                className={`state-${compState}`}
                                 key={"form-"+compState}
                                 schema={currentSchema}
                                 onButtonClick={this::this.handleBtn}

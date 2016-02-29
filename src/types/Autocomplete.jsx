@@ -17,7 +17,7 @@ export default class Autocomplete extends Component {
         autoSelectSingle: PropTypes.bool,
         useshowing: PropTypes.bool,
         maxInputLength: PropTypes.number,
-        itemTemplate: PropTypes.template,
+        itemTemplate: PropTypes.injectClass,
         processor: PropTypes.processor,
         showing: PropTypes.content,
         foundClass: PropTypes.cssClass,
@@ -26,8 +26,6 @@ export default class Autocomplete extends Component {
         onInputChange: PropTypes.event,
         style: PropTypes.style
     };
-
-    static inputClassName = 'form-control';
 
     static defaultProps = {
         country: 'US',

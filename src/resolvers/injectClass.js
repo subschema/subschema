@@ -2,24 +2,31 @@ import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {isString} from '../tutils';
 
-function injectClass(value, key, props, context) {
-    if (value == null) return;
-    if (typeof value === 'function') {
-        return context.injector.inject(value);
+export function resolve(clz, loader) {
+    if (typeof clz === 'string') {
+        return loader.loadTemplate(clz);
     }
+    return clz;
+}
+
+export function injectClass(value, key, props, {injector,loader}) {
+    if (value == null) return;
     if (Array.isArray(value)) {
-        return context.injector.inject(...value);
+        const [clz, ...rest] = value;
+        return injector.inject(resolve(clz, loader), ...rest);
     }
     if (value.target) {
         const {target, propTypes, propValues, strict}  = value;
-        return context.injector.inject(target, propTypes, propValues, strict);
+        return injector.inject(resolve(target, loader), propTypes, propValues, strict);
     }
-    return value;
+    return injector.inject(resolve(value, loader));
+
 }
 
 export default function id(Clazz, key) {
 
     Clazz.contextTypes.injector = PropTypes.injector;
+    Clazz.contextTypes.loader = PropTypes.loader;
 
     Clazz::prop(key, injectClass);
 }

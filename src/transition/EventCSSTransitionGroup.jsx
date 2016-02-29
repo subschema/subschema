@@ -1,74 +1,188 @@
-/**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- * @providesModule EventCSSTransitionGroupChild
- */
-
 'use strict';
 
-var React = require("react");
+import React, {Component, Children, PropTypes, createElement} from 'react';
+import {findDOMNode} from 'react-dom';
+import {removeClass, addClass} from 'fbjs/lib/CSSCore';
+import ReactTransitionGroup from "react/lib/ReactTransitionGroup";
 
-var assign = React.__spread;
+const onlyChild = Children.only;
 
-var ReactTransitionGroup = React.createFactory(require('react/lib/ReactTransitionGroup'));
+// We don't remove the element from the DOM until we receive an animationend or
+// transitionend event. If the user screws up and forgets to add an animation
+// their node will be stuck in the DOM forever, so we detect if an animation
+// does not start and if it doesn't, we just call the end listener immediately.
+const TICK = 17;
 
-var EventCSSTransitionGroupChild = React.createFactory(
-    require("./EventCSSTransitionGroupChild.jsx")
-);
+function _clearTimeout(timeout) {
+    clearTimeout(timeout);
+}
 
-var EventCSSTransitionGroup = React.createClass({
-    displayName: 'EventCSSTransitionGroup',
+function _addClass(clz) {
+    addClass(this, clz);
+}
 
-    propTypes: {
-        transitionName: React.PropTypes.string.isRequired,
-        transitionAppear: React.PropTypes.bool,
-        transitionEnter: React.PropTypes.bool,
-        transitionLeave: React.PropTypes.bool,
-        onAppear: React.PropTypes.func,
-        onDidAppear: React.PropTypes.func,
-        onEnter: React.PropTypes.func,
-        onDidEnter: React.PropTypes.func,
-        onLeave: React.PropTypes.func,
-        onDidLeave: React.PropTypes.func
-    },
+class EventCSSTransitionGroupChild extends Component {
+
+    transition(animationType, finishCallback, userSpecifiedDelay) {
+        const node = findDOMNode(this);
+
+        if (!node) {
+            if (finishCallback) {
+                finishCallback();
+            }
+            return;
+        }
+        const name = this.props.transitionName;
+        const className = name[animationType] || name + '-' + animationType;
+        const activeClassName = name[animationType + 'Active'] || className + '-active';
+
+        var endListener = function (e) {
+            if (e && e.target !== node) {
+                return;
+            }
+
+            clearTimeout(timeout);
+
+            removeClass(node, className);
+            removeClass(node, activeClassName);
+
+            // Usually this optional callback is used for informing an owner of
+            // a leave animation and telling it to remove the child.
+            if (finishCallback) {
+                finishCallback();
+            }
+        };
+
+        addClass(node, className);
+
+        // Need to do this to actually trigger a transition.
+        this.queueClass(activeClassName);
+        // Clean-up the animation after the specified delay
+        const timeout = setTimeout(endListener, userSpecifiedDelay);
+        this.transitionTimeouts.push(timeout);
+    };
+
+    queueClass(className) {
+        this.classNameQueue.push(className);
+
+        if (!this.timeout) {
+            this.timeout = setTimeout(this.flushClassNameQueue, TICK);
+        }
+    }
+
+    flushClassNameQueue = ()=> {
+        if (this.mounted) {
+            this.classNameQueue.forEach(_addClass, findDOMNode(this));
+        }
+        this.classNameQueue.length = 0;
+        this.timeout = null;
+    };
+
+    componentWillMount() {
+        this.classNameQueue = [];
+        this.transitionTimeouts = [];
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+        this.transitionTimeouts.forEach(_clearTimeout);
+        this.mounted = false;
+    }
+
+    componentWillAppear(done) {
+        if (this.props.transitionAppearTimeout) {
+            this.props.onAppear && this.props.onAppear();
+            this.transition('appear', this.props.onDidAppear ? ()=> {
+                this.props.onDidAppear(done);
+            } : done, this.props.transitionAppearTimeout);
+        } else {
+            done();
+        }
+    }
+
+    componentWillEnter(done) {
+        if (this.props.transitionEnterTimeout) {
+            this.props.onEnter && this.props.onEnter();
+            this.transition('enter', this.props.onDidEnter ? ()=> {
+                this.props.onDidEnter(done);
+            } : done, this.props.transitionEnterTimeout);
+        } else {
+            done();
+        }
+    }
+
+    componentWillLeave(done) {
+        if (this.props.transitionLeaveTimeout) {
+            this.props.onLeave && this.props.onLeave();
+            this.transition('leave', this.props.onDidLeave ? ()=> {
+                this.props.onDidLeave(done);
+            } : done, this.props.transitionLeaveTimeout);
+        } else {
+            done();
+        }
+    }
+
+    render() {
+        return onlyChild(this.props.children);
+    }
+}
+function transitionProp(props, timeoutPropName, ...rest) {
+    if (typeof props.transitionName === 'string' && timeoutPropName === 'transitionAppearTimeout') {
+        if (!props[timeoutPropName]) {
+            return new Error(`${timeoutPropName}  was not supplied a timeout, this won't work if you only want enter, appear or leave, supply an object to tranistionName with those classes`)
+        }
+    }else {
+        const name = timeoutPropName.replace(/^transition(.*)Timeout$/, '$1');
+        if (props.transitionName[name] && !props[timeoutPropName]) {
+            return new Error(`${timeoutPropName}  was not supplied a timeout for "${name}", this won't work correctly`);
+        }
+    }
+    return PropTypes.number(props, timeoutPropName, ...rest);
+}
+
+export default class EventCSSTransitionGroup extends Component {
+
+    static propTypes = {
+        transitionName: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+            enter: PropTypes.string,
+            enterActive: PropTypes.string,
+            leave: PropTypes.string,
+            leaveActive: PropTypes.string,
+            appear: PropTypes.string,
+            appearActive: PropTypes.string
+        })]).isRequired,
+        //Timeouts enable the transition
+        transitionAppearTimeout: transitionProp,
+        transitionEnterTimeout: transitionProp,
+        transitionLeaveTimeout: transitionProp,
+
+        //Event before hooks
+        onAppear: PropTypes.func,
+        onEnter: PropTypes.func,
+        onLeave: PropTypes.func,
+        //Event done hooks
+        onDidAppear: PropTypes.func,
+        onDidEnter: PropTypes.func,
+        onDidLeave: PropTypes.func
+    };
 
 
-    _wrapChild: function (child) {
+
+    _wrapChild = (child)=> {
         // We need to provide this childFactory so that
         // ReactCSSTransitionGroupChild can receive updates to name, enter, and
         // leave while it is leaving.
-        return EventCSSTransitionGroupChild(
-            {
-                name: this.props.transitionName,
-                onAppear: this.props.onAppear,
-                onEnter: this.props.onEnter,
-                onLeave: this.props.onLeave,
+        return createElement(EventCSSTransitionGroupChild, this.props, child);
 
-                onDidAppear: this.props.onDidAppear,
-                onDidLeave: this.props.onDidLeave,
-                onDidEnter: this.props.onDidEnter,
+    };
 
-                enter:this.props.transitionEnter,
-                leave:this.props.transitionLeave,
-                appear:this.props.transitionAppear
-            },
-            child
-        );
-    },
-
-    render: function () {
-        return (
-            ReactTransitionGroup(
-                assign({}, this.props, {childFactory: this._wrapChild})
-            )
-        );
+    render() {
+        return <ReactTransitionGroup {...this.props} childFactory={this._wrapChild }/>;
     }
-});
-
-module.exports = EventCSSTransitionGroup;
+}

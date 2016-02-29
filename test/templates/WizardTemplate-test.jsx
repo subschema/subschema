@@ -100,7 +100,7 @@ describe('templates/WizardTemplate', function () {
 
 
     });
-    it('should render multiple wizards', function (done) {
+    it.only('should render multiple wizards', function (done) {
         const valueManager = ValueManager({
             //  c1: true
         });
@@ -153,7 +153,8 @@ describe('templates/WizardTemplate', function () {
         change(byComponent(tmpls[0], types.Text), 'hello t1');
         click(byTag(tmpls[0], 'button'));
         setTimeout(()=> {
-            change(byComponent(tmpls[0], types.Text), 'hello t2');
+            const texts = byComponents(tmpls[0], types.Text)
+            change(texts[0], 'hello t2');
 
             click(byTags(tmpls[0], 'button')[1]);
 

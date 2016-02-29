@@ -1,31 +1,34 @@
-.autocomplete{
+.namespace {
   position: relative;
 }
-.autocomplete.found {
-  .form-control {
+
+.found {
+
+  :global(.form-control) {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 
   }
-  .list-group {
+  .listGroup {
     position: absolute;
     top: 100%;
     left: 0;
     z-index: 1000;
     width: 100%;
+    padding-left: 0;
   }
-  .list-group-item:first-child {
+  :global(.list-group-item:first-child) {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     border-top: none;
   }
-  .list-group-item {
+  :global(.list-group-item) {
     cursor: pointer;
   }
-  .list-group-item:hover {
+  :global(.list-group-item:hover) {
     background-color: #eee;
   }
-  .focused {
+  :global(.focused) {
     background-color: #ddd;
   }
 

@@ -1,7 +1,15 @@
+"use strict";
+
 require('es6-promise').polyfill();
 var path = require('path');
 var webpack = require('webpack');
 var join = path.join.bind(path, __dirname);
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// multiple extract instances
+var extractCSS = new ExtractTextPlugin('subschema/src/styles/[name].css');
+var extractLESS = new ExtractTextPlugin('subschema/src/styles/[name].less');
+
 var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
     '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
     '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
@@ -43,12 +51,13 @@ module.exports = {
             // or any other compile-to-css language
             {
                 test: /\.css$/,
-                // loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
-                loader: 'style-loader!css-loader'
+                loader: extractCSS.extract('css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+//                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.less$/,
-                loaders: ['style','css','less']
+                loader: extractLESS.extract(['style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','less'])
+      //               loaders: ['style','css','less']
             },
             {
                 test:/\.json$/,
@@ -56,7 +65,6 @@ module.exports = {
             }
         ]
     },
-
     postcss: [
         require('autoprefixer'),
         require('postcss-color-rebeccapurple')
@@ -65,19 +73,13 @@ module.exports = {
         extensions:['','.jsx','.js'],
         alias: {
             'subschema': join('src/index.jsx'),
-            'Subschema': join('src'),
-            'subschema-styles':join('src/styles'),
-            'component-playground':join('node_modules/component-playground/src'),
-            'babel-core/browser':join('babel-standalone'),
-            'babel/polyfill':join('src/null.js')
+            'Subschema': join('src')
         }
     },
 
     plugins: [
-        new webpack.ProvidePlugin({
-            CodeMirror: "codemirror",
-            "window.CodeMirror": "codemirror"
-        }),
+        extractCSS,
+        extractLESS,
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),
