@@ -75,7 +75,6 @@ function config(filename, externals, extract) {
         resolve: {
             extensions: ['', '.js', '.jsx'],
             alias: {
-                'subschema-styles': path.join(__dirname, 'src/styles'),
                 'fbjs': path.join(__dirname, 'node_modules/fbjs')
             }
         },
@@ -95,11 +94,11 @@ function config(filename, externals, extract) {
         var ExtractTextPlugin = require("extract-text-webpack-plugin");
         loaders.push({
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!' + AUTOPREFIXER_LOADER)
+                loader: ExtractTextPlugin.extract('style-loader', 'css?modules!' + AUTOPREFIXER_LOADER)
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css!less-loader!' + AUTOPREFIXER_LOADER)
+                loader: ExtractTextPlugin.extract('style-loader', 'css?modules!less-loader!' + AUTOPREFIXER_LOADER)
             });
         plugins.unshift(new webpack.DefinePlugin({
                 "window": '{}'

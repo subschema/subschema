@@ -49,6 +49,7 @@ export default function cachedInject(injector) {
         }
 
         const injected = injector.inject(Clazz, extraPropTypes, extraProps, strictProps);
+        injected.displayName = `${injected.displayName}$${hash}`;
         injected.$hash = hash;
         cur.push(injected);
         return injected;

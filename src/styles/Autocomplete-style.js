@@ -1,4 +1,4 @@
-require('../styles/autocomplete.less');
+const AutocompleteStyle = require('./autocomplete.less');
 
 module.exports = {
     namespace: 'autocomplete',
