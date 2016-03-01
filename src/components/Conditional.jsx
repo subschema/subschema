@@ -1,7 +1,7 @@
 "use strict";
 import React, {Component, Children} from 'react';
 import PropTypes from './../PropTypes';
-import CSSTransitionGroup  from 'react-addons-css-transition-group';
+import CSSTransitionGroup from '../transition/ReactCSSReplaceTransition.jsx';
 import {FREEZE_OBJ} from '../tutils';
 
 export default class Conditional extends Component {
@@ -43,7 +43,7 @@ export default class Conditional extends Component {
          */
         falseTemplate: PropTypes.template,
         /**
-         * A string to use  a named animation,or a boolean.
+         * A string to use  a named transition,or a boolean.
          *
          * if a string that string will be the "name" to use to animate.
          * If an object is passed than it will passed as props to the transition group.
@@ -51,7 +51,7 @@ export default class Conditional extends Component {
          * If === false than no animation is used
          *
          */
-        animate: PropTypes.animation,
+        transition: PropTypes.transition,
         /**
          * How to compare the value to the matched value.
          * If ommitted and a value is given than === is used.
@@ -74,7 +74,7 @@ export default class Conditional extends Component {
 
     renderTemplate() {
         const Template = this.props.template;
-        let {value, listen, error, template, falseTemplate, dismiss, operator, animate,children, ...props} = this.props;
+        let {value, listen, error, template, falseTemplate, dismiss, operator, transition,children, ...props} = this.props;
         if (dismiss) {
             children = React.cloneElement(children, {dismiss});
         }
@@ -86,7 +86,7 @@ export default class Conditional extends Component {
     renderFalseTemplate() {
         const FalseTemplate = this.props.falseTemplate;
 
-        let {value, listen, error, template, falseTemplate, dismiss, operator, animate,children, ...props} = this.props;
+        let {value, listen, error, template, falseTemplate, dismiss, operator, transition,children, ...props} = this.props;
 
         return FalseTemplate ?
             <FalseTemplate key='false-conditional' {...props} >{children}</FalseTemplate> :
@@ -103,10 +103,10 @@ export default class Conditional extends Component {
 
 
     render() {
-        if (!this.props.animate) {
+        if (!this.props.transition) {
             return this.renderContent();
         }
-        return <CSSTransitionGroup {...this.props.animate}>
+        return <CSSTransitionGroup {...this.props.transition}>
             {this.renderContent()}
         </CSSTransitionGroup>
     }

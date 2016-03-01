@@ -51,11 +51,11 @@ export default class ObjectType extends Component {
 
         f = typeof f === 'string' ? f : f.name || f;
 
-        return <Field key={'key-' + f} path={_path(this.props.path, f)} field={field} fields={fields}/>
+        return <Field key={'key-' + f} path={_path(this.props.path, f)} transition={field.transition} field={field} fields={fields}/>
     }
 
     makeFieldset(f, i, schema, FieldSet, Field) {
-        return <FieldSet key={`fieldset-${i}`} {...f} field={f} legend={f.legend}
+        return <FieldSet key={`fieldset-${i}`} {...f} field={f}
                          onSubmit={this.handleSubmit}
                          onButtonClick={this.handleButtonClick}>
             {f.fields ? this.makeFields(f.fields, schema, Field) : this.makeFieldsets(f.fieldsets, schema, FieldSet, Field)}

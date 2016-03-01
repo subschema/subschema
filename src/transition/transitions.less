@@ -1,0 +1,74 @@
+@rollUp-timeout: 800ms;
+@slide-right-timeout: 500ms;
+@slide-left-timeout: 500ms;
+
+.rollUpLeave {
+  transform: translate(0, 0);
+  opacity: 1;
+  &.rollUpLeaveActive {
+    transform: translate(0,-100%);
+    opacity: 0;
+    transition: opacity @rollUp-timeout ease-in-out, transform @rollUp-timeout ease-in-out;
+  }
+}
+
+.rollUpEnter, .rollUpAppear {
+  transform: translate( 0, -100%);
+  opacity: 0;
+  &.rollUpEnterActive, &.rollUpAppearActive {
+    transform: translate(0, 0);
+    opacity: 1;
+    transition: opacity @rollUp-timeout ease-in-out, transform @rollUp-timeout ease-in-out;
+  }
+}
+
+.rollUpHeight {
+  transition: height @rollUp-timeout ease-in-out;
+}
+
+.slideRightLeave {
+  transition: transform @slide-right-timeout ease-in-out;
+  transform: translate(0, 0);
+}
+
+.slideRightLeaveActive {
+  transform: translate(100%, 0);
+}
+
+.slideRightEnter, .slideRightAppear {
+  transition: transform @slide-right-timeout ease-in-out;
+  transform: translate(-100%, 0);
+}
+
+.slideRightEnterActive, .slideRightAppearActive {
+  transform: translate(0, 0);
+}
+
+.slideRightHeight {
+  transition: height @slide-right-timeout ease-in-out;
+}
+
+//Backwards
+
+.slideLeftLeave {
+  transition: transform @slide-left-timeout ease-in-out;
+  transform: translate(0, 0);
+}
+
+.slideLeftLeaveActive {
+  transform: translate(-100%, 0);
+}
+
+.slideLeftEnter, .slideLeftAppear {
+  transition: transform @slide-left-timeout ease-in-out;
+  transform: translate(100%, 0);
+}
+
+.slideLeftEnterActive, .slideLeftAppearActive {
+  transform: translate(0, 0);
+}
+
+.slideLeftHeight {
+  transition: height @slide-left-timeout ease-in-out;
+}
+

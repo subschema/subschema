@@ -53,7 +53,7 @@ export default class CollectionMixin extends Component {
         addButton: PropTypes.button,
         listContainerClassName: PropTypes.cssClass,
         ObjectType: PropTypes.injectClass,
-
+        value: PropTypes.value
     };
 
     static defaultProps = {
@@ -61,7 +61,6 @@ export default class CollectionMixin extends Component {
         buttonTemplate: 'ButtonTemplate',
         itemTemplate: 'ListItemTemplate',
         contentTemplate: "ContentItemTemplate",
-        iconAdd:"btn-add",
         showKey: false,
         showAdd: false,
         itemType: {
@@ -257,7 +256,7 @@ export default class CollectionMixin extends Component {
         }
         const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
         const ButtonTemplate = this.props.buttonTemplate;
-        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={this.props.iconAdd}/>
+        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={this.props.iconAddClass}/>
 
     }
 

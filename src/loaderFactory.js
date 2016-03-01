@@ -108,6 +108,6 @@ export default function loaderFactory(loaders = []) {
         }
         return this;
     }
-    ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style'].forEach(v => api::loaderType(v));
+    ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'].forEach(v => api::loaderType(v));
     return api;
 }

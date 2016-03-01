@@ -131,6 +131,11 @@ const typeDescription = oneOfType([string, shape({
     type: string.isRequired
 })]);
 
+const _transitionTypes = oneOf(['appear', 'enter', 'leave']);
+const transition = oneOfType([PropTypes.string, shape({
+    transition: PropTypes.string,
+    on: _transitionTypes
+})]);
 
 /**
  * Signify this property can take an expression.  This
@@ -172,7 +177,7 @@ let contentShape = {
 
 let pContentShape = shape(contentShape);
 
-let contentType = oneOfType([pContentShape, string, bool, func,number, arrayOf(oneOfType([string,string, bool, number,func,  pContentShape]))]);
+let contentType = oneOfType([pContentShape, string, bool, func, number, arrayOf(oneOfType([string, string, bool, number, func, pContentShape]))]);
 
 contentShape.content = contentType;
 
@@ -305,6 +310,7 @@ const injectClass = oneOfType([
 ]);
 
 const api = {
+    transition,
     injectClass,
     animation,
     blurValidate,
@@ -418,5 +424,6 @@ export default
     injectClass,
     typeClass,
     style,
+    transition,
     string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
 });

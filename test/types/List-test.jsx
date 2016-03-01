@@ -1,11 +1,14 @@
 "use strict";
 
-import {React, byName, into,findNode, TestUtils,expect, byClass,Simulate, click, byTag, byTags, filterProp, byComponent, byComponents} from 'subschema-test-support';
+import {React, byName, into,findNode, TestUtils,expect, filterProp, byClass,Simulate, click, byTag, byTags,  byComponent, byComponents} from 'subschema-test-support';
 import {templates, Form} from 'Subschema';
 import Todos, {schema as Schema} from 'subschema-test-support/samples/Todos';
 
-const {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
+const {ButtonTemplate,ButtonsTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
+function controlBtn(task, action) {
+    return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
+}
 
 describe('types/List', function () {
     this.timeout(50000);
@@ -63,19 +66,20 @@ describe('types/List', function () {
         var addBtn = byClass(root, 'btn-add')[0];
         expect(addBtn).toExist();
 
-        var tasks = byComponents(root, ListItemTemplate);
+        var [first, second, last] = byComponents(root, ListItemTemplate);
+
+        expect(controlBtn(first, 'up')).toNotExist();
+        expect(controlBtn(first, 'down')).toExist();
+        expect(controlBtn(first, 'delete')).toExist();
 
 
-        expect(tasks[0].refs.buttons.refs.upBtn).toNotExist();
-        expect(tasks[0].refs.buttons.refs.deleteBtn).toExist();
-        expect(tasks[0].refs.buttons.refs.downBtn).toExist();
-        expect(tasks[1].refs.buttons.refs.upBtn).toExist();
-        expect(tasks[1].refs.buttons.refs.deleteBtn).toExist();
-        expect(tasks[1].refs.buttons.refs.downBtn).toExist();
+        expect(controlBtn(second, 'up')).toExist();
+        expect(controlBtn(second, 'down')).toExist();
+        expect(controlBtn(second, 'delete')).toExist();
 
-        expect(tasks[2].refs.buttons.refs.upBtn).toExist();
-        expect(tasks[2].refs.buttons.refs.deleteBtn).toExist();
-        expect(tasks[2].refs.buttons.refs.downBtn).toNotExist();
+        expect(controlBtn(last, 'up')).toExist();
+        expect(controlBtn(last, 'delete')).toExist();
+        expect(controlBtn(last, 'down')).toNotExist();
 
 
     });
@@ -137,18 +141,9 @@ describe('types/List', function () {
         var tasks = byComponents(root, ListItemTemplate);
         expect(tasks.length).toBe(3);
         tasks.forEach(function (task) {
-            task = task.refs.buttons.refs;
-            expect(task.upBtn).toNotExist();
-            expect(task.deleteBtn).toNotExist();
-            expect(task.downBtn).toNotExist();
-
-            expect(task.upBtn).toNotExist();
-            expect(task.deleteBtn).toNotExist();
-            expect(task.downBtn).toNotExist();
-
-            expect(task.upBtn).toNotExist();
-            expect(task.deleteBtn).toNotExist();
-            expect(task.downBtn).toNotExist();
+            expect(controlBtn(task, 'up')).toNotExist();
+            expect(controlBtn(task, 'down')).toNotExist();
+            expect(controlBtn(task, 'delete')).toNotExist();
         })
     });
 

@@ -35,11 +35,6 @@
   padding: 0 1.5rem;
 }
 
-@media (max-width: 650px) {
-  .todo span, .doing span, .done span {
-    display: none;
-  }
-}
 
 .todo em, .doing em, .done em {
   display: none;
@@ -47,15 +42,9 @@
   padding-left: 1rem;
 }
 
-@media (max-width: 650px) {
-  .todo em, .doing em, .done em {
-    display: inline;
-  }
-}
-
 
 .todo:after, .doing:after, .done:after {
-  content: "\00a0\00a0";
+ // content: "\00a0\00a0";
 }
 
 .todo:before, .doing:before, .done:before {
@@ -65,16 +54,24 @@
   left: 50%;
 }
 
-.todo:hover:before, .doing:hover:before, .done:hover:before {
+.doing:hover:before, .done:hover:before {
   color: #0FA0CE;
+}
+.todo:hover:before {
+  color: #203c31;
 }
 
 .todo:before {
-  content: "\039F";
-  color: silver;
-  background-color: white;
+  content: "\2022";
+  color: white;
+  background-color: silver;
+  border-color: white;
+  border-width: 1px;
   width: 1.2em;
-  line-height: 1.4em;
+  height: 1.2em;
+  border-width: 0px;
+  line-height: 1.2em;
+  border-radius: 1.2em;
 }
 
 .doing:before {

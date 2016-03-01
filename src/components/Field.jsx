@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
 import UninjectedConditional from './Conditional.jsx';
 import {FREEZE_ARR} from '../tutils';
+import ReactCSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
 
 export default class Field extends Component {
 
@@ -14,6 +15,7 @@ export default class Field extends Component {
     static propTypes = {
         path: PropTypes.path.isRequired,
         field: PropTypes.field,
+        transition: PropTypes.transition,
         Conditional: PropTypes.injectClass
     };
     static defaultProps = {
@@ -41,6 +43,11 @@ export default class Field extends Component {
     }
 
     render() {
+        if (this.props.transition) {
+            return (<ReactCSSReplaceTransition {...this.props.transition}>
+                {this.renderConditional(this.props.field.conditional)}
+            </ReactCSSReplaceTransition>);
+        }
         return this.renderConditional(this.props.field.conditional);
     }
 }

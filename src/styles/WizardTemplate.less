@@ -1,88 +1,58 @@
-/*
-require('./wizard.less');
-
-module.exports = {
-    namespace: 'wizard-container',
-    buttons: 'btn-group col-sm-12 ',
-    switchBack: 'wizardSwitchBack',
-    switch: 'wizardSwitch',
-    animating: 'overflow-hidden',
-    transitionContainer: 'slide-container',
-    componentState: 'compState w',
-    done: 'btn-primary',
-    next: 'btn-primary'
-}*/
-
-@wizard-transition-time:4.5s;
-
-.componentState {
-    overflow: hidden;
-}
-
-.switchEnter {
-    transform: translateX(100%);
-    max-height: 2000px;
-    &.switchEnterActive {
-        max-height:100%;
-        transform: translateX(0%);
-        transition: transform   @wizard-transition-time ease ;
-    }
-}
-
-.switchLeave {
-    transform: translateX(-100%);
-    &.switchLeaveActive {
-        transform: translateX(-200%);
-        transition: transform   @wizard-transition-time ease ;
-    }
-}
-
-.switchBackEnter {
-    transform:translateX(-100%);
-    &.switchBackEnterActive {
-        animation: moveToRight @wizard-transition-time ease-in-out both;
-    }
-}
-
-.switchBackLeave {
-    &.switchBackLeaveActive {
-        animation: moveToRight @wizard-transition-time ease-in-out both;
-    }
-}
-
-.overflowHidden {
-    overflow: hidden;
-}
+@wizard-transition-time: 500ms;
 
 .transitionContainer {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: top;
+  min-width: 100%;
+ // transition: height @wizard-transition-time ease-in;
+  form {
+    background-color: #fff;
     display: inline-block;
-    white-space: nowrap;
-    vertical-align: top;
     min-width: 100%;
-    transition: max-height   @wizard-transition-time ease ;
-    form {
-        background-color: #fff;
-        display: inline-block;
-        min-width: 100%;
-        white-space: normal;
-        vertical-align: top;
-    }
+    white-space: normal;
+    vertical-align: top;
+  }
 }
 
-@keyframes moveToLeft {
-    from {
-        transform: translateX(-0%);
-    }
-    to {
-        transform: translateX(-100%);
-    }
+.carouselSwapLeave {
+  transition: transform @wizard-transition-time ease-in-out;
+  transform: translate(0, 0);
 }
 
-@keyframes moveToRight {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
+.carouselSwapLeaveActive {
+  transform: translate(100%, 0);
+}
+
+.carouselSwapEnter {
+  transition: transform @wizard-transition-time ease-in-out;
+  transform: translate(-100%, 0);
+}
+
+.carouselSwapEnterActive {
+  transform: translate(0, 0);
+}
+
+//Backwards
+
+.carouselBackLeave {
+  transition: transform @wizard-transition-time ease-in-out;
+  transform: translate(0, 0);
+}
+
+.carouselBackLeaveActive {
+  transform: translate(-100%, 0);
+}
+
+.carouselBackEnter {
+  transition: transform @wizard-transition-time ease-in-out;
+  transform: translate(100%, 0);
+}
+
+.carouselBackEnterActive {
+  transform: translate(0, 0);
+}
+
+.carouselHeight {
+  transition: height @wizard-transition-time ease-in-out;
 }

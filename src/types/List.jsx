@@ -14,11 +14,6 @@ export default class ListInput extends CollectionMixin {
     static inputClassName = CollectionMixin.inputClassName;
 
 
-    static propTypes = {
-        ...CollectionMixin.propTypes,
-        value: PropTypes.value
-    };
-
 
     unwrap(value) {
         return map(value, 'value');

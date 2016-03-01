@@ -6,6 +6,8 @@ import ButtonsTemplate from './ButtonsTemplate.jsx';
 import EventCSSTransitionGroup from '../transition/EventCSSTransitionGroup.jsx';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
+import ReactCSSTransitionReplace from '../transition/ReactCSSReplaceTransition.jsx';
+
 
 function donner(done) {
     done();
@@ -26,20 +28,20 @@ export default class WizardTemplate extends WizardMixin {
             'next': {
                 label: 'Next',
                 action: 'next',
-                primary:true
+                primary: true
             },
             'last': {
                 label: 'Done',
                 action: 'submit',
-                primary:true
+                primary: true
             }
         },
         onAction: function (pos, action, wizard) {
         },
         onNavChange(current, previous, wizard){
         },
-        transitionEnterTimeout:4500,
-        transitionLeaveTimeout:4500
+        transitionForward: "slideRight",
+        transitionBackward: "slideLeft"
         // ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
 
@@ -47,6 +49,8 @@ export default class WizardTemplate extends WizardMixin {
         ...WizardMixin.propTypes,
         wizardProgressTemplate: PropTypes.template,
         Template: PropTypes.template,
+        transitionForward: PropTypes.transition,
+        transitionBackward: PropTypes.transition,
         style: PropTypes.style
     };
 
@@ -70,33 +74,15 @@ export default class WizardTemplate extends WizardMixin {
     }
 
     makeTransition(compState) {
-        /*        enter: PropTypes.string,
-         enterActive: PropTypes.string,
-         leave: PropTypes.string,
-         leaveActive: PropTypes.string,
-         appear: PropTypes.string,
-         appearActive: PropTypes.string    */
         if (compState < this.state.prevState) {
-            return {
-                enter: this.props.switchBackEnterClass,
-                enterActive: this.props.switchBackActiveClass,
-                leave: this.props.switchBackLeaveClass,
-                leaveActive: this.props.switchBackLeaveActiveClass
-            }
-
+            return this.props.transitionForward;
         } else {
-            return {
-                enter: this.props.switchEnterClass,
-                enterActive: this.props.switchEnterActiveClass,
-                leave: this.props.switchLeaveClass,
-                leaveActive: this.props.switchLeaveActiveClass
-            }
-
+            return this.props.transitionBackward;
         }
     }
 
     render() {
-        let {className, Template, template, fieldsets, fields, onButtonClick, children, schema, ...rest} = this.props;
+        let {className, Template, template, fieldsets, fields, onButtonClick,transitionLeaveTimeout,  transitionEnterTimeout, carouselHeightClass, children, schema, ...rest} = this.props;
         ({fieldsets, schema} = this.props.schema);
         const compState = this.state.compState,
             current = fieldsets[compState],
@@ -107,23 +93,15 @@ export default class WizardTemplate extends WizardMixin {
             <div className={`${this.props.namespaceClass} ${(this.state.animating ? this.props.animatingClass : '')}`}
                  onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets)}
+                <ReactCSSTransitionReplace {...transition}>
 
-                <EventCSSTransitionGroup ref="anim"
-                                         style={this.state.animating ? {overflow:'hidden'} : {}}
-                                         transitionName={transition}
-                                         transitionEnterTimeout={this.props.transitionEnterTimeout}
-                                         transitionLeaveTimeout={this.props.transitionLeaveTimeout}
-                                         className={`${this.state.animating ? this.props.componentStateClass : ''} ${this.props.transitionContainerClass}`} onEnter={this.handleEnter}
-                                         onDidLeave={this.handleLeave}>
-
-                    <ObjectType ref="form"
-                        {...rest}
-                                className={`state-${compState}`}
-                                key={"form-"+compState}
-                                schema={currentSchema}
-                                onButtonClick={this::this.handleBtn}
+                    <ObjectType {...rest}
+                        className={`state-${compState}`}
+                        key={"form-"+compState}
+                        schema={currentSchema}
+                        onButtonClick={this::this.handleBtn}
                     />
-                </EventCSSTransitionGroup>
+                </ReactCSSTransitionReplace>
             </div>
         );
     }
