@@ -3,7 +3,7 @@ import {React, into,TestUtils,expect,byTypes, click, select, byTag, byType, chan
 import Subschema, {Form, types, ValueManager, templates, loaderFactory, DefaultLoader} from 'Subschema';
 
 
-describe.only("public/MoreInfo", function () {
+describe("public/MoreInfo", function () {
     this.timeout(50000);
     it('should render', function () {
         const schema = {

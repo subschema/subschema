@@ -84,9 +84,11 @@ describe("resolvers/transition", function () {
             transitionEnterTimeout,
             transitionName:{
                 enter, enterActive, leave, leaveActive, appear, appearActive
-                }} =  transition.handleTransition({transition: 'slideLeft',
-            transitionAppearTimeout:timeout,
-            on: ['appear']}, 'stuff', {}, {loader});
+                }} =  transition.handleTransition({
+            transition: 'slideLeft',
+            transitionAppearTimeout: timeout,
+            on: ['appear']
+        }, 'stuff', {}, {loader});
 
         expect(enter).toNotExist('enter');
         expect(leave).toNotExist('leave');

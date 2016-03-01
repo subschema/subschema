@@ -1,4 +1,4 @@
-import {React, into,TestUtils,expect,byTypes, byTags,byComponents,byComponent,change, click, select, byId, Simulate}  from 'subschema-test-support';
+import {React, into,TestUtils,expect,byTypes, byClass, byTags,byComponents,byComponent,change, click, select, byId, Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
 var Questionaire = require('subschema-test-support/samples/Questionaire.js');
 
@@ -11,7 +11,7 @@ describe('public/Questionaire', function () {
         expect(form).toExist();
         let mixed = byComponent(form, types.Mixed);
         expect(byComponents(mixed, templates.ListItemTemplate).length).toBe(2);
-        let addBtn = byComponent(mixed, templates.ButtonTemplate);
+        let addBtn = byClass(mixed, 'btn-add')[0];
         click(addBtn);
         let createTemplate = byComponent(mixed, templates.CollectionCreateTemplate);
 
