@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import UninjectedConditional from './Conditional.jsx';
 import {FREEZE_ARR} from '../tutils';
 import ReactCSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
 
@@ -16,11 +15,9 @@ export default class Field extends Component {
         path: PropTypes.path.isRequired,
         field: PropTypes.field,
         transition: PropTypes.transition,
-        Conditional: PropTypes.injectClass
+        conditional: PropTypes.conditional
     };
-    static defaultProps = {
-        Conditional: UninjectedConditional
-    };
+
 
     renderField(field, propPath) {
         const {Template, Type,   path, ...rest} = field;
@@ -34,20 +31,24 @@ export default class Field extends Component {
     }
 
     renderConditional(conditional) {
-        const {Conditional, field, path} = this.props;
+        const {field, path} = this.props;
+
         if (!conditional) {
             return this.renderField(field, path);
         }
-        return <Conditional path={path} {...conditional}
+
+        const {Conditional, ...rest} = conditional;
+
+        return <Conditional path={path} {...rest}
                             field={field}>{this.renderField(field, conditional.path || path)}</Conditional>
     }
 
     render() {
         if (this.props.transition) {
             return (<ReactCSSReplaceTransition {...this.props.transition}>
-                {this.renderConditional(this.props.field.conditional)}
+                {this.renderConditional(this.props.conditional)}
             </ReactCSSReplaceTransition>);
         }
-        return this.renderConditional(this.props.field.conditional);
+        return this.renderConditional(this.props.conditional);
     }
 }

@@ -44,6 +44,10 @@ function propTypesToNames(props) {
     return ret;
 }
 
+const conditional = oneOfType([string, shape({
+    operator: oneOfType([string, func])
+})]);
+
 const domType = customPropType(node, 'domType');
 
 const fields = customPropType(arrayOf(string), 'fields');
@@ -261,16 +265,7 @@ const events = {
 };
 
 const field = customPropType(any, 'field');
-/*oneOfType([string, shape({
- type: any,
- template:any,
- title: string,
- name: string,
- placeholder: string,
- className: cssClass
- })]);*/
 
-const animation = PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.object]);
 const mixin = {
     events: events,
     field: extend({
@@ -310,9 +305,9 @@ const injectClass = oneOfType([
 ]);
 
 const api = {
+    conditional,
     transition,
     injectClass,
-    animation,
     blurValidate,
     changeValidate,
     promise,
@@ -370,7 +365,7 @@ export default
     propTypesToNames,
     propTypeToName,
     customPropType,
-    animation,
+    conditional,
     blurValidate,
     changeValidate,
     promise,

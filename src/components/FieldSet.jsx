@@ -1,6 +1,8 @@
 "use strict";
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
+import CSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
+import UninjectedConditional from './Conditional.jsx';
 
 /**
  * Manages the the fieldset.  It  uses FieldSetTemplate or similar, but now
@@ -15,6 +17,7 @@ export default class FieldSet extends Component {
                 field: PropTypes.field
             }))
         })),
+        conditional: PropTypes.conditional,
         buttons: PropTypes.any,
         onButtonClick: PropTypes.event,
         onSubmit: PropTypes.event,
@@ -22,6 +25,7 @@ export default class FieldSet extends Component {
         field: PropTypes.any,
         legend: PropTypes.any,
         template: PropTypes.template,
+        transition: PropTypes.transition,
         buttonsTemplate: PropTypes.template
     };
 
@@ -41,16 +45,33 @@ export default class FieldSet extends Component {
                 buttons
             };
         }
-        return <ButtonsTemplate onButtonClick={this.props.onButtonClick} onClick={this.props.onClick}  {...buttons}/>
+        return <ButtonsTemplate key="buttons" onButtonClick={this.props.onButtonClick}
+                                onClick={this.props.onClick}  {...buttons}/>
     }
 
-    render() {
+    renderFieldSet(key) {
 
         const {template,children, buttons, field, ...rest}  = this.props;
         const FieldSetTemplate = template;
-        return <FieldSetTemplate  {...rest} {...field} buttons={this.renderButtons(buttons)}>
+        return <FieldSetTemplate key={key}  {...rest} {...field} buttons={this.renderButtons(buttons)}>
             {children}
         </FieldSetTemplate>
+
+    }
+
+    render() {
+        if (this.props.transition) {
+            return (<CSSReplaceTransition {...this.props.transition}>
+                {this.renderFieldSet('transition')}
+            </CSSReplaceTransition>);
+        }
+        if (this.props.conditional) {
+            const {Conditional, ...rest} = this.props.conditional;
+            return (<Conditional {...rest}>
+                {this.renderFieldSet('conditional')}
+            </Conditional>);
+        }
+        return this.renderFieldSet();
     }
 
 }

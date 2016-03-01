@@ -51,7 +51,7 @@ export default class ObjectType extends Component {
 
         f = typeof f === 'string' ? f : f.name || f;
 
-        return <Field key={'key-' + f} path={_path(this.props.path, f)} transition={field.transition} field={field} fields={fields}/>
+        return <Field key={'key-' + f} path={_path(this.props.path, f)} conditional={field.conditional} transition={field.transition} field={field} fields={fields}/>
     }
 
     makeFieldset(f, i, schema, FieldSet, Field) {
