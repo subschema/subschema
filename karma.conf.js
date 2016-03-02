@@ -1,34 +1,31 @@
 var webpack = require('webpack'),
     path = require('path'),
     join = path.join.bind(path, __dirname),
-    demoCfg = require('./demo.webpack.config.js'),
     files = ['test/index.js'],
     lifecycle = process.env['npm_lifecycle_event'],
-    isDist = /dist/.test(lifecycle);
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+    config = require('./internal.webpack.config'),
 
+    isDist = /dist/.test(lifecycle);
+var demoCfg;
 if (isDist) {
+    demoCfg = config('karma-dist', [
+        {subschema: 'Subschema'},
+        {Subschema: 'Subschema'},
+        {react: 'React'},
+        {'react-dom': 'ReactDOM'},
+        {'react-addons-test-utils': 'React.addons.TestUtils'}
+    ], false);
+
     files.unshift(
         'node_modules/react/dist/react-with-addons.js',
         'node_modules/react-dom/dist/react-dom.js',
         {pattern: 'dist/subschema-noreact.js', included: true, served: true},
         {pattern: 'dist/subschema-noreact.js.map', included: false, served: true}
     );
-    demoCfg.resolve.alias = {};
-    demoCfg.externals = [
-        {subschema: 'Subschema'},
-        {Subschema: 'Subschema'},
-        {react: 'React'},
-        {'react-dom': 'ReactDOM'},
-        {'react-addons-test-utils': 'React.addons.TestUtils'}
-    ];
 } else {
-    files.unshift({pattern:'./test/with-bootstrap.js', included: true, served: true});
-    demoCfg.resolve.alias.Subschema = join('src/index.jsx');
+    demoCfg = config('karma');
+    files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
 }
-
-demoCfg.devServer.hot = false;
-demoCfg.devServer.inline = false;
 
 delete demoCfg.entry;
 
@@ -39,6 +36,10 @@ demoCfg.module.loaders.unshift({
     include: join("node_modules/subschema-test-support/samples"),
     loader: 'subschema-test-support'
 });
+demoCfg.resolve.alias = {
+        'subschema': join('src/index.jsx'),
+        'Subschema': join('src/index.jsx')
+};
 
 module.exports = function (config) {
     config.set({

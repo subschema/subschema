@@ -8,4 +8,4 @@ module.exports = {
     header:'modal-header',
     footer:"modal-footer",
     overlay:''
-}
+};

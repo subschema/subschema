@@ -17,14 +17,15 @@ export default class Autocomplete extends Component {
         autoSelectSingle: PropTypes.bool,
         useshowing: PropTypes.bool,
         maxInputLength: PropTypes.number,
-        itemTemplate: PropTypes.injectClass,
+        itemTemplate: PropTypes.template,
         processor: PropTypes.processor,
         showing: PropTypes.content,
         foundClass: PropTypes.cssClass,
         notFoundClass: PropTypes.cssClass,
         options: PropTypes.options,
         onInputChange: PropTypes.event,
-        style: PropTypes.style
+        style: PropTypes.style,
+
     };
 
     static defaultProps = {
@@ -33,7 +34,7 @@ export default class Autocomplete extends Component {
         useshowing: true,
         minLength: 1,
         maxInputLength: 200,
-        itemTemplate: 'AutocompleteItemTemplate',
+        itemTemplate: "AutocompleteItemTemplate",
         inputType: {
             type: 'Text',
             propTypes: {value: PropTypes.any},

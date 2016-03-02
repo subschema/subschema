@@ -1,7 +1,5 @@
 "use strict";
 
-import {extendPrototype} from 'subschema-injection/src/util';
-
 /**
  * Convert the dataType property to the type property.  Only
  * useful for making schema conversions easier, and avoid conflicts with
@@ -18,11 +16,11 @@ export default function dataType(Clazz, key, propTypeKeys) {
     propTypeKeys.splice(propTypeKeys.indexOf(key), 1, 'type');
 
 
-    extendPrototype(Clazz, 'componentWillMount', function dataType$willMount() {
+    Clazz::this.extendPrototype('componentWillMount', function dataType$willMount() {
         this.injected.type = this.props[key];
     });
 
-    extendPrototype(Clazz, 'componentWillReceiveProps', function dataType$willRecieveProps(newProps) {
+    Clazz::this.extendPrototype('componentWillReceiveProps', function dataType$willRecieveProps(newProps) {
         if (this.props[key] !== newProps[key]) {
             this.injected.type = this.props[key];
         }

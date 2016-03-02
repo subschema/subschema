@@ -4,27 +4,19 @@ require('es6-promise').polyfill();
 var path = require('path');
 var webpack = require('webpack');
 var join = path.join.bind(path, __dirname);
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// multiple extract instances
-var extractCSS = new ExtractTextPlugin('subschema/src/styles/[name].css');
-var extractLESS = new ExtractTextPlugin('subschema/src/styles/[name].less');
-
-var AUTOPREFIXER_LOADER = 'autoprefixer-loader?{browsers:[' +
-    '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
-    '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
 module.exports = {
     devServer: {
         noInfo: true,
         hot: true,
         inline: true,
-        contentBase: join('public'),
+        contentBase: join('src'),
         publicPath: '/',
         port: 8084
     },
     devtool: '#inline-source-map',
     entry: {
-        app: './public/app.jsx'
+        app: './src/index.jsx'
     },
 	output:{
         path:join('.build'),
@@ -51,12 +43,12 @@ module.exports = {
             // or any other compile-to-css language
             {
                 test: /\.css$/,
-                loader: extractCSS.extract('css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+                loader: extractCSS.extract(['style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'])
 //                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.less$/,
-                loader: extractLESS.extract(['style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','less'])
+                loader: extractCSS.extract(['style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','less'])
       //               loaders: ['style','css','less']
             },
             {
@@ -79,7 +71,6 @@ module.exports = {
 
     plugins: [
         extractCSS,
-        extractLESS,
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),

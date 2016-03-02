@@ -1,10 +1,9 @@
 "use strict";
 
-import injectorFactory from 'subschema-injection/src/injectorFactory';
+import injector from 'subschema-injection';
 import PropTypes from './PropTypes';
 import resolvers from './resolvers';
 import cached from './cachedInjector';
-const injector = injectorFactory();
 
 Object.keys(resolvers).forEach((r)=> {
     if (r in PropTypes) {

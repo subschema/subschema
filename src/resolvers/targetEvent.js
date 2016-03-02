@@ -16,6 +16,6 @@ export default function targetEvent(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::prop(key, resolve)
+    Clazz::this.property(key, resolve)
 
 }

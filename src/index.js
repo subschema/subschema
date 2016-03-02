@@ -18,6 +18,9 @@ import Constants from './Constants';
 import transitions from './transition/EventCSSTransitionGroup.jsx';
 import loader from './loader';
 import injector from './injector';
+import {injectorFactory} from 'subschema-injection';
+import cachedInjector from './cachedInjector';
+
 export {
     Conditional,
     Editor,
@@ -36,7 +39,9 @@ export {
     tutils,
     validators,
     warning,
-    transitions
+    transitions,
+    injectorFactory,
+    cachedInjector
 };
 export default {
     Conditional,
@@ -56,5 +61,7 @@ export default {
     tutils,
     validators,
     warning,
-    transitions
+    transitions,
+    injectorFactory,
+    cachedInjector
 }

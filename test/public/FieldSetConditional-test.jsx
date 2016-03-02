@@ -11,7 +11,7 @@ describe("public/FieldSetConditional", function () {
                 phoneOrEmail: {
                     type: 'Radio',
                     title: false,
-                    options: [{label: "Phone", val: "phone"}, {label: "Email", val: "email"}]
+                    options: [{label: "Phone", val: "phone"}, {label: "Email", val: "email"}],
                 },
                 "phone": {
                     "type": "Text"
@@ -31,10 +31,8 @@ describe("public/FieldSetConditional", function () {
                         listen: "phoneOrEmail",
                         operator: "==",
                         value: "phone",
-                        transition: {
-                            transition: "rollUp",
-                            on: ["appear", "enter", "leave"]
-                        }
+                        transition: "rollUp"
+
                     }
                 },
                 {

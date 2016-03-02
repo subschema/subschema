@@ -1,11 +1,8 @@
-@wizard-transition-time: 500ms;
-
 .transitionContainer {
   display: inline-block;
   white-space: nowrap;
   vertical-align: top;
   min-width: 100%;
- // transition: height @wizard-transition-time ease-in;
   form {
     background-color: #fff;
     display: inline-block;
@@ -13,46 +10,4 @@
     white-space: normal;
     vertical-align: top;
   }
-}
-
-.carouselSwapLeave {
-  transition: transform @wizard-transition-time ease-in-out;
-  transform: translate(0, 0);
-}
-
-.carouselSwapLeaveActive {
-  transform: translate(100%, 0);
-}
-
-.carouselSwapEnter {
-  transition: transform @wizard-transition-time ease-in-out;
-  transform: translate(-100%, 0);
-}
-
-.carouselSwapEnterActive {
-  transform: translate(0, 0);
-}
-
-//Backwards
-
-.carouselBackLeave {
-  transition: transform @wizard-transition-time ease-in-out;
-  transform: translate(0, 0);
-}
-
-.carouselBackLeaveActive {
-  transform: translate(-100%, 0);
-}
-
-.carouselBackEnter {
-  transition: transform @wizard-transition-time ease-in-out;
-  transform: translate(100%, 0);
-}
-
-.carouselBackEnterActive {
-  transform: translate(0, 0);
-}
-
-.carouselHeight {
-  transition: height @wizard-transition-time ease-in-out;
 }

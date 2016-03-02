@@ -71,7 +71,7 @@
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
     "style-loader": "^0.13.0",
-    "subschema-injection": "file:///Users/juspears/WebstormProjects/subschema-injection",
+    "subschema-injection": "^1.0.6",
     "subschema-project": "^0.1.5",
     "subschema-test-support": "^1.0.1",
     "supports-color": "^3.1.2",

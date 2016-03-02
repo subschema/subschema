@@ -1,6 +1,4 @@
 "use strict";
-
-import {prop} from 'subschema-injection/src/util';
 import {toArray} from '../tutils';
 
 function toOptions(nval) {
@@ -25,5 +23,5 @@ function asOptions(val) {
     return toArray(val).map(toOptions);
 }
 export default function options(Clazz, key) {
-    Clazz::prop(key, asOptions);
+    Clazz::this.property(key, asOptions);
 }
