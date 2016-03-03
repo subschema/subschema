@@ -1,6 +1,5 @@
 "use strict";
 import React from 'react';
-import {extend, prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {FREEZE_OBJ} from '../tutils';
 import {loadTemplate} from './template';
@@ -40,7 +39,7 @@ export default function field(Clazz, key, propList) {
     Clazz.contextTypes.injector = PropTypes.injector;
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::prop(key, function field$prop(value, key, props, context, OrigClazz) {
+    Clazz::this.property(key, function field$prop(value, key, props, context, OrigClazz) {
 
             if (value == null) {
                 var {...copy} = settings;
@@ -63,18 +62,18 @@ export default function field(Clazz, key, propList) {
             if (value.template === false){
                 Template = null;
             }else if (value.template){
-                const lookup = {...spreadable(settings.template), ...spreadable(value.template)};
+                const lookup = {...spreadable(settings.template), ...spreadable(Type.template), ...spreadable(value.template)};
                 Template = loadTemplate(lookup, key, props, context);
             }else if ('template' in Type) {
                 //template is false with no override.
                 if (Type.template === false) {
                     Template = null;
                 }else {
-                    const lookup = {...spreadable(settings.template), ...spreadable(value.template), ...spreadable(Type.template)};
+                    const lookup = {...spreadable(settings.template), ...spreadable(Type.template)};
                     Template = loadTemplate(lookup, key, props, context);
                 }
             } else {
-                Template = loadTemplate({template:settings.template}, key, props, context);
+                Template = loadTemplate(settings.template, key, props, context);
             }
 
             return {

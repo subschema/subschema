@@ -1,14 +1,17 @@
 import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, ValueManager, loaderFactory, DefaultLoader} from 'Subschema';
+import {newSubschemaContext, types} from 'Subschema';
 import CarMakeSetup from 'subschema-test-support/samples/CarMake-setup.js';
 import CarMake from 'subschema-test-support/samples/CarMake.js';
 const Select = types.Select;
 
 describe('public/CarMake', function () {
     it('should not be selectable', function () {
+        const SubSchema = newSubschemaContext();
+        const {Form, loader, ValueManager} = SubSchema;
+
         var schema = CarMake.schema;
         //loader, schema, Subschema, React
-        var loader = loaderFactory([DefaultLoader]);
+
         expect(CarMake).toExist('CarMake-setup should load');
         var valueManager = ValueManager();
         CarMakeSetup(loader, schema, Subschema, React, valueManager);

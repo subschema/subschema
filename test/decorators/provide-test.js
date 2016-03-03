@@ -1,30 +1,30 @@
+"use strict";
+
 import React, {Component} from 'react';
-import { loaderFactory, decorators, loader as origLoader} from 'Subschema';
+import {newSubschemaContext} from 'Subschema';
 import expect from 'expect';
 
-const provide = decorators.provide;
-
 describe('decorators.provide', function () {
-    let loader;
-    beforeEach(function () {
-        loader = provide.defaultLoader = loaderFactory();
-    });
-    afterEach(function(){
-        loader = origLoader;
-    });
-
+    this.timeout(500000);
     class TestClass extends Component {
 
     }
+    var loader, provide, decorators;
+    beforeEach(function () {
+        var ctx = newSubschemaContext([]);
+        provide = ctx.decorators.provide;
+        loader = ctx.loader;
+    });
 
-    ['type',  'validator', 'template', 'processor', 'operator' ].forEach(function (test) {
-        const decorator = provide[test];
-        it(`${test} should exist`, function(){
-           expect(decorator).toExist(`${test} did not exist on ${provide}`);
+    for (let test  of ['type', 'validator', 'template', 'processor', 'operator']) {
+        it(`${test} should exist`, function () {
+            const decorator = provide[test];
+            expect(decorator).toExist(`${test} did not exist on ${provide}`);
         });
 
         const Postfix = test.substring(0, 1).toUpperCase() + test.substring(1), method = 'load' + Postfix;
         it(`should add ${test}`, function () {
+            const decorator = provide[test];
 
             @decorator
             class NewType extends Component {
@@ -36,6 +36,7 @@ describe('decorators.provide', function () {
 
         });
         it(`should add ${test} with custom name `, function () {
+            const decorator = provide[test];
 
             @decorator("Something")
             class NewNewType extends Component {
@@ -46,6 +47,7 @@ describe('decorators.provide', function () {
         });
 
         it(`should allow for a ${test} factory`, function () {
+            const decorator = provide[test];
 
             class TypeFactory {
 
@@ -71,5 +73,5 @@ describe('decorators.provide', function () {
             expect(list[0].name).toBe('whatever');
 
         });
-    });
+    }
 });

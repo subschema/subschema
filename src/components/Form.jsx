@@ -7,8 +7,6 @@ import ObjectType from './../types/Object.jsx';
 import _set from 'lodash/object/set';
 import {noop} from './../tutils';
 import warning from '../warning';
-import loader from '../loader';
-import injector from '../injector';
 
 export default class Form extends Component {
     static  childContextTypes = PropTypes.contextTypes;
@@ -40,8 +38,8 @@ export default class Form extends Component {
 
     constructor(props, context, whatever) {
         super(props, context, whatever);
-        this.loader = props.loader || loader;
-        this.injector = props.injector || injector;
+        this.loader = props.loader;
+        this.injector = props.injector;
         if (!props.valueManager) {
             this.valueManager = ValueManager(this.props.value, this.props.errors);
         } else {

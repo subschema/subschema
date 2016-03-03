@@ -35,13 +35,13 @@ var externs = {
 
 
 var configs = [
-    config('subschema.js', null, false),
+    config('subschema.js', null, false, true),
 
     config('subschema-noreact.js',
-        [externs], false
+        [externs], false, true
     ),
     config('subschema-server.js',
-        [externs], true
+        [externs], true, true
     )
 ];
 module.exports = configs;

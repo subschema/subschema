@@ -37,28 +37,9 @@ export default class Content extends Component {
     static Types = DOM || {};
 
     renderChildren(props, children) {
-        if (!(children && props.children)) {
-            return null;
-        }
-        if (!(children && props.children)) {
-            return null;
-        }
-        if (props.children === true) {
+        if (children && props.children) {
             return children;
         }
-        var toChildren;
-        if (isString(props.children) || isArray(props.children)) {
-            toChildren = toArray(props.children);
-        } else if (isObject(props.children)) {
-            toChildren = Object.keys(props.children).filter((v)=> v === true);
-        }
-        if (!toChildren) {
-            return null;
-        }
-        return toChildren.map((v)=> {
-            return children[v];
-        });
-
     }
 
     renderChild(content, props, prefix, children) {
@@ -73,7 +54,7 @@ export default class Content extends Component {
 
         if (isArray(content)) {
             //TODO - check if we need to flatten this.
-            return map(content, (c, key)=> {
+            return  content.map((c, key)=> {
                 //prevent children from being wrapped.
                 if (c.children === true) {
                     return children;
@@ -105,26 +86,72 @@ export default class Content extends Component {
     }
 
     render() {
-        var {type, content, children, field, context, ...props} = this.props, Ctype;
+        let {type, content, children, field, context, ...props} = this.props;
         if (field && field.content) {
             content = field.content;
         }
         if (content == null || content === false) {
             return null;
         }
+        /**
+         * a field could be described like
+         *
+         * {
+         *   type:'Content',
+         *   content:'Hello {name}'
+         * }
+         * and content type would be Content so... there.
+         */
         if (type === Content.displayName) {
             //The real type when type == 'Content' not a great solution and will break if someone renames content.
             // if they do they will need to change the display name;
             props.type = type = Content.defaultProps.type;
         }
-
+        /**
+         * This is the case
+         * {
+         *   type:'Content',
+         *   content:{
+         *     className:'stuff',
+         *     type:'div',
+         *     content:[{//array or object of content}]
+         *   }
+         * }
+         *
+         */
         if (content.content) {
             var {...rest} = content;
             delete rest.content;
             children = this.renderChild(content.content, rest, 'dom', children)
-        } else if (isString(content)) {
+        } else
+
+        /**
+         * Case where content is a string.
+         * {
+         *   content:'hello world'.
+         * }
+         */
+        if (isString(content)) {
             props.type = type;
             return this.renderChild(content, props, 'str-c');
+
+            /**
+             * Case where content is an array maybe mixed.
+             *
+             * {
+             *   content:[{
+             *      content:'What',
+             *      className:'stuff'
+             *   },
+             *   'Hello',
+             *   ['more', {content:'stuff'}],
+             *   {
+             *    children:true
+             *   }
+              *  ]
+             * }
+             *
+             */
         } else if (isArray(content)) {
             props.type = type;
             children = this.renderChild(content, props, 'arr', children);
@@ -137,7 +164,7 @@ export default class Content extends Component {
             return React.createElement(type, props, children);
         }
 
-        Ctype = this.context.loader.loadType(type);
+        let Ctype = this.context.loader.loadType(type);
 
         return <Ctype {...props} >
             {children}

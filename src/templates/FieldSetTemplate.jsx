@@ -10,6 +10,7 @@ export default class FieldSetTemplate extends Component {
         legend: PropTypes.node,
         className: PropTypes.cssClass,
         field: PropTypes.any,
+        content: PropTypes.node
     };
 
     static defaultProps = {
@@ -17,14 +18,16 @@ export default class FieldSetTemplate extends Component {
     };
 
     render() {
-        const {legend, legendClass, buttons, className, ...rest} =  {...this.props.field, ...this.props};
+        const {legend, content, legendClass, buttons, className, ...rest} =  {...this.props.field, ...this.props};
         return legend ?
             <fieldset className={className}>
                 <legend className={legendClass}>{legend}</legend>
+                {content}
                 {this.props.children}
                 {buttons}
             </fieldset> :
             <div className={className}>
+                {content}
                 {this.props.children}
                 {buttons}
             </div>

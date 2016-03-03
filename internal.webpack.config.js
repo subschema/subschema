@@ -8,7 +8,7 @@ var AUTOPREFIXER_LOADER = 'autoprefixer?{browsers:[' +
 
 var join = path.join.bind(path, __dirname);
 var cssStr = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]';
-function config(filename, externals, isNode) {
+function config(filename, externals, isNode, isMinify) {
     console.log('building', filename, isNode);
     var loaders = [
         {
@@ -37,7 +37,7 @@ function config(filename, externals, isNode) {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
-        new webpack.optimize.DedupePlugin(),
+
         function () {
             this.plugin("done", function (stats) {
                 stats = stats.toJson();
@@ -117,9 +117,12 @@ function config(filename, externals, isNode) {
                 loader: extractCSS.extract([cssStr, AUTOPREFIXER_LOADER, 'less'])
             });
         plugins.unshift(extractCSS);
-        plugins.unshift(new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
-    }
 
+    }
+    if (isMinify){
+        plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
+
+    }
     return conf;
 };
 

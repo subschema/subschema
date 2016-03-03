@@ -1,15 +1,17 @@
-import {React, into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, decorators,loaderFactory, DefaultLoader,ValueManager} from 'Subschema';
+"use strict";
+import React from 'react';
+import { into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
+import {newSubschemaContext} from 'Subschema';
 import ListenerPropertySetup from 'subschema-test-support/samples/ListenerProperty-setup.js';
 import ListenerProperty from 'subschema-test-support/samples/ListenerProperty.js';
-const {provide} = decorators;
-const {Select} = types;
 
 describe('public/ListenerProperty', function () {
     this.timeout(50000);
     it('should render', function () {
+        const Subschema = newSubschemaContext();
+        const {Form, ValueManager, loader} =Subschema;
         var schema = ListenerProperty.schema;
-        var loader = provide.defaultLoader = loaderFactory([DefaultLoader]);
+
         var valueManager = ValueManager(), mod = {exports: {}};
 
         ListenerPropertySetup(loader, schema, Subschema, React, valueManager, mod);

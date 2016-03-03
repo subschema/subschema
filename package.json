@@ -5,6 +5,7 @@
   "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
   "web": "dist/subschema-noreact.js",
+  "webpack": "src/index.jsx",
   "repository": {
     "type": "git",
     "url": "https://github.com/subschema/subschema"
