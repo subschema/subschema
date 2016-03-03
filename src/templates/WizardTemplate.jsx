@@ -97,7 +97,7 @@ export default class WizardTemplate extends WizardMixin {
                 <ReactCSSTransitionReplace key="wizard-transition" {...transition}>
 
                     <ObjectType {...rest}
-                        className={`state-${compState}`}
+                        className={`clearfix state-${compState}`}
                         key={"form-"+compState}
                         schema={currentSchema}
                         onButtonClick={this::this.handleBtn}
