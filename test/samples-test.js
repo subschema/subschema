@@ -5,9 +5,12 @@ import samples from 'subschema-test-support/samples';
 import {into} from 'subschema-test-support';
 import Subschema, {newSubschemaContext} from 'subschema';
 
-describe('samples', function () {
+describe.only('samples', function () {
 
-    Object.keys(samples).forEach(function (key) {
+//    Object.keys(samples)
+        ['Checkboxes']
+
+        .forEach(function (key) {
         const sample = samples[key];
         it(`render sample ${key} with data`, function () {
             const Subschema = newSubschemaContext();
@@ -18,7 +21,7 @@ describe('samples', function () {
                 setupFile(loader, sample.schema, Subschema, React, valueManager);
             }
             const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
-                                    valueManager={valueManager}/>);
+                                    valueManager={valueManager}/>, true);
             expect(form).toExist(`form should exist for ${key}`);
         });
 

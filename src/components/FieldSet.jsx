@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
 import CSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
 import UninjectedConditional from './Conditional.jsx';
-import UninjectedContent from '../types/Content.jsx';
+import RenderContent from './RenderContent.jsx';
+
 /**
  * Manages the the fieldset.  It  uses FieldSetTemplate or similar, but now
  * it renders the buttons, so the Template does not have to handle that.
@@ -27,13 +28,12 @@ export default class FieldSet extends Component {
         template: PropTypes.template,
         transition: PropTypes.transition,
         buttonsTemplate: PropTypes.template,
-        Content: PropTypes.injectClass
+        content: PropTypes.content
     };
 
     static defaultProps = {
         template: 'FieldSetTemplate',
-        buttonsTemplate: 'ButtonsTemplate',
-        Content: UninjectedContent
+        buttonsTemplate: 'ButtonsTemplate'
     };
 
 
@@ -51,16 +51,11 @@ export default class FieldSet extends Component {
                                 onClick={this.props.onClick}  {...buttons}/>
     }
 
-    renderContent(Content, content){
-        if (content){
-           return <Content key={`content-${key}`} content={content}/>
-        }
-    }
     renderFieldSet(key) {
 
-        const {Content, template,children, buttons, content, field, ...rest}  = this.props;
+        const {template,children, buttons, content, field, ...rest}  = this.props;
         const FieldSetTemplate = template;
-        return <FieldSetTemplate key={key}  {...rest} {...field} buttons={this.renderButtons(buttons)} content={this.renderContent(Content,content)}>
+        return <FieldSetTemplate key={key}  {...rest} {...field} buttons={this.renderButtons(buttons)} content={<RenderContent content={content}  key={`content-${key}`}/>}>
             {children}
         </FieldSetTemplate>
 

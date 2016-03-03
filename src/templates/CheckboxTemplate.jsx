@@ -5,15 +5,15 @@ import PropTypes from '../PropTypes';
 export default class CheckboxTemplate extends Component {
     static propTypes = {
         label: PropTypes.node,
-        checkboxClass: PropTypes.style
+        style: PropTypes.style
     };
     static defaultProps = {
-        checkBoxClass: "CheckboxTemplate"
+        style: "CheckboxTemplate"
     };
 
     render() {
-        const {children,checkBoxClass, label} = this.props;
-        return (<div className={checkBoxClass}>
+        const {children,checkboxClass, label} = this.props;
+        return (<div className={checkboxClass}>
             <label>
                 {children}
                 {label}
