@@ -46,11 +46,19 @@ describe('types/List', function () {
     }
 
     it('should render a list', function () {
-        var root = into(<Form schema={Schema}/>);
+        var root = into(<Form schema={Schema}/>, true);
         expect(root).toExist();
         var tasks = byComponents(root, ListItemTemplate);
         expect(tasks.length).toEqual(0);
 
+    });
+    it('should render a list with data', function () {
+        var root = into(<Form schema={Schema} value={Todos.data}/>, true);
+        expect(root).toExist();
+        var tasks = byComponents(root, ListItemTemplate);
+        expect(tasks.length).toEqual(3);
+        const [first, second, last] = byComponents(root, ListItemTemplate);
+        click(byClass(second, 'clickable')[0]);
     });
 
     it('should render a list with data the canAdd', function () {
@@ -66,7 +74,7 @@ describe('types/List', function () {
         var addBtn = byClass(root, 'btn-add')[0];
         expect(addBtn).toExist();
 
-        var [first, second, last] = byComponents(root, ListItemTemplate);
+        const [first, second, last] = byComponents(root, ListItemTemplate);
 
         expect(controlBtn(first, 'up')).toNotExist();
         expect(controlBtn(first, 'down')).toExist();

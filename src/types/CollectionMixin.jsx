@@ -53,7 +53,8 @@ export default class CollectionMixin extends Component {
         addButton: PropTypes.button,
         listContainerClassName: PropTypes.cssClass,
         ObjectType: PropTypes.injectClass,
-        value: PropTypes.value
+        value: PropTypes.value,
+        title: PropTypes.title
     };
 
     static defaultProps = {
@@ -144,7 +145,7 @@ export default class CollectionMixin extends Component {
         }
     };
 
-    handleAddBtn = (e) => {
+    handleAddBtn(e) {
         e && e.preventDefault();
         const key = this.createPid()
         this.context.valueManager.update(makeEditPid(this.props.path, key), {
@@ -230,24 +231,21 @@ export default class CollectionMixin extends Component {
 
 
     renderAddEditTemplate(edit, create) {
-        let label = '';
-        if (edit) {
-            label = 'Save';
-        } else if (create) {
-            label = 'Create';
-        } else {
+        if (!(edit || create)) {
             return null;
         }
-        const title = this.props.title || '';
         const childPath = path(this.props.path, this.state.editPid);
-        const {ObjectType} = this.props;
-        return <ObjectType key="addEdit" objectTemplate={this.props.createTemplate}
-                           onButtonClick={this.handleBtnClick}
-                           schema={this.createItemSchema(childPath)}
-                           path={makeEditPid(this.props.path,this.state.editPid)}
-                           title={this.props.inline && edit ? false : create ? 'Create ' + title : 'Edit ' + title  }
-
-        />
+        const {ObjectType, createTemplate} = this.props;
+        const CreateTemplate = createTemplate;
+        return (<CreateTemplate inline={edit ? this.props.inline : false}
+                                create={edit ? false : create}
+                                title={this.props.title} key="addEditTemplate">
+            <ObjectType key="addEdit"
+                        onButtonClick={this.handleBtnClick}
+                        schema={this.createItemSchema(childPath)}
+                        path={makeEditPid(this.props.path,this.state.editPid)}
+            />
+        </CreateTemplate>);
     }
 
     renderAddBtn() {
@@ -256,7 +254,8 @@ export default class CollectionMixin extends Component {
         }
         const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
         const ButtonTemplate = this.props.buttonTemplate;
-        return <ButtonTemplate key="addBtn"  {...btn} onClick={this.handleAddBtn} iconClass={this.props.iconAddClass}/>
+        return <ButtonTemplate key="addBtn"  {...btn} onClick={this::this.handleAddBtn}
+                               iconClass={this.props.iconAddClass}/>
 
     }
 
@@ -264,10 +263,17 @@ export default class CollectionMixin extends Component {
         if (!(this.props.canAdd || this.props.canEdit)) {
             return null;
         }
-        var {showAdd, showEdit} = this.state;
-        return showAdd || showEdit ?
-            showAdd || showEdit && !this.props.inline ? this.renderAddEditTemplate(showEdit, showAdd) : null
-            : this.renderAddBtn();
+        const {showAdd, showEdit} = this.state;
+        if (this.props.inline) {
+            if (showAdd) {
+                return this.renderAddEditTemplate(false, true);
+            } else {
+                return this.renderAddBtn();
+            }
+        } else if (!(showAdd || showEdit)) {
+            return this.renderAddBtn();
+        }
+        return this.renderAddEditTemplate(showEdit, showAdd);
     }
 
     createItemSchema() {

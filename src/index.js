@@ -63,6 +63,16 @@ export default {
     newSubschemaContext
 }
 
+/**
+ * Used to initialize new subschema for testing.  But also to override behaviours if necessary.
+ *
+ * @param defaultLoaders
+ * @param defaultResolvers
+ * @param defaultPropTypes
+ * @param defaultInjectorFactory
+ * @param Subschema
+ */
+
 function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
     Conditional,
     Editor,
@@ -86,7 +96,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     cachedInjector
 
 }) {
-    const {loader, injector, ...rest} = Subschema;
+    const {loader, injector,  ...rest} = Subschema;
 
 
     const _injector = defaultInjectorFactory();
@@ -97,12 +107,16 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     }
     const defaultLoader = loaderFactory(defaultLoaders);
     const defaultInjector = cachedInjector(_injector);
+
+    //Form needs these to kick off the whole thing.  Its defaults can be overriden with
+    // properties.
     rest.Form.defaultProps.loader = defaultLoader;
     rest.Form.defaultProps.injector = defaultInjector;
     rest.loader = defaultLoader;
     rest.injector = defaultInjector;
     const {provide, ...decs} = decorators;
     rest.decorators = decs;
+    //provide has a reference to the current status loader.   this makes it work.
     decs.provide = provideFactory({defaultLoader});
 
     return rest;
