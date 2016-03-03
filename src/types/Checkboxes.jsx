@@ -1,9 +1,8 @@
 "use strict";
 
 import React, {Component} from 'react'
-import Constants from '../Constants'
 import PropTypes from '../PropTypes'
-import tu, {path, toArray, FREEZE_ARR,returnFirst,  isArray} from '../tutils';
+import {path, FREEZE_ARR as options} from '../tutils';
 
 export default class Checkboxes extends Component {
     //override added input Class Names.
@@ -22,7 +21,7 @@ export default class Checkboxes extends Component {
     };
 
     static defaultProps = {
-        options: FREEZE_ARR,
+        options,
         item: 'Text',
         itemTemplate: 'CheckboxesTemplate',
         groupTemplate: 'CheckboxesGroupTemplate',
