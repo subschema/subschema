@@ -2,18 +2,23 @@
 
 import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
+import UninjectedContent from '../types/Content.jsx';
 
-function loadContent(content, key, props, context) {
-    const Content = context.loader.loadType('Content');
-    return context.injector.inject(Content, null, {content});
+export const settings = {
+    Content: UninjectedContent
+};
+export function loadContent(content, key, props, {injector}) {
+
+   const Content =  injector.inject(settings.Content);
+   return {
+       Content:Content,
+       content:content
+   }
 }
 
 export default function content(Clazz, key) {
 
-
-    Clazz.contextTypes.loader = PropTypes.loader;
     Clazz.contextTypes.injector = PropTypes.injector;
-
     Clazz::prop(key, loadContent);
 
 };

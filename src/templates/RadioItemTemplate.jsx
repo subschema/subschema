@@ -1,6 +1,6 @@
 "use strict";
 import React, {Component} from 'react';
-import Content from '../types/Content.jsx';
+import UninjectedContent from '../types/Content.jsx';
 import PropTypes from '../PropTypes';
 
 export default class RadioItemTemplate extends Component {
@@ -15,11 +15,14 @@ export default class RadioItemTemplate extends Component {
     };
 
     static defaultProps = {
-        Content: Content
+        Content: UninjectedContent,
+        namespaceClass: "radio",
+        checkedClass: "",
+        uncheckedClass: ""
     };
 
     render() {
-        let {label,namespaceClass, labelHTML,children, checked, checkedClass, uncheckedClass, id} = this.props;
+        let {Content, label,namespaceClass, labelHTML,children, checked, checkedClass, uncheckedClass, id} = this.props;
         label = labelHTML ? labelHTML : label;
         checkedClass = checkedClass || '';
         label = typeof label === 'string' ? [{children: true}, label] : label;

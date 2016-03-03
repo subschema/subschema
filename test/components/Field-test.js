@@ -38,18 +38,18 @@ describe('components/Field', function () {
         expect(type).toExist();
         expect(templ).toExist();
         expect(input).toExist();
-        expect(templ.props.help).toBe('Hello');
+        expect(templ.props.help.content).toBe('Hello');
         expect(templ.props.title).toBe('Name');
         expect(input.getAttribute('type')).toBe('text');
         change(input, 'a');
-        expect(templ.props.help).toBe('Hello');
+        expect(templ.props.help.content).toBe('Hello');
         change(input, 'aa');
-        expect(templ.props.help).toBe('Hello');
+        expect(templ.props.help.content).toBe('Hello');
         blur(input);
         expect(templ.props.error).toBe('2 is less than 3');
         change(input, 'aaa');
         expect(templ.props.error).toBe(null);
-        expect(templ.props.help).toBe('Hello');
+        expect(templ.props.help.content).toBe('Hello');
 
     });
     it('should not render template only field', function () {

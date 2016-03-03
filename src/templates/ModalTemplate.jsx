@@ -1,25 +1,25 @@
 "use strict";
 import React, {Component, Children} from 'react';
 import Buttons from './ButtonsTemplate.jsx';
-import Content from '../types/Content.jsx'
-//import styles from 'subschema-styles/ModalTemplate-style';
 import ValueManager from '../ValueManager';
 import PropTypes from '../PropTypes';
 import NewChildContext from '../components/NewChildContext.jsx';
 import cloneDeep from 'lodash/lang/cloneDeep';
+import RenderContent from '../components/RenderContent.jsx';
 
 export default class ModalTemplate extends Component {
 
     static propTypes = {
         style: PropTypes.style,
-        title: PropTypes.node,
+        title: PropTypes.content,
         buttons: PropTypes.buttons,
         path: PropTypes.path,
         value: PropTypes.value,
         onChange: PropTypes.valueEvent,
         ModalTemplate: PropTypes.injectClass,
         dismiss: PropTypes.valueEvent,
-        buttonsTemplate: PropTypes.template
+        buttonsTemplate: PropTypes.template,
+
     };
 
     static defaultProps = {
@@ -94,6 +94,7 @@ export default class ModalTemplate extends Component {
 
     render() {
         const {title, buttons, path,value,bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+
         return <div className={`${namespaceClass} ${overlayClass}`} style={{display:'block'}}>
             <div className={backdropClass}></div>
             <div className={dialogClass} role="document" style={{zIndex:2000}}>
@@ -102,7 +103,7 @@ export default class ModalTemplate extends Component {
                         <button onClick={this.handleClose} className={closeClass} name={this.props.dismiss}
                                 value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {title ? <Content type='h4'  {...rest} content={title}/> : null }
+                        <RenderContent type='h4' content={title}/>
                     </div>
                     <div className={bodyClass}>
                         {children}

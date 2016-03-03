@@ -1,7 +1,7 @@
 "use strict";
 
 import {intoWithState, findNode, byTags, React, TestUtils,expect, Simulate} from 'subschema-test-support';
-import {types, ValueManager, loader} from 'Subschema';
+import {types, ValueManager, loader, templates} from 'Subschema';
 
 const Radio = types.Radio;
 
@@ -10,8 +10,10 @@ describe('types/Radio', function () {
     it('should create a radios', function () {
 
         const {state, child} = intoWithState(<Radio
+            itemTemplate={templates.RadioItemTemplate}
+            onChange={(e)=>e}
             options={ [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]}
-        />, {value: 2});
+        />, {value: 2}, true);
 
         const inputs = byTags(child, 'input');
         expect(inputs.length).toEqual(2);

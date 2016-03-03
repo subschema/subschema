@@ -41,7 +41,8 @@ export default class WizardTemplate extends WizardMixin {
         onNavChange(current, previous, wizard){
         },
         transitionForward: "slideRight",
-        transitionBackward: "slideLeft"
+        transitionBackward: "slideLeft",
+        namespaceClass: 'wizard'
         // ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
 
