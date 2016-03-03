@@ -5,15 +5,19 @@ import PropTypes from '../PropTypes';
 export default class CheckboxTemplate extends Component {
     static propTypes = {
         label: PropTypes.node,
-        style: PropTypes.style
+        style: PropTypes.style,
+        checked: PropTypes.checked
     };
     static defaultProps = {
-        style: "CheckboxTemplate"
+        style: "CheckboxTemplate",
+        checkedClass: "",
+        uncheckedClass: "",
+        checkboxClass: ""
     };
 
     render() {
-        const {children,checkboxClass, label} = this.props;
-        return (<div className={checkboxClass}>
+        const {children,checkboxClass, checked, checkedClass, uncheckedClass , label} = this.props;
+        return (<div className={`${checkboxClass} ${checked ? checkedClass : uncheckedClass} `}>
             <label>
                 {children}
                 {label}
