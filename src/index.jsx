@@ -21,7 +21,6 @@ import Subschema, {Conditional as _C,
     css as _c,
     decorators as _decorators,
     eventable as _e,
-    injector as _i,
     listenUtil as _l,
     loaderFactory as _loaderFactory,
     tutils as _t,
@@ -53,7 +52,6 @@ export const types = _types;
 export const processors = _processors;
 export const styles = _styles;
 export const DefaultLoader = _DefaultLoader;
-export const injector = _i;
 export const resolvers = _resolvers;
 
 
@@ -66,6 +64,7 @@ Subschema.DefaultLoader = _DefaultLoader;
 
 const _initSubchemaContext = newSubschemaContext();
 export const loader = _initSubchemaContext.loader;
+export const injector = _initSubchemaContext.injector;
 export default _initSubchemaContext;
 
 /**

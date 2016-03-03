@@ -16,7 +16,6 @@ import css from './css';
 import * as decorators from './decorators/index';
 import Constants from './Constants';
 import transitions from './transition/EventCSSTransitionGroup.jsx';
-import injector from './injector';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
 import provideFactory from './decorators/provideFactory';
@@ -32,7 +31,7 @@ export {
     css,
     decorators,
     eventable,
-    injector,
+    injectorFactory,
     loaderFactory,
     tutils,
     validators,
@@ -54,14 +53,13 @@ export default {
     css,
     decorators,
     eventable,
-    injector,
+    cachedInjector,
+    injectorFactory,
     loaderFactory,
     tutils,
     validators,
     warning,
     transitions,
-    injectorFactory,
-    cachedInjector,
     newSubschemaContext
 }
 

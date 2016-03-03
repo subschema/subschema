@@ -1,9 +1,8 @@
 "use strict";
 import expect from 'expect';
 import React, {Component} from 'react';
-import { PropTypes, ValueManager, templates, types, loader, loaderFactory} from 'subschema';
+import { PropTypes, ValueManager, templates, injector, types, loader, loaderFactory} from 'subschema';
 import support, {intoWithContext, byComponent,findNode} from 'subschema-test-support/src/index.js';
-import injector from '../../src/injector';
 
 const {field} = PropTypes;
 

@@ -2,8 +2,7 @@
 import React, {Component} from 'react';
 import {findNode, into, intoWithContext,context,TestUtils,expect, byComponent, Simulate} from 'subschema-test-support';
 import ReactServer from 'react-dom/server';
-import {ValueManager, PropTypes, loader as _loader, loaderFactory, types, Editor,Form} from 'Subschema';
-import injector from '../../src/injector';
+import {ValueManager, PropTypes, loader as _loader, injector, loaderFactory, types, Editor,Form} from 'Subschema';
 
 describe('types/Content', function () {
     let loader;
