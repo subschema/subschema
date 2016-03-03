@@ -28,7 +28,7 @@ export default class Checkboxes extends Component {
         groupTemplate: 'CheckboxesGroupTemplate',
         //make the value an array regardless of input
         value: {
-            processor: toArray
+            processor: 'ArrayProcessor'
         },
         dataType: "checkbox"
     };
@@ -73,7 +73,7 @@ export default class Checkboxes extends Component {
             id,
             value: val
         };
-        return (<CheckboxTemplate key={`checkbox-${index}-${group}`}  label={labelContent} type="checkbox" {...opts}>
+        return (<CheckboxTemplate key={`checkbox-${index}-${group}`} label={labelContent} type="checkbox" {...opts}>
             <input type={this.props.type} {...opts}/>
         </CheckboxTemplate>);
 

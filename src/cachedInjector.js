@@ -4,7 +4,7 @@ import {HashBuilder} from './hash';
 
 export default function cachedInject(injector) {
     let cache;
-
+    let count = 0;
     /**
      * Resolver gets called  a bunch of times,
      * rather than initing WeakMap a million times,
@@ -18,6 +18,7 @@ export default function cachedInject(injector) {
         if (propType && resolver) {
             //invalidate cache with new resolver
             cache = null;
+            count = 0;
         }
         return injector.resolver(propType, resolver);
     }
@@ -32,18 +33,17 @@ export default function cachedInject(injector) {
         //no cache so no point in checking it.
         if (cache == null) {
             cache = new WeakMap();
-            cur = [];
+            cur = new Map();
             cache.set(Clazz, cur);
         } else {
             cur = cache.get(Clazz);
             if (cur) {
-                for (let klazz of cur) {
-                    if (klazz && klazz.$hash === hash) {
-                        return klazz;
-                    }
+                const klazz = cur.get(hash);
+                if (klazz != null){
+                    return klazz;
                 }
             } else {
-                cur = [];
+                cur = new Map();
                 cache.set(Clazz, cur);
             }
         }
@@ -51,13 +51,18 @@ export default function cachedInject(injector) {
         const injected = injector.inject(Clazz, extraPropTypes, extraProps, strictProps);
         injected.displayName = `${injected.displayName}$${hash}`;
         injected.$hash = hash;
-        cur.push(injected);
+        cur.set(hash, injected);
+        count++;
         return injected;
+    }
+    function size(){
+        return count;
     }
 
     return {
         resolver,
-        inject
+        inject,
+        size
     }
 }
 

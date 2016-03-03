@@ -59,7 +59,6 @@ export function handleTransition(value, key, props, {loader}) {
 
 function transition(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
-    Clazz.contextTypes.injector = PropTypes.injector;
     Clazz::this.property(key, handleTransition);
 }
 //because es6 modules.

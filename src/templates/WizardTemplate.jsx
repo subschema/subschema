@@ -94,7 +94,7 @@ export default class WizardTemplate extends WizardMixin {
             <div className={`${this.props.namespaceClass} ${(this.state.animating ? this.props.animatingClass : '')}`}
                  onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets)}
-                <ReactCSSTransitionReplace {...transition}>
+                <ReactCSSTransitionReplace key="wizard-transition" {...transition}>
 
                     <ObjectType {...rest}
                         className={`state-${compState}`}

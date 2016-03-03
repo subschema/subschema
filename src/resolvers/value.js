@@ -4,7 +4,21 @@ import PropTypes from '../PropTypes';
 import {listener, resolveKey} from 'subschema-injection/src/util';
 import isPlainObject from 'lodash/lang/isPlainObject';
 
-export function handleListeners(value, key, props, {valueManager}) {
+function createHandler(value, key, loader){
+    if (value.processor){
+        const process = typeof value.processor == 'function' ? value.processor: loader.loadProcessor(value.processor).value;
+        return function value$processsorHandler(v){
+            this.injected[key] = process(v);
+            this.mounted && this.forceUpdate();
+        };
+    }
+    return function value$handler(v){
+        this.injected[key] = v;
+        this.mounted && this.forceUpdate();
+    };
+}
+
+export function handleListeners(value, key, props, {valueManager, loader}) {
     let resolvedPath;
     if (value == null || typeof value === 'string') {
         resolvedPath = resolveKey(props.path, value);
@@ -14,23 +28,17 @@ export function handleListeners(value, key, props, {valueManager}) {
         value = {...settings, ...value}
     }
 
-
-    return valueManager.addListener(resolvedPath, (v)=> {
-        this.injected[key] = value.processor(v);
-        this.mounted && this.forceUpdate();
-    }, this, value.init).remove;
+    return valueManager.addListener(resolvedPath, createHandler(value, key, loader), this, value.init).remove;
 }
 
 export const settings = {
-    processor: function (v) {
-        return v;
-    },
     //fire the listener immediately, do not wait for a change.
     init: true
 };
 
 export default function value(Clazz, key) {
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
+    Clazz.contextTypes.loader = PropTypes.loader;
 
     Clazz::this.listener(key, handleListeners);
 
