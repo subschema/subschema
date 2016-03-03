@@ -6,7 +6,6 @@ import * as _types from './types';
 import * as _processors from './processors';
 import * as _styles from './styles';
 import * as _resolvers from './resolvers';
-import _loader from './loader';
 import provideFactory from './decorators/provideFactory';
 import _cachedInjector from './cachedInjector';
 import {injectorFactory as _injectorFactory} from 'subschema-injection';
@@ -62,7 +61,6 @@ Subschema.types = _types;
 Subschema.templates = _templates;
 Subschema.processors = _processors;
 Subschema.styles = _styles;
-Subschema.loader = _loader;
 Subschema.resolvers = _resolvers;
 Subschema.DefaultLoader = _DefaultLoader;
 

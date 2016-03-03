@@ -2,7 +2,6 @@
 import warning from '../warning';
 import map from 'lodash/collection/map';
 import decorator from './decorator';
-import loader from '../loader';
 
 export default function providerFactory({defaultLoader}, types = ['type', 'validator', 'template', 'processor', 'operator', 'transition']) {
     const provide = decorator(provideProperty, provideClass);

@@ -16,7 +16,6 @@ import css from './css';
 import * as decorators from './decorators/index';
 import Constants from './Constants';
 import transitions from './transition/EventCSSTransitionGroup.jsx';
-import loader from './loader';
 import injector from './injector';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
@@ -34,7 +33,6 @@ export {
     decorators,
     eventable,
     injector,
-    loader,
     loaderFactory,
     tutils,
     validators,
@@ -57,7 +55,6 @@ export default {
     decorators,
     eventable,
     injector,
-    loader,
     loaderFactory,
     tutils,
     validators,
@@ -68,7 +65,7 @@ export default {
     newSubschemaContext
 }
 
-function newSubschemaContext( defaultLoaders=[], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
+function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
     Conditional,
     Editor,
     Form,
