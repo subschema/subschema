@@ -28,6 +28,7 @@ import Subschema, {Conditional as _C,
     tutils as _t,
     validators as _v,
     warning as _w,
+    newSubschemaContext as _newSubschemaContext,
     transitions as _n} from './index.js';
 
 export const loaderFactory = _loaderFactory;
@@ -48,7 +49,6 @@ export const tutils = _t;
 export const validators = _v;
 export const warning = _w;
 export const transitions = _n;
-export const loader = _loader;
 export const templates = _templates;
 export const types = _types;
 export const processors = _processors;
@@ -57,7 +57,6 @@ export const DefaultLoader = _DefaultLoader;
 export const injector = _i;
 export const resolvers = _resolvers;
 
-_loader.addLoader([_DefaultLoader]);
 
 Subschema.types = _types;
 Subschema.templates = _templates;
@@ -66,7 +65,10 @@ Subschema.styles = _styles;
 Subschema.loader = _loader;
 Subschema.resolvers = _resolvers;
 Subschema.DefaultLoader = _DefaultLoader;
-export default newSubschemaContext();
+
+const _initSubchemaContext = newSubschemaContext();
+export const loader = _initSubchemaContext.loader;
+export default _initSubchemaContext;
 
 /**
  * Allows for a new Subschema instance to be created. Mostly for testing,
@@ -76,26 +78,6 @@ export default newSubschemaContext();
  * @param defaultResolvers
  * @param defaultPropTypes
  */
-export function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory) {
-    const {loader, injector, ...rest} = Subschema;
-
-
-    const _injector = defaultInjectorFactory();
-    for (let key of Object.keys(defaultResolvers)) {
-        if (key in defaultPropTypes) {
-            _injector.resolver(defaultPropTypes[key], defaultResolvers[key]);
-        }
-    }
-    const defaultLoader = _loaderFactory(defaultLoaders);
-    const defaultInjector = _cachedInjector(_injector);
-    rest.Form.defaultProps.loader = defaultLoader;
-    rest.Form.defaultProps.injector = defaultInjector;
-    rest.loader = defaultLoader;
-    rest.injector = defaultInjector;
-    const {provide, ...decs} = _decorators;
-    rest.decorators = decs;
-    decs.provide = provideFactory({defaultLoader});
-
-    return rest;
-
+export function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory, defaultSubschema=Subschema) {
+    return _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectorFactory, defaultSubschema);
 }

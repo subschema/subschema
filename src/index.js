@@ -20,7 +20,7 @@ import loader from './loader';
 import injector from './injector';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
-
+import provideFactory from './decorators/provideFactory';
 export {
     Conditional,
     Editor,
@@ -41,7 +41,8 @@ export {
     warning,
     transitions,
     injectorFactory,
-    cachedInjector
+    cachedInjector,
+    newSubschemaContext
 };
 export default {
     Conditional,
@@ -63,5 +64,52 @@ export default {
     warning,
     transitions,
     injectorFactory,
+    cachedInjector,
+    newSubschemaContext
+}
+
+function newSubschemaContext( defaultLoaders=[], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
+    Conditional,
+    Editor,
+    Form,
+    NewChildContext,
+    Constants,
+    Dom,
+    PropTypes,
+    ValueManager,
+    css,
+    decorators,
+    eventable,
+    injector,
+    loader,
+    loaderFactory,
+    tutils,
+    validators,
+    warning,
+    transitions,
+    injectorFactory,
     cachedInjector
+
+}) {
+    const {loader, injector, ...rest} = Subschema;
+
+
+    const _injector = defaultInjectorFactory();
+    for (let key of Object.keys(defaultResolvers)) {
+        if (key in defaultPropTypes) {
+            _injector.resolver(defaultPropTypes[key], defaultResolvers[key]);
+        }
+    }
+    const defaultLoader = loaderFactory(defaultLoaders);
+    const defaultInjector = cachedInjector(_injector);
+    rest.Form.defaultProps.loader = defaultLoader;
+    rest.Form.defaultProps.injector = defaultInjector;
+    rest.loader = defaultLoader;
+    rest.injector = defaultInjector;
+    const {provide, ...decs} = decorators;
+    rest.decorators = decs;
+    decs.provide = provideFactory({defaultLoader});
+
+    return rest;
+
 }
