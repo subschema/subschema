@@ -11,6 +11,7 @@ import RenderContent from './RenderContent.jsx';
  *
  */
 export default class FieldSet extends Component {
+    static displayName = "FieldSet";
     static propTypes = {
         fieldsets: PropTypes.arrayOf(PropTypes.shape({
             field: PropTypes.field,

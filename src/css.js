@@ -1,8 +1,6 @@
 "use strict";
 
 import {isString,isArray, slice, isFunction, push} from './tutils';
-import Constants from './Constants';
-
 
 
 export function addClasses(classes, str) {
@@ -19,44 +17,6 @@ export function addClasses(classes, str) {
         addClasses(classes, str.call(this));
     }
 
-}
-/**
- * Determines the classes for a field.
- * Takes a react node as the first argument.
- * @param {Reactnode} node - node to create for.
- * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
- */
-export function forField(node, className) {
-    var classes = [];
-    addClasses(classes, slice(arguments, 2));
-    if (className) {
-        addClasses(classes, className);
-    } else if (node.constructor.inputClassName) {
-        push(classes, node.constructor.inputClassName.split(/\s+?/));
-    } else if (node.inputClassName) {
-        push(classes, node.inputClassName.split(/\s+?/));
-    } else {
-        push(classes, Constants.inputClassName.split(/\s+?/));
-    }
-    return classes.join(' ');
-}
-
-export function forEditor(node) {
-    var classes = [];
-    addClasses(classes, slice(arguments, 1));
-    var field = node.props.field;
-    var className = node.props.fieldClsName || node.props.fieldClassName || node.props.fieldClass;
-
-    if (className) {
-        addClasses(classes, className);
-    } else if (node.constructor.fieldClassName) {
-        push(classes, node.constructor.inputClassName.split(/\s+?/));
-    }
-    if (field) {
-        addClasses.call(node, classes, field.fieldClass);
-        addClasses.call(node, classes, field.fieldCls);
-    }
-    return classes.join(' ');
 }
 
 export function addClass(node, className) {
@@ -97,7 +57,5 @@ export default {
     hasClass,
     removeClass,
     addClass,
-    addClasses,
-    forField,
-    forEditor
+    addClasses
 };

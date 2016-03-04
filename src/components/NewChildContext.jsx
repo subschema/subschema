@@ -5,6 +5,7 @@ import PropTypes from './../PropTypes';
 import ValueManager from './../ValueManager';
 
 export default class NewChildContext extends Component {
+    static displayName = "NewChildContext";
     static propTypes = {
         valueManager: PropTypes.valueManager,
         loader: PropTypes.loader,

@@ -1,4 +1,6 @@
 "use strict";
+import _ReactCSSReplaceTransition from './transition/ReactCSSReplaceTransition';
+
 import {provide} from './decorators';
 import _DefaultLoader from './DefaultLoader';
 import * as _templates from './templates';
@@ -6,14 +8,15 @@ import * as _types from './types';
 import * as _processors from './processors';
 import * as _styles from './styles';
 import * as _resolvers from './resolvers';
+import {transitions as _transitions} from './transition';
 import provideFactory from './decorators/provideFactory';
 import _cachedInjector from './cachedInjector';
 import {injectorFactory as _injectorFactory} from 'subschema-injection';
+
 import Subschema, {Conditional as _C,
     Editor as _E,
     Form as _F,
     NewChildContext as _N,
-    Constants as _o,
     Dom as _D,
     PropTypes as _PropTypes,
     Template as _T,
@@ -27,14 +30,13 @@ import Subschema, {Conditional as _C,
     validators as _v,
     warning as _w,
     newSubschemaContext as _newSubschemaContext,
-    transitions as _n} from './index.js';
+    } from './index.js';
 
 export const loaderFactory = _loaderFactory;
 export const Conditional = _C;
 export const Editor = _E;
 export const Form = _F;
 export const NewChildContext = _N;
-export const Constants = _o;
 export const Dom = _D;
 export const PropTypes = _PropTypes;
 export const Template = _T;
@@ -46,14 +48,14 @@ export const listenUtil = _l;
 export const tutils = _t;
 export const validators = _v;
 export const warning = _w;
-export const transitions = _n;
+export const transitions = _transitions;
 export const templates = _templates;
 export const types = _types;
 export const processors = _processors;
 export const styles = _styles;
 export const DefaultLoader = _DefaultLoader;
 export const resolvers = _resolvers;
-
+export const ReactCSSReplaceTransition = _ReactCSSReplaceTransition;
 
 Subschema.types = _types;
 Subschema.templates = _templates;

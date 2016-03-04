@@ -9,7 +9,9 @@ import {noop} from './../tutils';
 import warning from '../warning';
 
 export default class Form extends Component {
-    static  childContextTypes = PropTypes.contextTypes;
+    static displayName = "Form";
+
+    static childContextTypes = PropTypes.contextTypes;
 
     static propTypes = {
         schema: PropTypes.schema.isRequired,

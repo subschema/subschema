@@ -14,8 +14,6 @@ import * as tutils from './tutils';
 import ValueManager from './ValueManager';
 import css from './css';
 import * as decorators from './decorators/index';
-import Constants from './Constants';
-import transitions from './transition/EventCSSTransitionGroup.jsx';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
 import provideFactory from './decorators/provideFactory';
@@ -24,7 +22,6 @@ export {
     Editor,
     Form,
     NewChildContext,
-    Constants,
     Dom,
     PropTypes,
     ValueManager,
@@ -36,7 +33,6 @@ export {
     tutils,
     validators,
     warning,
-    transitions,
     injectorFactory,
     cachedInjector,
     newSubschemaContext
@@ -46,7 +42,6 @@ export default {
     Editor,
     Form,
     NewChildContext,
-    Constants,
     Dom,
     PropTypes,
     ValueManager,
@@ -59,7 +54,6 @@ export default {
     tutils,
     validators,
     warning,
-    transitions,
     newSubschemaContext
 }
 
@@ -78,7 +72,6 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     Editor,
     Form,
     NewChildContext,
-    Constants,
     Dom,
     PropTypes,
     ValueManager,
@@ -91,7 +84,6 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     tutils,
     validators,
     warning,
-    transitions,
     injectorFactory,
     cachedInjector
 

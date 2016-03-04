@@ -6,7 +6,7 @@ import {FREEZE_OBJ} from '../tutils';
 
 export default class Conditional extends Component {
     static contextTypes = PropTypes.contextTypes;
-
+    static displayName = "Conditional";
     static defaultProps = {
         operator: "!=",
         animate: false,

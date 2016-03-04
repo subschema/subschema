@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 import ObjectType from '../types/Object.jsx';
 import WizardMixin from './WizardMixin';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
-import EventCSSTransitionGroup from '../transition/EventCSSTransitionGroup.jsx';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
 import ReactCSSTransitionReplace from '../transition/ReactCSSReplaceTransition.jsx';

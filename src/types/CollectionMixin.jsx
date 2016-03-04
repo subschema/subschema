@@ -1,7 +1,6 @@
 "use strict";
 
 import React, {Component} from 'react';
-import Constants from '../Constants';
 import ValueManager from '../ValueManager';
 import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
 import UninjectedObjectType from './Object.jsx';
@@ -29,7 +28,7 @@ function remove(obj, key) {
 export default class CollectionMixin extends Component {
 
 
-    static inputClassName = Constants.listClassName;
+    static inputClassName = 'list-editor';
 
     static contextTypes = {valueManager: PropTypes.valueManager};
 
@@ -78,14 +77,10 @@ export default class CollectionMixin extends Component {
         },
         ObjectType: UninjectedObjectType
     };
-    state = {};
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        const state = this.state;
-        state.showAdd = props.showAdd;
-        state.wrapped = this.wrapValues(props.value);
-    }
+    state = {
+        showAdd: this.props.showAdd,
+        wrapped: this.wrapValues(this.props.value)
+    };
 
     wrapValues(values) {
         return map(values, wrapFunc);

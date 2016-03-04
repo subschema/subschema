@@ -2,7 +2,7 @@
 
 import PropTypes from '../PropTypes';
 import {prop} from 'subschema-injection/src/util';
-
+import warning from '../'
 export const defaultPropTypes = {
     onChange: PropTypes.targetEvent,
     onBlur: PropTypes.blurValidate,
@@ -33,8 +33,16 @@ export function loadType(val, key, props, context) {
     } else {
         propTypes = {...defaultPropTypes, ...propTypes};
     }
+    let Type;
+    if (typeof type === 'string') {
+        Type = context.loader.loadType(type);
 
-    const Type = context.loader.loadType(type);
+        if (!Type.displayName) {
+            Type.displayName = type;
+        }
+    } else {
+        Type = type;
+    }
     const injectedClazz = context.injector.inject(Type, propTypes, rest.defaultProps);
 
 

@@ -40,7 +40,7 @@ export default function style(Clazz, key, propList, OrigClazz) {
 
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
         const {injected} = this;
-        const Style = value == null || typeof value === 'string' ? loader.loadStyle(value || OrigClazz.name) : value;
+        const Style = value == null || typeof value === 'string' ? loader.loadStyle(value || OrigClazz.displayName || OrigClazz.name) : value;
         if (Style == null) {
             return Style;
         }

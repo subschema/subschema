@@ -295,11 +295,10 @@ const processor = oneOfType([string, shape({
 
 const injectClass = oneOfType([
     func,
-    array,
     shape({
-        target: func,
+        injectClass: func,
         propTypes: object,
-        propvalues: object,
+        injectProps: object,
         strict: bool
     })
 ]);

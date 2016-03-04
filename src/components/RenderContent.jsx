@@ -11,7 +11,7 @@ import React from 'react';
  * @constructor
  */
 
-export default function RenderContent(props) {
+function RenderContent(props) {
     if (props == null) {
         return props;
     }
@@ -26,3 +26,5 @@ export default function RenderContent(props) {
 
     return <Content content={rest} {...oprops}/>
 }
+RenderContent.displayName = 'RenderContent';
+export default RenderContent;

@@ -6,6 +6,7 @@ import {FREEZE_ARR} from '../tutils';
 import ReactCSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
 
 export default class Field extends Component {
+    static displayName = "Field";
 
     static contextTypes = {
         injector: PropTypes.injector

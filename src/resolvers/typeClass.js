@@ -2,7 +2,10 @@
 
 import {prop} from 'subschema-injection/src/util';
 import {isString,isArray, slice, isFunction, push} from '../tutils';
-import {inputClassName} from '../Constants';
+
+export const settings = {
+    inputClassName:'form-control'
+};
 
 export function addClasses(classes, ...rest) {
     if (rest == null || rest.length === 0) {
@@ -43,7 +46,7 @@ export function addClasses(classes, ...rest) {
  * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
  */
 export function forType(OrigClazz, value) {
-    return addClasses([], value || OrigClazz.inputClassName || inputClassName).join(' ');
+    return addClasses([], value || OrigClazz.inputClassName || settings.inputClassName).join(' ');
 }
 
 export default function typeClass(Clazz, key, propList, OrigClazz) {

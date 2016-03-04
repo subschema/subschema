@@ -5,17 +5,19 @@ import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {inherits, isFunction} from '../tutils';
 
-const propTypes = {
-    className: PropTypes.cssClass,
-    id: PropTypes.id,
-    fieldClass: PropTypes.fieldClass
+export const settings = {
+    propTypes: {
+        className: PropTypes.cssClass,
+        id: PropTypes.id,
+        fieldClass: PropTypes.fieldClass
+    }
 };
 
 
-export function normalize(template, settings = {}) {
+export function normalize(template, _settings = settings) {
 
     if (template == null) {
-        return settings;
+        return _settings;
     }
 
     if (typeof template === 'string' || typeof template === 'function') {
@@ -26,28 +28,35 @@ export function normalize(template, settings = {}) {
     }
 
     if (template === true) {
-        return settings;
+        return _settings;
     }
 
     if (template.template === false) {
         return template;
     }
     return {
-        ...settings,
+        ..._settings,
         ...template
     }
 }
 
-export function loadTemplate(value, key, props, context) {
-    const {template, ...rest} = normalize(value);
+export function loadTemplate(value, key, props, {loader, injector}) {
+    const {template, propTypes, ...rest} = normalize(value);
 
     if (template == null || template === false) {
         return null;
     }
 
-    const Template = isFunction(template) ? template : context.loader.loadTemplate(template);
-
-    const InjectedTemplate =  context.injector.inject(Template, propTypes, rest);
+    let Template;
+    if (isFunction(template)) {
+        Template = template;
+    } else {
+        Template = loader.loadTemplate(template);
+        if (!Template.displayName) {
+            Template.displayName = template;
+        }
+    }
+    const InjectedTemplate = injector.inject(Template, propTypes, rest);
 
     return InjectedTemplate;
 }

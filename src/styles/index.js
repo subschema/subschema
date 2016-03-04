@@ -12,7 +12,7 @@ styleCtx.keys().reduce(function (obj, key) {
     return obj;
 }, api)
 
-module.exports = lessCtx.keys().reduce(function (obj, key) {
+lessCtx.keys().reduce(function (obj, key) {
         var nkey = key.replace(/^\.\/(.*)\.(less|css)$/, '$1');
         var cobj = obj[nkey];
         var Style = lessCtx(key);
@@ -29,3 +29,6 @@ module.exports = lessCtx.keys().reduce(function (obj, key) {
         }
         return obj;
     }, api);
+
+console.log('style', api);
+module.exports = api;
