@@ -13,10 +13,13 @@ if (isDist) {
         {Subschema: 'Subschema'},
         {react: 'React'},
         {'react-dom': 'ReactDOM'},
-        {'react-addons-test-utils': 'React.addons.TestUtils'}
+ //       {'react-addons-test-utils': 'React.addons.TestUtils'}
     ], false);
-
+    demoCfg.resolve.alias['react-addons-test-utils'] = join('test/react-addons-test-utils');
+    demoCfg.resolve.alias['react-addons-css-transition-group'] = join('test/react-addons-test-utils');
     files.unshift(
+//         'node_modules/react/dist/react.js',
+
         'node_modules/react/dist/react-with-addons.js',
         'node_modules/react-dom/dist/react-dom.js',
         {pattern: 'dist/subschema-noreact.js', included: true, served: true},
@@ -26,6 +29,8 @@ if (isDist) {
     demoCfg = config('karma');
     files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
 }
+demoCfg.resolve.alias['subschema-test-support'] = join('node_modules/subschema-test-support/src/index');
+demoCfg.resolve.alias['subschema-test-support/samples'] = join('node_modules/subschema-test-support/samples');
 
 delete demoCfg.entry;
 

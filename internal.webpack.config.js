@@ -70,11 +70,11 @@ function config(filename, externals, isNode, isMinify) {
             library: 'Subschema',
             pathinfo: false
         },
+        externals: externals,
         postcss: [
             require('autoprefixer'),
             require('postcss-color-rebeccapurple')
         ],
-        externals: externals,
         resolve: {
             extensions: ['', '.js', '.jsx'],
             alias: {
@@ -93,6 +93,15 @@ function config(filename, externals, isNode, isMinify) {
 
         plugins: plugins
     };
+    if (externals){
+        conf.resolve.alias['react'] = join('./shim/react');
+        conf.resolve.alias['react-dom'] = join('./shim/react-dom');
+        conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
+ //       conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
+        conf.resolve.alias['react-internal'] = join('node_modules/react');
+        conf.resolve.alias['react/lib/onlyChild'] = join('shim/onlyChild');
+        conf.resolve.alias['./onlyChild'] = join('shim/onlyChild');
+    }
     if (!isNode) {
         loaders.push({
                 test: /\.css$/,
@@ -120,7 +129,7 @@ function config(filename, externals, isNode, isMinify) {
 
     }
     if (isMinify){
-        plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
+ //       plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
 
     }
     return conf;

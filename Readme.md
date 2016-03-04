@@ -179,47 +179,26 @@ Example:
   
 ```
 
-If you need to listen to a particular path use the decorator.
+If you need to listen to a particular path use the PropType. (@listen has been removed infavor of resolvers)
 
 ```js
-   var {listen} from Subschema.decorators;
-
-   class ListeningType {
-      //value, path, exec on init
-      @listen('value', 'somePath', false)
-      handleSomePath(value, oldValue, path){
-            
+   import {PropTypes} from Subschema;
+   class ListeningType extends Component {
+      static propTypes = {
+         value:PropTypes.value   
       }
-   }
+      static defaultProps = {
+        //optional if its '.'
+         value:'.'
+      }
+      render(){
+        return <span>{this.props.value}</span>
+      }
+ 
+    }
 
 
 ```
-If you need to listen to dynamic paths use the listeners decorator
-```js
-   var {listen} from Subschema.decorators;
-
-  
-   class DynamicListenExample {
-       /**
-        *  this will listen to the current path
-        *  for errors without initing.
-        */
-
-       @listeners("error", false)
-       listen(){
-          return {[this.props.path]:this.handler}
-       }
-       
-       handler(value, oldValue, path){
-       
-       }
-
-   }
-
-
-```
-
-
 
 
 
@@ -239,7 +218,8 @@ Example:
 
 
 ```jsx
-      var {types, loaderFactory,DefaultLoader, Form, decorators} = Subschema;
+      import React from 'react';
+      import {decorators} from  'Subschema';
       var {type} = decorators.provide;
       var {Select, Checkbox} = types;
       
@@ -588,7 +568,8 @@ var schema = {
 
 ##Fieldsets
 Fieldsets wrap sets of fields.   This allows for grouping of elements.  By Default the FieldSetTemplate template
-is used, and if a different FieldSetTemplate is defined in a  loader that will be used.
+is used, and if a different FieldSetTemplate is defined in a  loader that will be used.  FieldSet's can now take any
+other property defined in their template.    
 
 Fieldsets can be nested within each other allowing for fine grained grouping of types.
 
@@ -694,7 +675,8 @@ See the [example](https://subschema.github.io/subschema/#/Expression)
 ##Listener Properties
 Sometimes you need a property to be dependent on a value in the value manager.  To do that use the listener propType. 
 The property then will be in sync with the value in the value manager.   The value of the property in the configuration
-should be the path to the value that you are interested in.
+should be the path to the value that you are interested in.  PropTypes.error will listen to the first error for the path
+and PropTypes.errors will get all props for the path.
 
 
 ```jsx
@@ -747,3 +729,5 @@ schema = {
 ```
 
 
+#Resolvers
+Resolvers allow 

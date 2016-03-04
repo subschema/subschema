@@ -1,14 +1,15 @@
 "use strict";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import {React, ReactDOM, into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from 'subschema-test-support';
-import {types, ValueManager} from 'Subschema';
+import { into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from 'subschema-test-support';
+import {Form, types, ValueManager} from 'Subschema';
 
 const {Restricted} = types;
 
 
 describe('types/Restricted', function () {
     this.timeout(50000);
-    var Form = require('subschema').Form;
 
     it('should create a restricted input', function () {
         var onChange = (value)=> {
@@ -39,13 +40,23 @@ describe('types/Restricted', function () {
         expect(valueManager.path('test')).toBe('123-4', 'should update value manager');
     })
     describe('mm20YY', function () {
+        var onChange, input, inputEl, state, child;
 
-        var onChange = (value)=> {
-            state.setState({value})
-        }, {state, child} = intoWithState(<Restricted formatter="mm20YY" onChange={onChange}/>, {});
-        expect(child).toExist();
-        var input = TestUtils.scryRenderedDOMComponentsWithTag(child, 'input')[0];
-        var inputEl = ReactDOM.findDOMNode(input);
+        before(function () {
+            onChange = function (value) {
+                state.setState({value})
+            };
+            ({state, child} = intoWithState(<Restricted formatter="mm20YY" onChange={onChange}/>, {}));
+
+
+
+            expect(child).toExist();
+
+            input = TestUtils.scryRenderedDOMComponentsWithTag(child, 'input')[0];
+
+            inputEl = ReactDOM.findDOMNode(input);
+
+        });
 
         it('enters 2/16', function () {
             change(input, '2');

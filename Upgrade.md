@@ -1,6 +1,12 @@
-Subschema 0.6.0 -> 1.0 Upgrade
+Subschema 0.6.x -> 1.0.0 Upgrade
 
 ##API Changes
+ * Templates/FieldSets are now injectable.
+ * Transitions are now injectable per field or fieldset.
+ * style property will load from loader, based on className.
+ * -EventCSSTransition has been replaced with ReactCSSReplaceTransition.jsx.
+ * -loader.js is removed now use import.
+ * Subschema.newSubschemaContext() - will setup a new loader, and magic.
  * Listener decorators are gone.   They where a bad idea, and have been replaced with injection.
  * Resolvers are new.   More on that later.
  * Conditional, not sure what I was thinking with the original api/example but it was a bit insane. Has been
@@ -8,7 +14,6 @@ Subschema 0.6.0 -> 1.0 Upgrade
  * You can call a eventables remove more than once.  You shouldn't but it should not break anything.
  * Wizard - Buttons are passed as objects, rather than rendered.
  * Editor has been replaced with Field, much much simpler.
- * Nearly everything is injectable now.  Not just types but templates, content.
  * Most css classes are replacing what not in addition to.   This makes things easier but will break some UI.  Just include
    the original css class in with your additionally configured one to fix. 
  * CSS class injection now ends in Class.  May need to fix some components but it should be buttonClass, modalClass, etc.   
