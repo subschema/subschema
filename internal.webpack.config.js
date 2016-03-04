@@ -13,7 +13,7 @@ function config(filename, externals, isNode, isMinify) {
     var loaders = [
         {
             test: /\.js(x)?$/,
-            exclude:/node_modules\/(?!(subschema.*))/,
+            exclude: /node_modules\/(?!(subschema.*))/,
             loader: 'babel'
         },
         {test: /\.(png|jpe?g|mpe?g[34]?|svg|gif)$/, loader: 'url-loader?limit=100000'},
@@ -93,16 +93,34 @@ function config(filename, externals, isNode, isMinify) {
 
         plugins: plugins
     };
-    if (externals){
-        conf.resolve.alias['react'] = join('./shim/react');
-        conf.resolve.alias['react-dom'] = join('./shim/react-dom');
-        conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
- //       conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
-        conf.resolve.alias['react-internal'] = join('node_modules/react');
-        conf.resolve.alias['react/lib/onlyChild'] = join('shim/onlyChild');
-        conf.resolve.alias['./onlyChild'] = join('shim/onlyChild');
-    }
     if (!isNode) {
+        if (externals) {
+            conf.resolve.alias['react'] = join('./shim/react');
+            conf.resolve.alias['react-dom'] = join('./shim/react-dom');
+            conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
+            //       conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
+            conf.resolve.alias['react-internal'] = join('node_modules/react');
+            conf.resolve.alias['react/lib/onlyChild'] = join('shim/onlyChild');
+            conf.resolve.alias['./onlyChild'] = join('shim/onlyChild');
+
+            //These 3 are for ReactCSSTransitionGroupChild
+            externals['./React'] = {
+                root: "React",
+                commonjs2: "react",
+                commonjs: "react",
+                amd: "react"
+            };
+            externals['./ReactDOM'] = {
+                root: "ReactDOM",
+                commonjs2: "react-dom",
+                commonjs: "react-dom",
+                amd: "react-dom"
+            };
+            externals['./onlyChild'] = {
+                root: "React.onlyChild"
+            };
+        }
+
         loaders.push({
                 test: /\.css$/,
                 loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
@@ -128,8 +146,8 @@ function config(filename, externals, isNode, isMinify) {
         plugins.unshift(extractCSS);
 
     }
-    if (isMinify){
- //       plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
+    if (isMinify) {
+        //       plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
 
     }
     return conf;

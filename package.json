@@ -18,8 +18,8 @@
     "test-dist": "NODE_ENV=test karma start ./karma.conf.js --single-run --browsers Firefox",
     "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
     "karma-dist": "NODE_ENV=test karma start ./karma.conf.js --no-single-run --colors --auto-watch",
-    "compile": "NODE_ENV=production webpack -p --verbose --display-modules --config ./webpack.config.js",
-    "prepublish": "npm prune && NODE_ENV=production npm run test && npm run compile && node ./scripts/test-node.js"
+    "compile": "NODE_ENV=production webpack --verbose --display-modules --config ./webpack.config.js",
+    "prepublish": "npm prune && npm run test && npm run compile && node ./scripts/test-node.js"
   },
   "keywords": [
     "react",
