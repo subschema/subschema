@@ -1,4 +1,5 @@
 .build
+dist
 .vscode
 jsconfig.json
 npm-debug.log*
