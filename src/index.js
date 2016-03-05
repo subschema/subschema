@@ -1,7 +1,8 @@
 "use strict";
 
 import Conditional from './components/Conditional.jsx';
-import Editor from './components/Field.jsx';
+import Field from './components/Field.jsx';
+import FieldSet from './components/FieldSet.jsx';
 import NewChildContext from './components/NewChildContext.jsx';
 import Form from './components/Form.jsx';
 import Dom from './Dom';
@@ -19,7 +20,8 @@ import cachedInjector from './cachedInjector';
 import provideFactory from './decorators/provideFactory';
 export {
     Conditional,
-    Editor,
+    Field,
+    FieldSet,
     Form,
     NewChildContext,
     Dom,
@@ -39,7 +41,8 @@ export {
 };
 export default {
     Conditional,
-    Editor,
+    Field,
+    FieldSet,
     Form,
     NewChildContext,
     Dom,
@@ -69,7 +72,7 @@ export default {
 
 function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
     Conditional,
-    Editor,
+    Field,
     Form,
     NewChildContext,
     Dom,

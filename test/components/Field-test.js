@@ -1,10 +1,8 @@
 "use strict";
 import expect from 'expect';
 import React, {Component} from 'react';
-import {PropTypes, decorators, ValueManager, Form, loader, loaderFactory, types, templates, injector} from 'subschema';
-import support, {into,change, blur, intoWithContext, byTag, byComponent,findNode} from 'subschema-test-support';
-
-import Field from '../../src/components/Field.jsx';
+import {PropTypes, decorators, ValueManager, Form, Field, loader, loaderFactory, types, templates, injector} from 'Subschema';
+import {into,change, blur, intoWithContext, byTag, byComponent,findNode} from 'subschema-test-support';
 
 describe('components/Field', function () {
     this.timeout(50000);

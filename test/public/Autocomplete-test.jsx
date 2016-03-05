@@ -1,7 +1,7 @@
 import {React, into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
 import  { types,  templates, newSubschemaContext} from 'Subschema';
-import AutoComplete from 'subschema-test-support/samples/AutoComplete.js';
-import AutoCompleteSetup from 'subschema-test-support/samples/AutoComplete-setup.js';
+import AutoComplete from 'subschema-test-support-samples/Autocomplete.js';
+import AutoCompleteSetup from 'subschema-test-support-samples/Autocomplete-setup.js';
 describe('public/AutoComplete', function () {
     this.timeout(50000);
     it('should not be selectable', function () {

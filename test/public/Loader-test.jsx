@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {into,TestUtils,expect, byId, byTypes, Simulate}  from 'subschema-test-support';
-import loaderTestSetup from 'subschema-test-support/samples/Loader-setup.js';
-import LoaderTest from 'subschema-test-support/samples/Loader.js'
+import loaderTestSetup from 'subschema-test-support-samples/Loader-setup.js';
+import LoaderTest from 'subschema-test-support-samples/Loader.js'
 import {newSubschemaContext}  from 'Subschema';
 
 

@@ -1,7 +1,7 @@
 "use strict";
 import React from 'react';
 import expect from 'expect';
-import samples from 'subschema-test-support/samples';
+import samples from 'subschema-test-support-samples';
 import {into} from 'subschema-test-support';
 import Subschema, {newSubschemaContext} from 'subschema';
 
@@ -14,7 +14,7 @@ describe('samples', function () {
                 const {ValueManager, Form, loader,  injector} = Subschema;
                 const valueManager = ValueManager(sample.data);
                 if (sample.setupFile) {
-                    const setupFile = require(`subschema-test-support/samples/${sample.setupFile}`);
+                    const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
                     setupFile(loader, sample.schema, Subschema, React, valueManager);
                 }
                 const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
@@ -27,7 +27,7 @@ describe('samples', function () {
                 const {ValueManager, Form, loader,  injector} = Subschema;
                 const valueManager = ValueManager();
                 if (sample.setupFile) {
-                    const setupFile = require(`subschema-test-support/samples/${sample.setupFile}`);
+                    const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
                     setupFile(loader, sample.schema, Subschema, React, valueManager);
                 }
                 const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
@@ -40,7 +40,7 @@ describe('samples', function () {
                 const {ValueManager, Form, loader,  injector} = Subschema;
                 const valueManager = ValueManager();
                 if (sample.setupFile) {
-                    const setupFile = require(`subschema-test-support/samples/${sample.setupFile}`);
+                    const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
                     setupFile(loader, sample.schema, Subschema, React, valueManager);
                 }
                 const form = into(<Form schema={sample.schema} loader={loader} injector={injector}

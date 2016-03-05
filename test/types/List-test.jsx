@@ -2,7 +2,7 @@
 
 import {React, byName, into,findNode, TestUtils,expect, filterProp, byClass,Simulate, click, byTag, byTags,  byComponent, byComponents} from 'subschema-test-support';
 import {templates, Form} from 'Subschema';
-import Todos, {schema as Schema} from 'subschema-test-support/samples/Todos';
+import Todos, {schema as Schema} from 'subschema-test-support-samples/Todos';
 
 const {ButtonTemplate,ButtonsTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 

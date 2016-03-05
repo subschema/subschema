@@ -1,5 +1,6 @@
 "use strict";
-import {React, into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
+import React, {Component} from 'react';
+import {into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, templates, loaderFactory, DefaultLoader} from 'Subschema';
 
 

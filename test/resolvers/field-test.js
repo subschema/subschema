@@ -1,8 +1,8 @@
 "use strict";
 import expect from 'expect';
 import React, {Component} from 'react';
-import { PropTypes, ValueManager, templates, injector, types, loader, loaderFactory} from 'subschema';
-import support, {intoWithContext, byComponent,findNode} from 'subschema-test-support/src/index.js';
+import {newSubschemaContext, PropTypes, ValueManager, templates,  types} from 'Subschema';
+import {intoWithContext, byComponent,findNode} from 'subschema-test-support';
 
 const {field} = PropTypes;
 
@@ -41,7 +41,8 @@ describe('resolvers/field', function () {
         }
     }
     it('should inject default type and template', function () {
-
+        const Subschema = newSubschemaContext();
+        const {loader, injector} = Subschema;
         const Wrap = injector.inject(ResolverFieldTest);
 
         const valueManager = ValueManager();
@@ -54,43 +55,45 @@ describe('resolvers/field', function () {
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
-        expect(f.Template.name).toBe('InjectedClass');
-        expect(f.Type.name).toBe('InjectedClass');
+        expect(f.Template.displayName).toMatch(/EditorTemplate\$Wrapper/);
+        expect(f.Type.displayName).toMatch(/Text\$Wrapper/);
 
     });
     it('should inject default type and overriden template', function () {
-
+        const Subschema = newSubschemaContext();
+        const {loader, injector} = Subschema;
 
         class TestType extends Component {
-            static template = {template: 'JoeTemplate', className:'what'};
+            static template = {template: 'JoeTemplate', className: 'what'};
 
             render() {
                 return <span>testtype</span>
             }
         }
         const Wrap = injector.inject(ResolverFieldTest);
-
         const valueManager = ValueManager();
-        const nloader = loaderFactory([loader]);
-        nloader.addTemplate('JoeTemplate', JoeTemplate);
-        nloader.addType('TestType', TestType);
+
+        loader.addTemplate('JoeTemplate', JoeTemplate);
+        loader.addType('TestType', TestType);
 
         const inst = intoWithContext(<Wrap field={{type:'TestType'}}/>, {
             valueManager,
-            loader:nloader,
+            loader,
             injector
         }, true, PropTypes.contextTypes)
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
-        expect(f.Template.name).toBe('InjectedClass');
-        expect(f.Type.name).toBe('InjectedClass');
+        expect(f.Template.displayName).toMatch(/\$Wrapper/);
+        expect(f.Type.displayName).toMatch(/\$Wrapper/);
         const tt = byComponent(inst, TestType);
         const jt = byComponent(inst, JoeTemplate);
 
     });
     it('should inject default type and template is false', function () {
 
+        const Subschema = newSubschemaContext();
+        const {loader, injector} = Subschema;
 
         class TestType extends Component {
             static template = false;
@@ -102,20 +105,19 @@ describe('resolvers/field', function () {
         const Wrap = injector.inject(ResolverFieldTest);
 
         const valueManager = ValueManager();
-        const nloader = loaderFactory([loader]);
-        nloader.addTemplate('JoeTemplate', JoeTemplate);
-        nloader.addType('TestType', TestType);
+        loader.addTemplate('JoeTemplate', JoeTemplate);
+        loader.addType('TestType', TestType);
 
         const inst = intoWithContext(<Wrap field={{type:'TestType'}}/>, {
             valueManager,
-            loader:nloader,
+            loader,
             injector
         }, true, PropTypes.contextTypes);
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
         expect(f.Template).toNotExist();
-        expect(f.Type.name).toBe('InjectedClass');
+        expect(f.Type.displayName).toMatch(/TestType\$Wrapper/);
         const tt = byComponent(inst, TestType);
 
 

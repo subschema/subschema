@@ -6,20 +6,18 @@ var webpack = require('webpack'),
     config = require('./internal.webpack.config'),
 
     isDist = /dist/.test(lifecycle);
+
+console.log('isDist', isDist, lifecycle);
 var demoCfg;
 if (isDist) {
-    demoCfg = config('karma-dist', [
-        {subschema: 'Subschema'},
-        {Subschema: 'Subschema'},
-        {react: 'React'},
-        {'react-dom': 'ReactDOM'},
- //       {'react-addons-test-utils': 'React.addons.TestUtils'}
-    ], false);
+    demoCfg = config('karma-dist', true, false, false);
     demoCfg.resolve.alias['react-addons-test-utils'] = join('test/react-addons-test-utils');
-    demoCfg.resolve.alias['react-addons-css-transition-group'] = join('test/react-addons-test-utils');
+    demoCfg.resolve.alias['react-dom-internal'] = join('node_modules/react-dom');
+    demoCfg.resolve.alias['subschema'] = demoCfg.resolve.alias['Subschema'] = join('test/subschema');
+    demoCfg.externals = {
+        '_Subschema': 'Subschema'
+    };
     files.unshift(
-//         'node_modules/react/dist/react.js',
-
         'node_modules/react/dist/react-with-addons.js',
         'node_modules/react-dom/dist/react-dom.js',
         {pattern: 'dist/subschema-noreact.js', included: true, served: true},
@@ -28,9 +26,13 @@ if (isDist) {
 } else {
     demoCfg = config('karma');
     files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
+    demoCfg.resolve.alias['subschema'] = join('src/index.jsx'),
+        demoCfg.resolve.alias['Subschema'] = join('src/index.jsx')
+
 }
-demoCfg.resolve.alias['subschema-test-support'] = join('node_modules/subschema-test-support/src/index');
-demoCfg.resolve.alias['subschema-test-support/samples'] = join('node_modules/subschema-test-support/samples');
+
+demoCfg.resolve.alias['subschema-test-support-samples'] = join('node_modules/subschema-test-support/samples');
+demoCfg.resolve.alias['subschema-test-support'] = join('node_modules/subschema-test-support/src/index.js');
 
 delete demoCfg.entry;
 
@@ -41,10 +43,6 @@ demoCfg.module.loaders.unshift({
     include: join("node_modules/subschema-test-support/samples"),
     loader: 'subschema-test-support'
 });
-demoCfg.resolve.alias = {
-        'subschema': join('src/index.jsx'),
-        'Subschema': join('src/index.jsx')
-};
 
 module.exports = function (config) {
     config.set({

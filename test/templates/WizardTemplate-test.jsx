@@ -2,7 +2,7 @@
 
 import {React, byComponent,byComponents, byTag,change, into,click,check, TestUtils,expect, byTags, Simulate}  from 'subschema-test-support';
 import {Form,ValueManager, templates, types} from 'Subschema';
-import Sample from 'subschema-test-support/samples/Wizard';
+import Sample from 'subschema-test-support-samples/Wizard';
 
 describe('templates/WizardTemplate', function () {
     this.timeout(50000);

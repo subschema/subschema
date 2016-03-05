@@ -6,7 +6,7 @@ export default class CheckboxTemplate extends Component {
     static propTypes = {
         label: PropTypes.node,
         style: PropTypes.style,
-        checked: PropTypes.checked
+        checked: PropTypes.bool
     };
     static defaultProps = {
         style: "CheckboxTemplate",

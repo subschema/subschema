@@ -2,8 +2,8 @@
 import React from 'react';
 import { into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
 import {newSubschemaContext} from 'Subschema';
-import ListenerPropertySetup from 'subschema-test-support/samples/ListenerProperty-setup.js';
-import ListenerProperty from 'subschema-test-support/samples/ListenerProperty.js';
+import ListenerPropertySetup from 'subschema-test-support-samples/ListenerProperty-setup.js';
+import ListenerProperty from 'subschema-test-support-samples/ListenerProperty.js';
 
 describe('public/ListenerProperty', function () {
     this.timeout(50000);

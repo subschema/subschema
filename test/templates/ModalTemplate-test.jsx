@@ -1,7 +1,7 @@
 "use strict";
 import {React, click, change,findNode,  into,TestUtils,expect,byComponents, byTag, byTags, byComponent, select,  Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, templates, ValueManager, loaderFactory, DefaultLoader} from 'Subschema';
-import ModalSample from 'subschema-test-support/samples/Modal.js';
+import ModalSample from 'subschema-test-support-samples/Modal.js';
 
 const {ModalTemplate} = templates;
 

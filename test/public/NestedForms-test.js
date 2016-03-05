@@ -1,6 +1,6 @@
 import {React, into,TestUtils,expect,byTypes, byComponents, select, byId, Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
-var NestedForms = require('subschema-test-support/samples/NestedForms.js');
+var NestedForms = require('subschema-test-support-samples/NestedForms.js');
 
 describe('public/NestedForms', function () {
     it('should render simple nested with seperate templates', function () {

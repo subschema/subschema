@@ -14,7 +14,8 @@ import _cachedInjector from './cachedInjector';
 import {injectorFactory as _injectorFactory} from 'subschema-injection';
 
 import Subschema, {Conditional as _C,
-    Editor as _E,
+    Field as _Field,
+    FieldSet as _FieldSet,
     Form as _F,
     NewChildContext as _N,
     Dom as _D,
@@ -30,11 +31,12 @@ import Subschema, {Conditional as _C,
     validators as _v,
     warning as _w,
     newSubschemaContext as _newSubschemaContext,
-    } from './index.js';
+} from './index.js';
 
 export const loaderFactory = _loaderFactory;
 export const Conditional = _C;
-export const Editor = _E;
+export const Field = _Field;
+export const FieldSet = _FieldSet;
 export const Form = _F;
 export const NewChildContext = _N;
 export const Dom = _D;
@@ -77,6 +79,6 @@ export default _initSubchemaContext;
  * @param defaultResolvers
  * @param defaultPropTypes
  */
-export function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory, defaultSubschema=Subschema) {
+export function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory, defaultSubschema = Subschema) {
     return _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectorFactory, defaultSubschema);
 }

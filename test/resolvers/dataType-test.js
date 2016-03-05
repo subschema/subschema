@@ -1,9 +1,8 @@
 "use strict";
 import expect from 'expect';
 import React, {Component} from 'react';
-import {PropTypes, decorators, ValueManager} from 'subschema';
-import support, {intoWithContext, byComponent,findNode, change} from 'subschema-test-support/src/index';
-import resolvers from '../../src/resolvers';
+import {resolvers, PropTypes, decorators, ValueManager} from 'Subschema';
+import support, {intoWithContext, byComponent,findNode, change} from 'subschema-test-support';
 import injectorFactory from 'subschema-injection/src/injectorFactory';
 const injector = injectorFactory();
 

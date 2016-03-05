@@ -1,6 +1,6 @@
 "use strict";
-
-import {React, findNode, into, expect, change} from 'subschema-test-support';
+import React from 'react';
+import { findNode, into, expect, change} from 'subschema-test-support';
 import {types} from 'Subschema';
 
 const {Text} = types;

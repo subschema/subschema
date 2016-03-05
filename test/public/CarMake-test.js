@@ -1,7 +1,7 @@
 import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from 'subschema-test-support';
 import {newSubschemaContext, types} from 'Subschema';
-import CarMakeSetup from 'subschema-test-support/samples/CarMake-setup.js';
-import CarMake from 'subschema-test-support/samples/CarMake.js';
+import CarMakeSetup from 'subschema-test-support-samples/CarMake-setup.js';
+import CarMake from 'subschema-test-support-samples/CarMake.js';
 const Select = types.Select;
 
 describe('public/CarMake', function () {

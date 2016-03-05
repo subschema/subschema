@@ -8,7 +8,41 @@ var AUTOPREFIXER_LOADER = 'autoprefixer?{browsers:[' +
 
 var join = path.join.bind(path, __dirname);
 var cssStr = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]';
+
+function externs() {
+    return {
+        "react": {
+            root: "React",
+            commonjs2: "react",
+            commonjs: "react",
+            amd: "react"
+        },
+
+        "react-dom": {
+            root: "ReactDOM",
+            commonjs2: "react-dom",
+            commonjs: "react-dom",
+            amd: "react-dom"
+        },
+        "react-addons-css-transition-group": {
+            "root": "ReactCSSTransitionGroup",
+            "commonjs2": "react-addons-css-transition-group",
+            "commonjs": "react-addons-css-transition-group",
+            "amd": "react-addons-css-transition-group"
+        },
+        "fbjs": {
+            "root": "fbjs",
+            "commonjs2": "fbjs",
+            "commonjs": "fbjs",
+            "amd": "fbjs"
+        }
+    }
+};
+
 function config(filename, externals, isNode, isMinify) {
+    if (externals === true) {
+        externals = externs();
+    }
     console.log('building', filename, isNode);
     var loaders = [
         {
@@ -100,8 +134,6 @@ function config(filename, externals, isNode, isMinify) {
             conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
             //       conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
             conf.resolve.alias['react-internal'] = join('node_modules/react');
-            conf.resolve.alias['react/lib/onlyChild'] = join('shim/onlyChild');
-            conf.resolve.alias['./onlyChild'] = join('shim/onlyChild');
 
             //These 3 are for ReactCSSTransitionGroupChild
             externals['./React'] = {
@@ -116,9 +148,7 @@ function config(filename, externals, isNode, isMinify) {
                 commonjs: "react-dom",
                 amd: "react-dom"
             };
-            externals['./onlyChild'] = {
-                root: "React.onlyChild"
-            };
+
         }
 
         loaders.push({
