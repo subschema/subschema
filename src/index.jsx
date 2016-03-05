@@ -68,7 +68,7 @@ Subschema.DefaultLoader = _DefaultLoader;
 
 const _initSubchemaContext = newSubschemaContext();
 export const loader = _initSubchemaContext.loader;
-export const injector = _initSubchemaContext.injector;
+export const injector = Subschema.injector = _initSubchemaContext.injector;
 export default _initSubchemaContext;
 
 /**

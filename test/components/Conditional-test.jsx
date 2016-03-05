@@ -1,5 +1,6 @@
 "use strict";
-import {React, into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from 'subschema-test-support';
+import React from 'react';
+import { into, intoWithContext, select, TestUtils,expect, Simulate,byTypes, byType, notByType} from 'subschema-test-support';
 import each from 'lodash/collection/each';
 import {ValueManager, PropTypes, Conditional as _Conditional, newSubschemaContext, types} from 'Subschema';
 const {Select} = types;

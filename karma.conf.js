@@ -24,11 +24,13 @@ if (isDist) {
         {pattern: 'dist/subschema-noreact.js.map', included: false, served: true}
     );
 } else {
-    demoCfg = config('karma');
     files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
-    demoCfg.resolve.alias['subschema'] = join('src/index.jsx'),
-        demoCfg.resolve.alias['Subschema'] = join('src/index.jsx')
-
+    demoCfg = config('karma', false, false, false);
+    demoCfg.resolve.alias['subschema'] = join('src/index.jsx');
+    demoCfg.resolve.alias['Subschema'] = join('src/index.jsx');
+    demoCfg.resolve.alias['react'] = join('node_modules/react');
+    demoCfg.resolve.alias['react-dom'] = join('node_modules/react-dom');
+    demoCfg.resolve.alias['react-addons-test-utils'] = join('node_modules/react-addons-test-utils');
 }
 
 demoCfg.resolve.alias['subschema-test-support-samples'] = join('node_modules/subschema-test-support/samples');
@@ -43,6 +45,7 @@ demoCfg.module.loaders.unshift({
     include: join("node_modules/subschema-test-support/samples"),
     loader: 'subschema-test-support'
 });
+
 
 module.exports = function (config) {
     config.set({
