@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "0.9.9",
+  "version": "1.0.0",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
@@ -14,7 +14,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "test-server":"NODE_ENV=test mocha ./test/**/*-test-server.js",
+    "test-server": "NODE_ENV=test mocha ./test/**/*-test-server.js",
     "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
     "test-dist": "NODE_ENV=test karma start ./karma.conf.js --single-run --browsers Firefox",
     "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
