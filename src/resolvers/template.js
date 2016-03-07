@@ -2,6 +2,7 @@
 
 import PropTypes from '../PropTypes';
 import {inherits, isFunction} from '../tutils';
+import warning from '../warning';
 
 export const settings = {
     propTypes: {
@@ -50,6 +51,7 @@ export function loadTemplate(value, key, props, {loader, injector}) {
         Template = template;
     } else {
         Template = loader.loadTemplate(template);
+        warning(Template, 'Template for name "%s" is not defined', template);
         if (!Template.displayName) {
             Template.displayName = template;
         }

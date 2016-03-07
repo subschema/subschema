@@ -35,6 +35,7 @@ export function loadType(val, key, props, context) {
     let Type;
     if (typeof type === 'string') {
         Type = context.loader.loadType(type);
+        warning(Type, 'Could not find a type for %s', type);
 
         if (!Type.displayName) {
             Type.displayName = type;
@@ -42,8 +43,9 @@ export function loadType(val, key, props, context) {
     } else {
         Type = type;
     }
+
+
     const injectedClazz = context.injector.inject(Type, propTypes, rest.defaultProps);
-    warning(injectedClazz, 'Could not find a type for %s', val);
 
     if ('template' in Type) {
         injectedClazz.template = Type.template;
