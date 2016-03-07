@@ -83,16 +83,18 @@
   "peerDependencies": {
     "react": "*",
     "lodash": "*",
+    "fbjs": "*",
     "react-dom": "*",
     "react-addons-css-transition-group": "*",
     "subschema-injection": "*"
   },
   "dependencies": {
+    "fbjs": "^0.8.0-alpha.3",
+    "lodash": "^3.10.1",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "lodash": "^3.10.1",
     "subschema-injection": "^1.0.8"
   }
 }
