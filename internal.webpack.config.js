@@ -84,6 +84,7 @@ function config(filename, externals, isNode, isMinify) {
     ];
 
     var conf = {
+        name:filename,
         devtool: 'source-map',
         entry: {
             subschema: './src/index.jsx'
