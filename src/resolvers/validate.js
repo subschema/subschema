@@ -2,14 +2,14 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import {toArray, noop, FREEZE_OBJ, resolveKey} from '../tutils';
+import {toArray, noop, resolveKey} from '../tutils';
 
 function initValidators(nval) {
     if (typeof nval === 'function') {
         return nval;
     }
     if (typeof nval === 'string') {
-        return this.loadValidator(nval)(FREEZE_OBJ);
+        return this.loadValidator(nval)({});
     }
     return this.loadValidator(nval.type)(nval);
 }

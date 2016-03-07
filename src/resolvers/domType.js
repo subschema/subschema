@@ -11,7 +11,7 @@ export const settings = {
     type: 'span'
 };
 
-export function loadType(val, key, props, context) {
+export function loadType(val, key, props, {loader, injector}) {
 
     const {type, ...rest} = typeof val === 'string' ? {
         ...settings,
@@ -22,9 +22,9 @@ export function loadType(val, key, props, context) {
         return type;
     }
 
-    const Type = context.loader.loadType(type);
+    const Type = loader.loadType(type);
 
-    const injectedClazz = context.injector.inject(Type, null, rest);
+    const injectedClazz = injector.inject(Type, null, rest);
     return injectedClazz;
 }
 
