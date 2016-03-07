@@ -25,6 +25,25 @@ function returnFirst(value) {
     return value;
 }
 
+function resolveKey(path, key) {
+    if (!key) {
+        return path;
+    }
+    if (key[0] != '.') {
+        return key;
+    }
+    var parts = path ? path.split('.') : [];
+    key = key.substring(1);
+    while (key[0] === '.') {
+        key = key.substring(1);
+        parts.pop();
+    }
+    if (key) {
+        parts.push(key);
+    }
+    return parts.length === 0 ? null : parts.join('.');
+}
+
 function result(scope, key) {
     if (!key) {
         return null;
@@ -180,6 +199,7 @@ export {
     flatten,
     push,
     slice,
+    resolveKey,
     returnFirst,
     result,
     path,
@@ -214,6 +234,7 @@ export default {
     FREEZE_ARR,
     flatten,
     push,
+    resolveKey,
     slice,
     inherits,
     returnFirst,

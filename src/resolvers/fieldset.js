@@ -1,7 +1,6 @@
 "use strict";
 
-import {extend, push, prop} from 'subschema-injection/src/util';
-import {toArray,isString} from '../tutils';
+import {push, toArray,isString} from '../tutils';
 
 export function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};
@@ -46,7 +45,7 @@ function normal(value) {
     return normalizeFieldsets(value, []);
 }
 function fieldsets(Clazz, key) {
-    Clazz::prop(key, normal);
+    Clazz::this.property(key, normal);
 }
 fieldsets.normalizeFieldsets = normalizeFieldsets;
 export default fieldsets;

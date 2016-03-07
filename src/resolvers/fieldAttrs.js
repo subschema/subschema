@@ -1,5 +1,6 @@
 "use strict";
-import {extend} from 'subschema-injection/src/util';
+
+import {applyFuncs} from '../tutils';
 
 export default function fieldAttrs(Clazz, key, propKeys) {
 
@@ -16,12 +17,15 @@ export default function fieldAttrs(Clazz, key, propKeys) {
         }
     }
 
-    Clazz::extend('componentWillMount', function () {
+    const ClazzP = Clazz.prototype;
+
+    ClazzP.componentWillMount = applyFuncs(function () {
         handleAttrs(this.props[key]);
-    });
-    Clazz::extend('componentWillReceiveProps', function (newProps) {
+    }, ClazzP.componentWillMount);
+
+    ClazzP.componentWillReceiveProps = applyFuncs(function (newProps) {
         if (this.props[key] !== newProps[key]) {
             handleAttrs(newProps[key]);
         }
-    });
+    }, ClazzP.componentWillReceiveProps);
 }

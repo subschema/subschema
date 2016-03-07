@@ -1,6 +1,5 @@
 "use strict";
 
-import {prop} from 'subschema-injection/src/util';
 import {isString,isArray, slice, isFunction, push} from '../tutils';
 
 export const settings = {
@@ -51,7 +50,7 @@ export function forType(OrigClazz, value) {
 
 export default function typeClass(Clazz, key, propList, OrigClazz) {
 
-    Clazz::prop(key, function (value) {
+    Clazz::this.property(key, function (value) {
         return forType(OrigClazz, value);
     });
 }

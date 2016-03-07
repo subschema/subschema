@@ -1,6 +1,5 @@
 "use strict";
 
-import {prop} from 'subschema-injection/src/util';
 import {toArray} from '../tutils';
 
 export function normalizeFields(fields) {
@@ -14,5 +13,5 @@ export function normalizeFields(fields) {
     return fields;
 }
 export default function fields(Clazz, key) {
-    Clazz::prop(key, normalizeFields);
+    Clazz::this.property(key, normalizeFields);
 }

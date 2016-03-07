@@ -1,4 +1,4 @@
-import {prop} from 'subschema-injection/src/util';
+"use strict";
 
 function idValue(value, key, props) {
     if (value == null) return props.id || props.path;
@@ -6,5 +6,5 @@ function idValue(value, key, props) {
 }
 export default function htmlFor(Clazz, key) {
 
-    Clazz::prop(key, idValue);
+    Clazz::this.property(key, idValue);
 }

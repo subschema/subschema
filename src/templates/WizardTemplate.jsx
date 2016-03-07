@@ -5,7 +5,6 @@ import WizardMixin from './WizardMixin';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
-import ReactCSSTransitionReplace from '../transition/ReactCSSReplaceTransition.jsx';
 
 
 function donner(done) {
@@ -42,7 +41,6 @@ export default class WizardTemplate extends WizardMixin {
         transitionForward: "slideRight",
         transitionBackward: "slideLeft",
         namespaceClass: 'wizard'
-        // ObjectType: UninjectedObjectType
     }, WizardMixin.defaultProps);
 
     static propTypes = {
@@ -86,14 +84,14 @@ export default class WizardTemplate extends WizardMixin {
         ({fieldsets, schema} = this.props.schema);
         const compState = this.state.compState,
             current = fieldsets[compState],
-            transition = this.makeTransition(compState);
+            {Transition, ...transition} = this.makeTransition(compState);
         const buttons = current.buttons ? current.buttons : this.createButtons(compState);
         const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], Template};
         return (
             <div className={`${this.props.namespaceClass} ${(this.state.animating ? this.props.animatingClass : '')}`}
                  onKeyDown={this.handleKeyDown}>
                 {this.renderProgress(fieldsets)}
-                <ReactCSSTransitionReplace key="wizard-transition" {...transition}>
+                <Transition key="wizard-transition" {...transition}>
 
                     <ObjectType {...rest}
                         className={`clearfix state-${compState}`}
@@ -101,7 +99,7 @@ export default class WizardTemplate extends WizardMixin {
                         schema={currentSchema}
                         onButtonClick={this::this.handleBtn}
                     />
-                </ReactCSSTransitionReplace>
+                </Transition>
             </div>
         );
     }

@@ -1,6 +1,5 @@
 "use strict";
 
-import {prop} from 'subschema-injection/src/util';
 import {titlelize } from '../tutils';
 
 function resolve(value, key, props) {
@@ -17,6 +16,6 @@ function resolve(value, key, props) {
 
 export default function valueEvent(Clazz, key) {
 
-    Clazz::prop(key, resolve);
+    Clazz::this.property(key, resolve);
 
 }

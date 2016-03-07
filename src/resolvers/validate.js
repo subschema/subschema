@@ -1,9 +1,8 @@
 "use strict";
 
 import React, {Component} from 'react';
-import {prop, resolveKey} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
-import {toArray, noop, FREEZE_OBJ} from '../tutils';
+import {toArray, noop, FREEZE_OBJ, resolveKey} from '../tutils';
 
 function initValidators(nval) {
     if (typeof nval === 'function') {

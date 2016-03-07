@@ -3,14 +3,9 @@
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
 import {FREEZE_ARR} from '../tutils';
-import ReactCSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
 
 export default class Field extends Component {
     static displayName = "Field";
-
-    static contextTypes = {
-        injector: PropTypes.injector
-    };
 
     static propTypes = {
         path: PropTypes.path.isRequired,
@@ -46,9 +41,10 @@ export default class Field extends Component {
 
     render() {
         if (this.props.transition) {
-            return (<ReactCSSReplaceTransition {...this.props.transition}>
+            const {Transition, ...transition} = this.props.transition;
+            return (<Transition {...transition}>
                 {this.renderConditional(this.props.conditional)}
-            </ReactCSSReplaceTransition>);
+            </Transition>);
         }
         return this.renderConditional(this.props.conditional);
     }

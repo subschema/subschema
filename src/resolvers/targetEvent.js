@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import { resolveKey, prop} from 'subschema-injection/src/util';
+import { resolveKey } from '../tutils';
 
 function resolve(value, key, props, {valueManager}) {
     if (typeof value === 'function') {

@@ -1,9 +1,11 @@
 "use strict";
 import PropTypes from '../PropTypes';
+import Transition from '../transition/ReactCSSReplaceTransition.jsx';
 
 export const settings = {
     transition: 'rollUp',
-    on: ['enter', 'leave']
+    on: ['enter', 'leave'],
+    Transition: Transition
 };
 
 
@@ -21,10 +23,11 @@ export function handleTransition(value, key, props, {loader}) {
         transitionAppearTimeout,
         transitionLeaveTimeout,
         transitionEnterTimeout,
+        on,
         transitionName:{enter, enterActive, appear, appearActive, leave, leaveActive},
-        ...rest} = typeof transition === 'string' ? loader.loadTransition(transition) : transition;
+        ...rest} = typeof transition === 'string' ? {...config, ...loader.loadTransition(transition)} : transition;
 
-    const _on = Array.isArray(config.on) ? config.on : [config.on];
+    const _on = Array.isArray(on) ? on : [on];
     const transitionName = (rest.transitionName = {});
     //either the original value has the timeout or we have an on
     if (value.transitionEnterTimeout || _on.indexOf('enter') != -1) {

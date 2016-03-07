@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import {prop, resolveKey} from 'subschema-injection/src/util';
+import {resolveKey} from '../tutils';
 
 function resolve(value, key, props, context) {
     if (typeof value === 'function') {
@@ -17,6 +17,6 @@ export default function valueEvent(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::prop(key, resolve);
+    Clazz::this.property(key, resolve);
 
 }

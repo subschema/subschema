@@ -1,32 +1,32 @@
 "use strict";
+
 import PropTypes from '../PropTypes';
-import {prop} from 'subschema-injection/src/util';
 
+const opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
+const eq = function (compare, value) {
+    return value == compare
+}, eqeq = function (compare, value) {
+    return value === compare
+}, ne = function (compare, value) {
+    return value != compare
+}, neeq = function (compare, value) {
+    return value !== compare
+}, gt = function (compare, value) {
+    return value > compare
+}, gteq = function (compare, value) {
+    return value >= compare
+}, lt = function (compare, value) {
+    return value < compare
+}, lteq = function (compare, value) {
+    return value <= compare
+}, truthy = function (compare) {
+    return !!compare;
+}, falsey = function (compare) {
+    return !compare;
+};
 
-var opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
+const opFactory = (function opFactory$factory(scope) {
 
-var opFactory = (function opFactory$factory(scope) {
-    var eq = function (compare, value) {
-        return value == compare
-    }, eqeq = function (compare, value) {
-        return value === compare
-    }, ne = function (compare, value) {
-        return value != compare
-    }, neeq = function (compare, value) {
-        return value !== compare
-    }, gt = function (compare, value) {
-        return value > compare
-    }, gteq = function (compare, value) {
-        return value >= compare
-    }, lt = function (compare, value) {
-        return value < compare
-    }, lteq = function (compare, value) {
-        return value <= compare
-    }, truthy = function (compare) {
-        return !!compare;
-    }, falsey = function (compare) {
-        return !compare;
-    };
     return (operator)=> {
         switch (operator) {
             case 'truthy':
@@ -46,7 +46,7 @@ var opFactory = (function opFactory$factory(scope) {
             case '>=':
                 return gteq;
             case '<':
-                return lt
+                return lt;
             case '<=':
                 return lteq;
 
@@ -87,5 +87,5 @@ export function loadOperator(operator, key, props, context) {
 
 export default function operator(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
-    Clazz::prop(key, loadOperator);
+    Clazz::this.property(key, loadOperator);
 }

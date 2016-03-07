@@ -1,9 +1,8 @@
 "use strict";
 
-import {prop, extend, unmount, removeListeners, resolveKey} from 'subschema-injection/src/util';
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
-import noop from '../tutils';
+import {noop} from '../tutils';
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
@@ -18,7 +17,7 @@ export default function changeValidate(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
 
 
-    Clazz::prop(key, function blurValidate$prop(validate, key, props, context) {
+    Clazz::this.property(key, function blurValidate$prop(validate, key, props, context) {
         if (validate == null) return noop;
         validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
 
@@ -37,7 +36,7 @@ export default function changeValidate(Clazz, key) {
         return validate;
     });
 
-    Clazz::unmount(function () {
+    Clazz::this.unmount(function () {
         this._validateChangeListeners && this._validateChangeListeners();
         this._validateListener && this._validateListener();
     });

@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import {listener, resolveKey} from 'subschema-injection/src/util';
+import {resolveKey} from '../tutils';
 import isPlainObject from 'lodash/lang/isPlainObject';
 
 function createHandler(value, key, loader){

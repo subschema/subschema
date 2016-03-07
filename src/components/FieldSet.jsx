@@ -1,8 +1,6 @@
 "use strict";
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import CSSReplaceTransition from '../transition/ReactCSSReplaceTransition.jsx';
-import UninjectedConditional from './Conditional.jsx';
 import RenderContent from './RenderContent.jsx';
 
 /**
@@ -64,13 +62,14 @@ export default class FieldSet extends Component {
 
     render() {
         if (this.props.transition) {
-            return (<CSSReplaceTransition {...this.props.transition}>
+            const {Transition, ...transition} = this.props.transition;
+            return (<Transition {...transition}>
                 {this.renderFieldSet('transition')}
-            </CSSReplaceTransition>);
+            </Transition>);
         }
         if (this.props.conditional) {
-            const {Conditional, ...rest} = this.props.conditional;
-            return (<Conditional {...rest}>
+            const {Conditional, ...conditional} = this.props.conditional;
+            return (<Conditional {...conditional}>
                 {this.renderFieldSet('conditional')}
             </Conditional>);
         }

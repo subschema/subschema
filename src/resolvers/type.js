@@ -1,8 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import {prop} from 'subschema-injection/src/util';
-import warning from '../'
+import warning from '../warning'
 export const defaultPropTypes = {
     onChange: PropTypes.targetEvent,
     onBlur: PropTypes.blurValidate,
@@ -44,7 +43,7 @@ export function loadType(val, key, props, context) {
         Type = type;
     }
     const injectedClazz = context.injector.inject(Type, propTypes, rest.defaultProps);
-
+    warning(injectedClazz, 'Could not find a type for %s', val);
 
     if ('template' in Type) {
         injectedClazz.template = Type.template;
@@ -60,5 +59,5 @@ export default function type(Clazz, key, propList, OrigClazz) {
     Clazz.contextTypes.injector = PropTypes.injector;
 
 
-    Clazz::prop(key, loadType);
+    Clazz::this.property(key, loadType);
 }

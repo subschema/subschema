@@ -1,6 +1,5 @@
 "use strict";
 
-import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import UninjectedContent from '../types/Content.jsx';
 
@@ -19,6 +18,6 @@ export function loadContent(content, key, props, {injector}) {
 export default function content(Clazz, key) {
 
     Clazz.contextTypes.injector = PropTypes.injector;
-    Clazz::prop(key, loadContent);
+    Clazz::this.property(key, loadContent);
 
 };

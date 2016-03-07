@@ -1,5 +1,5 @@
 "use strict";
-import React from 'react';
+
 import PropTypes from '../PropTypes';
 import {FREEZE_OBJ} from '../tutils';
 import {loadTemplate} from './template';

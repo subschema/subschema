@@ -1,7 +1,7 @@
 "use strict";
+
 import React from 'react';
 import PropTypes from '../PropTypes';
-import {prop} from 'subschema-injection/src/util';
 import {FREEZE_OBJ} from '../tutils';
 
 const DOM = React.DOM || FREEZE_OBJ;
@@ -34,5 +34,5 @@ export default function type(Clazz, key, propList, OrigClazz) {
     Clazz.contextTypes.injector = PropTypes.injector;
 
 
-    Clazz::prop(key, loadType);
+    Clazz::this.property(key, loadType);
 }

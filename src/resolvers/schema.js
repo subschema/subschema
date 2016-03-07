@@ -1,6 +1,5 @@
 "use strict";
 
-import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {toArray, FREEZE_OBJ} from '../tutils';
 import {normalizeFieldsets} from './fieldset';
@@ -130,7 +129,7 @@ export function normalizeSchema(oschema, key, props, context) {
 
 function schema(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
-    Clazz::prop(key, normalizeSchema);
+    Clazz::this.property(key, normalizeSchema);
 }
 
 schema.normalizeSchema = normalizeSchema;

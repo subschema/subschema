@@ -1,5 +1,4 @@
 "use strict";
-import {prop} from 'subschema-injection/src/util';
 
 /**
  * Returns the injected class as a property to the child class.
@@ -10,7 +9,7 @@ import {prop} from 'subschema-injection/src/util';
  */
 export default function injected(Clazz, key) {
 
-    Clazz::prop(key, function () {
+    Clazz::this.property(key, function () {
         return Clazz;
     });
 }

@@ -1,6 +1,4 @@
-import {prop} from 'subschema-injection/src/util';
-import PropTypes from '../PropTypes';
-import {isString} from '../tutils';
+"use strict";
 
 function idValue(value, key, props) {
     if (value == null) return props.path;
@@ -8,5 +6,5 @@ function idValue(value, key, props) {
 }
 export default function id(Clazz, key) {
 
-    Clazz::prop(key, idValue);
+    Clazz::this.property(key, idValue);
 }

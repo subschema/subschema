@@ -1,6 +1,6 @@
 "use strict";
 
-import {resolveKey, prop} from 'subschema-injection/src/util';
+import {resolveKey} from '../tutils';
 import PropTypes from '../PropTypes';
 
 function errorUpdate(value, key, props, context) {
@@ -12,6 +12,6 @@ export default function errorEvent(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::prop(errorUpdate);
+    Clazz::this.property(errorUpdate);
 
 }

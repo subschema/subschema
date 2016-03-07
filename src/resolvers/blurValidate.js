@@ -1,8 +1,5 @@
 "use strict";
 
-import React, {Component} from 'react';
-import {prop, extend, unmount, removeListeners, resolveKey} from 'subschema-injection/src/util';
-import {toArray, noop, FREEZE_OBJ} from '../tutils';
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
 
@@ -22,7 +19,7 @@ export default function blurValidate(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
 
 
-    Clazz::prop(key, function blurValidate$prop(validate, key, props, context) {
+    Clazz::this.property(key, function blurValidate$prop(validate, key, props, context) {
         if (validate == null) return void(0);
         validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
 
@@ -52,7 +49,7 @@ export default function blurValidate(Clazz, key) {
 
     });
 
-    Clazz::unmount(function () {
+    Clazz::this.unmount(function () {
         this._validateChangeListeners && this._validateChangeListeners();
         this._validateListener && this._validateListener();
     });

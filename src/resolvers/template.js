@@ -1,7 +1,5 @@
 "use strict";
 
-import React, {Component} from 'react';
-import {prop} from 'subschema-injection/src/util';
 import PropTypes from '../PropTypes';
 import {inherits, isFunction} from '../tutils';
 
@@ -67,6 +65,6 @@ export default function template(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz.contextTypes.injector = PropTypes.injector;
 
-    Clazz::prop(key, loadTemplate);
+    Clazz::this.property(key, loadTemplate);
 
 };

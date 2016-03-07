@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import {listener, resolveKey} from 'subschema-injection/src/util';
+import {resolveKey} from '../tutils';
 
 function handleErrorsListeners(value, key, props, {valueManager}) {
     return valueManager.addErrorListener(resolveKey(props.path, value), (err, old, path)=> {
@@ -26,6 +26,6 @@ function handleErrorsListeners(value, key, props, {valueManager}) {
 export default function errors(Clazz, key) {
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::listener(key, handleErrorsListeners);
+    Clazz::this.listener(key, handleErrorsListeners);
 
 }
