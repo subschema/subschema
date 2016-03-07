@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
@@ -61,7 +61,6 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
-
     "mocha": "^2.2.1",
     "modernizr": "^3.0.0-alpha.4",
     "postcss-color-rebeccapurple": "^2.0.0",
