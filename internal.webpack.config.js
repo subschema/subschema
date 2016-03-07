@@ -149,6 +149,9 @@ function config(filename, externals, isNode, isMinify) {
                 amd: "react-dom"
             };
 
+        } else {
+            loaders.push({test: require.resolve("react"), loader: "expose?React"});
+            loaders.push({test: require.resolve("react-dom"), loader: "expose?ReactDOM"});
         }
 
         loaders.push({

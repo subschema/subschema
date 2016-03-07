@@ -1,0 +1,20 @@
+<!html>
+<html>
+<head>
+    <title>Test Expose React</title>
+</head>
+<body>
+<h1>Expose Subschema</h1>
+<p>For now a manual test to ensure that subschema.js can be used. It was
+    kinda useless because React was not exposed. </p>
+<div id="content"></div>
+<script src="../dist/subschema.js"></script>
+<script>
+    ReactDOM.render(React.createElement(Subschema.Form, {
+        schema: {
+            "test": "Text"
+        }
+    }), document.getElementById('content'));
+</script>
+</body>
+</html>
