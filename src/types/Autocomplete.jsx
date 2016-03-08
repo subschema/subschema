@@ -25,6 +25,7 @@ export default class Autocomplete extends Component {
         options: PropTypes.options,
         onInputChange: PropTypes.event,
         style: PropTypes.style,
+        url: PropTypes.expression
 
     };
 
