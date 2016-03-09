@@ -29,6 +29,4 @@ lessCtx.keys().reduce(function (obj, key) {
         }
         return obj;
     }, api);
-
-console.log('style', api);
 module.exports = api;

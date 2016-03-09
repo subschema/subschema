@@ -47,7 +47,7 @@
     "babel-runtime": "^6.3.0",
     "css-loader": "^0.23.1",
     "es6-promise": "^3.0.2",
-    "expect": "^1.13.4",
+    "expect": "^1.14.0",
     "expose-loader": "^0.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
@@ -61,7 +61,7 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
-    "mocha": "^2.2.1",
+    "mocha": "^2.4.5",
     "modernizr": "^3.0.0-alpha.4",
     "postcss-color-rebeccapurple": "^2.0.0",
     "postcss-loader": "^0.8.0",
@@ -86,7 +86,8 @@
     "fbjs": "*",
     "react-dom": "*",
     "react-addons-css-transition-group": "*",
-    "subschema-injection": "*"
+    "subschema-injection": "*",
+    "subschema-prop-types": "*"
   },
   "dependencies": {
     "fbjs": "^0.8.0-alpha.3",
@@ -95,6 +96,7 @@
     "react-addons-css-transition-group": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "subschema-injection": "^1.0.8"
+    "subschema-injection": "^1.0.8",
+    "subschema-prop-types": "^1.0.0"
   }
 }

@@ -59,14 +59,17 @@ function config(filename, externals, isNode, isMinify) {
         // or any other compile-to-css language
 
         {
-            test: /\.js(x)?$/,
-            exclude: /node_modules/,
-            loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
-        }, {
             test: /\.json$/,
             loader: 'json'
         }
     ];
+    if (isMinify) {
+        loaders.push({
+            test: /\.js(x)?$/,
+            exclude: /node_modules/,
+            loader: "strip-loader?strip[]=debug,strip[]=debugger,strip[]=console.log"
+        });
+    }
     var plugins = [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
@@ -84,7 +87,7 @@ function config(filename, externals, isNode, isMinify) {
     ];
 
     var conf = {
-        name:filename,
+        name: filename,
         devtool: 'source-map',
         entry: {
             subschema: './src/index.jsx'
@@ -113,7 +116,8 @@ function config(filename, externals, isNode, isMinify) {
         resolve: {
             extensions: ['', '.js', '.jsx'],
             alias: {
-                'fbjs': path.join(__dirname, 'node_modules/fbjs')
+                'fbjs': join('node_modules/fbjs'),
+                'subschema-prop-types': join('node_modules/subschema-prop-types/src/index.js')
             }
         },
         stats: {

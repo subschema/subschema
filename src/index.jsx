@@ -12,6 +12,7 @@ import {transitions as _transitions} from './transition';
 import provideFactory from './decorators/provideFactory';
 import _cachedInjector from './cachedInjector';
 import {injectorFactory as _injectorFactory} from 'subschema-injection';
+import _FastValueManager from './FastValueManager';
 
 import Subschema, {Conditional as _C,
     Field as _Field,
@@ -33,6 +34,7 @@ import Subschema, {Conditional as _C,
     newSubschemaContext as _newSubschemaContext,
 } from './index.js';
 
+export const FastValueManager = _FastValueManager;
 export const loaderFactory = _loaderFactory;
 export const Conditional = _C;
 export const Field = _Field;
