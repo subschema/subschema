@@ -6,82 +6,60 @@ import {loadTemplate} from './template';
 import {loadType} from './type';
 import {loadValidators} from './validate';
 import Conditional from '../components/Conditional.jsx';
+import warning from '../warning';
 
 export const settings = {
     type: 'Text',
     template: 'EditorTemplate'
 };
 
-function bare(value) {
-
-    const {type, template, ...rest} = value;
-    return rest;
-}
-function spreadable(value, key = 'template') {
-    if (value == null) {
-        return FREEZE_OBJ;
+function toTemplate(template) {
+    const tType = typeof template;
+    if (template === false || tType === 'string' || tType === 'function') {
+        return {
+            template
+        }
     }
-    if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'function') {
-        return {[key]: value}
-    }
-
-    if ((!key in value)) {
-        return FREEZE_OBJ;
-    }
-    return value;
+    return template;
 }
 
 export default function field(Clazz, key, propList) {
-
-    const setts = bare(settings);
 
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz.contextTypes.injector = PropTypes.injector;
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
     Clazz::this.property(key, function field$prop(value, key, props, context, OrigClazz) {
-
             if (value == null) {
-                var {...copy} = settings;
-                value = copy;
+                value = FREEZE_OBJ;
             } else if (typeof value === 'string') {
-                value = {...settings, type: value}
-            } else if (!value.type) {
-                value.type = settings.type;
-            }
-            if (value.validators) {
-                value.validators = loadValidators(value.validators, key, props, context);
-            }
-            if (value.conditional) {
-                if (value.conditional === 'string') {
-                    value.conditional = {operator: value.conditional}
-                }
-            }
-            const Type = loadType(value.type, null, null, context);
-            let Template;
-            if (value.template === false){
-                Template = null;
-            }else if (value.template){
-                const lookup = {...spreadable(settings.template), ...spreadable(Type.template), ...spreadable(value.template)};
-                Template = loadTemplate(lookup, key, props, context);
-            }else if ('template' in Type) {
-                //template is false with no override.
-                if (Type.template === false) {
-                    Template = null;
-                }else {
-                    const lookup = {...spreadable(settings.template), ...spreadable(Type.template)};
-                    Template = loadTemplate(lookup, key, props, context);
-                }
+                value = {type: value}
             } else {
-                Template = loadTemplate(settings.template, key, props, context);
+                if (value.validators) {
+                    value.validators = loadValidators(value.validators, key, props, context);
+                }
+                if (value.conditional) {
+                    if (value.conditional === 'string') {
+                        value.conditional = {operator: value.conditional}
+                    }
+                }
             }
+            const Type = loadType(value.type || settings.type, null, null, context);
+            warning(value.type, 'No Type found for %s at path "%s"', value.type, props.path);
 
-            return {
-                ...setts,
-                ...bare(value),
+            const template = Object.assign({}, toTemplate(settings.template), toTemplate(Type.template), toTemplate(value.template) );
+            const Template = template.template === false ? null : loadTemplate(template.template, key, props, context);
+
+
+            const ret = {
+                ...settings,
+                ...value,
+                template,
                 Type,
                 Template
-            }
+            };
+            delete ret.type;
+            return ret;
         }
     );
 

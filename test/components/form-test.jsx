@@ -1,6 +1,6 @@
 "use strict";
 import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType, click} from 'subschema-test-support';
-import {loader,Form, templates, ValueManager} from 'Subschema';
+import {loader,Form, templates,  ValueManager} from 'Subschema';
 var {EditorTemplate, ButtonTemplate} = templates;
 
 describe('components/Form', function () {

@@ -102,6 +102,7 @@ function _update(_value, _map, _get = defaultGet, _set = defaultSet) {
 
 
             if (path == null) {
+                console.log('firing');
                 scope::listener(_value, null, path, pt);
             } else if (path === pt || path.indexOf(dotPt) === 0 || dotPt.indexOf(`${path}.`) === 0) {
                 const gv = _get(_value, path)

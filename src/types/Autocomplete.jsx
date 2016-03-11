@@ -25,7 +25,7 @@ export default class Autocomplete extends Component {
         options: PropTypes.options,
         onInputChange: PropTypes.event,
         style: PropTypes.style,
-        url: PropTypes.expression
+        url: PropTypes.expression,
 
     };
 
@@ -153,7 +153,7 @@ export default class Autocomplete extends Component {
             if (selected !== this.state.selected) {
                 this.onSelect(selected);
             } else {
-                this.props.onValidate(selected && selected.val, this.props.value, this.props.name, this.props.path);
+                this.props.onBlur(selected && selected.val, this.props.value, this.props.name, this.props.path);
                 this.setState({suggestions: [], selected, input, showing: false, focus: -1});
             }
         } else {
@@ -345,7 +345,6 @@ export default class Autocomplete extends Component {
         if (suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);
         }
-        this.props.onValidate(event);
         this.props.onBlur(event);
     };
 
@@ -361,10 +360,9 @@ export default class Autocomplete extends Component {
         var CompleteItem = this.props.itemTemplate;
         return <ul className={this.props.listGroupClass}>
             {suggestions.map((item, i) => <CompleteItem
-                key={item.val}
+                key={`autocomplete-${i}`}
                 focus={focus === i}
                 value={input}
-                ref={"item_"+i}
                 processor={processor}
                 onSelect={handleSuggestionClick}
                 data={item}/>)}</ul>
