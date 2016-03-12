@@ -45,11 +45,11 @@ export default function field(Clazz, key, propList) {
                 }
             }
             const Type = loadType(value.type || settings.type, null, null, context);
-            warning(value.type, 'No Type found for %s at path "%s"', value.type, props.path);
+            warning(Type, 'No Type found for %s at path "%s"', value.type, props.path);
 
             const template = Object.assign({}, toTemplate(settings.template), toTemplate(Type.template), toTemplate(value.template) );
             const Template = template.template === false ? null : loadTemplate(template.template, key, props, context);
-
+            warning(!(!Template && template.template), 'No Template found for path "%s" named "%s', props.path, template.template)
 
             const ret = {
                 ...settings,

@@ -82,7 +82,7 @@ function _removeListener(_map) {
             const dotPt = pathOrReference == null ? '' : `${pathOrReference}.`;
             for (let entry of _map) {
                 const {remove, path} = entry;
-                if (path === pathOrReference || path.indexOf(dotPt) === 0 || `${path}.`.indexOf(dotPt) === 0) {
+                if (path === pathOrReference || `${path}.`.indexOf(dotPt) === 0) {
                     remove();
                 }
             }
@@ -92,6 +92,7 @@ function _removeListener(_map) {
     };
 
 }
+
 function _update(_value, _map, _get = defaultGet, _set = defaultSet) {
     return (pt, _update)=> {
         _set(_value, pt, _update);
@@ -100,12 +101,11 @@ function _update(_value, _map, _get = defaultGet, _set = defaultSet) {
             const {path, scope, listener} = entry;
             //wtf?
 
-
+            console.log('pt', pt, path);
             if (path == null) {
-                console.log('firing');
                 scope::listener(_value, null, path, pt);
-            } else if (path === pt || path.indexOf(dotPt) === 0 || dotPt.indexOf(`${path}.`) === 0) {
-                const gv = _get(_value, path)
+            } else  if (pt == null || path === pt || `${path}.`.indexOf(dotPt) === 0 || dotPt.indexOf(`${path}.`) === 0) {
+                const gv = _get(_value, path);
                 scope::listener(gv, null, path, pt);
             }
         }

@@ -231,11 +231,14 @@ describe('FastValueManager', function () {
 
             const r1 = vm.addListener('stuff', listen).remove;
             const r2 = vm.addListener('stuff.to.there', listen).remove;
+            const r3 = vm.addListener('other.stuff', listen).remove;
 
             vm.update('stuff', null);
+
             expect(args[0][2]).toBe('stuff');
             expect(args[1][2]).toBe('stuff.to.there');
             expect(args.length).toBe(2);
+            r3();
             expect(vm.listeners.size).toBe(2);
             r1();
             expect(vm.listeners.size).toBe(1);
@@ -291,6 +294,7 @@ describe('FastValueManager', function () {
             var remove = vm.addErrorListener('other', function () {
                 errors.push(Array.prototype.slice.call(arguments));
             }).remove;
+
             vm.updateErrors('other', [{message: 'Has Error'}]);
             expect(errors.length).toEqual(1);
 
