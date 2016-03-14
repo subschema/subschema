@@ -54,7 +54,8 @@ export default class FieldSet extends Component {
     renderFieldSet(key) {
 
         const {template,children, buttons, content, field, ...rest}  = this.props;
-        return <RenderTemplate template={template} key={key}  {...rest} {...field} buttons={this.renderButtons(buttons)}
+
+        return <RenderTemplate template={template} key={key}  {...rest} field={field} buttons={this.renderButtons(buttons)}
                                content={<RenderContent content={content}  key={`content-${key}`}/>}>
             {children}
         </RenderTemplate>

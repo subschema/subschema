@@ -17,6 +17,8 @@ import _FastValueManager from './FastValueManager';
 import Subschema, {Conditional as _C,
     Field as _Field,
     FieldSet as _FieldSet,
+    RenderContent as _RenderContent,
+    RenderTemplate as _RenderTemplate,
     Form as _F,
     NewChildContext as _N,
     Dom as _D,
@@ -33,7 +35,8 @@ import Subschema, {Conditional as _C,
     warning as _w,
     newSubschemaContext as _newSubschemaContext,
 } from './index.js';
-
+export const RenderTemplate = _RenderTemplate;
+export const RenderContent = _RenderContent;
 export const FastValueManager = _FastValueManager;
 export const loaderFactory = _loaderFactory;
 export const Conditional = _C;

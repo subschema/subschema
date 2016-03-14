@@ -3,6 +3,8 @@
 import Conditional from './components/Conditional.jsx';
 import Field from './components/Field.jsx';
 import FieldSet from './components/FieldSet.jsx';
+import RenderContent from './components/RenderContent.jsx';
+import RenderTemplate from './components/RenderTemplate.jsx';
 import NewChildContext from './components/NewChildContext.jsx';
 import Form from './components/Form.jsx';
 import Dom from './Dom';
@@ -22,6 +24,8 @@ export {
     Conditional,
     Field,
     FieldSet,
+    RenderContent,
+    RenderTemplate,
     Form,
     NewChildContext,
     Dom,
@@ -43,6 +47,8 @@ export default {
     Conditional,
     Field,
     FieldSet,
+    RenderContent,
+    RenderTemplate,
     Form,
     NewChildContext,
     Dom,
@@ -73,6 +79,9 @@ export default {
 function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
     Conditional,
     Field,
+    FieldSet,
+    RenderContent,
+    RenderTemplate,
     Form,
     NewChildContext,
     Dom,

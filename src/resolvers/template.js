@@ -8,6 +8,7 @@ export const settings = {
     propTypes: {
         className: PropTypes.cssClass,
         id: PropTypes.id,
+        htmlFor:PropTypes.htmlFor
        // fieldClass: PropTypes.fieldClass
     }
 };
