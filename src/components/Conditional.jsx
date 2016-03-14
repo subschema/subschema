@@ -3,6 +3,7 @@ import React, {Component, Children} from 'react';
 import PropTypes from './../PropTypes';
 import CSSTransitionGroup from '../transition/ReactCSSReplaceTransition.jsx';
 import {FREEZE_OBJ} from '../tutils';
+import RenderTemplate from './RenderTemplate.jsx';
 
 export default class Conditional extends Component {
     static contextTypes = PropTypes.contextTypes;
@@ -69,27 +70,24 @@ export default class Conditional extends Component {
         dismiss: PropTypes.path,
 
         buttons: PropTypes.buttons,
-        field:PropTypes.any
+        field: PropTypes.any
     };
 
     renderTemplate() {
-        const Template = this.props.template;
         let {value, listen, error, template, falseTemplate, dismiss, operator, transition,children, ...props} = this.props;
         if (dismiss) {
             children = React.cloneElement(children, {dismiss});
         }
-        return Template ?
-            <Template key='true-conditional' {...props}>{children}</Template> : children;
+        return <RenderTemplate key='true-conditional' template={template} {...props}>{children}</RenderTemplate>;
 
     }
 
     renderFalseTemplate() {
-        const FalseTemplate = this.props.falseTemplate;
 
         let {value, listen, error, template, falseTemplate, dismiss, operator, transition,children, ...props} = this.props;
 
-        return FalseTemplate ?
-            <FalseTemplate key='false-conditional' {...props} >{children}</FalseTemplate> :
+        return falseTemplate ?
+            <RenderTemplate key='false-conditional' template={falseTemplate} {...props} >{children}</RenderTemplate> :
             <span key='false-conditional'/>;
     }
 

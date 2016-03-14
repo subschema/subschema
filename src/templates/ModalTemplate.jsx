@@ -6,6 +6,7 @@ import PropTypes from '../PropTypes';
 import NewChildContext from '../components/NewChildContext.jsx';
 import cloneDeep from 'lodash/lang/cloneDeep';
 import RenderContent from '../components/RenderContent.jsx';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 export default class ModalTemplate extends Component {
 
@@ -16,7 +17,6 @@ export default class ModalTemplate extends Component {
         path: PropTypes.path,
         value: PropTypes.value,
         onChange: PropTypes.valueEvent,
-        ModalTemplate: PropTypes.injectClass,
         dismiss: PropTypes.valueEvent,
         buttonsTemplate: PropTypes.template,
 
@@ -58,13 +58,12 @@ export default class ModalTemplate extends Component {
         if (!buttons) {
             return null;
         }
-        const ButtonsTemplate = this.props.buttonsTemplate;
         if (!buttons.buttons) {
             buttons = {
                 buttons
             };
         }
-        return <ButtonsTemplate onButtonClick={this.handleBtnClose} {...buttons}/>
+        return <RenderTemplate template={this.props.buttonsTemplate} onButtonClick={this.handleBtnClose} {...buttons}/>
     }
 
     handleClose = (e)=> {

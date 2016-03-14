@@ -116,13 +116,13 @@ export function normalizeSchema(oschema, key, props, context) {
     if (oschema == null) return oschema;
     const schema = normalize(oschema, props.fieldsets, props.fields, context);
     if (props.objectTemplate) {
-        schema.Template = loadTemplate(props.objectTemplate, key, props, context);
+        schema.template = loadTemplate(props.objectTemplate, key, props, context);
     } else if (schema.template) {
-        schema.Template = loadTemplate(schema.template, key, props, context);
+        schema.template = loadTemplate(schema.template, key, props, context);
     } else if (props.fallbackTemplate) {
-        schema.Template = loadTemplate(props.fallbackTemplate, key, props, context);
+        schema.template = loadTemplate(props.fallbackTemplate, key, props, context);
     } else {
-        schema.Template = loadTemplate(settings.template,  key, props, context);
+        schema.template = loadTemplate(settings.template,  key, props, context);
     }
     return schema;
 }

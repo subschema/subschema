@@ -1,14 +1,14 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import {inherits, isFunction} from '../tutils';
+import {inherits, isFunction, FREEZE_OBJ} from '../tutils';
 import warning from '../warning';
 
 export const settings = {
     propTypes: {
         className: PropTypes.cssClass,
         id: PropTypes.id,
-        fieldClass: PropTypes.fieldClass
+       // fieldClass: PropTypes.fieldClass
     }
 };
 
@@ -49,6 +49,8 @@ export function loadTemplate(value, key, props, {loader, injector}) {
     let Template;
     if (isFunction(template)) {
         Template = template;
+    } else if (template === false) {
+        return FREEZE_OBJ;
     } else {
         Template = loader.loadTemplate(template);
         warning(Template, 'Template for name "%s" is not defined', template);
@@ -56,9 +58,10 @@ export function loadTemplate(value, key, props, {loader, injector}) {
             Template.displayName = template;
         }
     }
-    const InjectedTemplate = injector.inject(Template, propTypes, rest);
 
-    return InjectedTemplate;
+    const InjectedTemplate = injector.inject(Template, propTypes);
+
+    return {Template: InjectedTemplate, ...rest};
 }
 
 export default function template(Clazz, key) {

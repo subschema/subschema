@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
+import RenderTemplate from './RenderTemplate.jsx';
 import {FREEZE_ARR} from '../tutils';
 
 export default class Field extends Component {
@@ -16,13 +17,12 @@ export default class Field extends Component {
 
 
     renderField(field, propPath) {
-        const {Template, Type,   path,  template, ...rest} = field;
+        const { Type,   path,  template, ...rest} = field;
         const validators = field.validators || FREEZE_ARR;
         const cpath = propPath || path;
-        const FieldTemplate = Template;
-        return (FieldTemplate ? <FieldTemplate path={cpath}  {...rest} {...template} field={field}>
+        return <RenderTemplate template={template} path={cpath}  {...rest} field={field}>
             <Type path={cpath} onBlur={validators} {...rest}/>
-        </FieldTemplate> : <Type path={cpath} {...rest}/>);
+        </RenderTemplate>
 
     }
 

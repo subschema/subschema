@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {isString, extend} from '../tutils';
 import PropTypes from '../PropTypes';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 export default class ButtonsTemplate extends Component {
     static defaultProps = {
@@ -48,10 +49,11 @@ export default class ButtonsTemplate extends Component {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
         }
-        const ButtonTemplate = buttonTemplate;
         return (<div className={buttonContainerClass}>
             <div className={buttonsClass}>
-                {this.makeButtons(buttons).map((b, i) => <ButtonTemplate key={"btn-"+i} {...b}/>)}
+                {this.makeButtons(buttons).map(
+                    (b, i) => <RenderTemplate template={buttonTemplate} key={"btn-"+i} {...b}/>)
+                }
             </div>
         </div>);
     }

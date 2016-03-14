@@ -7,6 +7,7 @@ import UninjectedObjectType from './Object.jsx';
 import PropTypes from '../PropTypes';
 import map from 'lodash/collection/map';
 import defaults from 'lodash/object/defaults';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
@@ -231,16 +232,15 @@ export default class CollectionMixin extends Component {
         }
         const childPath = path(this.props.path, this.state.editPid);
         const {ObjectType, createTemplate} = this.props;
-        const CreateTemplate = createTemplate;
-        return (<CreateTemplate inline={edit ? this.props.inline : false}
-                                create={edit ? false : create}
-                                title={this.props.title} key="addEditTemplate">
+        return (<RenderTemplate template={createTemplate} inline={edit ? this.props.inline : false}
+                                                    create={edit ? false : create}
+                                                    title={this.props.title} key="addEditTemplate">
             <ObjectType key="addEdit"
                         onButtonClick={this.handleBtnClick}
                         schema={this.createItemSchema(childPath)}
                         path={makeEditPid(this.props.path,this.state.editPid)}
             />
-        </CreateTemplate>);
+        </RenderTemplate>);
     }
 
     renderAddBtn() {
@@ -248,9 +248,8 @@ export default class CollectionMixin extends Component {
             return null;
         }
         const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
-        const ButtonTemplate = this.props.buttonTemplate;
-        return <ButtonTemplate key="addBtn"  {...btn} onClick={this::this.handleAddBtn}
-                               iconClass={this.props.iconAddClass}/>
+        return <RenderTemplate template={this.props.buttonTemplate} key="addBtn"  {...btn} onClick={this::this.handleAddBtn}
+                                                              iconClass={this.props.iconAddClass}/>
 
     }
 
@@ -287,28 +286,30 @@ export default class CollectionMixin extends Component {
     }
 
     renderRow(v, sectionId, i) {
-        var ItemTemplate = this.props.itemTemplate, ContentItemTemplate = this.props.contentTemplate;
+        const {itemTemplate, contentTemplate} = this.props;
 
-        return <ItemTemplate key={this.props.path+'.'+i} pos={i} path={ path(this.props.path, v.key)}
-                             onMoveUp={this.handleMoveUp}
-                             onMoveDown={this.handleMoveDown}
-                             onDelete={this.handleDelete}
-                             onEdit={this.handleEdit}
-                             canReorder={this.props.canReorder}
-                             canDelete={this.props.canDelete}
-                             canEdit={this.props.canEdit}
-                             field={v}
-                             pid={v.key}
-                             value={v} errors={this.props.errors} last={i + 1 === this.state.wrapped.length}>
+        return <RenderTemplate template={itemTemplate} key={this.props.path+'.'+i} pos={i}
+                               path={ path(this.props.path, v.key)}
+                               onMoveUp={this.handleMoveUp}
+                               onMoveDown={this.handleMoveDown}
+                               onDelete={this.handleDelete}
+                               onEdit={this.handleEdit}
+                               canReorder={this.props.canReorder}
+                               canDelete={this.props.canDelete}
+                               canEdit={this.props.canEdit}
+                               field={v}
+                               pid={v.key}
+                               value={v} errors={this.props.errors}
+                               last={i + 1 === this.state.wrapped.length}>
             {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) :
-                <ContentItemTemplate value={v}
-                                     labelKey={this.props.labelKey}
-                                     pos={i}
-                                     pid={v.key}
-                                     value={v}
-                                     showKey={this.props.showKey}
-                                     onClick={this.props.canEdit ? this.handleEdit : null}/> }
-        </ItemTemplate>
+                <RenderTemplate template={contentTemplate} value={v}
+                                labelKey={this.props.labelKey}
+                                pos={i}
+                                pid={v.key}
+                                value={v}
+                                showKey={this.props.showKey}
+                                onClick={this.props.canEdit ? this.handleEdit : null}/> }
+        </RenderTemplate>
     }
 
     render() {

@@ -6,7 +6,7 @@ import {ValueManager,loaderFactory, Form, types} from 'Subschema';
 const ObjectType = types.Object
 const TextInput = types.Text;
 
-describe('types/ObjectType', function () {
+describe('types/Object', function () {
 
     const schema = {
         schema: {
@@ -22,10 +22,10 @@ describe('types/ObjectType', function () {
                     n3: "Text"
                 }
             },
-            test: {
+            test: Object.freeze( {
                 fieldClass: 'stuff',
                 validators: ["required"]
-            }
+            })
         }
     };
 
@@ -47,7 +47,7 @@ describe('types/ObjectType', function () {
     });
     it('should not validate nested objects', function () {
         var vm = ValueManager({}, {'nested.n2': [{message: 'borked'}]});
-        var form = into(<Form schema={schema} valueManager={vm}/>);
+        var form = into(<Form schema={schema} valueManager={vm}/>, true);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
         var [n1,n2,n3] = TestUtils.scryRenderedComponentsWithType(obj, TextInput);

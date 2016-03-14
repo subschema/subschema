@@ -5,7 +5,7 @@ import WizardMixin from './WizardMixin';
 import ButtonsTemplate from './ButtonsTemplate.jsx';
 import PropTypes from '../PropTypes';
 import defaults from 'lodash/object/defaults';
-
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 function donner(done) {
     done();
@@ -65,10 +65,11 @@ export default class WizardTemplate extends WizardMixin {
     }
 
     renderProgress(fieldsets) {
-        const Template = this.props.wizardProgressTemplate;
-        return Template ?
-            <Template fieldsets={fieldsets} index={this.state.done ? fieldsets.length : this.state.compState}
-                      onClick={this.handleOnClick}/> : null;
+
+        return <RenderTemplate key="progress-template-key" template={this.props.wizardProgressTemplate}
+                               fieldsets={fieldsets}
+                               index={this.state.done ? fieldsets.length : this.state.compState}
+                               onClick={this.handleOnClick}/>;
     }
 
     makeTransition(compState) {
@@ -86,7 +87,7 @@ export default class WizardTemplate extends WizardMixin {
             current = fieldsets[compState],
             {Transition, ...transition} = this.makeTransition(compState);
         const buttons = current.buttons ? current.buttons : this.createButtons(compState);
-        const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], Template};
+        const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], template: Template};
         return (
             <div className={`${this.props.namespaceClass} ${(this.state.animating ? this.props.animatingClass : '')}`}
                  onKeyDown={this.handleKeyDown}>
@@ -97,6 +98,7 @@ export default class WizardTemplate extends WizardMixin {
                         className={`clearfix state-${compState}`}
                         key={"form-"+compState}
                         schema={currentSchema}
+
                         onButtonClick={this::this.handleBtn}
                     />
                 </Transition>

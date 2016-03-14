@@ -5,6 +5,7 @@ import {noop, applyFuncs } from '../tutils';
 import Dom from '../Dom';
 import PropTypes from '../PropTypes';
 import lifecycle from '../decorators/lifecycle';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 export default class Autocomplete extends Component {
 
@@ -357,15 +358,15 @@ export default class Autocomplete extends Component {
         var {focus, input} = this.state;
         var processor = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
-        var CompleteItem = this.props.itemTemplate;
+        var {itemTemplate} = this.props;
         return <ul className={this.props.listGroupClass}>
-            {suggestions.map((item, i) => <CompleteItem
-                key={`autocomplete-${i}`}
-                focus={focus === i}
-                value={input}
-                processor={processor}
-                onSelect={handleSuggestionClick}
-                data={item}/>)}</ul>
+            {suggestions.map((item, i) => <RenderTemplate template={itemTemplate}
+                                                          key={`autocomplete-${i}`}
+                                                          focus={focus === i}
+                                                          value={input}
+                                                          processor={processor}
+                                                          onSelect={handleSuggestionClick}
+                                                          data={item}/>)}</ul>
 
 
     }

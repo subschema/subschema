@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {returnFirst, path as tpath} from '../tutils';
-
+import RenderTemplate from '../components/RenderTemplate.jsx';
 import PropTypes from '../PropTypes';
 
 function compare(val, val2) {
@@ -41,7 +41,7 @@ export default class RadioInput extends Component {
         }
     };
 
-    makeOptions(options){
+    makeOptions(options) {
         options = options || [];
         const onChange = this::this.handleCheckChange;
         const value = this.props.value;
@@ -63,13 +63,13 @@ export default class RadioInput extends Component {
     render() {
         var {name,itemTemplate,className, checkedClass, value, options, field} = this.props;
         var options = this.makeOptions(options);
-        var RadioItemTemplate = itemTemplate;
         return <div className={className}>{options.map((option, index)=> {
             const id = options.id || `${name}.${index}`
-            return <RadioItemTemplate id={id} checkedClass={checkedClass} {...option} key={option.path}>
+            return <RenderTemplate key={'template-'+id} template={itemTemplate} checkedClass={checkedClass}
+                                   id={id} {...option} >
                 <input id={id} type="radio"
                        name={name} {...option} value={option.val}/>
-            </RadioItemTemplate>
+            </RenderTemplate>
         }, this)}</div>
 
     }

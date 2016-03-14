@@ -32,8 +32,8 @@ describe('resolvers/field', function () {
         static propTypes = {field};
 
         render() {
-            const {Template, Type, ...rest} = this.props.field;
-
+            const {template, Type, ...rest} = this.props.field;
+            const {Template} = template || {};
             if (Template) {
                 return <Template {...rest}><Type {...rest}/></Template>
             }
@@ -55,7 +55,7 @@ describe('resolvers/field', function () {
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
-        expect(f.Template.displayName).toMatch(/EditorTemplate\$Wrapper/);
+        expect(f.template.Template.displayName).toMatch(/EditorTemplate\$Wrapper/);
         expect(f.Type.displayName).toMatch(/Text\$Wrapper/);
 
     });
@@ -84,7 +84,7 @@ describe('resolvers/field', function () {
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
-        expect(f.Template.displayName).toMatch(/\$Wrapper/);
+        expect(f.template.Template.displayName).toMatch(/\$Wrapper/);
         expect(f.Type.displayName).toMatch(/\$Wrapper/);
         const tt = byComponent(inst, TestType);
         const jt = byComponent(inst, JoeTemplate);
@@ -117,6 +117,7 @@ describe('resolvers/field', function () {
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
         expect(f.Template).toNotExist();
+
         expect(f.Type.displayName).toMatch(/TestType\$Wrapper/);
         const tt = byComponent(inst, TestType);
 

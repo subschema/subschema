@@ -7,6 +7,7 @@ import map from 'lodash/collection/map';
 import UninjectedField  from '../components/Field';
 import UninjectedFieldSet from '../components/FieldSet.jsx';
 import warning from '../warning';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 export default class ObjectType extends Component {
 
@@ -15,7 +16,8 @@ export default class ObjectType extends Component {
     static inputClassName = ' ';
 
     static propTypes = {
-        objectTemplate: PropTypes.oneOfType([PropTypes.string,PropTypes.func]),
+        objectTemplate: PropTypes.template,
+        fallbackTemplate: PropTypes.template,
         schema: PropTypes.schema,
         subSchema: PropTypes.schema,
         onButtonClick: PropTypes.event,
@@ -35,7 +37,7 @@ export default class ObjectType extends Component {
         fallbackTemplate: 'ObjectTemplate',
         FieldSet: UninjectedFieldSet,
         Field: UninjectedField,
-        subSchema:{}
+        subSchema: {}
     };
 
 
@@ -51,7 +53,8 @@ export default class ObjectType extends Component {
 
         f = typeof f === 'string' ? f : f.name || f;
 
-        return <Field key={'key-' + f} path={_path(this.props.path, f)} conditional={field.conditional} transition={field.transition} field={field} fields={fields}/>
+        return <Field key={'key-' + f} path={_path(this.props.path, f)} conditional={field.conditional}
+                      transition={field.transition} field={field} fields={fields}/>
     }
 
     makeFieldset(f, i, schema, FieldSet, Field) {
@@ -98,13 +101,13 @@ export default class ObjectType extends Component {
 
     render() {
         //capture the things that should not fall through.
-        let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, template, ...props} = this.props;
-        const ObjectTemplate = objectTemplate;
-        const {Template, ...rschema} = schema || subSchema;
-        return <Template schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
+        let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, fallbackTemplate, template, ...props} = this.props;
+        let { ...rschema} = schema || subSchema;
+        template = rschema.template || template || objectTemplate || fallbackTemplate;
+        return <RenderTemplate template={template} schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
             {rschema != null ? this.renderSchema(rschema, FieldSet, Field) : null}
             {children}
-        </Template>
+        </RenderTemplate>
     }
 
 }

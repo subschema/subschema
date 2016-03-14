@@ -30,33 +30,32 @@ export default function field(Clazz, key, propList) {
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
     Clazz::this.property(key, function field$prop(value, key, props, context, OrigClazz) {
+            const normal = {}
             if (value == null) {
                 value = FREEZE_OBJ;
             } else if (typeof value === 'string') {
                 value = {type: value}
             } else {
                 if (value.validators) {
-                    value.validators = loadValidators(value.validators, key, props, context);
+                    normal.validators = loadValidators(value.validators, key, props, context);
                 }
                 if (value.conditional) {
                     if (value.conditional === 'string') {
-                        value.conditional = {operator: value.conditional}
+                        normal.conditional = {operator: value.conditional}
                     }
                 }
             }
             const Type = loadType(value.type || settings.type, null, null, context);
             warning(Type, 'No Type found for %s at path "%s"', value.type, props.path);
 
-            const template = Object.assign({}, toTemplate(settings.template), toTemplate(Type.template), toTemplate(value.template) );
-            const Template = template.template === false ? null : loadTemplate(template.template, key, props, context);
-            warning(!(!Template && template.template), 'No Template found for path "%s" named "%s', props.path, template.template)
+            const template = Object.assign({}, toTemplate(settings.template), toTemplate(Type.template), toTemplate(value.template));
 
             const ret = {
                 ...settings,
                 ...value,
-                template,
-                Type,
-                Template
+                ...normal,
+                template: loadTemplate(template, key, props, context),
+                Type
             };
             delete ret.type;
             return ret;

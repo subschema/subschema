@@ -3,6 +3,7 @@
 import React, {Component} from 'react'
 import PropTypes from '../PropTypes'
 import {path, FREEZE_ARR as options} from '../tutils';
+import RenderTemplate from '../components/RenderTemplate.jsx';
 
 export default class Checkboxes extends Component {
     //override added input Class Names.
@@ -58,7 +59,6 @@ export default class Checkboxes extends Component {
 
     _createCheckbox(option, index, group) {
 
-        const CheckboxTemplate = this.props.itemTemplate;
         const id = path(this.props.path, group, index);
         let {val, labelHTML, label} = option;
         val = val == null ? label || labelHTML : val;
@@ -72,18 +72,20 @@ export default class Checkboxes extends Component {
             id,
             value: val
         };
-        return (<CheckboxTemplate key={`checkbox-${index}-${group}`} label={labelContent} type="checkbox" {...opts}>
-            <input type={this.props.type} {...opts}/>
-        </CheckboxTemplate>);
+        return (
+            <RenderTemplate template={this.props.itemTemplate} key={`checkbox-${index}-${group}`} label={labelContent}
+                            type="checkbox" {...opts}>
+                <input type={this.props.type} {...opts}/>
+            </RenderTemplate>);
 
     }
 
     _createGroup(option, index, group) {
         const {Checkboxes, groupTemplate, name, value, ...rest} = this.props;
-        const GroupTemplate = groupTemplate;
-        return (<GroupTemplate key={`checkbox-group-${index}-${option.group}`} legend={option.legend || option.group}>
+        return (<RenderTemplate template={groupTemplate} key={`checkbox-group-${index}-${option.group}`}
+                                legend={option.legend || option.group}>
             {this.makeOptions(option.options, group + '-' + index)}
-        </GroupTemplate>);
+        </RenderTemplate>);
     }
 
 
