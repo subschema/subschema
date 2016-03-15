@@ -1,0 +1,12 @@
+[submodule "subschema-test-support"]
+	path = subschema-test-support
+	url = git@github.com:subschema/subschema-test-support.git
+[submodule "subschema"]
+	path = subschema
+	url = git@github.com:subschema/subschema.git
+[submodule "subschema-demo"]
+	path = subschema-demo
+	url = git@github.com:subschema/subschema-demo.git
+[submodule "subschema-project"]
+	path = subschema-project
+	url = git@github.com:subschema/subschema-project.git
