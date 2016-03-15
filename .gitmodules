@@ -1,6 +1,7 @@
 [submodule "subschema-test-support"]
 	path = subschema-test-support
 	url = git@github.com:subschema/subschema-test-support.git
+	ignore = dirty
 [submodule "subschema"]
 	path = subschema
 	url = git@github.com:subschema/subschema.git
