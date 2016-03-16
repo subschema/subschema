@@ -44,7 +44,7 @@ function publishAll(){
 }
 
 function ghAll(){
- for pkg in subschema subschema-project subschema-demo; do
+ for pkg in subschema-project subschema-demo; do
   echo "github pages $pkg";
   cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
   cd ..
