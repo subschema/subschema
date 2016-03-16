@@ -25,6 +25,15 @@ writing subschema easy, this project is an attempt to fix this.
   $ npm run hot
 ```
 
+#Publishing
+This cleans all the modules, installs them, runs publish and then gh-pages to publish
+demos.  It takes a few minutes.  
+
+```sh
+  $ ./publish.sh <VERSION>
+
+```
+
 ##Notes to self.
 * git push per submodule, git commit in subschema-devel.
 * make sure remotes are up to date.
