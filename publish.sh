@@ -56,12 +56,17 @@ function ghAll(){
   fi
  done
 }
-
+function tag(){
+  git commit -a -m "Tagging version $VERSION" && \
+  git tag "v${VERSION}" &&\
+  git push --tags || fail
+}
 function everything(){
  cleanAll $1
  installAll $1
  publishAll $1
  ghAll $1
+ tag
 }
 
 function help(){
@@ -82,9 +87,10 @@ else
   all|-a)    everything $3;;
   clean|-c)  cleanAll $3;;
   install|-i)installAll $3;publishAll $3;ghAll $3;;
-  publish|-p)publishAll $3;ghAll $3;;
+  publish|-p)publishAll $3; ghAll $3;;
   github|-g) ghAll $3;;
-  *) fail "unknown option $2";;
+  tag|-t) tag;;
+  *) help "unknown option $2";;
  esac
 
 fi

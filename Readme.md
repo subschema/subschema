@@ -1,9 +1,11 @@
 Subschema Devel
 ===
-This project is here to make developing subschema itself more convienent.   
+This project is here to make developing subschema itself more convenient.   
 
-While most of the time, we write tests in subschema/test, it is often useful
-to test things in the demo.   In this case you should use this.
+While most of the time, I write tests in subschema/test, to develop new
+functionality it is often useful to test things in the demo. 
+
+In this case you should use this.
 
 I try to make writing subschema apps easy, I haven't tried so hard to make
 writing subschema easy, this project is an attempt to fix this.
@@ -28,6 +30,11 @@ writing subschema easy, this project is an attempt to fix this.
 #Publishing
 This cleans all the modules, installs them, runs publish and then gh-pages to publish
 demos.  It takes a few minutes.  
+
+Switches
+ -a all - Run everything
+ -c clean - Just Clean
+ -g 
 
 ```sh
   $ ./publish.sh <VERSION>
