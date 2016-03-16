@@ -9,10 +9,14 @@ function inst {
   npm install
   return $?
 }
+
 function fail {
- echo "ERROR: $1" >/dev/stderr;
+ if [ -n $1 ]; then
+  echo "ERROR: $*" >/dev/stderr;
+ fi
  exit 1;
 }
+
 function publish(){
   npm version ${1:-'patch'} --tag &&\
   npm publish &&\
@@ -45,21 +49,24 @@ function publishAll(){
 
 function ghAll(){
  for pkg in ${1:-subschema-project subschema-demo}; do
-  echo "github pages $pkg";
-  cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
-  cd ..
+  if [ -f $pkg/gh-pages.sh ];then
+     echo "github pages $pkg";
+     cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
+     cd ..
+  fi
  done
 }
+
 function everything(){
- cleanAll
- installAll
- publishAll
- ghAll
+ cleanAll $1
+ installAll $1
+ publishAll $1
+ ghAll $1
 }
 
 function help(){
- echo "$0 <VERSION> -a all -c clean -i install,publish,github -p publish github -g github [project]"
- exit 1
+ echo "$0 <VERSION> -h help -a all -c clean -i install,publish,github -p publish github -g github [project...]"
+ fail $*
 }
 
 echo "$1 $2";
@@ -68,11 +75,11 @@ if [[ -z $1 ]]; then
 fi
 
 if [[ -z $2 ]]; then
-  everything
+  everything $3
 else
  case $2 in
   --help|-h|help) help;;
-  all|-a)    everything;;
+  all|-a)    everything $3;;
   clean|-c)  cleanAll $3;;
   install|-i)installAll $3;publishAll $3;ghAll $3;;
   publish|-p)publishAll $3;ghAll $3;;
