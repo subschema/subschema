@@ -34,10 +34,13 @@ demos.  It takes a few minutes.
 Switches
  -a all - Run everything
  -c clean - Just Clean
- -g 
+ -g github - github pages
+ -t tag - git commit tag and push
+ -i install
+ -p publish 
 
 ```sh
-  $ ./publish.sh <VERSION>
+  $ ./publish.sh <VERSION> -a -c -g -t -i [...pkg]
 
 ```
 
