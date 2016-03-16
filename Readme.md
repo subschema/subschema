@@ -14,3 +14,8 @@ to test things in the demo.   In this case you should use this.
   $ cd subschema-demo
   $ npm run hot
 ```
+
+##Notes to self.
+* git push per submodule, git commit in subschema-devel.
+* make sure remotes are up to date.
+* 
