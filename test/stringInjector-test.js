@@ -92,4 +92,24 @@ describe('stringInjector', function () {
         expect(Injected.defaultProps.other).toBe('otherness');
 
     });
+
+    class ExternalComponent extends Component {
+        //normal propTypes
+        static propTypes = {
+            onChange:PropTypes.func
+        };
+        //normal defaultProps
+        static defaultProps = {
+        };
+        //Injected PropTypes will resolve against the valueEvent resolver
+        static injectedPropTypes = {
+            onChange: "valueEvent"
+        };
+
+        //Injected Props Value.
+        static injectedProps = {
+            onChange: "."
+        };
+
+    }
 });

@@ -8,64 +8,53 @@ export const settings = {
     propTypes: {
         className: PropTypes.cssClass,
         id: PropTypes.id,
-        htmlFor:PropTypes.htmlFor
-       // fieldClass: PropTypes.fieldClass
+        htmlFor: PropTypes.htmlFor
+        // fieldClass: PropTypes.fieldClass
     }
 };
 
 
-export function normalize(template, _settings = settings) {
-
-    if (template == null) {
-        return _settings;
+export function loadTemplateRecursive(current, next = {}, context) {
+    if (current === false) {
+        return false;
     }
-
-    if (typeof template === 'string' || typeof template === 'function') {
-        return {template}
-    }
-    if (template === false) {
-        return {template};
-    }
-
-    if (template === true) {
-        return _settings;
-    }
-
-    if (template.template === false) {
-        return template;
-    }
-    return {
-        ..._settings,
-        ...template
-    }
-}
-
-export function loadTemplate(value, key, props, {loader, injector}) {
-    const {template, propTypes, ...rest} = normalize(value);
-
-    if (template == null || template === false) {
+    if (current == null) {
         return null;
     }
-
-    let Template;
-    if (isFunction(template)) {
-        Template = template;
-    } else if (template === false) {
-        return FREEZE_OBJ;
-    } else {
-        Template = loader.loadTemplate(template);
-        warning(Template, 'Template for name "%s" is not defined', template);
-        if (!Template.displayName) {
-            Template.displayName = template;
+    if (typeof current === 'string') {
+        const Template = context.loader.loadTemplate(current);
+        if (!Template) {
+            warning(Template, 'Template for name "%s" is not defined', current);
+            return null;
         }
+        if (typeof Template === 'function') {
+            Template.displayName = current;
+            return loadTemplateRecursive(Template, next, context);
+        } else {
+            return loadTemplateRecursive(Template, next, context);
+        }
+    } else if (typeof current === 'function') {
+        const {propTypes, defaultProps, template, ...restNext} = next;
+
+        return {
+            ...restNext,
+            Template: context.injector.inject(current, propTypes, defaultProps)
+        }
+    } else if ('template' in current) {
+        return loadTemplateRecursive(current.template, {...next, ...current}, context);
     }
 
-    const InjectedTemplate = injector.inject(Template, propTypes);
-
-    return {Template: InjectedTemplate, ...rest};
+    return {
+        ...next,
+        ...current
+    };
 }
 
-export default function template(Clazz, key) {
+export function loadTemplate(value, key, props, context) {
+    return loadTemplateRecursive(value, settings, context);
+}
+
+export default function resolve$template(Clazz, key) {
 
 
     Clazz.contextTypes.loader = PropTypes.loader;

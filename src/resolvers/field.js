@@ -54,7 +54,7 @@ export default function field(Clazz, key, propList) {
                 ...settings,
                 ...value,
                 ...normal,
-                template: loadTemplate(template, key, props, context),
+                template:loadTemplate(template, key, props, context),
                 Type
             };
             delete ret.type;
