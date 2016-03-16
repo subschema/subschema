@@ -56,11 +56,14 @@ function ghAll(){
   fi
  done
 }
+
 function tag(){
   git commit -a -m "Tagging version $VERSION" && \
   git tag "v${VERSION}" &&\
-  git push --tags || fail
+  git push --tags || fail && \
+  git push
 }
+
 function everything(){
  cleanAll $1
  installAll $1
