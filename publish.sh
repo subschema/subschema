@@ -19,27 +19,66 @@ function publish(){
   git push --tags
 }
 
-for pkg in subschema-test-support subschema subschema-project subschema-demo; do
-  echo "cleaning $pkg";
-  cd $pkg && clean || fail "Could not clean $pkg"
-  cd ..
-done
+function cleanAll(){
+ for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+   echo "cleaning $pkg";
+   cd $pkg && clean || fail "Could not clean $pkg"
+   cd ..
+ done
+}
 
-for pkg in subschema-test-support subschema subschema-project subschema-demo; do
-  echo "installing $pkg";
-  cd $pkg && inst || fail "Could not install $pkg"
-  cd ..
-done
+function installAll(){
+ for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+   echo "installing $pkg";
+   cd $pkg && inst || fail "Could not install $pkg"
+   cd ..
+ done
+}
 
-for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+function publishAll(){
+ for pkg in subschema-test-support subschema subschema-project subschema-demo; do
   echo "publishing $pkg";
   cd $pkg && publish $VERSION || fail "Could not publish $pkg"
   cd ..
-done
+ done
+}
 
-for pkg in subschema subschema-project subschema-demo; do
+function ghAll(){
+ for pkg in subschema subschema-project subschema-demo; do
   echo "github pages $pkg";
   cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
   cd ..
-done
+ done
+}
+function everything(){
+ cleanAll
+ installAll
+ publishAll
+ ghAll
+}
+
+function help(){
+ echo "$0 <VERSION> -a all -c clean -i install,publish,github -p publish github -g github"
+ exit 1
+}
+
+echo "$1 $2";
+if [[ -z $1 ]]; then
+  help;
+fi
+
+if [[ -z $2 ]]; then
+  everything
+else
+ case $2 in
+  --help|-h|help) help;;
+  all|-a)    everything;;
+  clean|-c)  cleanAll;;
+  install|-i)installAll;publishAll;ghAll;;
+  publish|-p)publishAll;ghAll;;
+  github|-g) ghAll;;
+  *) fail "unknown option $2";;
+ esac
+
+fi
 
