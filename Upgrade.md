@@ -1,3 +1,16 @@
+Subschema 1.0.0 -> 1.1.0 
+##API Changes
+* Properties configured with PropTypes.template now returns an object containing Template:InjectedTemplate, {...options}. 
+  It makes all templates configurable, however, if your component uses a template, than it will be changed.   You can use RenderTemplate to make
+  rendering them easy.
+* The injector can now use string propTypes.   Of course react will complain, but see the next line for the why.
+* The injectorFactory now resolves injectedProps and injectedPropTypes before anything else.  Allowing a component to be
+  subschema configurable, with no dependencies on subschema. 
+* subschema-devel is a meta project to make getting up and running developing subschema faster and easier.
+* Now we are using postcss-loader instead of autoprefixer-loader, as it was depricated.  
+* Loader now lets you create your own loader types.  loader.loaderType('Stuff') will make loader.addStuff, loader.listStuffs, 
+  available.
+
 Subschema 0.6.x -> 1.0.0 Upgrade
 
 ##API Changes
