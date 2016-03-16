@@ -20,6 +20,7 @@ import * as decorators from './decorators/index';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
 import provideFactory from './decorators/provideFactory';
+import stringInjector from './stringInjector';
 export {
     Conditional,
     Field,
@@ -34,12 +35,12 @@ export {
     css,
     decorators,
     eventable,
-    injectorFactory,
     loaderFactory,
     tutils,
     validators,
     warning,
     injectorFactory,
+    stringInjector,
     cachedInjector,
     newSubschemaContext
 };
@@ -97,7 +98,8 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     validators,
     warning,
     injectorFactory,
-    cachedInjector
+    cachedInjector,
+    stringInjector
 
 }) {
     const {loader, injector,  ...rest} = Subschema;
@@ -110,7 +112,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
         }
     }
     const defaultLoader = loaderFactory(defaultLoaders);
-    const defaultInjector = cachedInjector(_injector);
+    const defaultInjector = cachedInjector(stringInjector(_injector, defaultPropTypes));
 
     //Form needs these to kick off the whole thing.  Its defaults can be overriden with
     // properties.

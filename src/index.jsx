@@ -32,11 +32,14 @@ import Subschema, {Conditional as _C,
     eventable as _e,
     listenUtil as _l,
     loaderFactory as _loaderFactory,
+    stringInjector as _stringInjector,
     tutils as _t,
     validators as _v,
     warning as _w,
     newSubschemaContext as _newSubschemaContext,
 } from './index.js';
+export const stringInjector = _stringInjector;
+export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;
 export const RenderContent = _RenderContent;
 export const FastValueManager = _FastValueManager;

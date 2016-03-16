@@ -9,9 +9,6 @@ describe('types/Checkboxes', function () {
     this.timeout(50000);
     it('should create checkboxes', function () {
         var valueManager = ValueManager();
-        valueManager.addListener(null, function(...args){
-            console.log('change', ...args);
-        });
         var root = into(<Form valueManager={valueManager} schema={{schema:{
            group1: {
                 options: ['one', 'two', 'three'],

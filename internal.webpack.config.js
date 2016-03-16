@@ -2,12 +2,9 @@ require('es6-promise').polyfill();
 
 var path = require('path');
 var webpack = require('webpack');
-var AUTOPREFIXER_LOADER = 'autoprefixer?{browsers:[' +
-    '"Android 2.3", "Android >= 4", "Chrome >= 20", "Firefox >= 24", ' +
-    '"Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]}';
-
+var autoprefixer = require('autoprefixer');
 var join = path.join.bind(path, __dirname);
-var cssStr = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]';
+var cssStr = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss';
 
 function externs() {
     return {
@@ -109,10 +106,7 @@ function config(filename, externals, isNode, isMinify) {
             pathinfo: false
         },
         externals: externals,
-        postcss: [
-            require('autoprefixer'),
-            require('postcss-color-rebeccapurple')
-        ],
+
         resolve: {
             extensions: ['', '.js', '.jsx'],
             alias: {
@@ -129,7 +123,11 @@ function config(filename, externals, isNode, isMinify) {
             loaders: loaders
         },
 
-
+        postcss: [autoprefixer({
+            browsers: ["Android 2.3", "Android >= 4",
+                "Chrome >= 20", "Firefox >= 24",
+                "Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]
+        })],
         plugins: plugins
     };
     if (!isNode) {
@@ -161,11 +159,11 @@ function config(filename, externals, isNode, isMinify) {
 
         loaders.push({
                 test: /\.css$/,
-                loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+                loader: 'style!' + cssStr
             },
             {
                 test: /\.less$/,
-                loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less'
+                loader: 'style!' + cssStr + '!less'
             });
 
 
@@ -175,11 +173,11 @@ function config(filename, externals, isNode, isMinify) {
         conf.target = 'node';
         loaders.push({
                 test: /\.css$/,
-                loader: extractCSS.extract([cssStr, AUTOPREFIXER_LOADER])
+                loader: extractCSS.extract([cssStr])
             },
             {
                 test: /\.less$/,
-                loader: extractCSS.extract([cssStr, AUTOPREFIXER_LOADER, 'less'])
+                loader: extractCSS.extract([cssStr,'less'])
             });
         plugins.unshift(extractCSS);
 
