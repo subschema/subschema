@@ -10,7 +10,7 @@ function inst {
   return $?
 }
 function fail {
- echo "$1" >/dev/stderr;
+ echo "ERROR: $1" >/dev/stderr;
  exit 1;
 }
 function publish(){
@@ -27,7 +27,7 @@ done
 
 for pkg in subschema-test-support subschema subschema-project subschema-demo; do
   echo "installing $pkg";
-  cd $pkg && install || fail "Could not install $pkg"
+  cd $pkg && inst || fail "Could not install $pkg"
   cd ..
 done
 
@@ -38,8 +38,8 @@ for pkg in subschema-test-support subschema subschema-project subschema-demo; do
 done
 
 for pkg in subschema subschema-project subschema-demo; do
-  echo "publishing $pkg";
-  cd $pkg && ./gh-pages.sh || fail "Could not publish $pkg"
+  echo "github pages $pkg";
+  cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
   cd ..
 done
 
