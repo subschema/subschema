@@ -44,7 +44,8 @@ export default function loaderFactory(loaders = []) {
                 var ret = loaders.concat();
                 loaders.length = 0;
                 return ret;
-            }
+            },
+            loaderType
         };
 
 
