@@ -20,7 +20,7 @@ function publish(){
 }
 
 function cleanAll(){
- for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+ for pkg in ${1:-subschema-test-support subschema subschema-project subschema-demo}; do
    echo "cleaning $pkg";
    cd $pkg && clean || fail "Could not clean $pkg"
    cd ..
@@ -28,7 +28,7 @@ function cleanAll(){
 }
 
 function installAll(){
- for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+ for pkg in ${1:-subschema-test-support subschema subschema-project subschema-demo}; do
    echo "installing $pkg";
    cd $pkg && inst || fail "Could not install $pkg"
    cd ..
@@ -36,7 +36,7 @@ function installAll(){
 }
 
 function publishAll(){
- for pkg in subschema-test-support subschema subschema-project subschema-demo; do
+ for pkg in ${1:-subschema-test-support subschema subschema-project subschema-demo}; do
   echo "publishing $pkg";
   cd $pkg && publish $VERSION || fail "Could not publish $pkg"
   cd ..
@@ -44,7 +44,7 @@ function publishAll(){
 }
 
 function ghAll(){
- for pkg in subschema-project subschema-demo; do
+ for pkg in ${1:-subschema-project subschema-demo}; do
   echo "github pages $pkg";
   cd $pkg && ./gh-pages.sh || fail "Could not github pages $pkg"
   cd ..
@@ -58,7 +58,7 @@ function everything(){
 }
 
 function help(){
- echo "$0 <VERSION> -a all -c clean -i install,publish,github -p publish github -g github"
+ echo "$0 <VERSION> -a all -c clean -i install,publish,github -p publish github -g github [project]"
  exit 1
 }
 
@@ -73,10 +73,10 @@ else
  case $2 in
   --help|-h|help) help;;
   all|-a)    everything;;
-  clean|-c)  cleanAll;;
-  install|-i)installAll;publishAll;ghAll;;
-  publish|-p)publishAll;ghAll;;
-  github|-g) ghAll;;
+  clean|-c)  cleanAll $3;;
+  install|-i)installAll $3;publishAll $3;ghAll $3;;
+  publish|-p)publishAll $3;ghAll $3;;
+  github|-g) ghAll $3;;
   *) fail "unknown option $2";;
  esac
 
