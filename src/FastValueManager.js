@@ -99,9 +99,6 @@ function _update(_value, _map, _get = defaultGet, _set = defaultSet) {
         const dotPt = pt == null ? '' : `${pt}.`;
         for (let entry of _map) {
             const {path, scope, listener} = entry;
-            //wtf?
-
-            console.log('pt', pt, path);
             if (path == null) {
                 scope::listener(_value, null, path, pt);
             } else  if (pt == null || path === pt || `${path}.`.indexOf(dotPt) === 0 || dotPt.indexOf(`${path}.`) === 0) {
