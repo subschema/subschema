@@ -1,5 +1,5 @@
 "use strict";
-import {React, into,TestUtils,expect, Simulate,byTag, byType, notByType, click} from 'subschema-test-support';
+import {React, into,TestUtils,expect, Simulate,byTag, byTags, byType, notByType, click} from 'subschema-test-support';
 import {loader,Form, templates,  ValueManager} from 'Subschema';
 var {EditorTemplate, ButtonTemplate} = templates;
 
@@ -300,7 +300,7 @@ describe('components/Form', function () {
         click(submit);
         expect(byTag(root, 'p').innerHTML).toBe('Required');
         valueManager.update('c1', true);
-        expect(byTag(root, 'p').innerHTML).toBe('');
+        expect(byTags(root, 'p', 0));
 
     });
 

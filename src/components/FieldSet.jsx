@@ -9,6 +9,10 @@ import RenderTemplate from './RenderTemplate.jsx';
  * it renders the buttons, so the Template does not have to handle that.
  *
  */
+function cleanField(src) {
+    const {buttons, field, template, legend, transition, content, conditional, fieldsets, ...rest}= src;
+    return rest;
+}
 export default class FieldSet extends Component {
     static displayName = "FieldSet";
     static propTypes = {
@@ -51,12 +55,14 @@ export default class FieldSet extends Component {
                                onClick={this.props.onClick}  {...buttons}/>
     }
 
+
     renderFieldSet(key) {
 
         const {template,children, buttons, content, field, ...rest}  = this.props;
-
-        return <RenderTemplate template={template} key={key}  {...rest} field={field} buttons={this.renderButtons(buttons)}
-                               content={<RenderContent content={content}  key={`content-${key}`}/>}>
+        const renderedContent = content ? <RenderContent content={content}  key={`content-${key}`}/> : null;
+        return <RenderTemplate template={template} {...cleanField(field)} key={key}  {...rest} field={field}
+                               buttons={this.renderButtons(buttons)}
+                               content={renderedContent}>
             {children}
         </RenderTemplate>
 

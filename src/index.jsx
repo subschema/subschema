@@ -1,8 +1,7 @@
 "use strict";
-import "babel-polyfill";
 
+import 'babel-polyfill';
 import _ReactCSSReplaceTransition from './transition/ReactCSSReplaceTransition';
-
 import {provide} from './decorators';
 import _DefaultLoader from './DefaultLoader';
 import * as _templates from './templates';

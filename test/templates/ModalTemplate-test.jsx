@@ -6,11 +6,10 @@ import ModalSample from 'subschema-test-support-samples/Modal.js';
 const {ModalTemplate} = templates;
 
 
-
 function byId(node, id) {
     var all = TestUtils.findAllInRenderedTree(node, function (inst) {
         var inode = findNode(inst);
-        if (inode == null){
+        if (inode == null) {
             return false;
         }
         return inode.id === id;
@@ -68,6 +67,27 @@ describe('public/Modal', function () {
         modal = byComponents(form, ModalTemplate)[0];
         expect(modal).toNotExist('hide');
         expect(valueManager.path('address.street')).toBe('hello2', 'should revert change on cancel');
+
+    });
+    it('should render template with buttons', function () {
+        //loader, schema, Subschema, React
+        const valueManager = ValueManager();
+        const form = into(<Form schema={{
+            schema:{
+                test:'Text'
+            },
+            fieldsets:[
+            {
+                template:"ModalTemplate",
+                path:'toggle',
+                legend:'hello',
+                fields:['test'],
+                buttons:['close', 'cancel', 'submit']
+            }
+            ]
+        }} valueManager={valueManager}/>, true);
+        expect(form).toExist();
+
 
     });
 });

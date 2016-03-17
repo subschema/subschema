@@ -54,6 +54,7 @@ export default class ButtonsTemplate extends Component {
                 {this.makeButtons(buttons).map(
                     (b, i) => <RenderTemplate template={buttonTemplate} key={"btn-"+i} {...b}/>)
                 }
+
             </div>
         </div>);
     }

@@ -50,12 +50,12 @@ describe('types/Checkbox', function () {
         const template = byComponent(root, EditorTemplate);
         expect(root).toExist('form should exist');
         const checkbox = byComponent(root, Checkbox);
-        expect(byTags(template, 'p')[0].innerHTML).toBe('');
+        byTags(template, 'p',0);
         valueManager.validate();
         let p = byTags(template, 'p')[0];
         expect(p.innerHTML).toBe('Required');
         check(checkbox, true);
-        expect(byTags(template, 'p')[0].innerHTML).toBe('');
+        expect(byTags(template, 'p', 0));
 
     });
 });

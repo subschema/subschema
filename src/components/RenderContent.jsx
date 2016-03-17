@@ -18,7 +18,7 @@ function RenderContent(props) {
 
     const {content, ...oprops} = props;
 
-    if (content === false) {
+    if (content === false || content == null) {
         return null
     }
 

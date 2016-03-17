@@ -8,7 +8,23 @@ import cloneDeep from 'lodash/lang/cloneDeep';
 import RenderContent from '../components/RenderContent.jsx';
 import RenderTemplate from '../components/RenderTemplate.jsx';
 
+
 export default class ModalTemplate extends Component {
+    static defaultBtns = {
+        buttonsClass: 'pull-right btn-group',
+        buttons: [
+            {
+                label: "Cancel",
+                action: 'cancel',
+                className: 'btn'
+            },
+            {
+                label: "Save",
+                action: 'submit',
+                className: 'btn btn-primary'
+            }
+        ]
+    };
 
     static propTypes = {
         style: PropTypes.style,
@@ -19,27 +35,14 @@ export default class ModalTemplate extends Component {
         onChange: PropTypes.valueEvent,
         dismiss: PropTypes.valueEvent,
         buttonsTemplate: PropTypes.template,
+        legend: PropTypes.content,
+        error: PropTypes.error
 
     };
 
     static defaultProps = {
         buttonsTemplate: 'ButtonsTemplate',
         onCancel(){
-        },
-        buttons: {
-            buttonsClass: 'pull-right btn-group',
-            buttons: [
-                {
-                    label: "Cancel",
-                    action: 'cancel',
-                    className: 'btn'
-                },
-                {
-                    label: "Save",
-                    action: 'submit',
-                    className: 'btn btn-primary'
-                }
-            ]
         }
     };
 
@@ -54,17 +57,6 @@ export default class ModalTemplate extends Component {
         this.value = cloneDeep(props.value);
     }
 
-    renderButtons(buttons) {
-        if (!buttons) {
-            return null;
-        }
-        if (!buttons.buttons) {
-            buttons = {
-                buttons
-            };
-        }
-        return <RenderTemplate template={this.props.buttonsTemplate} onButtonClick={this.handleBtnClose} {...buttons}/>
-    }
 
     handleClose = (e)=> {
         e && e.preventDefault();
@@ -74,6 +66,9 @@ export default class ModalTemplate extends Component {
         switch (action) {
             case 'submit':
             {
+                if (this.props.error) {
+                    break;
+                }
                 this.props.dismiss();
                 break;
             }
@@ -87,12 +82,16 @@ export default class ModalTemplate extends Component {
     };
 
     renderFooter(buttons) {
-        if (!buttons) return null;
-        return <div className={this.props.footerClass}>{this.renderButtons(buttons)}</div>
+        if (buttons == false) return null;
+        if (buttons == null)
+            buttons = <RenderTemplate template={this.props.buttonsTemplate} {...this.constructor.defaultBtns}
+            />
+        return <div
+            className={this.props.footerClass}>{React.cloneElement(buttons, {onButtonClick: this::this.handleBtnClose})}</div>
     }
 
     render() {
-        const {title, buttons, path,value,bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+        const {title, legend, buttons, path,value,bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
         return <div className={`${namespaceClass} ${overlayClass}`} style={{display:'block'}}>
             <div className={backdropClass}></div>
@@ -102,7 +101,7 @@ export default class ModalTemplate extends Component {
                         <button onClick={this.handleClose} className={closeClass} name={this.props.dismiss}
                                 value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <RenderContent type='h4' content={title}/>
+                        <RenderContent type='h4' content={title || legend}/>
                     </div>
                     <div className={bodyClass}>
                         {children}
