@@ -5,6 +5,25 @@ function clean {
     return $?
 }
 
+function joinstr {
+ local IFS="$1";
+ shift;
+ echo "$*";
+}
+
+PROJECTS=$(find . -maxdepth 1 -type d -name 'subschema*' -not -name '*-gh-pages' | sed 's,\./,,g')
+
+function updateDepVersion(){
+  PROJ=${1:-$PROJECTS}
+  FPKG=$(joinstr "," $PROJ)
+  GPKG=$(joinstr "|" $PROJ)
+  echo "$GPKG - $FPKG"
+  for pkg in $PROJ; do
+      find "./$pkg" -type f -name 'package.json*' | egrep -v node_modules | xargs sed "s,\"\($GPKG\)\"\s*:\s*\"\^\(.*\)\", \"\1\":\ \"\^${VERSION}\","
+
+  done
+}
+
 function inst {
   npm install
   return $?
