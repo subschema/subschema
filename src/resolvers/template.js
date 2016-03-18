@@ -28,7 +28,9 @@ export function loadTemplateRecursive(current, next = {}, context) {
             return null;
         }
         if (typeof Template === 'function') {
-            Template.displayName = current;
+            if (!Template.displayName) {
+                Template.displayName = current;
+            }
             return loadTemplateRecursive(Template, next, context);
         } else {
             return loadTemplateRecursive(Template, next, context);
@@ -62,4 +64,4 @@ export default function resolve$template(Clazz, key) {
 
     Clazz::this.property(key, loadTemplate);
 
-};
+};cd
