@@ -4,7 +4,6 @@ import PropTypes from '../PropTypes';
 import {FREEZE_OBJ} from '../tutils';
 import {loadTemplate} from './template';
 import {loadType} from './type';
-import {loadValidators} from './validate';
 import Conditional from '../components/Conditional.jsx';
 import warning from '../warning';
 
@@ -36,9 +35,7 @@ export default function field(Clazz, key, propList) {
             } else if (typeof value === 'string') {
                 value = {type: value}
             } else {
-                if (value.validators) {
-                    normal.validators = loadValidators(value.validators, key, props, context);
-                }
+
                 if (value.conditional) {
                     if (value.conditional === 'string') {
                         normal.conditional = {operator: value.conditional}

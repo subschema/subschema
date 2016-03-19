@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import warning from '../warning'
+import PropTypes from "../PropTypes";
+import warning from "../warning";
 export const defaultPropTypes = {
     onChange: PropTypes.targetEvent,
     onBlur: PropTypes.blurValidate,
@@ -14,8 +14,9 @@ export const defaultPropTypes = {
     name: PropTypes.htmlFor,
     className: PropTypes.typeClass,
     placeholder: PropTypes.string,
-    fieldAttrs: PropTypes.fieldAttrs
-}
+    fieldAttrs: PropTypes.fieldAttrs,
+    validators: PropTypes.array
+};
 //Expose for configurability
 export const settings = {
     type: 'Text'

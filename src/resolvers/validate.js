@@ -15,7 +15,7 @@ function initValidators(nval) {
 }
 
 export function loadValidators(value, key, props, {loader, valueManager}) {
-    const validators = toArray(value).map(initValidators, loader)
+    const validators = toArray(value || props && props.validators).map(initValidators, loader)
     return (...args)=> {
 
         const v = args.length === 0 ? valueManager.path(props.path) : args[0];

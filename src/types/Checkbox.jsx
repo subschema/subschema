@@ -10,7 +10,7 @@ export default class Checkbox extends Component {
     static propTypes = {
         onChange: PropTypes.valueEvent,
         checkedClass: PropTypes.cssClass,
-        onBlur: PropTypes.changeValidate
+        onValidate: PropTypes.changeValidate
     };
 
     static defaultProps = {

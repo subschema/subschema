@@ -64,4 +64,4 @@ export default function resolve$template(Clazz, key) {
 
     Clazz::this.property(key, loadTemplate);
 
-};cd
+};

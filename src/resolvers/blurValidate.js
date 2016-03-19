@@ -1,7 +1,7 @@
 "use strict";
 
-import {loadValidators} from './validate';
-import PropTypes from '../PropTypes';
+import {loadValidators} from "./validate";
+import PropTypes from "../PropTypes";
 
 /**
  * Blur validate follows the behaviour
@@ -20,9 +20,10 @@ export default function blurValidate(Clazz, key) {
 
 
     Clazz::this.property(key, function blurValidate$prop(validate, key, props, context) {
-        if (validate == null) return void(0);
         validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
-
+        if (validate == null) {
+            return null;
+        }
         const {path} = props;
 
         let hasChanged = false, hasBlurred = false;

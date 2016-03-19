@@ -2,7 +2,7 @@
 
 import {loadValidators} from './validate';
 import PropTypes from '../PropTypes';
-import {noop} from '../tutils';
+import {noop, resolveKey} from '../tutils';
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
@@ -17,11 +17,11 @@ export default function changeValidate(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
 
 
-    Clazz::this.property(key, function blurValidate$prop(validate, key, props, context) {
+    Clazz::this.property(key, function blurValidate$prop(value, key, props, context) {
+        const validate = typeof value === 'function' ? value : this::loadValidators(value, key, props, context);
         if (validate == null) return noop;
-        validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
 
-        const {path} = props;
+        const path = resolveKey(props.path, value);
 
         this._validateListener = context.valueManager.addValidateListener(path, () => {
                 return validate()

@@ -18,10 +18,9 @@ export default class Field extends Component {
 
     renderField(field, propPath) {
         const { Type,   path,  template, ...rest} = field;
-        const validators = field.validators || FREEZE_ARR;
         const cpath = propPath || path;
         return <RenderTemplate template={template} path={cpath}  {...rest}>
-            <Type path={cpath} onBlur={validators} {...rest}/>
+            <Type path={cpath}  {...rest}/>
         </RenderTemplate>
 
     }
