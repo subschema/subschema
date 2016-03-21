@@ -6,7 +6,8 @@ import {noop, resolveKey} from '../tutils';
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
- * the behaviour is different.
+ * the behaviour is different.  This can also be used for any component that needs to be validated
+ * after any value change.
  *
  * @param Clazz
  * @param key

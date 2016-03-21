@@ -16,7 +16,7 @@ function RenderContent(props) {
         return props;
     }
 
-    const {content, ...oprops} = props;
+    const {content, type, ...oprops} = props;
 
     if (content === false || content == null) {
         return null
