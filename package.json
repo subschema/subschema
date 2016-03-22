@@ -18,7 +18,7 @@
     "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
     "test-dist": "NODE_ENV=test karma start ./karma.conf.js --single-run --browsers Firefox",
     "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
-    "karma-dist": "NODE_ENV=test karma start ./karma.conf.js --no-single-run --colors --auto-watch",
+    "karma-dist": "NODE_ENV=test karma start ./karma.conf.js --no-single-run --colors --auto-watch --browsers Firefox",
     "compile": "NODE_ENV=production webpack -p  --display-modules --config ./webpack.config.js",
     "prepublish": "npm prune && npm run test && npm run compile && npm run test-dist && npm run test-server"
   },
@@ -69,7 +69,7 @@
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
     "style-loader": "^0.13.0",
-    "subschema-test-support": "^1.0.12",
+    "subschema-test-support": "^1.1.5",
     "supports-color": "^3.1.2",
     "text-loader": "0.0.1",
     "url-loader": "^0.5.7",
