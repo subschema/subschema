@@ -23,7 +23,7 @@ const tests = {
         }
 
     },
-    '<div class="test-class" id="other">your value is 2</div>': {
+    '<div id="other" class="test-class">your value is 2</div>': {
         id: 'other',
         //this is overridden in the content
         dataType: 'span',
@@ -33,7 +33,7 @@ const tests = {
             className: "test-class"
         }
     },
-    '<h2 class="test-class" id="other">your value is 2</h2>': {
+    '<h2 id="other" class="test-class">your value is 2</h2>': {
         id: 'other',
         //this is not overridden in the content
         dataType: 'h2',

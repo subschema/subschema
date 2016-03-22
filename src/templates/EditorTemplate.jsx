@@ -21,19 +21,13 @@ export default class EditorTemplate extends Component {
 
     render() {
         let {Content, name, htmlFor, title, help, labelClass, hasTitleClass, noTitleClass, errorClass, helpClass, error, hasErrorClass, errorClassName, message, fieldClass, children} = this.props;
+
         if (hasErrorClass) {
             errorClassName = hasErrorClass;
         }
-        if (typeof title === 'string') {
-            title = {
-                type: "label",
-                className: labelClass,
-                htmlFor,
-                content: title
-            }
-        }
+        const titleObj = typeof title == 'string' ? {htmlFor, content: title} : title;
         return (<div className={fieldClass+" " + (error != null ? errorClassName || '' : '')}>
-            <Content content={title}/>
+            <Content content={titleObj} className={labelClass} type="label"/>
 
             <div className={title ? hasTitleClass : noTitleClass}>
                 {children}
