@@ -39,7 +39,7 @@ export default class Content extends Component {
 
     //Expose for react-native subschema.
     static defaultProps = {
-        defaultType: 'span',
+        type: 'span',
         content: '',
         contentWrapper: DefaultWrapper,
         injected: Content
@@ -49,7 +49,7 @@ export default class Content extends Component {
 
     renderChild(value, prefix, componentChildren) {
         //value true is a shortcut to {children:true}.  This means content:true would also return the children.
-        let {content, children, type=this.props.defaultType, ...props} = value;
+        let {content, children, type=this.props.type, ...props} = value;
 
         if (content === true) {
             return componentChildren;
@@ -58,7 +58,7 @@ export default class Content extends Component {
 
         if (isString(content)) {
             var ContentWrapper = this.props.contentWrapper;
-            return <ContentWrapper path={this.props.path} {...props} key={'content-'+prefix} type={type}
+            return <ContentWrapper path={this.props.path} fieldAttrs={props} key={'content-'+prefix} type={type}
                                    content={content}/>
         }
 

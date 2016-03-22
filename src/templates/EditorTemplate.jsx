@@ -1,7 +1,7 @@
 "use strict";
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
-import UninjectedContent from '../types/Content.jsx';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
+import UninjectedContent from "../types/Content.jsx";
 
 export default class EditorTemplate extends Component {
     static propTypes = {
@@ -20,16 +20,25 @@ export default class EditorTemplate extends Component {
 
 
     render() {
-        let {Content, name, htmlFor, title, help,labelClass, hasTitleClass,noTitleClass, errorClass, helpClass, error, hasErrorClass, errorClassName, message, fieldClass,  children} = this.props;
+        let {Content, name, htmlFor, title, help, labelClass, hasTitleClass, noTitleClass, errorClass, helpClass, error, hasErrorClass, errorClassName, message, fieldClass, children} = this.props;
         if (hasErrorClass) {
             errorClassName = hasErrorClass;
         }
+        if (typeof title === 'string') {
+            title = {
+                type: "label",
+                className: labelClass,
+                htmlFor,
+                content: title
+            }
+        }
         return (<div className={fieldClass+" " + (error != null ? errorClassName || '' : '')}>
-            <Content content={title} type="label" className={labelClass} htmlFor={htmlFor}/>
+            <Content content={title}/>
 
             <div className={title ? hasTitleClass : noTitleClass}>
                 {children}
-                <Content content={error || help } key='error-block' type='p' className={error ? errorClass : helpClass}/>
+                <Content content={error || help } key='error-block' type='p'
+                         className={error ? errorClass : helpClass}/>
             </div>
         </div>);
     }

@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
+import {FREEZE_OBJ} from '../tutils';
 
 export default class ContentWrapper extends Component {
     static defaultProps = {
@@ -17,16 +18,16 @@ export default class ContentWrapper extends Component {
         title: PropTypes.any,
         className: PropTypes.cssClass,
         id:PropTypes.any,
-        name:PropTypes.any
+        name:PropTypes.any,
+        fieldAttrs:PropTypes.any
     };
 
     render() {
-        const {type, content, children, context,  ...props} = this.props;
-        props.dangerouslySetInnerHTML = {__html: content};
-        const Type = type;
+        const {type, content, children, context, fieldAttrs=FREEZE_OBJ, ...props} = this.props;
         if (typeof type == 'string') {
-            return React.createElement(type, props);
+            return React.createElement(type, {...fieldAttrs, ...props, dangerouslySetInnerHTML:{__html:content}});
         }
+        const Type = type;
         return <Type {...props}/>;
 
     }
