@@ -300,7 +300,7 @@ describe('components/Form', function () {
         click(submit);
         expect(byTag(root, 'p').innerHTML).toBe('Required');
         valueManager.update('c1', true);
-        expect(byTags(root, 'p', 0));
+        expect(byTags(root, 'p', 1)[0].innerHTML).toBe('');
 
     });
 

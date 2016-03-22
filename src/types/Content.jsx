@@ -100,7 +100,7 @@ export default class Content extends Component {
 
     asContentObject(content, props) {
         if (content == null) {
-            return null;
+            return props;
         }
         if (has(content, 'content') || has(content, 'children')) {
             return {
@@ -125,11 +125,7 @@ export default class Content extends Component {
 
     render() {
         const {injected, contentWrapper, content, children, field, context, ...props} = this.props;
-        if (content == null || content === false) {
-            return null;
-        } else {
-            const normalContent = this.asContentObject(content, props);
-            return this.renderChild(normalContent, 'obj', children);
-        }
+        const normalContent = this.asContentObject(content, props);
+        return this.renderChild(normalContent, 'obj', children);
     }
 }
