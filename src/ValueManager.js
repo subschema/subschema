@@ -1,7 +1,7 @@
 "use strict";
 
-import {push, path as tpath, unique, noop, extend, isBoolean, isString, isDate, isArray, isNumber} from './tutils';
-import eventable from './eventable';
+import {push, path as tpath, unique, noop, extend, isBoolean, isString, isDate, isArray, isNumber} from "./tutils";
+import eventable from "./eventable";
 
 function reduceKeys(arr, v, b, c) {
     if (canDescend(v)) {
@@ -9,6 +9,7 @@ function reduceKeys(arr, v, b, c) {
     }
     return arr;
 }
+const has = Function.call.bind(Object.prototype.hasOwnProperty);
 function canDescend(obj) {
     if (obj == null || isNumber(obj) || isBoolean(obj) || isString(obj) || isDate(obj) || isArray(obj)) {
         return false;
@@ -176,7 +177,7 @@ ValueManager.prototype = {
 
         for (var i = 0, l = parts.length; i < l; i++) {
             var key = parts[i];
-            if (obj == null || !(key in obj)) {
+            if (obj == null || !(has(obj, key))) {
                 return null;
             }
             obj = obj[key];
@@ -196,7 +197,7 @@ ValueManager.prototype = {
         for (var i = 0, l = parts.length - 1; i < l; i++) {
             var key = parts[i];
 
-            if (key in obj) {
+            if (has(obj, key)) {
                 //We won't build the oobj tree, we may need to in the case of multiple changes to the object.  The question becomes
                 // are old values the original values or the last change.
                 oobj = oobj && oobj[key];
