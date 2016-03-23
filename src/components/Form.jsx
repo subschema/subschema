@@ -1,17 +1,15 @@
 "use strict";
 
-import React, {Component} from 'react';
-import PropTypes from './../PropTypes';
-import ValueManager from './../ValueManager';
-import ObjectType from './../types/Object.jsx';
-import _set from 'lodash/object/set';
-import {noop} from './../tutils';
-import warning from '../warning';
+import React, {Component} from "react";
+import PropTypes from "./../PropTypes";
+import ValueManager from "./../ValueManager";
+import ObjectType from "./../types/Object.jsx";
+import {noop} from "./../tutils";
 
 export default class Form extends Component {
     static displayName = "Form";
 
-    static childContextTypes = PropTypes.contextTypes;
+    static childContextTypes = {validate: PropTypes.bool, ...PropTypes.contextTypes};
 
     static propTypes = {
         schema: PropTypes.schema.isRequired,
@@ -23,18 +21,21 @@ export default class Form extends Component {
         action: PropTypes.string,
         enctype: PropTypes.string,
         onSubmit: PropTypes.event,
-        noValidate: PropTypes.bool
+        noValidate: PropTypes.bool,
+        //Set this to true, if you want validators to be called against the current schema.  I.E. after a POST.
+        validate: PropTypes.bool
     };
 
     static defaultProps = {
         fallbackTemplate: 'FormTemplate',
         onSubmit: noop,
-        noValidate: false
+        noValidate: false,
+        validate: false
     };
 
     getChildContext() {
         return {
-            valueManager: this.valueManager, loader: this.loader, injector: this.injector
+            valueManager: this.valueManager, loader: this.loader, injector: this.injector, validate: this.validate
         };
     }
 
@@ -42,6 +43,7 @@ export default class Form extends Component {
         super(props, context, whatever);
         this.loader = props.loader;
         this.injector = props.injector;
+        this.validate = props.validate;
         if (!props.valueManager) {
             this.valueManager = ValueManager(this.props.value, this.props.errors);
         } else {
@@ -57,6 +59,9 @@ export default class Form extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (newProps.validate !== this.props.validate) {
+            this.validate = newProps.validate;
+        }
         if (newProps.loader !== this.props.loader) {
             this.loader = newProps.loader;
         }
@@ -98,7 +103,7 @@ export default class Form extends Component {
 
     render() {
 
-        var {valueManager, injector, loader, template, onSubmit, ...props} = this.props;
+        var {valueManager, injector, loader, validate, template, onSubmit, ...props} = this.props;
         const ObjectWrapper = this.ObjectWrapper;
         return <ObjectWrapper ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
     }

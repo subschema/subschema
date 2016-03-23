@@ -35,6 +35,7 @@ if (isDist) {
     demoCfg.resolve.alias['react-dom'] = join('node_modules/react/lib/ReactDOM');
     demoCfg.resolve.alias['react-addons-test-utils'] = join('node_modules/react-addons-test-utils');
 }
+demoCfg.plugins.unshift(new webpack.DefinePlugin({'process.env.NODE_ENV':'"development"'}));
 
 demoCfg.resolve.alias['subschema-test-support-samples'] = join('node_modules/subschema-test-support/samples');
 demoCfg.resolve.alias['subschema-test-support'] = join('node_modules/subschema-test-support/src/index.js');

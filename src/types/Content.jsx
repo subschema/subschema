@@ -49,7 +49,7 @@ export default class Content extends Component {
 
     renderChild(value, prefix, componentChildren) {
         //value true is a shortcut to {children:true}.  This means content:true would also return the children.
-        let {content, children, type=this.props.type, ...props} = value;
+        let {Content, injected, contentWrapper, content, children, type=this.props.type, ...props} = value;
 
         if (content === true) {
             return componentChildren;
@@ -85,7 +85,7 @@ export default class Content extends Component {
 
         }
 
-        if (Content.Types[type]) {
+        if (this.constructor.Types[type]) {
             if (isArray(newChildren)) {
                 return createElement(type, props, ...newChildren);
             }

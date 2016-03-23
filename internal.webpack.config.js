@@ -165,6 +165,7 @@ function config(filename, externals, isNode, isMinify) {
                 test: /\.less$/,
                 loader: 'style!' + cssStr + '!less'
             });
+        
 
 
     } else {

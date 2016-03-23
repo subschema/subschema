@@ -1,8 +1,7 @@
 "use strict";
 
-import {loadValidators} from './validate';
-import PropTypes from '../PropTypes';
-import {noop, resolveKey} from '../tutils';
+import PropTypes from "../PropTypes";
+import {noop, resolveKey} from "../tutils";
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,
@@ -18,19 +17,19 @@ export default function changeValidate(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
 
 
-    Clazz::this.property(key, function blurValidate$prop(value, key, props, context) {
-        const validate = typeof value === 'function' ? value : this::loadValidators(value, key, props, context);
+    Clazz::this.property(key, function blurValidate$prop(value, key, props, {valueManager}) {
+        const validate = typeof value === 'function' ? value : props.validators;
         if (validate == null) return noop;
 
         const path = resolveKey(props.path, value);
 
-        this._validateListener = context.valueManager.addValidateListener(path, () => {
-                return validate()
+        this._validateListener = valueManager.addValidateListener(path, () => {
+                return valueManager.updateErrors(path, validate());
             }
         ).remove;
 
-        this._validateChangeListeners = context.valueManager.addListener(path, (val)=> {
-            validate(val);
+        this._validateChangeListeners = valueManager.addListener(path, (val)=> {
+            valueManager.updateErrors(path, validate(val));
         }, this, false).remove;
 
         //blur event if its changed we will validate.

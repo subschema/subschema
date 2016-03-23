@@ -1,8 +1,8 @@
 "use strict";
 
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
-import {toArray, noop, resolveKey} from '../tutils';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
+import {toArray, noop} from "../tutils";
 
 function initValidators(nval) {
     if (typeof nval === 'function') {
@@ -14,11 +14,16 @@ function initValidators(nval) {
     return this.loadValidator(nval.type)(nval);
 }
 
-export function loadValidators(value, key, props, {loader, valueManager}) {
-    const validators = toArray(value || props && props.validators).map(initValidators, loader)
-    return (...args)=> {
+export function createValidator(value, path, {loader, valueManager}) {
 
-        const v = args.length === 0 ? valueManager.path(props.path) : args[0];
+    const validators = toArray(value).map(initValidators, loader)
+    if (validators.length === 0) {
+        return null;
+    }
+
+    const validator = (...args)=> {
+
+        const v = args.length === 0 ? valueManager.path(path) : args[0];
         const length = validators.length;
         let errors = null;
         for (let i = 0; i < length; i++) {
@@ -34,7 +39,20 @@ export function loadValidators(value, key, props, {loader, valueManager}) {
                 }
             }
         }
-        valueManager.updateErrors(props.path, errors);
+        return errors;
+    };
+    return validator;
+
+}
+
+export function loadValidators(value, key, props, context) {
+    const validator = createValidator(value || props.validators, props.path, context);
+    if (validator == null) {
+        return noop;
+    }
+    return (...args)=> {
+        const errors = validator(...args);
+        context.valueManager.updateErrors(props.path, errors);
         return errors;
     };
 

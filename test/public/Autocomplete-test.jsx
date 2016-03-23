@@ -47,7 +47,7 @@ describe('public/AutoComplete', function () {
 
         const form = into(<RenderTest/>, true);
         expect(form);
-        expect(valueManager.listeners.length).toBe(6);
+        expect(valueManager.listeners.length).toBe(4);
         expect(injector.size()).toBe(12);
         form.increment();
         form.increment();
@@ -58,7 +58,7 @@ describe('public/AutoComplete', function () {
         form.increment();
         form.increment();
         form.increment();
-        expect(valueManager.listeners.length).toBe(6);
+        expect(valueManager.listeners.length).toBe(4);
         expect(injector.size()).toBe(12);
 
         //just a simple test to make sure everything still works.

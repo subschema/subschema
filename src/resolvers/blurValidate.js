@@ -1,6 +1,5 @@
 "use strict";
 
-import {loadValidators} from "./validate";
 import PropTypes from "../PropTypes";
 
 /**
@@ -16,27 +15,24 @@ import PropTypes from "../PropTypes";
 export default function blurValidate(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
-    Clazz.contextTypes.loader = PropTypes.loader;
 
-
-    Clazz::this.property(key, function blurValidate$prop(validate, key, props, context) {
-        validate = typeof validate === 'function' ? validate : this::loadValidators(validate, key, props, context);
+    Clazz::this.property(key, function blurValidate$prop(validate, key, {validators, path}, {valueManager}) {
+        validate = typeof validate === 'function' ? validate : validators;
         if (validate == null) {
             return null;
         }
-        const {path} = props;
-
         let hasChanged = false, hasBlurred = false;
 
-        this._validateListener = context.valueManager.addValidateListener(path, () =>validate()).remove;
+        this._validateListener = valueManager.addValidateListener(path, () =>valueManager.updateErrors(path, validate())
+        ).remove;
 
 
-        this._validateChangeListeners = context.valueManager.addListener(path, (val)=> {
+        this._validateChangeListeners = valueManager.addListener(path, (val)=> {
             //fires onChange so its true.
             hasChanged = true;
             //at some point it has blurred
             if (hasBlurred) {
-                validate(val);
+                valueManager.updateErrors(path, validate(val));
             }
         }, this, false).remove;
 
@@ -44,7 +40,7 @@ export default function blurValidate(Clazz, key) {
         return this::function handleBlur(e) {
             hasBlurred = true;
             if (hasChanged) {
-                validate();
+                valueManager.updateErrors(path, validate());
             }
         }
 
