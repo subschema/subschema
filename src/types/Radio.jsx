@@ -1,9 +1,9 @@
 "use strict";
 
-import React, {Component} from 'react';
-import {returnFirst, path as tpath} from '../tutils';
-import RenderTemplate from '../components/RenderTemplate.jsx';
-import PropTypes from '../PropTypes';
+import React, {Component} from "react";
+import {path as tpath} from "../tutils";
+import RenderTemplate from "../components/RenderTemplate.jsx";
+import PropTypes from "../PropTypes";
 
 function compare(val, val2) {
     if (val == null && val2 == null) {
@@ -41,36 +41,29 @@ export default class RadioInput extends Component {
         }
     };
 
-    makeOptions(options) {
+    renderOptions(options) {
         options = options || [];
         const onChange = this::this.handleCheckChange;
-        const value = this.props.value;
-        const path = this.props.path;
+        let {value, path, name, checkedClass} = this.props;
+        name = name || path;
         return options.map((option, index)=> {
-            var {val, label, labelHTML} = option;
-            var path = tpath(path, index);
-            return {
-                val,
-                path,
-                label,
-                onChange,
-                checkedClass: this.props.checkedClass,
+            const {val, label, labelHTML, ...rest} = option;
+            const ret = {
+                ...rest,
+                id: tpath(path, index),
+                name,
                 checked: compare(value, val)
-            }
-        });
+            };
+
+            return <RenderTemplate key={`radio-item-${index}`} template={this.props.itemTemplate} {...ret}
+                                   checkedClass={checkedClass} label={label || labelHTML}>
+                <input type="radio" onChange={onChange} {...ret} value={val}/>
+            </RenderTemplate>
+        }, this);
     };
 
     render() {
-        var {name,itemTemplate,className, checkedClass, value, options, field} = this.props;
-        var options = this.makeOptions(options);
-        return <div className={className}>{options.map((option, index)=> {
-            const id = options.id || `${name}.${index}`
-            return <RenderTemplate key={'template-'+id} template={itemTemplate} checkedClass={checkedClass}
-                                   id={id} {...option} >
-                <input id={id} type="radio"
-                       name={name} {...option} value={option.val}/>
-            </RenderTemplate>
-        }, this)}</div>
+        return <div className={this.props.className}>{this.renderOptions(this.props.options)}</div>
 
     }
 }
