@@ -1,20 +1,17 @@
 "use strict";
 
-import 'babel-polyfill';
-import _ReactCSSReplaceTransition from './transition/ReactCSSReplaceTransition';
-import {provide} from './decorators';
-import _DefaultLoader from './DefaultLoader';
-import * as _templates from './templates';
-import * as _types from './types';
-import * as _processors from './processors';
-import * as _styles from './styles';
-import * as _resolvers from './resolvers';
-import {transitions as _transitions} from './transition';
-import provideFactory from './decorators/provideFactory';
-import _cachedInjector from './cachedInjector';
-import {injectorFactory as _injectorFactory} from 'subschema-injection';
-
-import Subschema, {Conditional as _C,
+import _ReactCSSReplaceTransition from "./transition/ReactCSSReplaceTransition";
+import {provide} from "./decorators";
+import _DefaultLoader from "./DefaultLoader";
+import * as _templates from "./templates";
+import * as _types from "./types";
+import * as _processors from "./processors";
+import * as _styles from "./styles";
+import * as _resolvers from "./resolvers";
+import {transitions as _transitions} from "./transition";
+import {injectorFactory as _injectorFactory} from "subschema-injection";
+import Subschema, {
+    Conditional as _C,
     Field as _Field,
     FieldSet as _FieldSet,
     RenderContent as _RenderContent,
@@ -34,8 +31,11 @@ import Subschema, {Conditional as _C,
     tutils as _t,
     validators as _v,
     warning as _w,
-    newSubschemaContext as _newSubschemaContext,
-} from './index.js';
+    validateFactory as _validateFactory,
+    newSubschemaContext as _newSubschemaContext
+} from "./index.js";
+import "babel-polyfill";
+export const validateFactory = _validateFactory;
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;

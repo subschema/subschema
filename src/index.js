@@ -21,6 +21,8 @@ import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
 import provideFactory from './decorators/provideFactory';
 import stringInjector from './stringInjector';
+import validateFactory from './validateFactory';
+
 export {
     Conditional,
     Field,
@@ -42,6 +44,7 @@ export {
     injectorFactory,
     stringInjector,
     cachedInjector,
+    validateFactory,
     newSubschemaContext
 };
 export default {
@@ -64,6 +67,7 @@ export default {
     tutils,
     validators,
     warning,
+    validateFactory,
     newSubschemaContext
 }
 

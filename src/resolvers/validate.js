@@ -3,13 +3,15 @@
 import React, {Component} from "react";
 import PropTypes from "../PropTypes";
 import {toArray, noop} from "../tutils";
-
+import warning from "../warning";
 function initValidators(nval) {
     if (typeof nval === 'function') {
         return nval;
     }
     if (typeof nval === 'string') {
-        return this.loadValidator(nval)({});
+        const validator = this.loadValidator(nval);
+        warning(validator, 'No validator found with name %s', nval);
+        return validator({});
     }
     return this.loadValidator(nval.type)(nval);
 }
