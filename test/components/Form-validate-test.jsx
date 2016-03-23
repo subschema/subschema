@@ -15,7 +15,6 @@ describe('components/Form/validate', function () {
             }
         };
         const content = renderToString(<Form schema={{schema}} value={{}} validate={true}/>);
-        console.log(content);
         expect(content).toMatch(/Required/);
     });
 
@@ -28,7 +27,7 @@ describe('components/Form/validate', function () {
 
             }
         };
-        const content = renderToString(<Form schema={{schema}} value={{}} />);
+        const content = renderToString(<Form schema={{schema}} value={{}}/>);
         expect(content).toNotMatch(/Required/);
     });
 
@@ -41,7 +40,8 @@ describe('components/Form/validate', function () {
 
             }
         };
-        const content = renderToString(<Form schema={{schema}} value={{}} errors={{test:[{message:'Super'}]}} validate={true} />);
+        const content = renderToString(<Form schema={{schema}} value={{}} errors={{test:[{message:'Super'}]}}
+                                             validate={true}/>);
         expect(content).toNotMatch(/Required/);
         expect(content).toMatch(/Super/);
     });
@@ -55,7 +55,7 @@ describe('components/Form/validate', function () {
 
             }
         };
-        const content = renderToString(<Form schema={{schema}} value={{}} errors={{test:[{message:'Super'}]}}  />);
+        const content = renderToString(<Form schema={{schema}} value={{}} errors={{test:[{message:'Super'}]}}/>);
         expect(content).toNotMatch(/Required/);
         expect(content).toMatch(/Super/);
     });

@@ -28,7 +28,8 @@ export default class RadioInput extends Component {
         itemTemplate: PropTypes.template,
         forceSelection: PropTypes.bool,
         checkedClass: PropTypes.cssClass,
-        options: PropTypes.options.isRequired
+        options: PropTypes.options.isRequired,
+        path: PropTypes.path
     };
 
 

@@ -14,7 +14,6 @@ describe('decorators.decorator', function () {
             warning = message;
         };
         var newdecorator = decorator(function test(...help) {
-            console.log('help', help);
 
             return function (...args) {
                 console.log('args', args);
@@ -40,8 +39,6 @@ describe('decorators.decorator', function () {
             warning = message;
         }
         var newdecorator = decorator(function test(...help) {
-            console.log('help', help);
-
             return function (...args) {
                 console.log('args', args);
             }
@@ -65,7 +62,6 @@ describe('decorators.decorator', function () {
             warning = message;
         }
         var newdecorator = decorator(null, function test(...help) {
-            console.log('help', help);
 
             return function (...args) {
                 console.log('args', args);
