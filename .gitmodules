@@ -17,3 +17,6 @@
 [submodule "subschema-prop-types"]
 	path = subschema-prop-types
 	url = https://github.com/subschema/subschema-prop-types.git
+[submodule "subschema-injection"]
+	path = subschema-injection
+	url = https://github.com/subschema/subschema-injection
