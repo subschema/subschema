@@ -31,11 +31,9 @@ import Subschema, {
     tutils as _t,
     validators as _v,
     warning as _w,
-    validateFactory as _validateFactory,
     newSubschemaContext as _newSubschemaContext
 } from "./index.js";
 import "babel-polyfill";
-export const validateFactory = _validateFactory;
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;
