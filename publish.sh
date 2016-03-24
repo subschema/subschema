@@ -43,7 +43,7 @@ function publish(){
 }
 
 function cleanAll(){
- for pkg in ${1:-subschema-test-support subschema subschema-server-utils subschema-project subschema-demo}; do
+ for pkg in ${1:-subschema-prop-types subschema-test-support subschema subschema-server-utils subschema-project subschema-demo}; do
    echo "cleaning $pkg";
    cd $pkg && clean || fail "Could not clean $pkg"
    cd ..
@@ -51,7 +51,7 @@ function cleanAll(){
 }
 
 function installAll(){
- for pkg in ${1:-subschema-test-support subschema subschema-server-utils  subschema-project subschema-demo}; do
+ for pkg in ${1:-subschema-prop-types subschema-test-support subschema subschema-server-utils  subschema-project subschema-demo}; do
    echo "installing $pkg";
    cd $pkg && inst || fail "Could not install $pkg"
    cd ..
@@ -59,7 +59,7 @@ function installAll(){
 }
 
 function publishAll(){
- for pkg in ${1:-subschema-test-support subschema subschema-server-utils subschema-project subschema-demo}; do
+ for pkg in ${1:-subschema-prop-types subschema-test-support subschema subschema-server-utils subschema-project subschema-demo}; do
   echo "publishing $pkg";
   cd $pkg && publish $VERSION || fail "Could not publish $pkg"
   cd ..

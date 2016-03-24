@@ -14,3 +14,6 @@
 [submodule "subschema-server-utils"]
 	path = subschema-server-utils
 	url = https://github.com/subschema/subschema-server-utils.git
+[submodule "subschema-prop-types"]
+	path = subschema-prop-types
+	url = https://github.com/subschema/subschema-prop-types.git
