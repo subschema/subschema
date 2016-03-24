@@ -1,17 +1,17 @@
 "use strict";
 
-import {resolveKey} from '../tutils';
-import PropTypes from '../PropTypes';
+import {resolveKey} from "../tutils";
+import PropTypes from "../PropTypes";
 
-function errorUpdate(value, key, props, context) {
+function errorUpdate(value, key, props, {valueManager}) {
     const resolvedKey = resolveKey(props.path, value);
-    return (val)=> context.valueManager.updateErrors(resolvedKey, val);
+    return val => valueManager.updateErrors(resolvedKey, val);
 }
 
 export default function errorEvent(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
 
-    Clazz::this.property(errorUpdate);
+    Clazz::this.property(key, errorUpdate);
 
 }

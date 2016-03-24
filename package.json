@@ -93,6 +93,6 @@
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
     "subschema-injection": "^1.0.10",
-    "subschema-prop-types": "^1.0.0"
+    "subschema-prop-types": "^1.1.0"
   }
 }
