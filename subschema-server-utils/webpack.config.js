@@ -3,6 +3,7 @@ var path = require('path'), join = path.join.bind(path, __dirname);
 var lifecycle = process.env['npm_lifecycle_event'];
 var isTest = /test/.test(lifecycle);
 var isExternal = /external/.test(lifecycle);
+var webpack = require('webpack');
 var config = {
 
     entry: join('src/index'),
@@ -52,12 +53,12 @@ if (isExternal) {
         'React': join('shim/react'),
     })
 }
-
+console.log(isTest ? 'Test' : 'dist', ' ', isExternal ? 'External' : '', ' ');
 if (isTest) {
-    console.log('isTest isExternal?', isExternal);
+
     if (!config.externals) {
-        config.externals =[];
+        config.externals = [];
     }
-    config.externals.push({Subschema : isExternal ? join('./externals') : join('dist/index')});
+    config.externals.push({Subschema: isExternal ? join('./externals') : join('dist/index')});
 }
 module.exports = config;

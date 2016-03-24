@@ -15,6 +15,7 @@ const conditionalSettings = {
 
 const returnTrue = _ => true;
 
+
 function makeConditional(listen, operator, context) {
     if (operator == null) {
         return null;
@@ -31,6 +32,9 @@ function makeConditional(listen, operator, context) {
     return function conditional$(valueManager) {
         return _operator(valueManager.path(conditional.listen || listen), conditional.value);
     }
+}
+function truthy(f) {
+    return !!f;
 }
 /**
  * Takes a schema and a loader and returns a validator function
@@ -54,18 +58,24 @@ export default function validateFactory(schema, loader) {
         makeFieldsets(normalFieldsets.fieldsets, normalSchema.schema, path, validatorMap);
         return function validate(valueManager = {}, errors = {}, pt) {
             valueManager = typeof valueManager.path === 'function' ? valueManager : ValueManager(valueManager);
-            for (let key of Object.keys(validatorMap)) {
-                let pkey = join(pt, key);
+            const promises = Object.keys(validatorMap).map((key)=> {
+                const pkey = join(pt, key);
                 const field = validatorMap[key];
                 if (field.conditional(valueManager)) {
-                    let error = field.validator(valueManager.path(pkey), valueManager);
-                    if (error) {
-                        errors[pkey] = error;
-                    }
-                    field.children(valueManager, errors);
+                    const validators = field.validator(valueManager.path(pkey), valueManager) || [];
+
+                    return Promise.all(validators).then((error)=> {
+                        error = error && error.filter(truthy)
+                        if (error.length) {
+                            errors[pkey] = error;
+                        }
+                        return error;
+                    }).then(()=>field.children(valueManager, errors));
                 }
-            }
-            return Object.keys(errors).length === 0 ? null : errors;
+            });
+            return Promise.all(promises).then((result)=> {
+                return Object.keys(errors).length === 0 ? null : errors;
+            });
         };
     }
 
