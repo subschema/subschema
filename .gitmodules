@@ -11,3 +11,6 @@
 [submodule "subschema-project"]
 	path = subschema-project
 	url = https://github.com/subschema/subschema-project.git
+[submodule "subschema-server-utils"]
+	path = subschema-server-utils
+	url = https://github.com/subschema/subschema-server-utils.git
