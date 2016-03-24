@@ -8,7 +8,7 @@ const loader = loaderFactory();
 loader.addValidator(validators);
 
 describe("validateFactory", function () {
-
+    
     it('should validate required', function () {
         const validate = validateFactory({
             schema: {

@@ -1,13 +1,13 @@
 "use strict";
+//This allows for shimming to work. Super Fragilistic.
+import {ValueManager, resolvers, warning, tutils} from "Subschema";
 
-import ValueManager from "subschema/ValueManager";
-import {normalize} from "subschema/resolvers/schema";
-import {normalizeFieldsets} from "subschema/resolvers/fieldset";
-import {isString, isArray, unique, noop, path as join} from "subschema/tutils";
-import {createValidator} from "subschema/resolvers/validate";
-import {loadOperator} from "subschema/resolvers/operator";
-import warning from "subschema/warning";
-
+const {loadOperator} = resolvers.operator;
+const {createValidator} = resolvers.validate;
+const {normalize} = resolvers.schema;
+const {normalizeFieldsets} = resolvers.fieldset;
+const {unique, noop} = tutils;
+const join = tutils.path;
 
 const conditionalSettings = {
     operator: "truthy"
@@ -15,21 +15,21 @@ const conditionalSettings = {
 
 const returnTrue = _ => true;
 
-function makeConditional(path, operator, context) {
+function makeConditional(listen, operator, context) {
     if (operator == null) {
         return null;
     }
     const conditional = typeof operator === 'string' ? {
         ...conditionalSettings,
         operator
-    } : {...conditionalSettings, listen: path, ...operator};
+    } : {...conditionalSettings, listen, ...operator};
 
     const _operator = loadOperator(conditional.operator, null, null, context);
     if (!_operator) {
         return;
     }
     return function conditional$(valueManager) {
-        return _operator(valueManager.path(conditional.listen || path), conditional.value);
+        return _operator(valueManager.path(conditional.listen || listen), conditional.value);
     }
 }
 /**

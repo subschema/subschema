@@ -1,4 +1,4 @@
 test
 .idea
 node_modules
-dist/index-test.js
+dist/*-test.js

@@ -5,8 +5,10 @@
   "main": "dist/index",
   "scripts": {
     "dist": "webpack --config ./webpack.config.js --output-path dist --output-filename index.js --entry ./src/index.js --display-modules --output-library-target=commonjs",
+    "dist-externals": "webpack --config ./webpack.config.js --output-path dist --output-filename index-externals.js --entry ./src/index.js --display-modules --output-library-target=commonjs",
+    "test-dist-externals":"webpack --config ./webpack.config.js --output-path dist --output-filename index-externals-test.js --entry ./test/validateFactory-test.js --display-modules --output-library-target=commonjs && mocha ./dist/index-externals-test.js",
     "test-dist": "webpack --config ./webpack.config.js --output-path dist --output-filename index-test.js --entry ./test/validateFactory-test.js --display-modules --output-library-target=commonjs",
-    "test": "npm run dist && npm run test-dist && mocha ./dist/index-test.js",
+    "test": "npm run dist && npm run test-dist && npm run dist-externals && npm run test-dist-externals",
     "prepublish": "test"
   },
   "author": "Justin Spears<speajus@gmail.com>",
@@ -18,6 +20,7 @@
     "expect": "^1.16.0",
     "mocha": "^2.4.5",
     "null-loader": "^0.1.1",
+    "subschema": "^1.1.6",
     "webpack": "^1.12.14"
   }
 }
