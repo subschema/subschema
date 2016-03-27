@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React from "react";
 
 /**
  * This is to be used to render properties with type content.
@@ -17,13 +17,7 @@ function RenderContent(props) {
     }
 
     const {content, type, ...oprops} = props;
-
-    if (content === false || content == null) {
-        return null
-    }
-
     const {Content, ...rest} = content;
-
     return <Content content={rest} {...oprops}/>
 }
 RenderContent.displayName = 'RenderContent';

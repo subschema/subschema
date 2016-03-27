@@ -26,8 +26,8 @@ if (isDist) {
 } else {
     files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
     demoCfg = config('karma', false, false, false);
-    demoCfg.resolve.alias['subschema'] = join('src/index.jsx');
-    demoCfg.resolve.alias['Subschema'] = join('src/index.jsx');
+    demoCfg.resolve.alias['subschema'] = join('src/dist.js');
+    demoCfg.resolve.alias['Subschema'] = join('src/dist.js');
 
     demoCfg.resolve.alias['react/lib'] = join('node_modules/react/lib');
     demoCfg.resolve.alias['react'] = join('node_modules/react/lib/React.js');

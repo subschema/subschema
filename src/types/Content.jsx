@@ -125,6 +125,9 @@ export default class Content extends Component {
 
     render() {
         const {injected, contentWrapper, content, children, field, context, ...props} = this.props;
+        if (content === false) {
+            return null;
+        }
         const normalContent = this.asContentObject(content, props);
         return this.renderChild(normalContent, 'obj', children);
     }

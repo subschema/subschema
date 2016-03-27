@@ -87,7 +87,7 @@ function config(filename, externals, isNode, isMinify) {
         name: filename,
         devtool: 'source-map',
         entry: {
-            subschema: './src/index.jsx'
+            subschema: (isNode ? './src/index.jsx' : './src/dist.js' )
         },
         devServer: {
             noInfo: true,
@@ -165,7 +165,6 @@ function config(filename, externals, isNode, isMinify) {
                 test: /\.less$/,
                 loader: 'style!' + cssStr + '!less'
             });
-        
 
 
     } else {
@@ -178,7 +177,7 @@ function config(filename, externals, isNode, isMinify) {
             },
             {
                 test: /\.less$/,
-                loader: extractCSS.extract([cssStr,'less'])
+                loader: extractCSS.extract([cssStr, 'less'])
             });
         plugins.unshift(extractCSS);
 

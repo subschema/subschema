@@ -33,7 +33,6 @@ import Subschema, {
     warning as _w,
     newSubschemaContext as _newSubschemaContext
 } from "./index.js";
-import "babel-polyfill";
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;
