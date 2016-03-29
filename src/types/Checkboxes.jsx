@@ -1,9 +1,9 @@
 "use strict";
 
-import React, {Component} from 'react'
-import PropTypes from '../PropTypes'
-import {path, FREEZE_ARR as options} from '../tutils';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
+import {path, FREEZE_ARR as options} from "../tutils";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 export default class Checkboxes extends Component {
     //override added input Class Names.
@@ -37,7 +37,9 @@ export default class Checkboxes extends Component {
     handleCheckChange(e) {
         if (this.props.dataType === 'radio') {
             this.props.onChange(e.target.checked ? e.target.value : null);
-            this.props.onBlur();
+            if (this.props.onBlur) {
+                this.props.onBlur();
+            }
             return;
         }
         var newValues = this.props.value.concat();
