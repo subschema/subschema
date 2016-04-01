@@ -1,33 +1,39 @@
 "use strict";
 
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
 export default class FormTemplate extends Component {
-
+    static displayName = 'FormTemplate';
     static propTypes = {
         style: PropTypes.style,
-        onSubmit: PropTypes.event,
+        onSubmit: PropTypes.submit,
+        onCancel: PropTypes.event,
+        onReset: PropTypes.event,
         accept: PropTypes.string,
         acceptCharset: PropTypes.string,
         action: PropTypes.string,
         autocapitalize: PropTypes.oneOf(['on', 'off', 'words', 'sentences', 'charecters', 'none']),
         autocomplete: PropTypes.oneOf(['on', 'off']),
-        enctype: PropTypes.oneOf(['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain']),
+        encType: PropTypes.oneOf(['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain']),
         method: PropTypes.oneOf(['get', 'post']),
         name: PropTypes.string,
-        novalidate: PropTypes.bool,
         target: PropTypes.string,
-        fieldAttrs: PropTypes.any
+        fieldAttrs: PropTypes.any,
+        charSet: PropTypes.string,
+        disabled: PropTypes.bool,
+        noValidate: PropTypes.bool,
+        novalidate: PropTypes.deprecated('Please use noValidate instead')
+
     };
 
     static defaultProps = {
-        className: ''
+        className: '',
+        method: 'post'
     };
 
     render() {
-        var {children, name, fieldAttrs, enctype,formClass, className, action, method, onSubmit, ...props} = this.props;
-        return (<form name={name} action={action} enctype={enctype} method={method} onSubmit={onSubmit}
-                      className={className || formClass} {...fieldAttrs}>
+        const {children, fieldAttrs, formClass, className, ...props} = this.props;
+        return (<form {...props} className={className || formClass} {...fieldAttrs}>
             {children}
         </form>);
     }

@@ -127,12 +127,12 @@ ValueManager.prototype = {
     /**
      * When onSubmit is called this is fired
      */
-    onSubmit: function (e, value, errors, path) {
+    onSubmit: function (e, errors, value, path) {
         var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
         do {
             if (this.submitListeners.some(v=> {
                     if (v.path == null || v.path === pp) {
-                        return (v.listener.call(v.scope, e, value, errors, path) === false);
+                        return (v.listener.call(v.scope, e, errors, value, path) === false);
                     }
                 }, this) === true) {
                 return false

@@ -1,13 +1,12 @@
 "use strict";
 
-import React, {Component}  from 'react';
-import PropTypes  from '../PropTypes';
-import {FREEZE_OBJ, toArray,push, isString, isArray, unique, path as _path, clone, noop}  from '../tutils';
-import map from 'lodash/collection/map';
-import UninjectedField  from '../components/Field';
-import UninjectedFieldSet from '../components/FieldSet.jsx';
-import warning from '../warning';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
+import {isString, isArray, unique, path as _path, noop} from "../tutils";
+import UninjectedField from "../components/Field";
+import UninjectedFieldSet from "../components/FieldSet.jsx";
+import warning from "../warning";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 export default class ObjectType extends Component {
 
@@ -21,7 +20,7 @@ export default class ObjectType extends Component {
         schema: PropTypes.schema,
         subSchema: PropTypes.schema,
         onButtonClick: PropTypes.event,
-        onSubmit: PropTypes.event,
+        onSubmit: PropTypes.submit,
         buttons: PropTypes.buttons,
         path: PropTypes.path,
         fieldsets: PropTypes.fieldset,
@@ -33,7 +32,6 @@ export default class ObjectType extends Component {
 
     static defaultProps = {
         onButtonClick: noop,
-        onSubmit: noop,
         fallbackTemplate: 'ObjectTemplate',
         FieldSet: UninjectedFieldSet,
         Field: UninjectedField,
@@ -59,7 +57,6 @@ export default class ObjectType extends Component {
 
     makeFieldset(f, i, schema, FieldSet, Field) {
         return <FieldSet key={`fieldset-${i}`} {...f} field={f}
-                         onSubmit={this.handleSubmit}
                          onButtonClick={this.handleButtonClick}>
             {f.fields ? this.makeFields(f.fields, schema, Field) : this.makeFieldsets(f.fieldsets, schema, FieldSet, Field)}
         </FieldSet>
@@ -102,7 +99,7 @@ export default class ObjectType extends Component {
     render() {
         //capture the things that should not fall through.
         let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, fallbackTemplate, template, ...props} = this.props;
-        let { ...rschema} = schema || subSchema;
+        let {...rschema} = schema || subSchema;
         template = rschema.template || template || objectTemplate || fallbackTemplate;
         return <RenderTemplate template={template} schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
             {rschema != null ? this.renderSchema(rschema, FieldSet, Field) : null}

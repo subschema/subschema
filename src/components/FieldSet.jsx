@@ -25,7 +25,6 @@ export default class FieldSet extends Component {
         conditional: PropTypes.conditional,
         buttons: PropTypes.any,
         onButtonClick: PropTypes.event,
-        onSubmit: PropTypes.event,
         onCancel: PropTypes.event,
         field: PropTypes.any,
         legend: PropTypes.any,
