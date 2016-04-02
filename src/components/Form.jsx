@@ -9,7 +9,7 @@ import {noop} from "./../tutils";
 export default class Form extends Component {
     static displayName = "Form";
 
-    static childContextTypes = {validate: PropTypes.bool, ...PropTypes.contextTypes};
+    static childContextTypes = {validate: PropTypes.bool, noValidate: PropTypes.bool, ...PropTypes.contextTypes};
 
     static propTypes = {
         schema: PropTypes.schema.isRequired,
@@ -20,7 +20,9 @@ export default class Form extends Component {
         method: PropTypes.string,
         action: PropTypes.string,
         enctype: PropTypes.string,
+        //handy submit handler.
         onSubmit: PropTypes.event,
+        //Set this to true if you don't want validation to run on submit.
         noValidate: PropTypes.bool,
         //Set this to true, if you want validators to be called against the current schema.  I.E. after a POST.
         validate: PropTypes.bool
@@ -28,14 +30,17 @@ export default class Form extends Component {
 
     static defaultProps = {
         fallbackTemplate: 'FormTemplate',
-        onSubmit: noop,
         noValidate: false,
         validate: false
     };
 
     getChildContext() {
         return {
-            valueManager: this.valueManager, loader: this.loader, injector: this.injector, validate: this.validate
+            valueManager: this.valueManager,
+            loader: this.loader,
+            injector: this.injector,
+            validate: this.props.validate,
+            noValidate: this.props.noValidate
         };
     }
 
@@ -43,7 +48,6 @@ export default class Form extends Component {
         super(props, context, whatever);
         this.loader = props.loader;
         this.injector = props.injector;
-        this.validate = props.validate;
         if (!props.valueManager) {
             this.valueManager = ValueManager(this.props.value, this.props.errors);
         } else {
@@ -56,17 +60,21 @@ export default class Form extends Component {
             }
         }
         this.ObjectWrapper = this.injector.inject(ObjectType);
+        if (props.onSubmit)
+            this._submitListener = this.valueManager.addSubmitListener(null, props.onSubmit).remove;
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.validate !== this.props.validate) {
-            this.validate = newProps.validate;
-        }
+
         if (newProps.loader !== this.props.loader) {
             this.loader = newProps.loader;
         }
         if (newProps.valueManager !== this.props.valueManager) {
+            if (this._submitListener) {
+                this._submitListener();
+            }
             this.valueManager = newProps.valueManager;
+            this.forceUpdate();
         }
 
         if (this.props.value !== newProps.value) {
@@ -79,22 +87,22 @@ export default class Form extends Component {
             this.injector = newProps.injector;
             this.ObjectWrapper = this.injector.inject(ObjectType);
         }
+
+        if (newProps.onSubmit) {
+            if (this._submitListener) {
+                this._submitListener();
+            }
+            this._submitListener = this.valueManager.addSubmitListener(null, newProps.onSubmit).remove;
+        }
+    }
+
+    componentWillUnmount() {
+        this._submitListener && this._submitListener();
     }
 
     getValue() {
         return this.valueManager.getValue();
     }
-
-    handleSubmit = (e)=> {
-        e && e.preventDefault();
-        var vm = this.valueManager;
-        if (!this.props.noValidate) {
-            vm.validate();
-        }
-        if (vm.onSubmit(e, vm.getErrors(), vm.getValue(), this.props.path) !== false) {
-            this.props.onSubmit(e, vm.getErrors(), vm.getValue());
-        }
-    };
 
     setErrors = (errors)=> {
         this.valueManager.setErrors(errors);
@@ -103,9 +111,9 @@ export default class Form extends Component {
 
     render() {
 
-        var {valueManager, injector, loader, validate, template, onSubmit, ...props} = this.props;
+        const {valueManager, injector, loader, validate, template, onSubmit, ...props} = this.props;
         const ObjectWrapper = this.ObjectWrapper;
-        return <ObjectWrapper ref="form" {...props} objectTemplate={template} onSubmit={this.handleSubmit}/>
+        return <ObjectWrapper {...props} objectTemplate={template}/>
     }
 
 }

@@ -1,6 +1,7 @@
 "use strict";
-import {React, into,TestUtils,expect, Simulate,byTag, byTags, byType, notByType, click} from 'subschema-test-support';
-import {loader,Form, templates,  ValueManager} from 'Subschema';
+import React, {Component} from "react";
+import {into, TestUtils, expect, Simulate, byTag, byTags, byType, click} from "subschema-test-support";
+import {loader, Form, templates, ValueManager} from "Subschema";
 var {EditorTemplate, ButtonTemplate} = templates;
 
 describe('components/Form', function () {
@@ -303,5 +304,28 @@ describe('components/Form', function () {
         expect(byTags(root, 'p', 1)[0].innerHTML).toBe('');
 
     });
+
+
+    it('should re-render when the schema changes', function () {
+        const schemas = [{test: {type: 'Text'}}, {other: {type: 'Text'}}]
+
+        class StateForm extends Component {
+            state = {form: 0};
+
+            render() {
+                return <Form schema={{schema:schemas[this.state.form]}}/>
+            }
+        }
+
+        const sform = into(<StateForm/>);
+        const test = byTag(sform, 'input');
+        expect(test.name).toBe('test');
+
+        sform.setState({form: 1});
+
+        const other = byTag(sform, 'input');
+        expect(other.name).toBe('other');
+    })
+
 
 });

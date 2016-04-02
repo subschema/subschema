@@ -1,9 +1,10 @@
 "use strict";
-import {toArray} from '../tutils';
+import {toArray} from "../tutils";
 
 function toOptions(nval) {
-    if (typeof nval === 'string') {
-        return {label: nval, val: nval};
+    const tnval = typeof nval;
+    if (tnval === 'string' || tnval === 'number' || tnval === 'boolean') {
+        return {label: nval+'', val: nval+''};
     }
 
     if (('label' in nval ) && ('val' in nval)) {

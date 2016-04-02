@@ -11,7 +11,9 @@ export default class Select extends Component {
         options: PropTypes.options,
         multiple: PropTypes.bool,
         onChange: PropTypes.valueEvent,
-        placeholder: PropTypes.placeholder
+        placeholder: PropTypes.placeholder,
+        onValidate: PropTypes.changeValidate
+        
     };
 
     static defaultProps = {
@@ -20,7 +22,7 @@ export default class Select extends Component {
     };
 
     handleSelect = (e)=> {
-        var {multiple, placeholder} = this.props;
+        let {multiple, placeholder} = this.props;
         if (multiple) {
             //normalize multiple  selection
             var values = [], options = e.target.options, i = 0, l = options.length, option;
@@ -42,10 +44,10 @@ export default class Select extends Component {
     };
 
     renderOptions(value) {
-        var {multiple, options, placeholder} = this.props;
+        let {multiple, options, placeholder} = this.props;
 
         options = options || [];
-        var hasValue = false, ret = options.map(multiple ? (o, i)=> {
+        let hasValue = false, ret = options.map(multiple ? (o, i)=> {
             return <option key={'s' + i} value={o.val}>{o.label}</option>;
         } : (o, i)=> {
             if (!hasValue && o.val + '' == value + '') hasValue = true;
@@ -60,7 +62,7 @@ export default class Select extends Component {
     }
 
     render() {
-        var { onChange,value, ...props} = this.props;
+        let { onChange,value, ...props} = this.props;
         if (props.multiple && !isArray(value)) {
             value = value ? [value] : value;
         }

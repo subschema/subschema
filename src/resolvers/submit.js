@@ -3,22 +3,25 @@
 import PropTypes from "../PropTypes";
 import {resolveKey} from "../tutils";
 
-function resolve(value, key, props, {valueManager}) {
+function resolve(value, key, props, {valueManager, noValidate}) {
     if (typeof value === 'function') {
         return value;
     }
     const resolvedPath = resolveKey(props.path, value);
     return function targetEvent$resolve(e) {
         const value = valueManager.getValue();
-        valueManager.validate(null, value);
-
-        valueManager.onSubmit(e, valueManager.getErrors(), value, resolvedPath);
+        let errors;
+        if (!noValidate) {
+            valueManager.validate(null, value);
+            errors = valueManager.getErrors();
+        }
+        valueManager.onSubmit(e, errors, value, resolvedPath);
     }
 }
 export default function submit(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
-
+    Clazz.contextTypes.noValidate = PropTypes.bool;
     Clazz::this.property(key, resolve)
 
 }
