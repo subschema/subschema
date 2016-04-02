@@ -7,7 +7,6 @@ export default class FormTemplate extends Component {
     static propTypes = {
         style: PropTypes.style,
         onSubmit: PropTypes.submit,
-        onCancel: PropTypes.event,
         onReset: PropTypes.event,
         accept: PropTypes.string,
         acceptCharset: PropTypes.string,
@@ -32,7 +31,7 @@ export default class FormTemplate extends Component {
     };
 
     render() {
-        const {children, fieldAttrs, formClass, className, ...props} = this.props;
+        const {children, style, fieldAttrs, formClass, className, ...props} = this.props;
         return (<form {...props} className={className || formClass} {...fieldAttrs}>
             {children}
         </form>);
