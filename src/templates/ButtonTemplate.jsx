@@ -19,6 +19,7 @@ export default class Button extends Component {
         action: PropTypes.string,
         label: PropTypes.string,
         name: PropTypes.string,
+        type: PropTypes.string,
         value: PropTypes.string,
         className: PropTypes.string,
         formAction: PropTypes.string,
