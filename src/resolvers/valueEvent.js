@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import {noop, resolveKey} from '../tutils';
+import PropTypes from "../PropTypes";
+import {noop, resolveKey} from "../tutils";
 
 function resolve(value, key, props, context) {
     if (typeof value === 'function') {
@@ -11,8 +11,8 @@ function resolve(value, key, props, context) {
     if (props.path == null && resolvedPath == null) {
         return noop;
     }
-    return function (v) {
-        context.valueManager.update(resolvedPath, v);
+    return function (v, overridePath) {
+        context.valueManager.update(overridePath || resolvedPath, v);
     }
 }
 

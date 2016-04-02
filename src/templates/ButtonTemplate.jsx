@@ -29,7 +29,10 @@ export default class Button extends Component {
     };
 
     handleClick = (e)=> {
-        const {value, action, label} = this.props;
+        const {onChange, value, name, action, label} = this.props;
+        if (name && onChange) {
+            onChange(value, name);
+        }
         this.props.onClick(e, value || action || label, this);
     };
 

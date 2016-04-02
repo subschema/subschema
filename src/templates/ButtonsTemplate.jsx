@@ -1,8 +1,8 @@
 "use strict";
-import React, {Component} from 'react';
-import {isString, extend} from '../tutils';
-import PropTypes from '../PropTypes';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component} from "react";
+import {isString, extend} from "../tutils";
+import PropTypes from "../PropTypes";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 export default class ButtonsTemplate extends Component {
     static defaultProps = {
@@ -10,6 +10,7 @@ export default class ButtonsTemplate extends Component {
         buttons: [{
             action: 'submit',
             label: 'Submit',
+            type: 'submit',
             template: 'Button',
             primary: true
         }],
@@ -44,7 +45,7 @@ export default class ButtonsTemplate extends Component {
     }
 
     render() {
-        let {buttons, buttonTemplate,buttonsClass,buttonContainerClass} = this.props;
+        let {buttons, buttonTemplate, buttonsClass, buttonContainerClass} = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
