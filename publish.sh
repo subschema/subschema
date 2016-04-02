@@ -91,6 +91,12 @@ function everything(){
  tag
 }
 
+function nexttag() {
+    local TAG=$(git describe --abbrev=0 --tags);
+    let nextnum=$(echo $TAG | sed 's/\(v[0-9]*\.[0-9]*\.\)\([0-9]*\)/\2/g')+1;
+    echo "$(echo $TAG | sed 's/v\([0-9]*\.[0-9]*\.\)\([0-9]*\)/\1/g')${nextnum}"
+}
+
 function help(){
  echo "$0 <VERSION> -h help -a all -c clean -i install,publish,github -p publish github -g github [project...]"
  fail $*
@@ -98,7 +104,7 @@ function help(){
 
 echo "$1 $2";
 if [[ -z $1 ]]; then
-  help;
+  help "The next tag is $(nexttag)";
 fi
 
 if [[ -z $2 ]]; then
