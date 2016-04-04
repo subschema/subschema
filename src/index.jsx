@@ -1,7 +1,6 @@
 "use strict";
 
 import _ReactCSSReplaceTransition from "./transition/ReactCSSReplaceTransition";
-import {provide} from "./decorators";
 import _DefaultLoader from "./DefaultLoader";
 import * as _templates from "./templates";
 import * as _types from "./types";
@@ -23,7 +22,6 @@ import Subschema, {
     Template as _T,
     ValueManager as _V,
     css as _c,
-    decorators as _decorators,
     eventable as _e,
     listenUtil as _l,
     loaderFactory as _loaderFactory,
@@ -48,7 +46,6 @@ export const PropTypes = _PropTypes;
 export const Template = _T;
 export const ValueManager = _V;
 export const css = _c;
-export const decorators = _decorators;
 export const eventable = _e;
 export const listenUtil = _l;
 export const tutils = _t;

@@ -4,6 +4,8 @@ import {applyFuncs} from '../tutils';
 
 function handleAttrs(value, key) {
     if (!value) return;
+    if (!this.injected) this.injected = {};
+
     const keys = Object.keys(value);
     for (let i = 0, l = keys.length; i < l; i++) {
         const key = keys[i];

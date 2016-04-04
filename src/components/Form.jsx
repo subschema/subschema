@@ -34,6 +34,25 @@ export default class Form extends Component {
         validate: false
     };
 
+    constructor(props, context, whatever) {
+        super(props, context, whatever);
+        this.loader = props.loader;
+        this.injector = props.injector;
+        if (!props.valueManager) {
+            this.valueManager = ValueManager(props.value, props.errors);
+        } else {
+            this.valueManager = props.valueManager;
+            if (props.value) {
+                this.valueManager.setValue(props.value);
+            }
+            if (props.errors) {
+                this.valueManager.setErrors(props.errors);
+            }
+        }
+        this.ObjectWrapper = this.injector.inject(ObjectType);
+        if (props.onSubmit)
+            this._submitListener = this.valueManager.addSubmitListener(null, props.onSubmit).remove;
+    }
     getChildContext() {
         return {
             valueManager: this.valueManager,
@@ -43,27 +62,6 @@ export default class Form extends Component {
             noValidate: this.props.noValidate
         };
     }
-
-    constructor(props, context, whatever) {
-        super(props, context, whatever);
-        this.loader = props.loader;
-        this.injector = props.injector;
-        if (!props.valueManager) {
-            this.valueManager = ValueManager(this.props.value, this.props.errors);
-        } else {
-            this.valueManager = props.valueManager;
-            if (props.value) {
-                this.valueManager.setValue(this.props.value);
-            }
-            if (this.props.errors) {
-                this.valueManager.setErrors(this.props.errors);
-            }
-        }
-        this.ObjectWrapper = this.injector.inject(ObjectType);
-        if (props.onSubmit)
-            this._submitListener = this.valueManager.addSubmitListener(null, props.onSubmit).remove;
-    }
-
     componentWillReceiveProps(newProps) {
 
         if (newProps.loader !== this.props.loader) {

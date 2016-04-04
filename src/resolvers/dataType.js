@@ -17,11 +17,12 @@ export default function dataType(Clazz, key, propTypeKeys) {
 
 
     Clazz::this.extendPrototype('componentWillMount', function dataType$willMount() {
-
+        if (!this.injected) this.injected = {};
         this.injected.type = this.props[key] || this.props.type;
     });
 
     Clazz::this.extendPrototype('componentWillReceiveProps', function dataType$willRecieveProps(newProps) {
+        if (!this.injected) this.injected = {};
         if (this.props[key] !== newProps[key]) {
             this.injected.type = this.props[key] || this.props.type;
         }

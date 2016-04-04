@@ -1,11 +1,10 @@
 "use strict";
 
-import React, {Component} from 'react';
-import {noop, applyFuncs } from '../tutils';
-import Dom from '../Dom';
-import PropTypes from '../PropTypes';
-import lifecycle from '../decorators/lifecycle';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component} from "react";
+import {noop} from "../tutils";
+import Dom from "../Dom";
+import PropTypes from "../PropTypes";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 export default class Autocomplete extends Component {
 
@@ -180,7 +179,10 @@ export default class Autocomplete extends Component {
             Dom.listen(this, 'keypress', this.handleDocumentEnter);
     };
 
-    @lifecycle("componentWillUnmount")
+    componentWillUnmount() {
+        this.unbindDocument();
+    }
+
     unbindDocument() {
         this._bound = false;
         if (this._onDocumentClickListener) {
@@ -373,7 +375,7 @@ export default class Autocomplete extends Component {
 
     render() {
         const suggestions = this.state.suggestions || [];
-        const {foundClass,  namespaceClass, inputType, id, input, notFoundClass} = this.props;
+        const {foundClass, namespaceClass, inputType, id, input, notFoundClass} = this.props;
         // props.onChange = this::this.handleChange;
         const inputProps = {
             onPaste: this::this.handlePaste,

@@ -16,10 +16,8 @@ import warning from './warning';
 import * as tutils from './tutils';
 import ValueManager from './ValueManager';
 import css from './css';
-import * as decorators from './decorators/index';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
-import provideFactory from './decorators/provideFactory';
 import stringInjector from './stringInjector';
 
 export {
@@ -34,7 +32,6 @@ export {
     PropTypes,
     ValueManager,
     css,
-    decorators,
     eventable,
     loaderFactory,
     tutils,
@@ -57,7 +54,6 @@ export default {
     PropTypes,
     ValueManager,
     css,
-    decorators,
     eventable,
     cachedInjector,
     injectorFactory,
@@ -90,10 +86,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     PropTypes,
     ValueManager,
     css,
-    decorators,
     eventable,
-    injector,
-    loader,
     loaderFactory,
     tutils,
     validators,
@@ -121,10 +114,6 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     rest.Form.defaultProps.injector = defaultInjector;
     rest.loader = defaultLoader;
     rest.injector = defaultInjector;
-    const {provide, ...decs} = decorators;
-    rest.decorators = decs;
-    //provide has a reference to the current status loader.   this makes it work.
-    decs.provide = provideFactory({defaultLoader});
 
     return rest;
 

@@ -45,7 +45,14 @@ function config(filename, externals, isNode, isMinify) {
         {
             test: /\.js(x)?$/,
             exclude: /node_modules\/(?!(subschema.*))/,
-            loader: 'babel'
+            loader: 'babel',
+            query: {
+                "presets": [
+                    "react",
+                    "es2015-loose",
+                    "stage-0"
+                ]
+            }
         },
         {test: /\.(png|jpe?g|mpe?g[34]?|svg|gif)$/, loader: 'url-loader?limit=100000'},
         {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&minetype=application/font-woff"},
@@ -90,9 +97,6 @@ function config(filename, externals, isNode, isMinify) {
             subschema: (isNode ? './src/index.jsx' : './src/dist.js' )
         },
         devServer: {
-            noInfo: true,
-            hot: true,
-            inline: true,
             contentBase: join('src'),
             publicPath: '/',
             port: 8084

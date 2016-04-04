@@ -17,6 +17,7 @@ function handleErrorListeners(value, key, props, {valueManager, validate}) {
     }
 
     return valueManager.addErrorListener(resolvedPath, (err)=> {
+        
         this.injected[key] = err && err[0] && err[0].message;
         this.mounted && this.forceUpdate();
     }, this, /**false so it doesn't override*/false).remove;
