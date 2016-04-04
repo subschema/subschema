@@ -93,7 +93,7 @@
     "react-addons-css-transition-group": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
-    "subschema-injection": "^1.0.10",
+    "subschema-injection": "^1.2.0",
     "subschema-prop-types": "^1.1.2"
   }
 }
