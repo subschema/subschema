@@ -48,7 +48,7 @@ describe('components/Form/submit', function () {
 
     });
 
-    it.only('should submit the form and have that is nested', function (done) {
+    it('should submit the form and have that is nested', function (done) {
         const schema = {
             template: 'ObjectTemplate',
             schema: {
