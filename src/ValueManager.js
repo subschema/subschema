@@ -131,7 +131,7 @@ ValueManager.prototype = {
         var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
         do {
             if (this.submitListeners.some(v=> {
-                    if (v.path == null || v.path === pp) {
+                    if (v.path === pp) {
                         return (v.listener.call(v.scope, e, errors, value, path) === false);
                     }
                 }, this) === true) {

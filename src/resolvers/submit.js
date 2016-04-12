@@ -7,7 +7,7 @@ function resolve(value, key, props, {valueManager, noValidate}) {
     if (typeof value === 'function') {
         return value;
     }
-    const resolvedPath = resolveKey(props.path, value);
+    const resolvedPath = props.name || resolveKey(props.path, value);
     return function targetEvent$resolve(e) {
         const value = valueManager.getValue();
         let errors;

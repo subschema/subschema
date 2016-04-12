@@ -98,7 +98,7 @@ export default class ObjectType extends Component {
 
     render() {
         //capture the things that should not fall through.
-        let {schema, subSchema, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, fallbackTemplate, template, ...props} = this.props;
+        let {schema, subSchema, onSubmit, onButtonClick, submitButton, conditional, FieldSet, Field, children, objectTemplate, fallbackTemplate, template, ...props} = this.props;
         let {...rschema} = schema || subSchema;
         template = rschema.template || template || objectTemplate || fallbackTemplate;
         return <RenderTemplate template={template} schema={rschema} onButtonClick={this.handleButtonClick}  {...props}>
