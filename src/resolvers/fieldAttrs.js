@@ -1,8 +1,8 @@
 "use strict";
 
-import {applyFuncs} from '../tutils';
+import {applyFuncs} from "../tutils";
 
-function handleAttrs(value, key) {
+function handleAttrs(value, attr, propKeys) {
     if (!value) return;
     if (!this.injected) this.injected = {};
 
@@ -20,11 +20,11 @@ function handleAttrs(value, key) {
 export default function fieldAttrs(Clazz, key, propKeys) {
 
 
-
     const ClazzP = Clazz.prototype;
 
     ClazzP.componentWillMount = applyFuncs(function () {
-        this::handleAttrs(this.props[key], key);
+        propKeys.splice(propKeys.indexOf(key),1);
+        this::handleAttrs(this.props[key], key, propKeys);
     }, ClazzP.componentWillMount);
 
     ClazzP.componentWillReceiveProps = applyFuncs(function (newProps) {
