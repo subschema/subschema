@@ -31,7 +31,6 @@ You can see examples at [subschema.github.io/subschema](http://subschema.github.
    - [Date](#date)
    - [DateTime](#datetime)
    - [Hidden](#hidden)
-   - [LazyType](#lazytype)
    - [List](#list)
    - [Mixed](#mixed)
    - [Number](#number)
@@ -320,9 +319,6 @@ Hidden
 Render a hidden input field
 
 See the [example](http://subschema.github.io/subschema/#/Hidden)
-
-###<a name="lazytype"></a>LazyType
-A wrapper that will lazily load when the loader returns a Promise from a loader.   This probably should not be used directly.
 
 
 ###<a name="list"></a>List
@@ -730,4 +726,8 @@ schema = {
 
 
 #Resolvers
-Resolvers allow 
+Resolvers allow for custom configuration of propTypes.   There are built-in
+ resolvers that match to the corresponding Subschema.PropTypes.  By using
+ these you can make your component Subschema aware without binding to 
+ Subschema.  Nearly all of Subschema's behaviour is defined in 
+ 
