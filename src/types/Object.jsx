@@ -42,7 +42,7 @@ export default class ObjectType extends Component {
     static contextTypes = PropTypes.contextTypes;
 
 
-    addEditor(f, field, fields, Field) {
+    addEditor(f, field, fields, Field, idx) {
 
         if (field == null) {
             warning(true, 'No field found for %s probably a key in fields does not match in schema', f)
@@ -51,7 +51,7 @@ export default class ObjectType extends Component {
 
         f = typeof f === 'string' ? f : f.name || f;
 
-        return <Field key={'key-' + f} path={_path(this.props.path, f)} conditional={field.conditional}
+        return <Field key={`field-${idx}`} path={_path(this.props.path, f)} conditional={field.conditional}
                       transition={field.transition} field={field} fields={fields}/>
     }
 
@@ -66,6 +66,7 @@ export default class ObjectType extends Component {
     makeFields(fields, schema, Field) {
         const fieldMap = {};
         const mappedfields = fields.map((field) => {
+            warning(typeof field === 'string', 'Field is not a string, probably not nesting schema:{} correctly %s', field);
             var [f, rest] = field.split('.', 2);
             if (rest) {
                 (fieldMap[f] || (fieldMap[f] = [])).push(rest);
@@ -73,7 +74,7 @@ export default class ObjectType extends Component {
             return f;
         });
 
-        return unique(mappedfields).map((f, i) => this.addEditor(f, schema[f] || f, fieldMap[f], Field));
+        return unique(mappedfields).map((f, i) => this.addEditor(f, schema[f] || f, fieldMap[f], Field, i));
     }
 
     makeFieldsets(fieldsets, schema, FieldSet, Field) {
