@@ -317,7 +317,7 @@ describe('components/Form', function () {
             }
         }
 
-        const sform = into(<StateForm/>);
+        const sform = into(<StateForm/>, true);
         const test = byTag(sform, 'input');
         expect(test.name).toBe('test');
 

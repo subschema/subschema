@@ -23,7 +23,7 @@ export default class Field extends Component {
         const {Type, path, template, validators, ...rest} = field;
         const cpath = propPath || path;
         rest.validators = createValidator(validators, cpath, this.context);
-        return <RenderTemplate template={template} path={cpath}  {...rest}>
+        return <RenderTemplate key={cpath} template={template} path={cpath}  {...rest}>
             <Type path={cpath}  {...rest}/>
         </RenderTemplate>
 
