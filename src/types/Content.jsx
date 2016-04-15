@@ -21,7 +21,8 @@ export default class Content extends Component {
     static isContainer = true;
 
     static contextTypes = {
-        loader: PropTypes.loader
+        loader: PropTypes.loader,
+        injector: PropTypes.injector
     };
     static propTypes = {
         content: PropTypes.any,
@@ -92,8 +93,8 @@ export default class Content extends Component {
             return createElement(type, props, newChildren);
         }
 
-        let Ctype = this.context.loader.loadType(type);
-        return <Ctype path={this.props.path} {...props} >
+        const Ctype = this.context.injector.inject(this.context.loader.loadType(type));
+        return <Ctype path={this.props.path} content={content} {...props} >
             {children}
         </Ctype>
     }

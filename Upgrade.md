@@ -1,3 +1,8 @@
+Subschema 1.1.x -> 1.2.1
+### API Changes
+* Decorators have been removed, just use the loader instead. Its shorter
+easier to understand.
+
 Subschema 1.0.0 -> 1.1.0 
 ##API Changes
 * Properties configured with PropTypes.template now returns an object containing Template:InjectedTemplate, {...options}. 
