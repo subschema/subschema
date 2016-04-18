@@ -24,12 +24,18 @@ export function createValidator(value, path, {loader, valueManager}) {
     }
 
     const validator = (...args)=> {
-
-        const v = args.length === 0 ? valueManager.path(path) : args[0];
+        let v, vm = valueManager;
+        if (args.length === 2) {
+            v = args[0];
+            vm = args[1];
+        }else{
+            v = vm.path(path);
+        }
         const length = validators.length;
+
         let errors = null;
         for (let i = 0; i < length; i++) {
-            const error = validators[i](v, valueManager);
+            const error = validators[i](v, vm);
             if (error != null) {
                 if (errors == null) {
                     errors = [];
