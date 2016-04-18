@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Backbone Forms like declaritive forms for react",
   "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
