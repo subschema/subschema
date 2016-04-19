@@ -36,7 +36,7 @@ export default function blurValidate(Clazz, key) {
             hasChanged = true;
             //at some point it has blurred
             if (hasBlurred) {
-                valueManager.updateErrors(path, validate(val));
+                valueManager.updateErrors(path, validate(val, valueManager));
             }
         }, this, false).remove;
 

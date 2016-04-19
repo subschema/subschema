@@ -29,7 +29,7 @@ export default function changeValidate(Clazz, key) {
         ).remove;
 
         this._validateChangeListeners = valueManager.addListener(path, (val)=> {
-            valueManager.updateErrors(path, validate(val));
+            valueManager.updateErrors(path, validate(val, valueManager));
         }, this, false).remove;
 
         //blur event if its changed we will validate.
