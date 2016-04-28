@@ -6,8 +6,6 @@ form field layouts.
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
-[![Build Status](https://travis-ci.org/subschema/subschema.svg?branch=master)](https://travis-ci.org/subschema/subschema)
-
 ###Example
 You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
 
