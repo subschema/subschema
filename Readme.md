@@ -13,18 +13,21 @@ More information can be found on the [wiki](wiki)
 You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
 
 ###Install
+
 ```sh
  $ npm install subschema
- $ npm start &
- $ open http://localhost:8000
- //there are more details of whats going on here.
-  http://localhost:8080/webpack-dev-server/
 
 ```
+### Usage
+You can use the [demo](https://subschema.github.io/subschema) to generate a skeleton
+project with webpack, karma and more for getting started.
 
-###Built In types
+```es6
+import React, {Component] from 'react';
+import {Form} from 'Subschema';
+```
 
-- [Schema Definition](#schema-definition)
+###Built In Types
    - [Autocomplete](#autocomplete)
    - [Checkbox](#checkbox)
    - [Checkboxes](#checkboxes)
@@ -35,7 +38,7 @@ You can see examples at [subschema.github.io/subschema](http://subschema.github.
    - [List](#list)
    - [Mixed](#mixed)
    - [Number](#number)
-	- [Object](#object)
+   - [Object](#object)
    - [Password](#password)
    - [Radio](#radio)
    - [Restricted](#restricted)
