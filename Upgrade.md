@@ -1,3 +1,7 @@
+Subschema 1.2.x ->1.3.0
+## API Changes
+* Removed SubstituteMixin functionality now exists in subschema-expression.
+
 Subschema 1.1.x -> 1.2.1
 ### API Changes
 * Decorators have been removed, just use the loader instead. Its shorter
