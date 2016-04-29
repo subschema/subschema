@@ -7,7 +7,7 @@ form field layouts.
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
-More information can be found on the [wiki](wiki)
+More information can be found on the [wiki](../../wiki)
 
 ###Example
 You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
