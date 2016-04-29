@@ -7,6 +7,8 @@ form field layouts.
 The schema is borrowed
 from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
+More information can be found on the [wiki](wiki)
+
 ###Example
 You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
 
@@ -177,7 +179,7 @@ Example:
   
 ```
 
-If you need to listen to a particular path use the PropType. (@listen has been removed infavor of resolvers)
+If you need to listen to a particular path use the PropType.
 
 ```js
    import {PropTypes} from Subschema;
@@ -217,11 +219,9 @@ Example:
 
 ```jsx
       import React from 'react';
-      import {decorators} from  'Subschema';
-      var {type} = decorators.provide;
+      import {types, loader} from  'Subschema';
       var {Select, Checkbox} = types;
       
-      @type
       class CheckboxSelect extends React.Component {
        
                    //allows for injection of the Select properties.
@@ -241,7 +241,7 @@ Example:
                        </div>
                    }
          }
-
+        loader.addType('CheckboxSelect',CheckboxSelect);
         var schema = {
             schema: {
                 'test': {
@@ -482,7 +482,7 @@ Validators are registered on a field as an array of strings or with configuratio
         if (value !== 'super'){
             return {
                 message:options.message || 'Not super?',
-                type:'ERROR';
+                type:'ERROR'
             }
         }
     }
@@ -607,7 +607,6 @@ propTypes on existing components to make thier values dynamic.
 Example:
 ```jsx
    
-   @provide.type
    class Anchor extends React.Component {
      static propTypes = {
        //by making this propType an expression it will evaluate it dynamically.
@@ -676,16 +675,13 @@ and PropTypes.errors will get all props for the path.
 
 ```jsx
 
-var {PropTypes, decorators, types} = Subschema;
-var {provide} = decorators;
-var {type} = provide;
+var {PropTypes, loader, types} = Subschema;
 var {Select} = types;
 
 //copy propTypes (don't ref it will break Select)
 var {options, ...copyPropTypes} = Select.propTypes;
 copyPropTypes.options = PropTypes.listener;
 
-@type
 class SelectListen extends React.Component {
     static propTypes = copyPropTypes;
 
@@ -693,7 +689,7 @@ class SelectListen extends React.Component {
         return <Select {...this.props}/>
     }
 }
-
+loader.addType('SelectListen', SelectListen);
 
 schema = {
      schema: {
@@ -723,10 +719,4 @@ schema = {
 //Now the options in myDefault are linked to the values in myFavorites.
 ```
 
-
-#Resolvers
-Resolvers allow for custom configuration of propTypes.   There are built-in
- resolvers that match to the corresponding Subschema.PropTypes.  By using
- these you can make your component Subschema aware without binding to 
- Subschema.  Nearly all of Subschema's behaviour is defined in 
  
