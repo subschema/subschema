@@ -3,21 +3,25 @@
 import PropTypes from "../PropTypes";
 import expression from "subschema-expression";
 import {resolveKey, applyFuncs, FREEZE_OBJ} from "../tutils";
-import warning from '../warning';
-function handleExpression(value, key, props, context) {
+import warning from "../warning";
+function handleExpression(value, key, props, {valueManager, loader}) {
     const scope = this;
     const expressionVals = {};
-    const {valueManager} = context;
     const {listen, format, formatters=[]} = expression(value);
     const {injected} = this;
     const {path} = props;
-    const fmts = context.loader && context.loadFormatter && formatters.reduce(function (obj, key) {
+    const fmts = loader && loader.loadFormatter && formatters.reduce(function (obj, key) {
 
-            obj[key] = context.loadFormatter(key);
+            obj[key] = loader.loadFormatter(key);
             warning(obj[key], 'No formatter loaded for %s', key);
             return obj;
 
         }, {}) || FREEZE_OBJ;
+
+    //if there is a formatter without any  listeners we need to format it.
+    if (listen.length === 0 && formatters.length) {
+        injected[key] = format({}, fmts);
+    }
 
     const ret = listen.reduce((fn, v)=> {
         if (!(v in expressionVals)) {

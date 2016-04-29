@@ -71,7 +71,6 @@
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
     "style-loader": "^0.13.0",
-    "subschema-expression": "^1.1.1",
     "subschema-test-support": "^1.2.0",
     "supports-color": "^3.1.2",
     "text-loader": "0.0.1",
@@ -96,6 +95,7 @@
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
     "subschema-injection": "^1.2.0",
+    "subschema-expression": "^1.1.1",
     "subschema-prop-types": "^1.1.3"
   }
 }
