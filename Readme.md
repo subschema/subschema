@@ -22,6 +22,8 @@ writing subschema easy, this project is an attempt to fix this.
 ```sh
   $ git clone --recursive git@github.com:subschema/subschema-devel.git
   $ cd subschema-devel
+  $ git submodule init
+  $ git submodule update --recursive
   $ bash install.sh
   $ cd subschema-demo
   $ npm run hot
