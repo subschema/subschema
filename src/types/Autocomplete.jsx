@@ -153,7 +153,8 @@ export default class Autocomplete extends Component {
             if (selected !== this.state.selected) {
                 this.onSelect(selected);
             } else {
-                this.props.onBlur(selected && selected.val, this.props.value, this.props.name, this.props.path);
+                if (this.props.onBlur)
+                    this.props.onBlur(selected && selected.val, this.props.value, this.props.name, this.props.path);
                 this.setState({suggestions: [], selected, input, showing: false, focus: -1});
             }
         } else {
@@ -348,7 +349,8 @@ export default class Autocomplete extends Component {
         if (suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);
         }
-        this.props.onBlur(event);
+        if (this.props.onBlur)
+            this.props.onBlur(event);
     };
 
     renderSuggestions() {
