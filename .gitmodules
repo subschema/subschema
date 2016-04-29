@@ -1,22 +1,25 @@
 [submodule "subschema-test-support"]
 	path = subschema-test-support
-	url = https://github.com/subschema/subschema-test-support.git
+	url = git@github.com:subschema/subschema-test-support.git
 	ignore = dirty
 [submodule "subschema"]
 	path = subschema
-	url = https://github.com/subschema/subschema.git
+	url = git@github.com:subschema/subschema/subschema.git
 [submodule "subschema-demo"]
 	path = subschema-demo
-	url = https://github.com/subschema/subschema-demo.git
+	url = git@github.com:subschema/subschema-demo.git
 [submodule "subschema-project"]
 	path = subschema-project
-	url = https://github.com/subschema/subschema-project.git
+	url = git@github.com:subschema/subschema-project.git
 [submodule "subschema-server-utils"]
 	path = subschema-server-utils
-	url = https://github.com/subschema/subschema-server-utils.git
+	url = git@github.com:subschema/subschema-server-utils.git
 [submodule "subschema-prop-types"]
 	path = subschema-prop-types
-	url = https://github.com/subschema/subschema-prop-types.git
+	url = git@github.com:subschema/subschema-prop-types.git
 [submodule "subschema-injection"]
 	path = subschema-injection
-	url = https://github.com/subschema/subschema-injection
+	url = git@github.com:subschema/subschema-injection.git
+[submodule "subschema-expression"]
+	path = subschema-expression
+	url = git@github.com:subschema/subschema-expression.git
