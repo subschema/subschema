@@ -30,6 +30,7 @@ export default class WizardTemplate extends WizardMixin {
             },
             'last': {
                 label: 'Done',
+                type:"submit",
                 action: 'submit',
                 primary: true
             }

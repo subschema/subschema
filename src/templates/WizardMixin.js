@@ -21,7 +21,7 @@ export default class WizardMixin extends Component {
     static propTypes = {
         schema: PropTypes.any,
         buttonsTemplate: PropTypes.template,
-        onSubmit: PropTypes.event,
+        onSubmit: PropTypes.submit,
         FieldSet: PropTypes.injectClass,
         Field: PropTypes.injectClass
     };
