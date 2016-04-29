@@ -1,16 +1,24 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import SubstituteMixin from '../types/SubstituteMixin';
-import {resolveKey, applyFuncs} from '../tutils';
-
+import PropTypes from "../PropTypes";
+import expression from "subschema-expression";
+import {resolveKey, applyFuncs, FREEZE_OBJ} from "../tutils";
+import warning from '../warning';
 function handleExpression(value, key, props, context) {
     const scope = this;
     const expressionVals = {};
     const {valueManager} = context;
-    const {listen, format} = SubstituteMixin(value);
+    const {listen, format, formatters=[]} = expression(value);
     const {injected} = this;
     const {path} = props;
+    const fmts = context.loader && context.loadFormatter && formatters.reduce(function (obj, key) {
+
+            obj[key] = context.loadFormatter(key);
+            warning(obj[key], 'No formatter loaded for %s', key);
+            return obj;
+
+        }, {}) || FREEZE_OBJ;
+
     const ret = listen.reduce((fn, v)=> {
         if (!(v in expressionVals)) {
             //only need to listen to a value once.
@@ -19,7 +27,7 @@ function handleExpression(value, key, props, context) {
                 if (!(v in expressionVals) || expressionVals[v] !== val) {
                     //if the values don't cange the state don't change.
                     expressionVals[v] = val == null ? '' : val;
-                    injected[key] = format(expressionVals);
+                    injected[key] = format(expressionVals, fmts);
                     scope.forceUpdate();
                 }
             }, null, true).remove, fn);
@@ -30,9 +38,10 @@ function handleExpression(value, key, props, context) {
     return ret;
 }
 
-export default function expression(Clazz, key) {
+export default function expression$resolver(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
+    Clazz.contextTypes.loader = PropTypes.loader;
 
     Clazz::this.listener(key, handleExpression);
 
