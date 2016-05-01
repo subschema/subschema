@@ -7,9 +7,9 @@ import LoaderTest from 'subschema-test-support-samples/Loader.js'
 import {newSubschemaContext}  from 'Subschema';
 
 
-describe('public/Loader', ()=> {
+describe('public/Loader', function() {
 
-
+    this.timeout(50000);
     it('should load a custom type', ()=> {
         const Subschema = newSubschemaContext();
         const {Form,  ValueManager, loader} = Subschema;
@@ -18,7 +18,7 @@ describe('public/Loader', ()=> {
         const s = schema;
 
         loaderTestSetup(loader, schema, Subschema, React, valueManager);
-        var form = into(<Form schema={s} loader={loader}/>);
+        var form = into(<Form schema={s} loader={loader}/>, true);
 
         var CheckboxSelect = loader.loadType('CheckboxSelect');
         expect(CheckboxSelect).toExist('CheckboxSelect should be found');

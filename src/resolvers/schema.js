@@ -1,9 +1,9 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import {toArray, FREEZE_OBJ} from '../tutils';
-import {normalizeFieldsets} from './fieldset';
-import {loadTemplate} from './template';
+import PropTypes from "../PropTypes";
+import {FREEZE_OBJ} from "../tutils";
+import {normalizeFieldsets} from "./fieldset";
+import {loadTemplate} from "./template";
 /**
  * So a schema can be
  * EX: {
@@ -42,10 +42,11 @@ import {loadTemplate} from './template';
  * @param orest
  * @returns {*}
  */
-export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE_OBJ) {
+export function normalize(oschema, ofields, ofieldsets,context, orest = FREEZE_OBJ) {
     if (oschema == null) {
         return oschema;
     }
+    const  {loader} = context;
 
     if (typeof oschema === 'string') {
         return normalize(loader.loadSchema(oschema), ofields, ofieldsets, loader, orest);
@@ -56,7 +57,7 @@ export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE
         if (oschema.schema) {
             let {fields, fieldsets, schema, ...rest} = oschema;
             if (typeof schema === 'string') {
-                return normalize(loader.loadSchema(schema), ofields, ofieldsets, loader, rest);
+                return normalize(loader.loadSchema(schema), ofields, ofieldsets, context, rest);
             }
             return {
                 ...rest,
@@ -75,7 +76,7 @@ export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE
     if (oschema.fields || oschema.fieldsets) {
         let {fields, fieldsets, schema, ...rest} = oschema;
         if (typeof schema === 'string') {
-            return normalize(schema, fields, fieldsets, loader, rest);
+            return normalize(schema, fields, fieldsets, context, rest);
         }
         return {
             ...rest,
@@ -88,12 +89,25 @@ export function normalize(oschema, ofields, ofieldsets, {loader}, orest = FREEZE
         let {schema, ...rest} = oschema;
         if (typeof schema === 'string') {
             //ofields and ofields should be null here.
-            return normalize(schema, ofields, ofieldsets, loader, rest);
+            return normalize(schema, ofields, ofieldsets, context, rest);
         }
         let fields = Object.keys(schema);
         return {
             ...rest,
             schema,
+            fields,
+            fieldsets: [{fields}]
+        };
+    } else if (oschema.subSchema) {
+        let {subSchema, ...rest} = oschema;
+        if (typeof subSchema === 'string') {
+            //ofields and ofields should be null here.
+            return normalize(subSchema, ofields, ofieldsets, context, rest);
+        }
+        let fields = Object.keys(subSchema);
+        return {
+            ...rest,
+            schema:subSchema,
             fields,
             fieldsets: [{fields}]
         };
@@ -122,7 +136,7 @@ export function normalizeSchema(oschema, key, props, context) {
     } else if (props.fallbackTemplate) {
         schema.template = loadTemplate(props.fallbackTemplate, key, props, context);
     } else {
-        schema.template = loadTemplate(settings.template,  key, props, context);
+        schema.template = loadTemplate(settings.template, key, props, context);
     }
     return schema;
 }

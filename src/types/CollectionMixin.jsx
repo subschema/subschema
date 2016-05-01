@@ -1,13 +1,12 @@
 "use strict";
 
-import React, {Component} from 'react';
-import ValueManager from '../ValueManager';
-import {isString, path,clone, returnFirst, FREEZE_ARR, FREEZE_OBJ} from '../tutils';
-import UninjectedObjectType from './Object.jsx';
-import PropTypes from '../PropTypes';
-import map from 'lodash/collection/map';
-import defaults from 'lodash/object/defaults';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component} from "react";
+import {isString, path, clone, FREEZE_ARR} from "../tutils";
+import UninjectedObjectType from "./Object.jsx";
+import PropTypes from "../PropTypes";
+import map from "lodash/collection/map";
+import defaults from "lodash/object/defaults";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
@@ -192,7 +191,7 @@ export default class CollectionMixin extends Component {
         var {
             key,
             value
-            } = origValue
+        } = origValue
         const errors = valueManager.getErrors();
 
         if (errors == null || Object.keys(errors).length === 0) {
@@ -234,8 +233,8 @@ export default class CollectionMixin extends Component {
         const childPath = path(this.props.path, this.state.editPid);
         const {ObjectType, createTemplate} = this.props;
         return (<RenderTemplate template={createTemplate} inline={edit ? this.props.inline : false}
-                                                    create={edit ? false : create}
-                                                    title={this.props.title} key="addEditTemplate">
+                                create={edit ? false : create}
+                                title={this.props.title} key="addEditTemplate">
             <ObjectType key="addEdit"
                         onButtonClick={this.handleBtnClick}
                         schema={this.createItemSchema(childPath)}
@@ -249,8 +248,9 @@ export default class CollectionMixin extends Component {
             return null;
         }
         const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
-        return <RenderTemplate template={this.props.buttonTemplate} key="addBtn"  {...btn} onClick={this::this.handleAddBtn}
-                                                              iconClass={this.props.iconAddClass}/>
+        return <RenderTemplate template={this.props.buttonTemplate} key="addBtn"  {...btn}
+                               onClick={this::this.handleAddBtn}
+                               iconClass={this.props.iconAddClass}/>
 
     }
 
@@ -272,14 +272,15 @@ export default class CollectionMixin extends Component {
     }
 
     createItemSchema() {
-        return {
+        const schema = {
             schema: this.getTemplateItem(),
             fieldsets: [{
                 fields: ['key', 'value'],
                 buttons: this.props.buttons
             }]
 
-        }
+        };
+        return schema;
     }
 
     renderRowEach(data, rowId) {
@@ -314,7 +315,7 @@ export default class CollectionMixin extends Component {
     }
 
     render() {
-        var {name,  itemType, errors,className, listContainerClassName, canReorder, canDelete, itemTemplate, canEdit, canAdd } = this.props, values = this.state.wrapped || FREEZE_ARR, length = values.length;
+        var {name, itemType, errors, className, listContainerClassName, canReorder, canDelete, itemTemplate, canEdit, canAdd} = this.props, values = this.state.wrapped || FREEZE_ARR, length = values.length;
         return (<div className={className}>
             {this.renderAdd()}
             <ul className={listContainerClassName}>
