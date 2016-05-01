@@ -1,12 +1,9 @@
 "use strict";
-import React, {Component, Children} from 'react';
-import Buttons from './ButtonsTemplate.jsx';
-import ValueManager from '../ValueManager';
-import PropTypes from '../PropTypes';
-import NewChildContext from '../components/NewChildContext.jsx';
-import cloneDeep from 'lodash/lang/cloneDeep';
-import RenderContent from '../components/RenderContent.jsx';
-import RenderTemplate from '../components/RenderTemplate.jsx';
+import React, {Component, Children} from "react";
+import PropTypes from "../PropTypes";
+import cloneDeep from "lodash/lang/cloneDeep";
+import RenderContent from "../components/RenderContent.jsx";
+import RenderTemplate from "../components/RenderTemplate.jsx";
 
 
 export default class ModalTemplate extends Component {
@@ -54,7 +51,7 @@ export default class ModalTemplate extends Component {
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        this.value = cloneDeep(props.value);
+        this.value = !props.value ? null : cloneDeep(props.value);
     }
 
 
@@ -91,7 +88,7 @@ export default class ModalTemplate extends Component {
     }
 
     render() {
-        const {title, legend, buttons, path,value,bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+        const {title, legend, buttons, path, value, bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
         return <div className={`${namespaceClass} ${overlayClass}`} style={{display:'block'}}>
             <div className={backdropClass}></div>

@@ -24,10 +24,10 @@ describe('types/Text', function () {
         change(node, 'def');
         expect(args[0]).toBe('def');
         expect(node.className).toBe('stuff');
+        expect(node.value).toBe('abc');
         var attrs = toAttr(node);
-        expect(Object.keys(attrs).length).toBe(4);
+        expect(Object.keys(attrs).length).toBe(3);
         expect(attrs.class).toBe('stuff');
-        expect(attrs.value).toBe('abc');
         expect(attrs.type).toBe('text');
 
     });

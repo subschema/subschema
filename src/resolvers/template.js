@@ -31,10 +31,9 @@ export function loadTemplateRecursive(current, next = {}, context) {
             if (!Template.displayName) {
                 Template.displayName = current;
             }
-            return loadTemplateRecursive(Template, next, context);
-        } else {
-            return loadTemplateRecursive(Template, next, context);
         }
+        return loadTemplateRecursive(Template, next, context);
+
     } else if (typeof current === 'function') {
         const {propTypes, defaultProps, template, ...restNext} = next;
 

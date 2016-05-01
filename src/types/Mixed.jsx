@@ -1,9 +1,8 @@
-import React from 'react';
-import CollectionMixin from './CollectionMixin.jsx';
-import {isString} from '../tutils';
-import _get from 'lodash/object/get';
-import defaults from 'lodash/object/defaults';
-import PropTypes from '../PropTypes';
+import React from "react";
+import CollectionMixin from "./CollectionMixin.jsx";
+import {isString} from "../tutils";
+import defaults from "lodash/object/defaults";
+import PropTypes from "../PropTypes";
 export default class MixedInput extends CollectionMixin {
 
     static propTypes = defaults({
@@ -14,11 +13,16 @@ export default class MixedInput extends CollectionMixin {
     }, CollectionMixin.propTypes);
 
     static defaultProps = defaults({
+        value: {},
         newKeyPrefix: 'new_key',
         showKey: true,
         valueType: {type: 'Text'},
         keyType: {type: 'Text'}
     }, CollectionMixin.defaultProps);
+
+    static injectedProps = {
+        value: "."
+    };
 
     unwrap(value) {
         var ret = {}

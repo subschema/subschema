@@ -1,8 +1,8 @@
 "use strict";
 
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
-import {returnFirst, isArray} from '../tutils';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
+import {isArray} from "../tutils";
 
 export default class Select extends Component {
 
@@ -13,12 +13,17 @@ export default class Select extends Component {
         onChange: PropTypes.valueEvent,
         placeholder: PropTypes.placeholder,
         onValidate: PropTypes.changeValidate
-        
+
     };
 
     static defaultProps = {
         options: [],
-        multiple: false
+        multiple: false,
+        value: ''
+    };
+
+    static injectedProps = {
+        value: '.'
     };
 
     handleSelect = (e)=> {
@@ -62,9 +67,9 @@ export default class Select extends Component {
     }
 
     render() {
-        let { onChange,value, ...props} = this.props;
+        let {onChange, value, ...props} = this.props;
         if (props.multiple && !isArray(value)) {
-            value = value ? [value] : value;
+            value = value ? [value] : [];
         }
         return <select {...props} value={value} onChange={this.handleSelect}>
             {this.renderOptions(value)}

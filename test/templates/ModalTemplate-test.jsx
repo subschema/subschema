@@ -17,7 +17,7 @@ function byId(node, id) {
     return all[0];
 }
 
-describe('public/Modal', function () {
+describe('templates/ModalTemplate', function () {
     this.timeout(50000);
     it('should render', function () {
         //loader, schema, Subschema, React

@@ -12,7 +12,7 @@ export default class DateInput extends Component {
     };
 
     asInputValue(value) {
-        if (value == null) {
+        if (!value) {
             return '';
         }
         return new Date(value).toISOString().substring(0, 10);

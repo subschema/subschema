@@ -39,7 +39,8 @@ describe('types/List', function () {
         const input = byName(createTemplate, `@tasks@${c}.value`);
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
         const btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, ButtonTemplate), 'action', 'submit');
-        Simulate.submit(btns[0]);
+        const btn = findNode(btns[0]);
+        Simulate.submit(btn);
         const value = root.getValue();
         expect(input.value).toEqual('Hello, world ' + c);
         return tasks[c];
@@ -220,7 +221,7 @@ describe('types/List', function () {
         }, data = {
             tasks: ['Hello, world 0']
         };
-        var root = into(<Form schema={schema} value={data}/>);
+        var root = into(<Form schema={schema} value={data}/>, true);
         edit(root, 0);
     });
     it('should render edit a value with an error', function () {

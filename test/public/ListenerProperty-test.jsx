@@ -7,7 +7,7 @@ import ListenerProperty from 'subschema-test-support-samples/ListenerProperty.js
 
 describe('public/ListenerProperty', function () {
     this.timeout(50000);
-    it('should render', function () {
+    it('should render favorites', function () {
         const Subschema = newSubschemaContext();
         const {Form, ValueManager, loader} =Subschema;
         var schema = ListenerProperty.schema;

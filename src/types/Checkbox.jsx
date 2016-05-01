@@ -1,7 +1,7 @@
 "use strict";
 
-import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
+import React, {Component} from "react";
+import PropTypes from "../PropTypes";
 
 export default class Checkbox extends Component {
 
@@ -21,8 +21,9 @@ export default class Checkbox extends Component {
 
     handleChange(e) {
         const {value} = this.props;
+
         //Blur does not get called on checkbox, so we do check on change anyways.
-        const val = e.target.checked ? value == null || value === false ? true : value : value == null || value == true ? false : null;
+        const val = e.target.checked ? !value ? true : value : !value ? false : null;
         this.props.onChange(val);
     };
 
@@ -30,7 +31,8 @@ export default class Checkbox extends Component {
         const {onChange, value, className, checkedClass, ...props} = this.props;
 
         const checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
-        return <input {...props} value={value} className={className+' '+(checked ? checkedClass : '')}
+        return <input {...props} value={value == null ? '' : value}
+                                 className={className+' '+(checked ? checkedClass : '')}
                                  checked={checked} onChange={this::this.handleChange}/>
     }
 }

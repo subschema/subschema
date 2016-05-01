@@ -8,14 +8,18 @@ export default class Restricted extends RestrictedMixin {
     static contextTypes = PropTypes.contextTypes;
 
     static defaultProps = {
-        onValid: noop
+        onValid: noop,
+        value:''
     };
     static propTypes = {
         onValid: PropTypes.validEvent,
         onChange: PropTypes.valueEvent,
         formatter: PropTypes.string
     };
-
+    
+    static injectedProps = {
+        value:'.'
+    };
 
     handleSelectionRange = (caret)=> {
         var input = this.refs && ReactDOM.findDOMNode(this.refs.input);

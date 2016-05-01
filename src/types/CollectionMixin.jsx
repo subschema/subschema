@@ -197,7 +197,8 @@ export default class CollectionMixin extends Component {
 
         if (errors == null || Object.keys(errors).length === 0) {
             var currentPath = path(this.props.path, key);
-            var clonedValue = this.props.value == null ? this.createDefValue() : clone(this.props.value);
+            //value fix.
+            var clonedValue = !this.props.value ? this.createDefValue() : clone(this.props.value);
             if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
                 if (key) {
                     clonedValue[key] = value;

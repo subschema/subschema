@@ -65,6 +65,7 @@
     "postcss": "^5.0.19",
     "postcss-loader": "^0.8.2",
     "raw-loader": "^0.5.1",
+    "react-addons-test-utils": "^15.0.1",
     "react-transform-hmr": "^1.0.4",
     "rimraf": "^2.5.0",
     "source-map": "^0.5.3",
@@ -90,12 +91,12 @@
   "dependencies": {
     "fbjs": "^0.8.0-alpha.3",
     "lodash": "^3.10.1",
-    "react": "^0.14.7",
-    "react-addons-css-transition-group": "^0.14.7",
+    "react": "^15.0.1",
+    "react-addons-css-transition-group": "^15.0.1",
     "react-addons-test-utils": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "subschema-injection": "^1.2.0",
+    "react-dom": "^15.0.1",
     "subschema-expression": "^1.1.1",
+    "subschema-injection": "^1.2.0",
     "subschema-prop-types": "^1.1.3"
   }
 }

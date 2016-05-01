@@ -1,11 +1,17 @@
 "use strict";
 
-import React, {Component} from 'react';
+import React, {Component} from "react";
 
 export default class TextInput extends Component {
 
     static defaultProps = {
-        type: 'text'
+        type: 'text',
+        value: ''
+    };
+
+
+    static injectedProps = {
+        value: "."
     };
 
     render() {

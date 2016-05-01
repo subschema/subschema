@@ -13,7 +13,7 @@ function createHandler(value, key, loader){
         };
     }
     return function value$handler(v){
-        this.injected[key] = v;
+        this.injected[key] = v == null ? '' : v;
         this.mounted && this.forceUpdate();
     };
 }

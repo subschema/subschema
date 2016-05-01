@@ -35,7 +35,12 @@ export default class ObjectType extends Component {
         fallbackTemplate: 'ObjectTemplate',
         FieldSet: UninjectedFieldSet,
         Field: UninjectedField,
-        subSchema: {}
+        subSchema: {},
+        value: {}
+    };
+
+    static injectedProps = {
+        value: "."
     };
 
 
