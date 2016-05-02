@@ -159,8 +159,8 @@ Example:
   var values = {}, errors ={};	
   var vm = ValueManager(values,errors);
   //listen to all events
-  vm.addListener(function(newValue, oldValue, path){
-
+  vm.addListener(null, function(newValue, oldValue, path){
+//listens to all changes
 
 });
   vm.addListener('singlePath', function(newValue, oldValue path){
