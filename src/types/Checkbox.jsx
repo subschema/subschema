@@ -30,7 +30,7 @@ export default class Checkbox extends Component {
     render() {
         const {onChange, value, className, checkedClass, ...props} = this.props;
 
-        const checked = typeof value === 'boolean' ? value : value == null ? this.props.checked : true;
+        const checked = typeof value === 'boolean' ? value : value == null || value === '' ? this.props.checked : true;
         return <input {...props} value={value == null ? '' : value}
                                  className={className+' '+(checked ? checkedClass : '')}
                                  checked={checked} onChange={this::this.handleChange}/>

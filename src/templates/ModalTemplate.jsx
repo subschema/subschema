@@ -95,7 +95,7 @@ export default class ModalTemplate extends Component {
             <div className={dialogClass} role="document" style={{zIndex:2000}}>
                 <div className={contentClass}>
                     <div className={headerClass}>
-                        <button onClick={this.handleClose} className={closeClass} name={this.props.dismiss}
+                        <button onClick={this.handleClose} className={closeClass} name={this.props.path+'@dismiss'}
                                 value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <RenderContent type='h4' content={title || legend}/>

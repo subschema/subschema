@@ -13,9 +13,11 @@ function toOptions(nval) {
     const {label, val, ...rest} = nval;
     if (!val) {
         rest.val = label;
+        rest.label = label;
     }
     if (!label) {
         rest.label = val;
+        rest.val = val;
     }
     return rest;
 }
