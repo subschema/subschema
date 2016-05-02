@@ -10,6 +10,7 @@ In this case you should use this.
 I try to make writing subschema apps easy, I haven't tried so hard to make
 writing subschema easy, this project is an attempt to fix this.
 
+More on [Subschema](https://github.com/subschema/subschema), [demo](https://subschema.github.io/subschema)
 
 #Requirements
 * NPM >3 - There are known issues with npm2 and babel. 
