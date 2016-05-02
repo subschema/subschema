@@ -65,35 +65,33 @@
     "postcss": "^5.0.19",
     "postcss-loader": "^0.8.2",
     "raw-loader": "^0.5.1",
-    "react": "^15.0.1",
-    "react-addons-css-transition-group": "^15.0.1",
-    "react-dom": "^15.0.1",
-    "react-addons-test-utils": "^15.0.1",
+    "react": "^15.0.2",
+    "react-addons-css-transition-group": "^15.0.2",
+    "react-addons-test-utils": "^15.0.2",
+    "react-dom": "^15.0.2",
     "react-transform-hmr": "^1.0.4",
     "rimraf": "^2.5.0",
     "source-map": "^0.5.3",
     "source-map-support": "^0.4.0",
     "strip-loader": "^0.1.1",
     "style-loader": "^0.13.0",
-    "subschema-test-support": "^1.2.0",
+    "subschema-expression": "^1.1.1",
+    "subschema-injection": "^1.2.0",
+    "subschema-prop-types": "^1.1.3",
+    "subschema-test-support": "^1.3.0",
     "supports-color": "^3.1.2",
     "text-loader": "0.0.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.11",
-    "webpack-dev-server": "^1.11.0",
-    "subschema-expression": "^1.1.1",
-    "subschema-injection": "^1.2.0",
-    "subschema-prop-types": "^1.1.3"
+    "webpack-dev-server": "^1.11.0"
   },
   "peerDependencies": {
     "fbjs": "^0.8.0-alpha.3",
     "lodash": "^3.10.1",
-    "react": "^15.0.1",
-    "react-addons-css-transition-group": "^15.0.1",
-    "react-dom": "^15.0.1",
-    "subschema-injection": "*",
+    "react": "^15.0.2",
+    "react-addons-css-transition-group": "^15.0.2",
+    "react-dom": "^15.0.2",
     "subschema-prop-types": "*"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
