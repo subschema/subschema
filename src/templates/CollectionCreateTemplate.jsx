@@ -1,6 +1,6 @@
 "use strict";
 import React, {Component} from 'react';
-import Content from '../types/Content.jsx';
+import Content from '../types/Content';
 import PropTypes from '../PropTypes';
 
 export default class CollectionCreateTemplate extends Component {

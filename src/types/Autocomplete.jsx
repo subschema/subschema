@@ -4,7 +4,7 @@ import React, {Component} from "react";
 import {noop} from "../tutils";
 import Dom from "../Dom";
 import PropTypes from "../PropTypes";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 
 export default class Autocomplete extends Component {
 

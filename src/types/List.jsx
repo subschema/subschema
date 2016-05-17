@@ -1,30 +1,15 @@
 "use strict";
 
 import React from 'react';
-import {noop, isString} from '../tutils';
-import CollectionMixin from './CollectionMixin.jsx';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import _get from 'lodash/object/get';
-import map from 'lodash/collection/map';
-import PropTypes from '../PropTypes';
-import defaults from 'lodash/object/defaults';
-
+import {isString} from '../tutils';
+import CollectionMixin from './CollectionMixin';
 
 export default class ListInput extends CollectionMixin {
     static inputClassName = CollectionMixin.inputClassName;
 
 
-
-    unwrap(value) {
-        return map(value, 'value');
-    }
-
-    createDefValue() {
-        return [];
-    }
-
     createPid() {
-        return this.state.wrapped.length || 0;
+        return this._length || 0;
     }
 
     getTemplateItem() {

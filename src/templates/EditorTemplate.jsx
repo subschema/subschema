@@ -1,7 +1,7 @@
 "use strict";
 import React, {Component} from "react";
 import PropTypes from "../PropTypes";
-import UninjectedContent from "../types/Content.jsx";
+import UninjectedContent from "../types/Content";
 
 export default class EditorTemplate extends Component {
     static propTypes = {

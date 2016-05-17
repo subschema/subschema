@@ -4,7 +4,7 @@ import PropTypes from '../PropTypes';
 import {FREEZE_OBJ} from '../tutils';
 import {loadTemplate} from './template';
 import {loadType} from './type';
-import Conditional from '../components/Conditional.jsx';
+import Conditional from '../components/Conditional';
 import warning from '../warning';
 
 export const settings = {

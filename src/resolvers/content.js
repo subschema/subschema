@@ -1,7 +1,7 @@
 "use strict";
 
 import PropTypes from '../PropTypes';
-import UninjectedContent from '../types/Content.jsx';
+import UninjectedContent from '../types/Content';
 
 export const settings = {
     Content: UninjectedContent

@@ -4,7 +4,7 @@ import React, {Component, DOM, Children, createElement} from "react";
 import {isString, isObject, isArray} from "../tutils";
 import warning from "../warning";
 import PropTypes from "../PropTypes";
-import DefaultWrapper from "./ContentWrapper.jsx";
+import DefaultWrapper from "./ContentWrapper";
 const has = Function.call.bind(Object.prototype.hasOwnProperty);
 
 /**

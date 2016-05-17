@@ -30,7 +30,7 @@ import Subschema, {
     validators as _v,
     warning as _w,
     newSubschemaContext as _newSubschemaContext
-} from "./index.js";
+} from "./core.js";
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;

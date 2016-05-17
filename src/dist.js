@@ -15,4 +15,4 @@ than its bad.   I have no non-bad solution.  This seems least bad.
  */
 
 require('babel-polyfill');
-module.exports = require('./index.jsx');
+module.exports = require('./index');

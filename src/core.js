@@ -1,12 +1,12 @@
 "use strict";
 
-import Conditional from './components/Conditional.jsx';
-import Field from './components/Field.jsx';
-import FieldSet from './components/FieldSet.jsx';
-import RenderContent from './components/RenderContent.jsx';
-import RenderTemplate from './components/RenderTemplate.jsx';
-import NewChildContext from './components/NewChildContext.jsx';
-import Form from './components/Form.jsx';
+import Conditional from './components/Conditional';
+import Field from './components/Field';
+import FieldSet from './components/FieldSet';
+import RenderContent from './components/RenderContent';
+import RenderTemplate from './components/RenderTemplate';
+import NewChildContext from './components/NewChildContext';
+import Form from './components/Form';
 import Dom from './Dom';
 import eventable from './eventable';
 import loaderFactory from './loaderFactory';

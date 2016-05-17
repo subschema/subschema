@@ -3,7 +3,7 @@
 import React, {Component} from "react";
 import PropTypes from "../PropTypes";
 import {path, FREEZE_ARR as options} from "../tutils";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 
 export default class Checkboxes extends Component {
     //override added input Class Names.

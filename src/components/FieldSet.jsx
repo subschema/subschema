@@ -1,8 +1,8 @@
 "use strict";
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import RenderContent from './RenderContent.jsx';
-import RenderTemplate from './RenderTemplate.jsx';
+import RenderContent from './RenderContent';
+import RenderTemplate from './RenderTemplate';
 
 /**
  * Manages the the fieldset.  It  uses FieldSetTemplate or similar, but now

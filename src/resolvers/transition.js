@@ -1,6 +1,6 @@
 "use strict";
 import PropTypes from '../PropTypes';
-import Transition from '../transition/ReactCSSReplaceTransition.jsx';
+import Transition from '../transition/ReactCSSReplaceTransition';
 
 export const settings = {
     transition: 'rollUp',

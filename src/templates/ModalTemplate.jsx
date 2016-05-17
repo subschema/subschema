@@ -2,8 +2,8 @@
 import React, {Component, Children} from "react";
 import PropTypes from "../PropTypes";
 import cloneDeep from "lodash/lang/cloneDeep";
-import RenderContent from "../components/RenderContent.jsx";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderContent from "../components/RenderContent";
+import RenderTemplate from "../components/RenderTemplate";
 
 
 export default class ModalTemplate extends Component {

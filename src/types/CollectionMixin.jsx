@@ -1,12 +1,12 @@
 "use strict";
 
 import React, {Component} from "react";
-import {isString, path, clone, FREEZE_ARR} from "../tutils";
-import UninjectedObjectType from "./Object.jsx";
+import {isString, path, noop, clone, FREEZE_ARR} from "../tutils";
+import UninjectedObjectType from "./Object";
 import PropTypes from "../PropTypes";
 import map from "lodash/collection/map";
 import defaults from "lodash/object/defaults";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
@@ -50,13 +50,17 @@ export default class CollectionMixin extends Component {
         contentTemplate: PropTypes.template,
         buttons: PropTypes.buttons,
         addButton: PropTypes.button,
-        listContainerClassName: PropTypes.cssClass,
+        listContainerClass: PropTypes.cssClass,
         ObjectType: PropTypes.injectClass,
         value: PropTypes.value,
         title: PropTypes.title
     };
 
     static defaultProps = {
+        onWillReorder: noop,
+        onWillChange: noop,
+        onWillAdd: noop,
+        onWillDelete: noop,
         createTemplate: 'CollectionCreateTemplate',
         buttonTemplate: 'ButtonTemplate',
         itemTemplate: 'ListItemTemplate',
@@ -78,62 +82,64 @@ export default class CollectionMixin extends Component {
         ObjectType: UninjectedObjectType
     };
     state = {
-        showAdd: this.props.showAdd,
-        wrapped: this.wrapValues(this.props.value)
+        showAdd: this.props.showAdd
     };
 
-    wrapValues(values) {
-        return map(values, wrapFunc);
+    constructor(props, ...rest) {
+        super(props, ...rest);
+        this._length = this.count(props.value);
     }
 
     componentWillReceiveProps(props) {
-        if (props.value !== this.props.value) {
-            this.setValue(props.value);
-        }
         const {showAdd} = props;
         if (showAdd !== this.props.showAdd) {
             this.setState({showAdd});
         }
+        this._length = this.count(props.value);
+    }
 
+    count(value) {
+        return value ? value.length : 0;
     }
 
     getValue() {
-        return this.unwrap(this.state.wrapped);
+        return this.props.value;
     }
 
-    setValue(value) {
-        this.setState({wrapped: this.wrapValues(value)});
-    }
 
     setErrors(errors) {
         this.setState({errors});
     }
 
     handleMoveUp = (pos, val) => {
-        const values = this.state.wrapped, oval = values && values.concat();
-        values.splice(Math.max(pos - 1, 0), 0, values.splice(pos, 1)[0]);
-        this.changeValue(values, oval);
+        this.reorder(pos, val, -1);
     };
 
     handleMoveDown = (pos, val)=> {
-        const values = this.state.wrapped, oval = values && values.concat();
-        values.splice(Math.min(pos + 1, values.length), 0, values.splice(pos, 1)[0]);
-        this.changeValue(values, oval);
-
+        this.reorder(pos, val, 1);
     };
 
+    reorder(pos, val, direction) {
+        const values = this.props.value, oval = values && values.concat();
+        const newPos = direction > 0 ? Math.min(pos + direction, values.length) : Math.max(pos + direction, 0);
+        if (this.props.onWillReorder(pos, val, direction) !== false) {
+            values.splice(newPos, 0, values.splice(pos, 1)[0]);
+            this.changeValue(values, oval);
+        }
+    }
+
     handleDelete = (pos, val, pid)=> {
-        const values = this.state.wrapped, oval = values && values.concat();
-        values.splice(pos, 1);
-        this.changeValue(values, oval);
+        const values = this.props.value, oval = values && values.concat();
+        if (this.props.onWillDelete(pos, val) !== false) {
+            values.splice(pos, 1);
+            this.changeValue(values, oval);
+        }
     };
 
 
     changeValue = (newValue, oldValue)=> {
-        if (this.props.onChange(this.unwrap(newValue)) !== false) {
-
+        if (this.props.onChange(newValue) !== false) {
             this.setState({
-                wrapped: newValue,
                 showAdd: this.props.showAdd,
                 showEdit: false
             });
@@ -142,7 +148,7 @@ export default class CollectionMixin extends Component {
 
     handleAddBtn(e) {
         e && e.preventDefault();
-        const key = this.createPid()
+        const key = this.createPid();
         this.context.valueManager.update(makeEditPid(this.props.path, key), {
             key
         });
@@ -191,7 +197,7 @@ export default class CollectionMixin extends Component {
         var {
             key,
             value
-        } = origValue
+        } = origValue;
         const errors = valueManager.getErrors();
 
         if (errors == null || Object.keys(errors).length === 0) {
@@ -284,14 +290,23 @@ export default class CollectionMixin extends Component {
     }
 
     renderRowEach(data, rowId) {
-        return this.renderRow(data, null, rowId);
+        return this.renderRow(data, null, rowId, rowId);
     }
 
-    renderRow(v, sectionId, i) {
-        const {itemTemplate, contentTemplate} = this.props;
+    renderRows() {
+        if (this.props.value) {
+            return this.props.value.map(this.renderRowEach, this);
+        }
+        return null;
+    }
 
-        return <RenderTemplate template={itemTemplate} key={this.props.path+'.'+i} pos={i}
-                               path={ path(this.props.path, v.key)}
+    renderRow(value, sectionId, pos, key) {
+        const {itemTemplate, contentTemplate} = this.props;
+        const v = {value};
+        return <RenderTemplate template={itemTemplate}
+                               key={this.props.path+'.'+pos}
+                               pos={pos}
+                               path={ path(this.props.path, key)}
                                onMoveUp={this.handleMoveUp}
                                onMoveDown={this.handleMoveDown}
                                onDelete={this.handleDelete}
@@ -299,15 +314,14 @@ export default class CollectionMixin extends Component {
                                canReorder={this.props.canReorder}
                                canDelete={this.props.canDelete}
                                canEdit={this.props.canEdit}
-                               field={v}
-                               pid={v.key}
-                               value={v} errors={this.props.errors}
-                               last={i + 1 === this.state.wrapped.length}>
-            {this.props.inline && this.state.editPid === v.key ? this.renderAddEditTemplate(v, false) :
-                <RenderTemplate template={contentTemplate} value={v}
+                               value={v}
+                               last={pos+1 === this._length}
+                               errors={this.props.errors}>
+            {this.props.inline && this.state.editPid === pos ? this.renderAddEditTemplate(v, false) :
+                <RenderTemplate template={contentTemplate}
                                 labelKey={this.props.labelKey}
-                                pos={i}
-                                pid={v.key}
+                                pos={pos}
+                                pid={key}
                                 value={v}
                                 showKey={this.props.showKey}
                                 onClick={this.props.canEdit ? this.handleEdit : null}/> }
@@ -315,11 +329,11 @@ export default class CollectionMixin extends Component {
     }
 
     render() {
-        var {name, itemType, errors, className, listContainerClassName, canReorder, canDelete, itemTemplate, canEdit, canAdd} = this.props, values = this.state.wrapped || FREEZE_ARR, length = values.length;
+        var {name, itemType, errors, className, listContainerClass, canReorder, canDelete, itemTemplate, canEdit, canAdd} = this.props, values = this.props.value || FREEZE_ARR;
         return (<div className={className}>
             {this.renderAdd()}
-            <ul className={listContainerClassName}>
-                {values.map(this.renderRowEach, this)}
+            <ul className={listContainerClass}>
+                {this.renderRows()}
             </ul>
         </div>);
     }

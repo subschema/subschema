@@ -1,9 +1,9 @@
 'use strict'
 import React, {Component} from 'react';
-import ObjectType from '../types/Object.jsx';
+import ObjectType from '../types/Object';
 import PropTypes from '../PropTypes';
-import UninjectedField from '../components/Field.jsx';
-import UninjectedFieldSet from '../components/FieldSet.jsx';
+import UninjectedField from '../components/Field';
+import UninjectedFieldSet from '../components/FieldSet';
 function donner(d) {
     d && d();
 }

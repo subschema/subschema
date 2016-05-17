@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import {path as tpath} from "../tutils";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 import PropTypes from "../PropTypes";
 
 function compare(val, val2) {

@@ -1,6 +1,6 @@
 "use strict";
 import React, {Component} from "react";
-import UninjectedContent from "../types/Content.jsx";
+import UninjectedContent from "../types/Content";
 import PropTypes from "../PropTypes";
 
 export default class RadioItemTemplate extends Component {

@@ -3,7 +3,7 @@
 import React, {Component} from "react";
 import PropTypes from "./../PropTypes";
 import ValueManager from "./../ValueManager";
-import ObjectType from "./../types/Object.jsx";
+import ObjectType from "./../types/Object";
 import {noop} from "./../tutils";
 
 export default class Form extends Component {

@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import PropTypes from "../PropTypes";
-import RenderTemplate from "./RenderTemplate.jsx";
+import RenderTemplate from "./RenderTemplate";
 import {createValidator} from '../resolvers/validate';
 
 export default class Field extends Component {

@@ -63,17 +63,20 @@ describe('types/List', function () {
     });
 
     it('should render a list with data the canAdd', function () {
-        var data = {
+        const data = {
             tasks: [
                 'one',
                 'two',
                 'three'
             ]
         };
-        var root = into(<Form schema={Schema} value={data}/>, true);
-        expect(root).toExist();
-        var addBtn = byClass(root, 'btn-add')[0];
-        expect(addBtn).toExist();
+        const root = into(<Form schema={Schema} value={data}/>, true);
+
+        expect(root).toExist('root should exist');
+
+        const addBtn = byClass(root, 'btn-add', 0)[0];
+
+        expect(addBtn).toExist('add btn should exit');
 
         const [first, second, last] = byComponents(root, ListItemTemplate);
 
@@ -94,7 +97,7 @@ describe('types/List', function () {
     });
 
     it('should render a list with data without canAdd', function () {
-        var schema = {
+        const schema = {
             schema: {
                 tasks: {
                     type: 'List',
@@ -104,16 +107,17 @@ describe('types/List', function () {
                     canDelete: true
                 }
             }
-        }, data = {
+        };
+        const data = {
             tasks: [
                 'one',
                 'two',
                 'three'
             ]
         };
-        var root = into(<Form schema={schema} value={data}/>, true);
-        var tasks = byComponents(root, ListItemTemplate);
-        var addBtn = byClass(root, 'btn-add')[0];
+        const root = into(<Form schema={schema} value={data}/>, true);
+        const tasks = byComponents(root, ListItemTemplate);
+        const addBtn = byClass(root, 'btn-add')[0];
 
         expect(addBtn).toNotExist('add button does not exist');
         expect(tasks[0]).toExist('task 1');

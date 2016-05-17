@@ -1,9 +1,9 @@
 "use strict";
 import React, {Component, Children} from 'react';
 import PropTypes from './../PropTypes';
-import CSSTransitionGroup from '../transition/ReactCSSReplaceTransition.jsx';
+import CSSTransitionGroup from '../transition/ReactCSSReplaceTransition';
 import {FREEZE_OBJ} from '../tutils';
-import RenderTemplate from './RenderTemplate.jsx';
+import RenderTemplate from './RenderTemplate';
 
 export default class Conditional extends Component {
     static contextTypes = PropTypes.contextTypes;

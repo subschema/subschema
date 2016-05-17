@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import {isString, extend} from "../tutils";
 import PropTypes from "../PropTypes";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 
 export default class ButtonsTemplate extends Component {
     static defaultProps = {

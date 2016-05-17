@@ -4,9 +4,9 @@ import React, {Component} from "react";
 import PropTypes from "../PropTypes";
 import {isString, isArray, unique, path as _path, noop} from "../tutils";
 import UninjectedField from "../components/Field";
-import UninjectedFieldSet from "../components/FieldSet.jsx";
+import UninjectedFieldSet from "../components/FieldSet";
 import warning from "../warning";
-import RenderTemplate from "../components/RenderTemplate.jsx";
+import RenderTemplate from "../components/RenderTemplate";
 
 export default class ObjectType extends Component {
 
