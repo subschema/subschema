@@ -24,6 +24,7 @@ More on [Subschema](https://github.com/subschema/subschema), [demo](https://subs
   $ git clone --recursive git@github.com:subschema/subschema-devel.git
   $ cd subschema-devel
   $ git submodule init
+  $ git submodule update --remote --merge
   $ git submodule update --recursive
   $ bash install.sh
   $ cd subschema-demo
