@@ -33,7 +33,7 @@ export default class RadioInput extends Component {
     };
 
 
-    handleCheckChange(e) {
+    handleCheckChange = (e)=> {
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.forceSelection === false || this.props.options && this.props.options.length === 1) {
             this.props.onChange(compare(e.target.value, this.props.value) ? null : e.target.value);
@@ -44,7 +44,7 @@ export default class RadioInput extends Component {
 
     renderOptions(options) {
         options = options || [];
-        const onChange = this::this.handleCheckChange;
+        const onChange = this.handleCheckChange;
         let {value, path, name, checkedClass} = this.props;
         name = name || path;
         return options.map((option, index)=> {

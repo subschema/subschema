@@ -84,7 +84,7 @@ export default class ModalTemplate extends Component {
             buttons = <RenderTemplate template={this.props.buttonsTemplate} {...this.constructor.defaultBtns}
             />
         return <div
-            className={this.props.footerClass}>{React.cloneElement(buttons, {onButtonClick: this::this.handleBtnClose})}</div>
+            className={this.props.footerClass}>{React.cloneElement(buttons, {onButtonClick: this.handleBtnClose})}</div>
     }
 
     render() {

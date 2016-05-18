@@ -140,8 +140,8 @@ function applyFuncs(f1, f2) {
     if (f1 && !f2) return f1;
     if (!f1 && f2) return f2;
     return function applyFuncs$bothFuncs(...args) {
-        this::f1(...args);
-        this::f2(...args);
+        f1.apply(this, args);
+        f2.apply(this, args);
     };
 }
 
@@ -172,8 +172,8 @@ function nextFunc(f1, f2) {
     if (f1 && !f2) return f1;
     if (f2 && !f1) return f2;
     return function nextFunc$wrapper(...args) {
-        if (this::f1(...args) !== false) {
-            return this::f2(...args);
+        if (f1.apply(this, args) !== false) {
+            return f2.apply(this, args);
         }
     };
 }

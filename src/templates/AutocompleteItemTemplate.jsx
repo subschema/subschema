@@ -16,7 +16,7 @@ export default class AutocompleteItemTemplate extends Component {
     };
 
 
-    handleClick(e) {
+    handleClick = (e)=> {
         e && e.preventDefault();
         this.props.onSelect(this.props.data);
     };
@@ -25,7 +25,7 @@ export default class AutocompleteItemTemplate extends Component {
         const {data, focus, itemClass, focusedClass, value, processor} = this.props;
         const __html = processor.format(data, value, true);
         return __html == null ? null :
-            <li ref="item" className={ `${itemClass}  ${focus ? focusedClass : ''}`} onClick={this::this.handleClick}
+            <li ref="item" className={ `${itemClass}  ${focus ? focusedClass : ''}`} onClick={this.handleClick}
                 dangerouslySetInnerHTML={{__html}}/>
     }
 }

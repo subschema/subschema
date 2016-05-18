@@ -378,12 +378,11 @@ export default class Autocomplete extends Component {
     render() {
         const suggestions = this.state.suggestions || [];
         const {foundClass, namespaceClass, inputType, id, input, notFoundClass} = this.props;
-        // props.onChange = this::this.handleChange;
         const inputProps = {
-            onPaste: this::this.handlePaste,
-            onKeyDown: this::this.handleKeyUp,
-            onBlur: this::this.handleBlur,
-            onChange: this::this.handleChange,
+            onPaste: this.handlePaste,
+            onKeyDown: this.handleKeyUp,
+            onBlur: this.handleBlur,
+            onChange: this.handleChange,
             value: this.state.input,
             id
         };

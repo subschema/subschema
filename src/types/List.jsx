@@ -12,10 +12,11 @@ export default class ListInput extends CollectionMixin {
         return this._length || 0;
     }
 
-    getTemplateItem() {
-        var value = isString(this.props.itemType) ? {
-            type: this.props.itemType
-        } : this.props.itemType || {};
+    getTemplateItem(edit) {
+        const type = edit ? this.props.editType || this.props.itemType : this.props.itemType;
+        var value = isString(type) ? {
+            type
+        } : type || {};
         value.title = false;
         return {
             value,

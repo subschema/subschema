@@ -1,3 +1,5 @@
+"use strict";
+
 import React from "react";
 import CollectionMixin from "./CollectionMixin";
 import {isString} from "../tutils";
@@ -20,20 +22,16 @@ export default class MixedInput extends CollectionMixin {
         keyType: {type: 'Text'}
     }, CollectionMixin.defaultProps);
 
-    static injectedProps = {
-        value: "."
-    };
 
 
     uniqueCheck = (value)=> {
-        var values = this.props.value;
-        if (!value){
+        if (!value) {
             return null;
         }
         if (this.state.editPid == value) {
             return null;
         }
-        if (value in values) {
+        if (value in this.props.value) {
 
             return {
                 message: 'Keys must be unique'
@@ -50,25 +48,28 @@ export default class MixedInput extends CollectionMixin {
     createDefValue() {
         return {};
     }
-    count(value){
+
+    count(value) {
         return value ? Object.keys(value).length : 0;
     }
+
     renderRows() {
         const {value} = this.props;
-        return Object.keys(value).map((key, i)=>this.renderRowEach(value[key], i, key), this)
+        return value ? Object.keys(value).map((key, i)=>this.renderRow(value[key], null,  i, key), this) : null;
     }
 
-    getTemplateItem() {
-        let {keyType, valueType, itemType} = this.props;
+    getTemplateItem(edit) {
 
-        keyType = keyType ? isString(keyType) ? {type: keyType} : keyType : {type: 'Text'};
-
+        const {keyType, valueType, editType, itemType} = this.props;
+        const type = edit ? editType || valueType || itemType : valueType || itemType;
+        const key = keyType ? isString(keyType) ? {type: keyType} : keyType : {type: 'Text'};
+        const value = isString(type) ? {type} : type || {};
         const schema = {
-            key: isString(keyType) ? {keyType} : keyType,
-            value: valueType || itemType
+            key,
+            value
         };
 
-        (keyType.validators || (keyType.validators = [])).unshift('required', this.uniqueCheck);
+        (key.validators || (key.validators = [])).unshift('required', this.uniqueCheck);
 
         return schema;
     }

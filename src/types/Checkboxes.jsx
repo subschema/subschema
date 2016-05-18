@@ -34,7 +34,7 @@ export default class Checkboxes extends Component {
     };
 
 
-    handleCheckChange(e) {
+    handleCheckChange = (e)=> {
         if (this.props.dataType === 'radio') {
             this.props.onChange(e.target.checked ? e.target.value : null);
             if (this.props.onBlur) {
@@ -68,7 +68,7 @@ export default class Checkboxes extends Component {
         const value = this.props.value;
         const labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
         const opts = {
-            onChange: this::this.handleCheckChange,
+            onChange: this.handleCheckChange,
             name: group,
             checked: value ? !!~value.indexOf(val) : false,
             id,

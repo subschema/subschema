@@ -39,7 +39,7 @@ export default class Button extends Component {
 
     render() {
         const {buttonClass, className, title, iconClass, onClick, label, ...props} = this.props;
-        return <button className={className || buttonClass} {...props} onClick={this::this.handleClick}>
+        return <button className={className || buttonClass} {...props} onClick={this.handleClick}>
             {iconClass ? <i className={iconClass}/> : null}
             {label}</button>
     }

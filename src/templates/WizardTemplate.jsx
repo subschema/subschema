@@ -80,6 +80,9 @@ export default class WizardTemplate extends WizardMixin {
             return this.props.transitionBackward;
         }
     }
+    _handleBtn = (...args)=>{
+        return this.handleBtn(...args);
+    };
 
     render() {
         let {className, Template, template, fieldsets, fields, onButtonClick,transitionLeaveTimeout,  transitionEnterTimeout, carouselHeightClass, children, schema, ...rest} = this.props;
@@ -100,7 +103,7 @@ export default class WizardTemplate extends WizardMixin {
                         key={"form-"+compState}
                         schema={currentSchema}
 
-                        onButtonClick={this::this.handleBtn}
+                        onButtonClick={this._handleBtn}
                     />
                 </Transition>
             </div>

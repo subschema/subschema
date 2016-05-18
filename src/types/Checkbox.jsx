@@ -19,7 +19,7 @@ export default class Checkbox extends Component {
     };
 
 
-    handleChange(e) {
+    handleChange =(e)=> {
         const {value} = this.props;
 
         //Blur does not get called on checkbox, so we do check on change anyways.
@@ -33,6 +33,6 @@ export default class Checkbox extends Component {
         const checked = typeof value === 'boolean' ? value : value == null || value === '' ? this.props.checked : true;
         return <input {...props} value={value == null ? '' : value}
                                  className={className+' '+(checked ? checkedClass : '')}
-                                 checked={checked} onChange={this::this.handleChange}/>
+                                 checked={checked} onChange={this.handleChange}/>
     }
 }
