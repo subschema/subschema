@@ -13,8 +13,10 @@
 export default function dataType(Clazz, key, propTypeKeys) {
 
     //array of keys to allow for prop type renames.  This should not happen much, but we have dataType->type conversion.
-    propTypeKeys.splice(propTypeKeys.indexOf(key), 1, 'type');
-
+    const idx = propTypeKeys.indexOf(key);
+    if (idx > -1){
+       propTypeKeys.splice(idx, 1, 'type');
+    }
 
     Clazz::this.extendPrototype('componentWillMount', function dataType$willMount() {
         if (!this.injected) this.injected = {};
