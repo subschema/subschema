@@ -14,8 +14,7 @@ export const defaultPropTypes = {
     name: PropTypes.htmlFor,
     className: PropTypes.typeClass,
     placeholder: PropTypes.string,
-    fieldAttrs: PropTypes.fieldAttrs,
-    validators: PropTypes.array
+    fieldAttrs: PropTypes.fieldAttrs
 };
 //Expose for configurability
 export const settings = {
