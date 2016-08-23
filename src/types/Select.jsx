@@ -67,7 +67,7 @@ export default class Select extends Component {
     }
 
     render() {
-        let {onChange, value, ...props} = this.props;
+        let {onValidate, onChange, value, options, ...props} = this.props;
         if (props.multiple && !isArray(value)) {
             value = value ? [value] : [];
         }
