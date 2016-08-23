@@ -26,7 +26,7 @@ describe('types/Text', function () {
         expect(node.className).toBe('stuff');
         expect(node.value).toBe('abc');
         var attrs = toAttr(node);
-        expect(Object.keys(attrs).length).toBe(3);
+        expect(Object.keys(attrs).length).toBe(4);
         expect(attrs.class).toBe('stuff');
         expect(attrs.type).toBe('text');
 

@@ -13,17 +13,17 @@ export default class ContentItemTemplate extends Component {
         labelKey: PropTypes.string,
         itemInnerClass: PropTypes.string,
         clickableClass: PropTypes.string,
-        value(props, propName, componentName) {
+        value(props, propName, componentName, ...rest) {
             var value = props[propName];
             var labelKey = props.labelKey;
             if ('value' in props) {
                 if (labelKey) {
-                    return PropTypes.node(props.value, labelKey, componentName)
+                    return PropTypes.node(props.value, labelKey, componentName, ...rest)
                 } else
-                    return PropTypes.node(value, 'value', componentName);
+                    return PropTypes.node(value, 'value', componentName, ...rest);
             }
             if (props.showKey) {
-                return PropTypes.node(props, 'key', componentName);
+                return PropTypes.node(props, 'key', componentName, ...rest);
             }
         }
     };

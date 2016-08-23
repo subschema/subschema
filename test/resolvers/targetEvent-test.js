@@ -27,7 +27,8 @@ describe('resolvers/targetEvent', function () {
     class TargetTest extends Component {
 
         render() {
-            return <input {...this.props}/>
+            const {path, ...props} = this.props;
+            return <input {...props}/>
         }
     }
 

@@ -23,7 +23,7 @@ export default class ContentWrapper extends Component {
     };
 
     render() {
-        const {type, content, children, context, fieldAttrs=FREEZE_OBJ, ...props} = this.props;
+        const {type, content, children, context, path, fieldAttrs=FREEZE_OBJ, ...props} = this.props;
         if (typeof type == 'string') {
             return React.createElement(type, {...fieldAttrs, ...props, dangerouslySetInnerHTML:{__html:content}});
         }
