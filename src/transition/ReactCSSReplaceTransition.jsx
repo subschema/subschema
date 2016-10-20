@@ -185,7 +185,7 @@ export default class ReactCSSTransitionReplace extends React.Component {
 
         const { overflowHidden,
 
-            Transition, transitionHeightClass, transitionName, transitionEnterTimeout, transitionEnter, transitionAppear, transitionLeaveTimeout, transitionLeave, children, component,
+            Transition, transitionHeightClass, transitionName, transitionAppearTimeout, transitionEnterTimeout, transitionEnter, transitionAppear, transitionLeaveTimeout, transitionLeave, children, component,
             ...containerProps } = this.props;
 
         if (currentChild) {

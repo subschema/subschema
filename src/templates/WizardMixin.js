@@ -7,6 +7,24 @@ import UninjectedFieldSet from '../components/FieldSet';
 function donner(d) {
     d && d();
 }
+function fields(feildset) {
+    if (!feildset)return [];
+    if (feildset.fields) {
+        return feildset.fields;
+    }
+    if (Array.isArray(feildset)) {
+        return feildset.reduce(function (ret, fs) {
+            ret.push(...fields(fs));
+            return ret;
+        }, []);
+    }
+
+    if (feildset.fieldsets) {
+        return fields(feildset.fieldsets);
+    }
+    return [];
+
+}
 export default class WizardMixin extends Component {
     static contextTypes = {
         valueManager: PropTypes.valueManager
@@ -83,7 +101,7 @@ export default class WizardMixin extends Component {
     }
 
     _validate(done) {
-        this.context.valueManager.validatePaths(this.props.schema.fieldsets[this.state.compState].fields, done)
+        this.context.valueManager.validatePaths(fields(this.props.schema.fieldsets[this.state.compState]), done)
     }
 
 
