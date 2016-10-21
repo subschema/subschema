@@ -33,3 +33,4 @@
 [submodule "subschema-redux"]
 	path = subschema-redux
 	url = git@github.com:subschema/subschema-redux.git
+	master = master
