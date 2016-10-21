@@ -20,7 +20,7 @@ class TestForm extends Component {
 }
 
 describe("resolvers/submit", function () {
-    this.timeout(50000);
+    this.timeout(5000);
     it('should submit ', function (done) {
         const loader = loaderFactory([DefaultLoader]);
         loader.addTemplate({TestForm});

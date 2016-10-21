@@ -1,7 +1,7 @@
 "use strict";
 import React, {Component, Children} from "react";
 import PropTypes from "../PropTypes";
-import cloneDeep from "lodash/lang/cloneDeep";
+import cloneDeep from "lodash/cloneDeep";
 import RenderContent from "../components/RenderContent";
 import RenderTemplate from "../components/RenderTemplate";
 

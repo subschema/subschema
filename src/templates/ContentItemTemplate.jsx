@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from '../PropTypes';
-import _get from 'lodash/object/get';
+import _get from 'lodash/get';
 
 
 export default class ContentItemTemplate extends Component {

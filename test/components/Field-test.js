@@ -46,7 +46,7 @@ describe('components/Field', function () {
         blur(input);
         expect(templ.props.error).toBe('2 is less than 3');
         change(input, 'aaa');
-        expect(templ.props.error).toBe(null);
+        expect(templ.props.error).toNotExist();
         expect(templ.props.help.content).toBe('Hello');
 
     });
@@ -144,7 +144,7 @@ describe('components/Field', function () {
         blur(input);
         expect(templ.props.error).toBe('2 is less than 3');
         change(input, 'aaa');
-        expect(templ.props.error).toBe(null);
+        expect(templ.props.error).toNotExist();
         expect(templ.props.help).toBe('Hello');
 
     });

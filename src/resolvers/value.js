@@ -2,7 +2,7 @@
 
 import PropTypes from '../PropTypes';
 import {resolveKey} from '../tutils';
-import isPlainObject from 'lodash/lang/isPlainObject';
+import isPlainObject from 'lodash/isPlainObject';
 
 function createHandler(value, key, loader){
     if (value.processor){

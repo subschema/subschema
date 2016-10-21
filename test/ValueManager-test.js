@@ -1,6 +1,6 @@
 "use strict";
 
-import {ValueManager} from 'Subschema';
+import {ReduxValueManager as ValueManager} from 'Subschema';
 import expect from 'expect';
 
 describe('ValueManager', function () {
@@ -133,7 +133,7 @@ describe('ValueManager', function () {
             vm.addListener('stuff.more', function () {
                 expect(fired).toEqual(1);
                 done();
-            })
+            });
             vm.setValue(null);
         });
         it('should add a listener and remove a listener by path', function (done) {
@@ -151,10 +151,10 @@ describe('ValueManager', function () {
             vm.addListener('stuff.more', function () {
                 expect(fired).toEqual(1);
                 done();
-            })
+            });
             vm.setValue(null);
         });
-        it('should update change when it is nested', function () {
+        it('should update change when it is nested', function (done) {
             var vm = new ValueManager(
                 {
                     stuff: {
@@ -168,13 +168,13 @@ describe('ValueManager', function () {
                 expect(oldValue).toEqual(true);
                 expect(newValue).toEqual(false);
                 expect(path).toEqual('stuff.more');
-                fired = true;
+                done();
             });
+            expect(vm.getValue().stuff.more).toEqual(true);
             vm.update('stuff.more', false);
             var val = vm.getValue();
             expect(val.stuff.more).toEqual(false);
             expect(val.other).toEqual(true);
-            expect(fired).toEqual(true);
         });
         it('should update change when it is nested and no value', function () {
             var vm = new ValueManager(
@@ -196,25 +196,23 @@ describe('ValueManager', function () {
             expect(val.other).toEqual(true);
             expect(fired).toEqual(true);
         });
-        it('should create an array', function () {
+        it('should create an array', function (done) {
             var vm = new ValueManager(
                 {
 
                     other: true
                 }
             );
-            var fired = false;
             vm.addListener('stuff', function (newValue, oldValue, path) {
                 expect(oldValue).toNotExist();
                 expect(newValue[0].more).toEqual(false);
                 expect(path).toEqual('stuff.0.more');
-                fired = true;
+                done();
             });
             vm.update('stuff.0.more', false);
             var val = vm.getValue();
             expect(val.stuff[0].more).toEqual(false);
             expect(val.other).toEqual(true);
-            expect(fired).toEqual(true);
         });
         it('should replace all the keys', function () {
             var vm = new ValueManager(

@@ -1,19 +1,19 @@
 "use strict";
 
-import extend from 'lodash/object/extend';
-import isFunction from 'lodash/lang/isFunction';
-import isString from 'lodash/lang/isString';
-import isRegExp from 'lodash/lang/isRegExp';
-import isDate from 'lodash/lang/isDate';
-import isBoolean from 'lodash/lang/isBoolean';
-import isArray from 'lodash/lang/isArray';
-import isNumber from 'lodash/lang/isNumber';
-import isObject from 'lodash/lang/isObject';
-import find from 'lodash/collection/find';
-import unique from 'lodash/array/unique';
-import noop from 'lodash/utility/noop';
-import each from 'lodash/collection/each';
-import values from 'lodash/object/values';
+import extend from 'lodash/extend';
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
+import isRegExp from 'lodash/isRegExp';
+import isDate from 'lodash/isDate';
+import isBoolean from 'lodash/isBoolean';
+import isArray from 'lodash/isArray';
+import isNumber from 'lodash/isNumber';
+import isObject from 'lodash/isObject';
+import find from 'lodash/find';
+import unique from 'lodash/uniq';
+import noop from 'lodash/noop';
+import each from 'lodash/each';
+import values from 'lodash/values';
 
 const FREEZE_OBJ = Object.freeze({});
 const FREEZE_ARR = Object.freeze([]);

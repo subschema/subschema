@@ -6,7 +6,7 @@ import {ValueManager, PropTypes, Conditional as _Conditional, newSubschemaContex
 const {Select} = types;
 
 describe('components/Conditional', function () {
-    this.timeout(30000);
+    this.timeout(5000);
     let Conditional;
     let loader;
     let Subschema;

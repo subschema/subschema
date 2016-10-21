@@ -4,7 +4,7 @@ import React, {Component} from "react";
 import {path, noop, clone} from "../tutils";
 import UninjectedObjectType from "./Object";
 import PropTypes from "../PropTypes";
-import defaults from "lodash/object/defaults";
+import defaults from "lodash/defaults";
 import RenderTemplate from "../components/RenderTemplate";
 
 function makeEditPid(path, pid) {

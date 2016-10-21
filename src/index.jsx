@@ -9,6 +9,7 @@ import * as _styles from "./styles";
 import * as _resolvers from "./resolvers";
 import {transitions as _transitions} from "./transition";
 import {injectorFactory as _injectorFactory} from "subschema-injection";
+import _ReduxValueManager from './redux/ReduxValueManager';
 import Subschema, {
     Conditional as _C,
     Field as _Field,
@@ -31,6 +32,7 @@ import Subschema, {
     warning as _w,
     newSubschemaContext as _newSubschemaContext
 } from "./core.js";
+export const ReduxValueManager = _ReduxValueManager;
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;

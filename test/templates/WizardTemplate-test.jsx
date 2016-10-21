@@ -5,7 +5,8 @@ import {Form,ValueManager, templates, types} from 'Subschema';
 import Sample from 'subschema-test-support-samples/Wizard';
 
 describe('templates/WizardTemplate', function () {
-    this.timeout(50000);
+    this.timeout(5000);
+
     it('should create a new form with a wizard template', function () {
         const valueManager = ValueManager({
             username: 'a@b.c',
@@ -22,6 +23,7 @@ describe('templates/WizardTemplate', function () {
 
     });
     it('should create a new form with a wizard and stuff', function (done) {
+
         const valueManager = ValueManager({
             //  c1: true
         });

@@ -101,7 +101,8 @@ export default class WizardMixin extends Component {
     }
 
     _validate(done) {
-        this.context.valueManager.validatePaths(fields(this.props.schema.fieldsets[this.state.compState]), done)
+        const paths = fields(this.props.schema.fieldsets[this.state.compState]);
+        this.context.valueManager.validatePaths(paths, done)
     }
 
 

@@ -3,7 +3,7 @@
 import React from "react";
 import CollectionMixin from "./CollectionMixin";
 import {isString} from "../tutils";
-import defaults from "lodash/object/defaults";
+import defaults from "lodash/defaults";
 import PropTypes from "../PropTypes";
 export default class MixedInput extends CollectionMixin {
 

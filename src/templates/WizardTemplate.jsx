@@ -2,9 +2,8 @@
 import React, {Component} from 'react'
 import ObjectType from '../types/Object';
 import WizardMixin from './WizardMixin';
-import ButtonsTemplate from './ButtonsTemplate';
 import PropTypes from '../PropTypes';
-import defaults from 'lodash/object/defaults';
+import defaults from 'lodash/defaults';
 import RenderTemplate from '../components/RenderTemplate';
 
 function donner(done) {

@@ -6,10 +6,9 @@ import {into, expect, Simulate, byTags} from "subschema-test-support";
 
 
 describe('components/Form/submit', function () {
-    this.timeout(50000);
+    this.timeout(5000);
 
     it('should submit the form and have handler by name', function (done) {
-        this.timeout(50000);
         const schema = {
             template: 'ObjectTemplate',
             schema: {

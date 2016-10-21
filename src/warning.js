@@ -1,5 +1,5 @@
 'use strict';
-import noop from 'lodash/utility/noop';
+import noop from 'lodash/noop';
 var warning = noop;
 
 if (process.env.NODE_ENV !== 'production') {
