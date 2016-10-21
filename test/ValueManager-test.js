@@ -1,6 +1,6 @@
 "use strict";
 
-import {ReduxValueManager as ValueManager} from 'Subschema';
+import { ValueManager} from 'Subschema';
 import expect from 'expect';
 
 describe('ValueManager', function () {
