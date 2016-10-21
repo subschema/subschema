@@ -22,6 +22,3 @@
 [submodule "subschema-expression"]
 	path = subschema-expression
 	url = git@github.com:subschema/subschema-expression.git
-[submodule "subschema-redux"]
-	path = subschema-redux
-	url = git@github.com:subschema/subschema-redux.git
