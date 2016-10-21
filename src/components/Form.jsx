@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import PropTypes from "./../PropTypes";
-import ValueManager from "./../ValueManager";
+import ValueManager from "ValueManager";
 import ObjectType from "./../types/Object";
 import {noop} from "./../tutils";
 

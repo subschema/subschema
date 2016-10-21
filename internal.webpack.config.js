@@ -108,7 +108,8 @@ function config(filename, externals, isNode, isMinify) {
             extensions: ['', '.js', '.jsx'],
             alias: {
                 'fbjs': join('node_modules/fbjs'),
-                'subschema-prop-types': join('node_modules/subschema-prop-types/src/index.js')
+                'subschema-prop-types': join('node_modules/subschema-prop-types/src/index.js'),
+                'ValueManager': join('src/ValueManager')
             }
         },
         stats: {
@@ -125,6 +126,7 @@ function config(filename, externals, isNode, isMinify) {
                 "Chrome >= 20", "Firefox >= 24",
                 "Explorer >= 8", "iOS >= 6", "Opera >= 12", "Safari >= 6"]
         })],
+
         plugins: plugins
     };
     if (!isNode) {

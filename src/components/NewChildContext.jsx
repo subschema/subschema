@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from './../PropTypes';
-import ValueManager from './../ValueManager';
+import ValueManager from 'ValueManager';
 
 export default class NewChildContext extends Component {
     static displayName = "NewChildContext";

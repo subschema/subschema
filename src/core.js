@@ -14,7 +14,7 @@ import PropTypes from './PropTypes';
 import validators from './validators';
 import warning from './warning';
 import * as tutils from './tutils';
-import ValueManager from './ValueManager';
+import ValueManager from 'ValueManager';
 import css from './css';
 import {injectorFactory} from 'subschema-injection';
 import cachedInjector from './cachedInjector';
