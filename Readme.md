@@ -206,11 +206,25 @@ If you need to listen to a particular path use the PropType.
 
 
 #Custom Types
-A new type doesn't have to do anything, but you will need to
-add it to the loader. Either by a decorator, or by calling
+You can add new types by adding them to the loader. You can use the default loader
+at Subschema.loader or create a new loader from a loader factory.
+```jsx
+  import {loaderFactory, DefaultLoader} from 'Subschema';
+  const yourLoader = loaderFactory();
+  //you may want to have the default loader for the templates and types.
+  yourLoader.addLoader(DefaultLoader);
+
+  yourloader.addType(...)
+  
+  
+  ...
+  class YourApp extends Component {
+  render()
+  <Form loader={yourloader} ...
+}
+```
 
 
-The old way - using the loader.
 
 ```js
 

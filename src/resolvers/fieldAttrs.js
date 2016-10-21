@@ -23,7 +23,10 @@ export default function fieldAttrs(Clazz, key, propKeys) {
     const ClazzP = Clazz.prototype;
 
     ClazzP.componentWillMount = applyFuncs(function () {
-        propKeys.splice(propKeys.indexOf(key),1);
+        const idx = propKeys.indexOf(key);
+        if (idx > -1){
+            propKeys.splice(idx,1);
+        }
         this::handleAttrs(this.props[key], key, propKeys);
     }, ClazzP.componentWillMount);
 
