@@ -1,7 +1,7 @@
 var webpack = require('webpack'),
     path = require('path'),
     join = path.join.bind(path, __dirname),
-    files = ['test/index.js'],
+    files = [join('test/index.js')],
     lifecycle = process.env['npm_lifecycle_event'],
     config = require('./internal.webpack.config'),
 
@@ -18,13 +18,13 @@ if (isDist) {
         '_Subschema': 'Subschema'
     };
     files.unshift(
-        'node_modules/react/dist/react-with-addons.js',
-        'node_modules/react-dom/dist/react-dom.js',
+        join('node_modules/react/dist/react-with-addons.js'),
+        join('node_modules/react-dom/dist/react-dom.js'),
         {pattern: 'dist/subschema-noreact.js', included: true, served: true},
         {pattern: 'dist/subschema-noreact.js.map', included: false, served: true}
     );
 } else {
-    files.unshift({pattern: './test/with-bootstrap.js', included: true, served: true});
+    files.unshift({pattern: join('./test/with-bootstrap.js'), included: true, served: true});
     demoCfg = config('karma', false, false, false);
     demoCfg.resolve.alias['subschema'] = join('src/dist.js');
     demoCfg.resolve.alias['Subschema'] = join('src/dist.js');
@@ -59,7 +59,7 @@ module.exports = function (config) {
         frameworks: ['mocha'], //use the mocha test framework
         files: files,
         preprocessors: {
-            'test/*': ['webpack', 'sourcemap'], //preprocess with webpack and our sourcemap loader
+            [join('test', '*')]: ['webpack', 'sourcemap'], //preprocess with webpack and our sourcemap loader
             'dist/*': ['sourcemap']
         },
         reporters: ['dots'], //report results in this format
