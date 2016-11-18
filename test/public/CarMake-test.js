@@ -1,7 +1,6 @@
 import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from 'subschema-test-support';
 import {newSubschemaContext, types} from 'Subschema';
-import CarMakeSetup from 'subschema-test-support-samples/CarMake-setup.js';
-import CarMake from 'subschema-test-support-samples/CarMake.js';
+import {CarMake} from 'subschema-test-support-samples';
 const Select = types.Select;
 
 describe('public/CarMake', function () {
@@ -14,7 +13,7 @@ describe('public/CarMake', function () {
 
         expect(CarMake).toExist('CarMake-setup should load');
         var valueManager = ValueManager();
-        CarMakeSetup(loader, schema, Subschema, React, valueManager);
+        CarMake.setupFunc(loader, schema, Subschema, React, valueManager);
 
         var form = into(<Form schema={schema} valueManager={valueManager}/>);
 

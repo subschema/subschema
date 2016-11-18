@@ -1,15 +1,26 @@
-import {React, into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
-import  {ValueManager, types,  templates, newSubschemaContext} from 'Subschema';
-import AutoComplete from 'subschema-test-support-samples/Autocomplete.js';
-import AutoCompleteSetup from 'subschema-test-support-samples/Autocomplete-setup.js';
-describe('public/AutoComplete', function () {
+import {
+    React,
+    into,
+    expect,
+    byTypes,
+    click,
+    byTag,
+    change,
+    byComponents,
+}  from 'subschema-test-support';
+
+import  {ValueManager, types, templates, newSubschemaContext} from 'Subschema';
+import  {Autocomplete} from 'subschema-test-support-samples';
+
+describe('public/Autocomplete', function () {
     this.timeout(50000);
     it('should not be selectable', function () {
+
         const Subschema = newSubschemaContext();
-        const {Form,  loader} = Subschema;
-        const schema = AutoComplete.schema;
+        const {Form, loader} = Subschema;
+        const schema = Autocomplete.schema;
         const valueManager = ValueManager();
-        AutoCompleteSetup(loader, schema, Subschema, React, valueManager);
+        Autocomplete.setupFunc(loader, schema, Subschema, React, valueManager);
 
         const form = into(<Form schema={schema} loader={loader} valueManager={valueManager}/>, true);
         expect(form);
@@ -23,26 +34,29 @@ describe('public/AutoComplete', function () {
         click(suggestions[2]);
 
     });
-    it('should render and not leak', function(){
+    it('should render and not leak', function () {
         const Subschema = newSubschemaContext();
         const {Form, ValueManager, loader, injector} = Subschema;
 
-        const schema = AutoComplete.schema;
+        const schema = Autocomplete.schema;
         const valueManager = ValueManager();
-        AutoCompleteSetup(loader, schema, Subschema, React, valueManager);
+        Autocomplete.setupFunc(loader, schema, Subschema, React, valueManager);
 
 
         class RenderTest extends React.Component {
-            state = {count:1};
-            increment(){
-                this.setState({count:this.state.count+1});
+            state = {count: 1};
+
+            increment() {
+                this.setState({count: this.state.count + 1});
             }
-            render(){
+
+            render() {
                 const {count} = this.state;
                 const {...copy} = schema;
-               return  count % 3 ?  <Form key={`render-count-${count}`} schema={copy} loader={loader} valueManager={valueManager}/> : null;
+                return count % 3 ? <Form key={`render-count-${count}`} schema={copy} loader={loader}
+                                         valueManager={valueManager}/> : null;
             }
-        };
+        }
 
 
         const form = into(<RenderTest/>, true);

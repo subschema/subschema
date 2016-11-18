@@ -1,7 +1,7 @@
 "use strict";
 var styleCtx = require.context('.', false, /^.*-style\.js$/);
 var lessCtx = require.context('.', false, /^.*\.(less|css)$/);
-
+var lessKeys = lessCtx.keys();
 var api = {};
 /**
  * This loads the style.js and then the less/css files merging
@@ -10,7 +10,7 @@ var api = {};
 styleCtx.keys().reduce(function (obj, key) {
     obj[key.replace(/^\.\/(.*)-style\.js$/, '$1')] = styleCtx(key);
     return obj;
-}, api)
+}, api);
 
 lessCtx.keys().reduce(function (obj, key) {
         var nkey = key.replace(/^\.\/(.*)\.(less|css)$/, '$1');

@@ -2,6 +2,7 @@
 import PropTypes from '../PropTypes';
 import Transition from '../transition/ReactCSSReplaceTransition';
 
+const EMPTY = {};
 export const settings = {
     transition: 'rollUp',
     on: ['enter', 'leave'],
@@ -24,16 +25,19 @@ export function handleTransition(value, key, props, {loader}) {
         transitionLeaveTimeout,
         transitionEnterTimeout,
         on,
-        transitionName:{enter, enterActive, appear, appearActive, leave, leaveActive},
-        ...rest} = typeof transition === 'string' ? {...config, ...loader.loadTransition(transition)} : transition;
+        transitionName,
+        ...rest
+    } = typeof transition === 'string' ? {...config, ...loader.loadTransition(transition)} : transition;
+
+    const {enter, enterActive, appear, appearActive, leave, leaveActive} = transitionName || EMPTY;
 
     const _on = Array.isArray(on) ? on : [on];
-    const transitionName = (rest.transitionName = {});
+    const _transitionName = (rest.transitionName = {});
     //either the original value has the timeout or we have an on
     if (value.transitionEnterTimeout || _on.indexOf('enter') != -1) {
         rest.transitionEnterTimeout = transitionEnterTimeout;
-        transitionName.enter = enter;
-        transitionName.enterActive = enterActive;
+        rest.transitionName.enter = enter;
+        rest.transitionName.enterActive = enterActive;
         rest.transitionEnter = true;
     } else {
         rest.transitionEnter = false;
@@ -41,8 +45,8 @@ export function handleTransition(value, key, props, {loader}) {
 
     if (value.transitionAppearTimeout || _on.indexOf('appear') != -1) {
         rest.transitionAppearTimeout = transitionAppearTimeout;
-        transitionName.appear = appear;
-        transitionName.appearActive = appearActive;
+        rest.transitionName.appear = appear;
+        rest.transitionName.appearActive = appearActive;
         rest.transitionAppear = true;
     } else {
         rest.transitionAppear = false;
@@ -50,8 +54,8 @@ export function handleTransition(value, key, props, {loader}) {
 
     if (value.transitionLeaveTimeout || _on.indexOf('leave') != -1) {
         rest.transitionLeaveTimeout = transitionLeaveTimeout;
-        transitionName.leave = leave;
-        transitionName.leaveActive = leaveActive;
+        rest.transitionName.leave = leave;
+        rest.transitionName.leaveActive = leaveActive;
         rest.transitionLeave = true;
     } else {
         rest.transitionLeave = false;

@@ -11,7 +11,9 @@ export default class ListInput extends CollectionMixin {
     createPid() {
         return this._length || 0;
     }
-
+    createDefValue() {
+        return [];
+    }
     getTemplateItem(edit) {
         const type = edit ? this.props.editType || this.props.itemType : this.props.itemType;
         var value = isString(type) ? {

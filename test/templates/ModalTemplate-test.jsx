@@ -1,7 +1,7 @@
 "use strict";
 import {React, click, change,findNode,  into,TestUtils,expect,byComponents, byTag, byTags, byComponent, select,  Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, templates, ValueManager, loaderFactory, DefaultLoader} from 'Subschema';
-import ModalSample from 'subschema-test-support-samples/Modal.js';
+import {Modal} from 'subschema-test-support-samples';
 
 const {ModalTemplate} = templates;
 
@@ -22,7 +22,7 @@ describe('templates/ModalTemplate', function () {
     it('should render', function () {
         //loader, schema, Subschema, React
         const valueManager = ValueManager();
-        const form = into(<Form schema={ModalSample.schema} valueManager={valueManager}/>, true);
+        const form = into(<Form schema={Modal.schema} valueManager={valueManager}/>, true);
         expect(form).toExist();
 
 

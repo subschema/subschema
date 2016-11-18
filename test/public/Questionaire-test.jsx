@@ -1,6 +1,21 @@
-import {React, into,TestUtils,expect,byTypes, byClass, byTags,byComponents,byComponent,change, click, select, byId, Simulate}  from 'subschema-test-support';
+import {
+    React,
+    into,
+    TestUtils,
+    expect,
+    byTypes,
+    byClass,
+    byTags,
+    byComponents,
+    byComponent,
+    change,
+    click,
+    select,
+    byId,
+    Simulate
+}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
-var Questionaire = require('subschema-test-support-samples/Questionaire.js');
+import {Questionaire} from 'subschema-test-support-samples';
 
 describe('public/Questionaire', function () {
     it('should render a Mixed with data', function () {

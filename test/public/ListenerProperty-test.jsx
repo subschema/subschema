@@ -2,8 +2,7 @@
 import React from 'react';
 import { into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
 import {newSubschemaContext} from 'Subschema';
-import ListenerPropertySetup from 'subschema-test-support-samples/ListenerProperty-setup.js';
-import ListenerProperty from 'subschema-test-support-samples/ListenerProperty.js';
+import {ListenerProperty} from 'subschema-test-support-samples';
 
 describe('public/ListenerProperty', function () {
     this.timeout(50000);
@@ -14,7 +13,7 @@ describe('public/ListenerProperty', function () {
 
         var valueManager = ValueManager(), mod = {exports: {}};
 
-        ListenerPropertySetup(loader, schema, Subschema, React, valueManager, mod);
+        ListenerProperty.setupFunc(loader, schema, Subschema, React, valueManager, mod);
 
         var SelectListener = loader.loadType('SelectListen');
         expect(mod.exports).toExist('SelectListen');

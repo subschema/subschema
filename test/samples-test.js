@@ -6,6 +6,7 @@ import {into} from "subschema-test-support";
 import {ValueManager, newSubschemaContext} from "subschema";
 
 describe('samples', function () {
+    this.timeout(5000);
     if (console.time) {
         before(function () {
             console.time(ValueManager.name);
@@ -21,10 +22,8 @@ describe('samples', function () {
             const Subschema = newSubschemaContext();
             const {Form, loader, injector} = Subschema;
             const valueManager = ValueManager(sample.data);
-            if (sample.setupFile) {
-                const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
-                setupFile(loader, sample.schema, Subschema, React, valueManager);
-            }
+            sample.setupFunc && sample.setupFunc(loader, sample.schema, Subschema, React, valueManager);
+
             const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
                                     valueManager={valueManager}/>);
             expect(form).toExist(`form should exist for ${key}`);
@@ -34,10 +33,8 @@ describe('samples', function () {
             const Subschema = newSubschemaContext();
             const {Form, loader, injector} = Subschema;
             const valueManager = ValueManager();
-            if (sample.setupFile) {
-                const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
-                setupFile(loader, sample.schema, Subschema, React, valueManager);
-            }
+            sample.setupFunc && sample.setupFunc(loader, sample.schema, Subschema, React, valueManager);
+
             const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
                                     valueManager={valueManager}/>);
             expect(form).toExist(`form should exist for ${key}`);
@@ -47,10 +44,7 @@ describe('samples', function () {
             const Subschema = newSubschemaContext();
             const {Form, loader, injector} = Subschema;
             const valueManager = ValueManager();
-            if (sample.setupFile) {
-                const setupFile = require(`subschema-test-support-samples/${sample.setupFile}`);
-                setupFile(loader, sample.schema, Subschema, React, valueManager);
-            }
+            sample.setupFunc && sample.setupFunc(loader, sample.schema, Subschema, React, valueManager);
             const form = into(<Form schema={sample.schema} loader={loader} injector={injector}
                                     valueManager={valueManager}/>);
             expect(form).toExist(`form should exist for ${key}`);

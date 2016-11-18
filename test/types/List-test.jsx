@@ -2,7 +2,7 @@
 
 import {React, byName, into,findNode, TestUtils,expect, filterProp, byClass,Simulate, click, byTag, byTags,  byComponent, byComponents} from 'subschema-test-support';
 import {templates, Form} from 'Subschema';
-import Todos, {schema as Schema} from 'subschema-test-support-samples/Todos';
+import {Todos} from 'subschema-test-support-samples';
 
 const {ButtonTemplate,ButtonsTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
 
@@ -47,14 +47,14 @@ describe('types/List', function () {
     }
 
     it('should render a list', function () {
-        var root = into(<Form schema={Schema}/>, true);
+        var root = into(<Form schema={Todos.schema}/>, true);
         expect(root).toExist();
         var tasks = byComponents(root, ListItemTemplate);
         expect(tasks.length).toEqual(0);
 
     });
     it('should render a list with data', function () {
-        var root = into(<Form schema={Schema} value={Todos.data}/>, true);
+        var root = into(<Form schema={Todos.schema} value={Todos.data}/>, true);
         expect(root).toExist();
         var tasks = byComponents(root, ListItemTemplate);
         expect(tasks.length).toEqual(3);
@@ -70,7 +70,7 @@ describe('types/List', function () {
                 'three'
             ]
         };
-        const root = into(<Form schema={Schema} value={data}/>, true);
+        const root = into(<Form schema={Todos.schema} value={data}/>, true);
 
         expect(root).toExist('root should exist');
 

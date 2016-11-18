@@ -1,31 +1,42 @@
-import {React, into,TestUtils,expect,byTypes, byComponents, select, byId, Simulate}  from 'subschema-test-support';
+import {React, into, TestUtils, expect, byTypes, byComponents, select, byId, Simulate}  from 'subschema-test-support';
 import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
-var NestedForms = require('subschema-test-support-samples/NestedForms.js');
+import {NestedForms} from 'subschema-test-support-samples';
 
 describe('public/NestedForms', function () {
     it('should render simple nested with seperate templates', function () {
         const form = into(<Form
-            schema={{schema:{first:'Text',
-              second:{type:'Object',
-              subSchema:{
-                test:'Text'
-              }}},
-             fieldsets:[{legend:'First Legend', fields:'first'},
+            schema={{
+                schema: {
+                    first: 'Text',
+                    second: {
+                        type: 'Object',
+                        subSchema: {
+                            test: 'Text'
+                        }
+                    }
+                },
+                fieldsets: [{legend: 'First Legend', fields: 'first'},
 
-            {legend:'Second Legend', fields:'second.test'}]}}
+                    {legend: 'Second Legend', fields: 'second.test'}]
+            }}
         />, true);
         expect(form).toExist();
         expect(byComponents(form, templates.FieldSetTemplate).length).toBe(3)
     });
     it('should render simple nested', function () {
         const form = into(<Form
-            schema={{schema:{first:'Text',
-              second:{type:'Object',
-              subSchema:{
-                test:'Text'
-              }}},
-              fieldsets:[{fields:'second.test, first', legend:'All'}]
-             }}
+            schema={{
+                schema: {
+                    first: 'Text',
+                    second: {
+                        type: 'Object',
+                        subSchema: {
+                            test: 'Text'
+                        }
+                    }
+                },
+                fieldsets: [{fields: 'second.test, first', legend: 'All'}]
+            }}
         />, true);
         expect(form).toExist();
         expect(byComponents(form, templates.FieldSetTemplate).length).toBe(2)
