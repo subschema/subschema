@@ -1,1 +1,0 @@
-module.exports = require('react-internal/lib/ReactCSSTransitionGroupChild');

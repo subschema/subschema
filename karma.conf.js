@@ -12,11 +12,12 @@ var demoCfg;
 if (isDist) {
     demoCfg = config('karma-dist', true, false, false);
     demoCfg.resolve.alias['react-addons-test-utils'] = join('test/react-addons-test-utils');
-    demoCfg.resolve.alias['react-dom-internal'] = join('node_modules/react-dom');
+//    demoCfg.resolve.alias['react-dom-internal'] = join('node_modules/react-dom');
     demoCfg.resolve.alias['subschema'] = demoCfg.resolve.alias['Subschema'] = join('test/subschema');
-    demoCfg.externals = {
+    demoCfg.externals['_Subschema'] = 'Subschema';
+  /*  demoCfg.externals = {
         '_Subschema': 'Subschema'
-    };
+    };*/
     files.unshift(
         join('node_modules/react/dist/react-with-addons.js'),
         join('node_modules/react-dom/dist/react-dom.js'),
@@ -29,15 +30,11 @@ if (isDist) {
     demoCfg.resolve.alias['subschema'] = join('src/dist.js');
     demoCfg.resolve.alias['Subschema'] = join('src/dist.js');
 
-    demoCfg.resolve.alias['react/lib'] = join('node_modules/react/lib');
-    demoCfg.resolve.alias['react'] = join('node_modules/react/lib/React.js');
-  //  demoCfg.resolve.alias['react-dom/server'] = join('node_modules/react/lib/ReactDOMServer');
-//    demoCfg.resolve.alias['react-dom'] = join('node_modules/react-dom');
-//    demoCfg.resolve.alias['react-addons-test-utils'] = join('node_modules/react-addons-test-utils');
+ //   demoCfg.resolve.alias['react/lib'] = join('node_modules/react/lib');
+ //   demoCfg.resolve.alias['react'] = join('node_modules/react/lib/React.js');
 }
 demoCfg.plugins.unshift(new webpack.DefinePlugin({'process.env.NODE_ENV':'"development"'}));
 
-//demoCfg.resolve.alias['subschema-test-support'] = join('../subschema-test-support/src/index.js');
 demoCfg.output.pathinfo = true;
 delete demoCfg.entry;
 

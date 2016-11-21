@@ -8,7 +8,7 @@
 import React, {PropTypes, createElement, Children} from 'react';
 import {findDOMNode} from 'react-dom';
 
-import ReactCSSTransitionGroupChild from 'react/lib/ReactCSSTransitionGroupChild';
+import ReactCSSTransitionGroupChild from './ReactCSSTransitionGroupChild';
 
 const reactCSSTransitionGroupChild = React.createFactory(ReactCSSTransitionGroupChild);
 

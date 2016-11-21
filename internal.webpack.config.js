@@ -131,26 +131,27 @@ function config(filename, externals, isNode, isMinify) {
     };
     if (!isNode) {
         if (externals) {
-            conf.resolve.alias['react'] = join('./shim/react');
-            conf.resolve.alias['react-dom'] = join('./shim/react-dom');
-            conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
-            //       conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
-            conf.resolve.alias['react-internal'] = join('node_modules/react');
 
-            //These 3 are for ReactCSSTransitionGroupChild
-            externals['./React'] = {
-                root: "React",
-                commonjs2: "react",
-                commonjs: "react",
-                amd: "react"
-            };
-            externals['./ReactDOM'] = {
-                root: "ReactDOM",
-                commonjs2: "react-dom",
-                commonjs: "react-dom",
-                amd: "react-dom"
-            };
+            /*      conf.resolve.alias['react'] = join('./shim/react');
+             conf.resolve.alias['react/lib/React'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
+             conf.resolve.alias['react/lib/ReactCSSTransitionGroupChild'] = join('node_modules/react/lib/ReactCSSTransitionGroupChild');
+             conf.resolve.alias['react-addons-css-transition-group'] = join('./shim/react-addons-css-transition-group');
+             conf.resolve.alias['react-internal'] = join('node_modules/react');
 
+             //These 3 are for ReactCSSTransitionGroupChild
+             externals['./React'] = {
+             root: "React",
+             commonjs2: "react",
+             commonjs: "react",
+             amd: "react"
+             };
+             externals['./ReactDOM'] = {
+             root: "ReactDOM",
+             commonjs2: "react-dom",
+             commonjs: "react-dom",
+             amd: "react-dom"
+             };
+             */
         } else {
             loaders.push({test: require.resolve("react"), loader: "expose?React"});
             loaders.push({test: require.resolve("react-dom"), loader: "expose?ReactDOM"});
