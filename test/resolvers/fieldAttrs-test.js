@@ -13,7 +13,7 @@ describe("resolvers/fieldAttrs", function () {
                 "type": "Text",
                 "fieldAttrs": {
                     "data-stuff": 1,
-                    "aria-role": "content"
+                    "aria-required": true
                 }
             }
         };
@@ -22,6 +22,6 @@ describe("resolvers/fieldAttrs", function () {
         }}/>);
         const input = byTag(form, 'input');
         expect(input.dataset.stuff).toBe('1');
-        expect(input.attributes['aria-role'].value).toBe('content');
+        expect(input.attributes['aria-required'].value).toBe('true');
     });
 });

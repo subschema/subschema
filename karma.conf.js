@@ -31,9 +31,9 @@ if (isDist) {
 
     demoCfg.resolve.alias['react/lib'] = join('node_modules/react/lib');
     demoCfg.resolve.alias['react'] = join('node_modules/react/lib/React.js');
-    demoCfg.resolve.alias['react-dom/server'] = join('node_modules/react/lib/ReactDOMServer');
-    demoCfg.resolve.alias['react-dom'] = join('node_modules/react/lib/ReactDOM');
-    demoCfg.resolve.alias['react-addons-test-utils'] = join('node_modules/react-addons-test-utils');
+  //  demoCfg.resolve.alias['react-dom/server'] = join('node_modules/react/lib/ReactDOMServer');
+//    demoCfg.resolve.alias['react-dom'] = join('node_modules/react-dom');
+//    demoCfg.resolve.alias['react-addons-test-utils'] = join('node_modules/react-addons-test-utils');
 }
 demoCfg.plugins.unshift(new webpack.DefinePlugin({'process.env.NODE_ENV':'"development"'}));
 
