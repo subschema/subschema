@@ -37,17 +37,12 @@ if (isDist) {
 }
 demoCfg.plugins.unshift(new webpack.DefinePlugin({'process.env.NODE_ENV':'"development"'}));
 
-demoCfg.resolve.alias['subschema-test-support'] = join('../subschema-test-support/src/index.js');
+//demoCfg.resolve.alias['subschema-test-support'] = join('../subschema-test-support/src/index.js');
 demoCfg.output.pathinfo = true;
 delete demoCfg.entry;
 
 demoCfg.devtool = 'inline-source-map';
 
-demoCfg.module.loaders.unshift({
-    test: /-setup\.js/,
-    include: join("node_modules/subschema-test-support/samples"),
-    loader: 'subschema-test-support'
-});
 
 
 module.exports = function (config) {
