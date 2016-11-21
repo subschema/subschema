@@ -3,7 +3,6 @@ import expect from 'expect';
 import React, {Component} from 'react';
 import {PropTypes, decorators, ValueManager} from 'subschema';
 import {intoWithContext, byComponent,findNode} from 'subschema-test-support';
-import samples from 'subschema-test-support-samples';
 import resolvers from '../../src/resolvers';
 import injectorFactory from 'subschema-injection/src/injectorFactory';
 
