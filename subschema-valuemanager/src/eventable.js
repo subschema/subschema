@@ -1,5 +1,3 @@
-"use strict";
-
 import {isFunction, returnFirst} from 'subschema-utils';
 import warning from 'subschema-utils/lib/warning'
 

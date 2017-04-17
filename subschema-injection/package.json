@@ -3,9 +3,9 @@
   "version": "1.7.0",
   "description": "Subschema Injection System.",
   "scripts": {
-    "dist": "babel -s true src --out-dir dist",
-    "test": "mocha --compilers js:babel-register test/*-test.js",
-    "prepublish": "npm run dist"
+    "compile": "babel -s true src --out-dir dist",
+    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
+    "prepublish": "npm run test"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
