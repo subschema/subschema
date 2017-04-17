@@ -1,5 +1,0 @@
-test
-.idea
-node_modules
-dist/*-test.js
-.babelrc
