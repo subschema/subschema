@@ -1,0 +1,12 @@
+{
+  "name": "subschema-autocomplete",
+  "version": "1.7.0",
+  "description": "Subschema Autocomplete",
+  "main": "dist/index.js",
+  "dependencies": {
+    "subschema-core": "1.7.0",
+    "subschema-form": "1.7.0",
+    "subschema-valuemanager": "1.7.0"
+  }
+}
+
