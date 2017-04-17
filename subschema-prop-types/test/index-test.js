@@ -1,9 +1,8 @@
-"use strict";
-
 import PT from '../dist/index';
 import expect from 'expect';
+import PropTypes from 'prop-types';
 
-describe.only('PropTypes', function () {
+describe('PropTypes', function () {
 
     it('should enumerate proptypes to names', function () {
         var out = PT.propTypesToNames({
@@ -21,7 +20,7 @@ describe.only('PropTypes', function () {
 
     });
 
-    it('should handle something complex like content', function () {
+    it('should handle something complex like content', function (done) {
         var content = [{
             "className": "clz-left",
             "content": [{"type": "h1", "content": "Heading stuff {hello}"}, {
@@ -32,8 +31,9 @@ describe.only('PropTypes', function () {
             "className": "clz-right",
             "content": [{"type": "img", "className": "super-img", "src": "about:blank", "content": false}]
         }];
-        var err = PT.content({content}, 'content', 'Test', 'PropTypes-test', 'content');
-        expect(err).toNotExist();
+        PropTypes.checkPropTypes(PT.content, {content}, 'content', 'Test',  function getStack(e){
+            done();
+        });
     });
 
 });

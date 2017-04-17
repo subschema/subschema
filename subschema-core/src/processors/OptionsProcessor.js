@@ -1,5 +1,3 @@
-"use strict";
-
 var api = {
     /** fetch will be called when value changes **/
     fetch(url, value, component, cb) {
@@ -25,5 +23,5 @@ var api = {
     format(v){
         return v == null ? null : v.label || v;
     }
-}
+};
 export default api;

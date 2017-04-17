@@ -1,0 +1,11 @@
+{
+  "name": "subschema-component-content",
+  "version": "1.7.0",
+  "description": "Subschema Content",
+  "main": "dist/index.js",
+  "dependencies": {
+    "subschema-utils": "^1.7.0",
+    "subschema-prop-types": "^1.7.0"
+  }
+}
+

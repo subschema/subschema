@@ -1,0 +1,9 @@
+{
+  "name": "subschema-component-list",
+  "version": "1.7.0",
+  "description": "Subschema",
+  "main": "dist/index.js",
+  "dependencies": {
+
+  }
+}

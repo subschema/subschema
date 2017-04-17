@@ -2,40 +2,30 @@
   "name": "subschema-core",
   "version": "1.7.0",
   "description": "Backbone Forms like declaritive forms for react",
-  "main": "dist/subschema-server.js",
-  "browser": "dist/subschema.js",
-  "web": "dist/subschema-noreact.js",
-  "webpack": "src/index.jsx",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/subschema/subschema"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
+  "main": "lib/index.js",
   "scripts": {
-    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
-    "test-dist": "NODE_ENV=test karma start ./karma.conf.js --single-run --browsers Firefox",
-    "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
-    "karma-dist": "NODE_ENV=test karma start ./karma.conf.js --no-single-run --colors --auto-watch",
-    "compile": "NODE_ENV=production webpack -p  --display-modules --config ./webpack.config.js",
-    "lib": "webpack --config lib.webpack.config.js"
+    "dist": "babel -s true src --out-dir lib",
+    "test": "yarn run dist && mocha --compilers js:babel-register"
   },
   "keywords": [
     "react",
     "forms",
     "backbone-forms"
   ],
-  "author": "Justin Spears",
-  "license": "MIT",
   "peerDependencies": {
-    "react": "^15.5.0"
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "mocha": "^3.2.0"
   },
   "dependencies": {
     "subschema-expression": "^1.7.0",
     "subschema-injection": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "subschema-utils": "1.7.0",
+    "subschema-valuemanager": "1.7.0",
+    "subschema-loader": "1.7.0"
   }
 }

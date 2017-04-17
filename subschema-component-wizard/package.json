@@ -1,0 +1,9 @@
+{
+  "name": "subschema-component-wizard",
+  "version": "1.7.0",
+  "description": "Subschema Wizard Component",
+  "main": "dist/index.js",
+  "dependencies": {
+  }
+}
+

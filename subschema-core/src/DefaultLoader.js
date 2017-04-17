@@ -1,5 +1,5 @@
 "use strict";
-import loaderFactory from './loaderFactory';
+import loaderFactory from 'subschema-loader';
 import templates from './templates';
 import types from './types';
 import processors from './processors';

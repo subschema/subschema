@@ -2,32 +2,14 @@
   "name": "subschema-expression",
   "version": "1.7.0",
   "description": "Expressions for subschema",
-  "main": "dist/expression.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "lib/index.js",
   "scripts": {
-    "dist": "babel -s true src --out-dir dist",
-    "test": "npm run dist && mocha test/*-test.js",
-    "prepublish": "npm prune && npm run dist",
-    "preversion": "npm run test"
+    "compile": "babel -s true src --out-dir dist",
+    "test": "yarn run scripts && mocha test/*-test.js",
+    "prepublish": "yarn run test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/subschema/subschema-expression.git"
-  },
-  "keywords": [
-    "subschema",
-    "expression"
-  ],
-  "author": "Justin Spears <speajus@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/subschema/subschema-expression/issues"
-  },
-  "homepage": "https://github.com/subschema/subschema-expression#readme",
-  "peerDependencies": {},
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "mocha": "^3.2.0"
   },
   "dependencies": {

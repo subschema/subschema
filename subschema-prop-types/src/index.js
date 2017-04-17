@@ -1,6 +1,4 @@
-"use strict";
-
-import {PropTypes} from "react";
+import PropTypes from "prop-types";
 
 //we'll re-export these for convenience in the babel6 world.
 const {string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOf, oneOfType} = PropTypes;

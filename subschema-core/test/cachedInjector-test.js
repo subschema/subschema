@@ -8,7 +8,7 @@ describe("cachedInjector", function () {
     this.timeout(5000);
     class TestComponent extends Component {
         render() {
-            return <div>hello</div>
+            return (<div>hello</div>);
         }
     }
     it('should return the same instance without args', function () {

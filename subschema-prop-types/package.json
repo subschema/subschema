@@ -1,26 +1,11 @@
 {
   "name": "subschema-prop-types",
-  "version": "1.6.0",
-  "description": "Subschema PropTypes",
-  "main": "dist/index",
+  "version": "1.7.0",
   "dependencies": {
     "prop-types": "^15.5.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/subschema/subschema-prop-types"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "author": "Justin Spears",
-  "license": "",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "mocha": "^3.2.0"
-  },
-  "scripts": {
-    "test": "npm run dist && babel ./test/ -d ./test-dist && mocha ./test-dist/index-test.js",
-    "dist": "NODE_ENV=production babel -s true ./src -d ./dist",
-    "prepublish": "npm prune && npm run test"
   }
 }

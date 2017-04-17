@@ -1,0 +1,17 @@
+{
+  "name": "subschema-component-project",
+  "version": "1.7.0",
+  "description": "Subschema Project Generator",
+  "main": "dist/index.js",
+  "scripts": {
+    "karma-ff": "NODE_ENV=test karma start --no-single-run --colors --auto-watch  --browsers Firefox",
+    "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
+    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
+    "hot": "NODE_ENV=development webpack-dev-server --port 8084 --hot --inline --config ./webpack.config.js --entry ./public/index.jsx --output-filename=app.entry.js",
+    "demo": "NODE_ENV=production webpack -p --output-path .build --entry ./public/index.jsx --output-filename=app.[hash].js --config ./webpack.config.js",
+    "cli": "NODE_ENV=production webpack --target node --display-modules --output-path bin --entry ./src/command.js --output-filename=project.js --config ./webpack.config.js",
+    "dist-project": "NODE_ENV=production webpack --target node --display-modules --output-path dist --entry ./bin/project.js --output-filename=project.js --config ./webpack.config.js",
+    "dist": "NODE_ENV=production webpack  --display-reasons --display-modules --output-path dist --entry ./src/index.js --output-library-target=umd --output-library-name SubschemaProject --output-filename=index.js --config ./webpack.config.js",
+    "mocha": "npm run dist && mocha test/*-mocha.js"
+  }
+}

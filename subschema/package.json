@@ -2,11 +2,21 @@
   "name": "subschema",
   "version": "1.7.0",
   "description": "Subschema",
-  "main": "dist/index.js",
+  "main": "dist/subschema-server.js",
+  "browser": "dist/subschema.js",
+  "web": "dist/subschema-noreact.js",
+  "webpack": "src/index.jsx",
   "dependencies": {
+    "subschema-component-autocomplete": "1.7.0",
+    "subschema-component-form": "1.7.0",
+    "subschema-component-list": "1.7.0",
+    "subschema-component-content": "1.7.0",
     "subschema-core": "1.7.0",
-    "subschema-form": "1.7.0",
-    "subschema-list": "1.7.0",
-    "subschema-valuemanager":"1.7.0"
+    "subschema-valuemanager": "1.7.0",
+    "subschema-prop-types": "1.7.0",
+    "subschema-injection": "1.7.0",
+    "subschema-expression": "1.7.0",
+    "subschema-utils": "1.7.0",
+    "subschema-transition":"1.7.0"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "name": "subschema-component-autocomplete",
+  "version": "1.7.0",
+  "description": "Subschema Autocomplete",
+  "main": "dist/index.js",
+  "dependencies": {
+    "subschema-component-form": "1.7.0"
+  }
+}
+

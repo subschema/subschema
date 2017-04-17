@@ -1,0 +1,13 @@
+{
+  "name": "subschema-component-form",
+  "version": "1.7.0",
+  "description": "Subschema",
+  "main": "dist/index.js",
+  "dependencies": {
+    "subschema-core": "1.7.0"
+  },
+  "devDependencies": {
+    "subschema-test-support": "1.7.0",
+    "subschema-valuemanager": "1.7.0"
+  }
+}
