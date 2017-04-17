@@ -1,0 +1,48 @@
+{
+  "name": "subschema-test-samples",
+  "version": "1.6.1",
+  "description": "Subschema samples",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "prepublish": "npm prune && npm run webpack && npm run test",
+    "karma-ff": "NODE_ENV=test karma start --no-single-run --colors --auto-watch  --browsers Firefox",
+    "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
+    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
+    "webpack": "webpack --display-modules --config ./webpack.config.js"
+  },
+  "author": "<Justin Spears>speajus@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-standalone": "^6.19.0",
+    "expect": "^1.13.4",
+    "fbjs": "^0.8.6",
+    "karma": "^0.13.9",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-cli": "^0.1.2",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.2.0",
+    "karma-sourcemap-loader": "^0.3.4",
+    "karma-webpack": "^1.7.0",
+    "raw-loader": "^0.5.1",
+    "react": "^15.3.1",
+    "react-addons-css-transition-group": "^15.4.0",
+    "react-addons-test-utils": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "subschema": "^1.5.0",
+    "subschema-test-support": "^1.6.0",
+    "webpack": "^1.12.11"
+  },
+  "peerDependencies": {
+    "expect": "^1.13.4",
+    "react": "*",
+    "react-addons-test-utils": "*"
+  }
+}

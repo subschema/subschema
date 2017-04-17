@@ -1,0 +1,47 @@
+@title@
+===
+@project.description@
+
+##Demo
+See it in action [here](@demo.url@)
+
+Or run it 
+
+```sh
+  git clone @project.repository@
+  cd @project.name@
+  npm install
+  npm run hot &
+  open http://localhost:8082
+```
+
+##Installation
+```sh
+ $ npm install @project.name@
+``
+
+##Usage
+```jsx
+
+ import React, {Component} from 'react';
+ import Subschema, {loader, Form} from 'Subschema';
+ import @jsName@ from '@project.name@';
+ 
+ loader.addLoader(@jsName@);
+ 
+ //A simple Schema for this demo.
+ var schema = @-sample.schema@
+ 
+ export default class App extends Component {
+ 
+     render() {
+         return <div>
+             <h3>@project.description@</h3>
+             <Form schema={schema}/>
+         </div>
+     }
+ }
+
+
+  
+```

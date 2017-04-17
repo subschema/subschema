@@ -1,0 +1,96 @@
+.navbar-form > div {
+  display: inline-block;
+}
+
+pre {
+  background-color: #f8f8f8;
+}
+
+.row.no-gutter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.row.no-gutter [class*='col-']:not(:first-child),
+.row.no-gutter [class*='col-']:not(:last-child) {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.component-documentation {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.playground {
+  margin: 10px auto;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  //  overflow: hidden;
+}
+
+.playgroundCode .CodeMirror {
+
+}
+
+.playground.collapsableCode .playgroundCode {
+  height: 0;
+  //  overflow: hidden;
+  overflow: hidden;
+}
+
+.playground.collapsableCode .playgroundCode.expandedCode {
+  height: auto;
+  overflow: auto;
+  //display: block;
+}
+
+.playgroundToggleCodeLink {
+  cursor: pointer;
+  font-family: monospace;
+  position: relative;
+  right: 0;
+  display: inline-block;
+  padding: 5px;
+}
+
+.playgroundToggleCodeLink:hover {
+  color: #aaa;
+}
+
+.CodeMirror {
+  padding: 10px;
+}
+
+.playgroundPreview {
+  background: white;
+  //  padding: 10px;
+  //  overflow: auto;
+  .form-horizontal .form-group {
+    margin: 0;
+  }
+}
+
+.playgroundError {
+  padding: 10px;
+  font-size: 12px;
+  color: white;
+  background: #F2777A;
+}
+.playgroundToggleCodeLink {
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.prelude .CodeMirror {
+  height: auto;
+  cursor: default;
+}
+.CodeMirror {
+  height: auto;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}

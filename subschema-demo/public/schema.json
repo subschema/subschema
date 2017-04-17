@@ -1,0 +1,85 @@
+{
+  "schema": {
+    "useData": {
+      "type": "LiLink",
+      "label": "Data",
+      "href": "?useData={useData}",
+      "className": "no-class",
+      "template": false
+    },
+    "useError": {
+      "type": "LiLink",
+      "label": "Errors",
+      "className": "no-class",
+      "href": "?useError={useError}",
+      "template": false
+    },
+    "samples": {
+      "type": "Navigate",
+      "template": false,
+      "href": "#/{.}"
+    },
+
+    "main": {
+      "type": "Main",
+      "template": false
+    },
+    "submit": {
+      "type": "Submit"
+    }
+  },
+  "fieldsets": [
+    {
+      "className": "container-fluid",
+      "fieldsets": [
+        {
+          "template": "NavTemplate",
+          "fields": [
+            "useData",
+            "useError"
+          ]
+        },
+        {
+          "template": "ModalTemplate",
+          "fields": "submit",
+          "content": "Values to be Submitted",
+          "legend": "Submit Called",
+          "buttons": [],
+          "conditional": {
+            "listen": "submit",
+            "dismiss": "submit",
+            "value": null,
+            "operator": "truthy"
+          }
+        },
+        {
+          "className": "row",
+          "fieldsets": [
+            {
+              "className": "col-md-2 col-sm-3 col-xs-12",
+              "fieldsets": [
+                {
+                  "legend": "Examples",
+                  "template": "H3"
+                },
+                {
+                  "fields": "samples"
+                },
+                {
+                  "legend": "Develop",
+                  "template": "H3"
+                }
+              ]
+            },
+            {
+              "className": "col-md-10 col-sm-9 col-xs-12",
+              "fields": [
+                "main"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

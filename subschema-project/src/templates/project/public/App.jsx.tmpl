@@ -1,0 +1,22 @@
+"use strict";
+import React, {Component} from "react";
+import Subschema,{Form, loader, ValueManager, loaderFactory} from "Subschema";
+import @jsName@ from '@project.name@';
+
+loader.addLoader(@jsName@);
+
+//schema
+@scripts.form.vars@
+
+//setupTxt
+@sample.setupTxt@
+
+export default class App extends Component {
+    render(){
+        return <div>
+            <h3>@title@</h3>
+            <p>@project.description@</p>
+            <Form @scripts.form.propStr@/>
+          </div>
+    }
+}

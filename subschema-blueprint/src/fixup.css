@@ -1,0 +1,4 @@
+.pt-control-group.pt-vertical > :last-child button {
+    border-radius: 0 0 3px 3px;
+    width: 100%;
+}
