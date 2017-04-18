@@ -3,12 +3,16 @@
   "version": "1.7.0",
   "description": "Subschema Injection System.",
   "scripts": {
-    "compile": "babel -s true src --out-dir dist",
-    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
-    "prepublish": "npm run test"
+    "compile": "babel -s true src --out-dir lib",
+    "test": "yarn run compile && mocha --compilers babel-register test/*-test.js",
+    "prepublish": "yarn run test"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "subschema-prop-types": "^1.7.0"
   }
 }

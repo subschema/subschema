@@ -1,5 +1,4 @@
-"use strict";
-import {PropTypes as ReactPropTypes} from 'react';
+import ReactPropTypes from 'prop-types';
 import injector from './injector';
 import injF from './injectorFactory';
 import ut from './util';
