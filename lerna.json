@@ -17,7 +17,8 @@
     "subschema-component-list",
     "subschema-css-bootstrap",
     "subschema-component-modal",
-    "subschema-component-autocomplete"
+    "subschema-component-autocomplete",
+    "subschema-component-wizard"
   ],
   "version": "1.7.0"
 }

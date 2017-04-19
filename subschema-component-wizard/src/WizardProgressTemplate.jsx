@@ -1,6 +1,5 @@
-'use strict'
 import React, {Component} from 'react';
-import PropTypes from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
 
 export default class WizardProgressTemplate extends Component {
     static propTypes = {

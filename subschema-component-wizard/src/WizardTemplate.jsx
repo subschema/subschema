@@ -1,10 +1,9 @@
-'use strict'
-import React, {Component} from 'react'
-import ObjectType from '../types/Object';
+import React from 'react'
+import ObjectType from 'subschema-core/lib/Object';
 import WizardMixin from './WizardMixin';
-import PropTypes from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
 import defaults from 'lodash/defaults';
-import RenderTemplate from '../components/RenderTemplate';
+import RenderTemplate from 'subschema-core/lib/RenderTemplate';
 
 function donner(done) {
     done();

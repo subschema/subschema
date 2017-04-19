@@ -102,15 +102,20 @@ export default class ReactCSSTransitionGroupChild extends Component {
     }
 
 
-    flushClassNameAndNodeQueue() {
-        if (this.isMounted()) {
+    flushClassNameAndNodeQueue = () => {
+        if (this._mounted) {
             this.classNameAndNodeQueue.forEach(function (obj) {
                 CSSCore.addClass(obj.node, obj.className);
             });
         }
         this.classNameAndNodeQueue.length = 0;
         this.timeout = null;
+    };
+
+    componentDidMount() {
+        this._mounted = true;
     }
+
 
     componentWillMount() {
         this.classNameAndNodeQueue = [];
@@ -118,6 +123,7 @@ export default class ReactCSSTransitionGroupChild extends Component {
     }
 
     componentWillUnmount() {
+        this._mounted = false;
         if (this.timeout) {
             clearTimeout(this.timeout);
         }

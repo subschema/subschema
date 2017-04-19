@@ -1,33 +1,47 @@
-"use strict";
+import React from 'react';
+import {
+    byComponent,
+    byComponents,
+    byTag,
+    change,
+    into,
+    click,
+    check,
+    expect,
+    byTags,
+}  from 'subschema-test-support';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
+import BootstrapStyles from 'subschema-css-bootstrap';
+import {types} from 'subschema-component-form';
+import {templates} from 'subschema-component-wizard';
 
-import {React, byComponent,byComponents, byTag,change, into,click,check, TestUtils,expect, byTags, Simulate}  from 'subschema-test-support';
-import {Form,ValueManager, templates, types} from 'Subschema';
-
-describe('templates/WizardTemplate', function () {
+describe('subschema-component-wizard', function () {
     this.timeout(5000);
-
+    const newContext = () => {
+        const ctx = newSubschemaContext();
+        ctx.loader.addStyle(BootstrapStyles);
+        ctx.loader.addTemplate(templates);
+        return ctx;
+    };
 
     it('should create a new form with a wizard and stuff', function (done) {
-
-        const valueManager = ValueManager({
-            //  c1: true
-        });
+        const {Form, valueManager} = newContext();
 
         function onSubmit(...args) {
             done();
         }
 
         var root = into(<Form template="WizardTemplate" valueManager={valueManager} onSubmit={onSubmit} schema={{
-            schema:{
-                c1:{type:'Checkbox',validators:['required']},
-                c2:{type:'Checkbox',validators:['required']},
+            schema: {
+                c1: {type: 'Checkbox', validators: ['required']},
+                c2: {type: 'Checkbox', validators: ['required']},
             },
-            fieldsets:[{
-                legend:"C1",
-                fields:"c1"
-            },{
-                legend:"C2",
-                fields:"c2"
+            fieldsets: [{
+                legend: "C1",
+                fields: "c1"
+            }, {
+                legend: "C2",
+                fields: "c2"
             }]
         }}/>, true);
         expect(root).toExist();
@@ -48,26 +62,24 @@ describe('templates/WizardTemplate', function () {
 
     });
     it('should create a new form with a wizard and submit with error', function (done) {
-        const valueManager = ValueManager({
-            //  c1: true
-        });
+        const {Form, valueManager} = newContext();
 
         function onSubmit(e, err, value) {
             done(err == null ? 'Did not get error' : null);
         }
 
         var root = into(<Form valueManager={valueManager} onSubmit={onSubmit} schema={{
-            template:"WizardTemplate",
-            schema:{
-                c1:{type:'Checkbox',validators:['required']},
-                c2:{type:'Checkbox',validators:['required']},
+            template: "WizardTemplate",
+            schema: {
+                c1: {type: 'Checkbox', validators: ['required']},
+                c2: {type: 'Checkbox', validators: ['required']},
             },
-            fieldsets:[{
-                legend:"C1",
-                fields:"c1"
-            },{
-                legend:"C2",
-                fields:"c2"
+            fieldsets: [{
+                legend: "C1",
+                fields: "c1"
+            }, {
+                legend: "C2",
+                fields: "c2"
             }]
         }}/>, true);
         expect(root).toExist();
@@ -88,44 +100,42 @@ describe('templates/WizardTemplate', function () {
 
     });
     it('should render multiple wizards', function (done) {
-        const valueManager = ValueManager({
-            //  c1: true
-        });
+        const {Form, valueManager} = newContext();
 
         var root = into(<Form valueManager={valueManager} schema={{
 
-            schema:{
-                wiz1:{
-                    type:"Object",
-                    subSchema:{
-                        schema:{
-                            w1step1:"Text",
-                            w1step2:"Text",
+            schema: {
+                wiz1: {
+                    type: "Object",
+                    subSchema: {
+                        schema: {
+                            w1step1: "Text",
+                            w1step2: "Text",
                         },
-                        template:"WizardTemplate",
-                        fieldsets:[{
-                            "legend":"Wiz1 Step1",
-                            "fields":"w1step1"
-                        },{
-                            "legend":"Wiz1 Step2",
-                            "fields":"w1step2"
+                        template: "WizardTemplate",
+                        fieldsets: [{
+                            "legend": "Wiz1 Step1",
+                            "fields": "w1step1"
+                        }, {
+                            "legend": "Wiz1 Step2",
+                            "fields": "w1step2"
                         }]
                     }
                 },
-                wiz2:{
-                    type:"Object",
-                    subSchema:{
-                        schema:{
-                            w2step1:"Text",
-                            w2step2:"Text",
+                wiz2: {
+                    type: "Object",
+                    subSchema: {
+                        schema: {
+                            w2step1: "Text",
+                            w2step2: "Text",
                         },
-                        template:"WizardTemplate",
-                        fieldsets:[{
-                            "legend":"Wiz2 Step1",
-                            "fields":"w2step1"
-                        },{
-                            "legend":"Wiz2 Step2",
-                            "fields":"w2step2"
+                        template: "WizardTemplate",
+                        fieldsets: [{
+                            "legend": "Wiz2 Step1",
+                            "fields": "w2step1"
+                        }, {
+                            "legend": "Wiz2 Step2",
+                            "fields": "w2step2"
                         }]
                     }
                 }
@@ -139,7 +149,7 @@ describe('templates/WizardTemplate', function () {
 //         click(byTag(tmpls[0], 'button'));
         change(byComponent(tmpls[0], types.Text), 'hello t1');
         click(byTag(tmpls[0], 'button'));
-        setTimeout(()=> {
+        setTimeout(() => {
             const texts = byComponents(tmpls[0], types.Text)
             change(texts[0], 'hello t2');
 

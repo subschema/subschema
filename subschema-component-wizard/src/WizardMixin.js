@@ -1,12 +1,12 @@
-'use strict'
 import React, {Component} from 'react';
-import ObjectType from 'subschema-core/lib/Object';
 import PropTypes from 'subschema-prop-types';
-import UninjectedField from 'subschema-core/lib/components/Field';
+import UninjectedField from 'subschema-core/lib/Field';
 import UninjectedFieldSet from 'subschema-core/lib/FieldSet';
+
 function donner(d) {
     d && d();
 }
+
 function fields(feildset) {
     if (!feildset)return [];
     if (feildset.fields) {
