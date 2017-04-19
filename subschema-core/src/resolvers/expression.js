@@ -1,9 +1,9 @@
 "use strict";
 
-import PropTypes from "../PropTypes";
+import PropTypes from "subschema-prop-types";
 import expression from "subschema-expression";
-import {resolveKey, applyFuncs, FREEZE_OBJ} from "../tutils";
-import warning from "../warning";
+import {resolveKey, applyFuncs, FREEZE_OBJ} from "subschema-utils";
+import warning from "subschema-utils/lib/warning";
 function handleExpression(value, key, props, {valueManager, loader}) {
     const scope = this;
     const expressionVals = {};

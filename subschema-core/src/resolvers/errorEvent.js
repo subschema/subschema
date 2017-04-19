@@ -1,7 +1,7 @@
 "use strict";
 
-import {resolveKey} from "../tutils";
-import PropTypes from "../PropTypes";
+import {resolveKey} from "subschema-utils";
+import PropTypes from "subschema-prop-types";
 
 function errorUpdate(value, key, props, {valueManager}) {
     const resolvedKey = resolveKey(props.path, value);

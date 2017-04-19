@@ -1,6 +1,6 @@
 "use strict";
 
-import PropTypes from "../PropTypes";
+import PropTypes from "subschema-prop-types";
 
 /**
  * Blur validate follows the behaviour

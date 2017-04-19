@@ -4,7 +4,7 @@
   "description": "Expressions for subschema",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir dist",
+    "compile": "babel -s true src --out-dir lib",
     "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
     "prepublish": "yarn run test"
   },

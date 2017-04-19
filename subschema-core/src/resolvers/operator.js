@@ -1,6 +1,6 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
 
 const opRe = /^(==|===|!=|!==|>=|>|truthy|falsey|<|<=|(\!)?\/(.*)\/([gimy])?)$/;
 const eq = function (compare, value) {

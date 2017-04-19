@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from "../PropTypes";
-import {FREEZE_OBJ} from "../tutils";
+import PropTypes from "subschema-prop-types";
+import {FREEZE_OBJ} from "subschema-utils";
 import {normalizeFieldsets} from "./fieldset";
 import {loadTemplate} from "./template";
 /**

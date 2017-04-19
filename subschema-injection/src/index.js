@@ -1,16 +1,12 @@
-import ReactPropTypes from 'prop-types';
 import injector from './injector';
-import injF from './injectorFactory';
-import ut from './util';
+import _injectorFactory from './injectorFactory';
+import _util from './util';
+import _PropTypes from './PropTypes';
 
-export const util = ut;
+export const util = _util;
 
-export const injectorFactory = injF;
+export const injectorFactory = _injectorFactory;
 
-export const PropTypes = {
-    injector: ReactPropTypes.shape({
-        inject: ReactPropTypes.func.isRequired
-    })
-};
+export const PropTypes = _PropTypes;
 
 export default injector;

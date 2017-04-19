@@ -1,9 +1,9 @@
 "use strict";
 
 import React, {Component} from "react";
-import PropTypes from "../PropTypes";
-import {toArray, noop} from "../tutils";
-import warning from "../warning";
+import PropTypes from "subschema-prop-types";
+import {toArray, noop} from "subschema-utils";
+import warning from "subschema-utils/lib/warning";
 function initValidators(nval) {
     if (typeof nval === 'function') {
         return nval;

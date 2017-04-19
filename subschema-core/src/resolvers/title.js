@@ -1,6 +1,6 @@
 "use strict";
 
-import {titlelize } from '../tutils';
+import {titlelize } from 'subschema-utils';
 
 function resolve(value, key, props) {
     if (value === false) {

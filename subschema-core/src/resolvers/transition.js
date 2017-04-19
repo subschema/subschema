@@ -1,6 +1,6 @@
 "use strict";
-import PropTypes from '../PropTypes';
-import Transition from '../transition/ReactCSSReplaceTransition';
+import PropTypes from 'subschema-prop-types';
+import Transition from 'subschema-transition/lib/ReactCSSReplaceTransition';
 
 const EMPTY = {};
 export const settings = {

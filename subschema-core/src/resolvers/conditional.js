@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import UninjectedConditional from '../components/Conditional';
+import PropTypes from 'subschema-prop-types';
+import UninjectedConditional from '../Conditional';
 
 export const settings = {
     operator: "truthy",

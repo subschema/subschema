@@ -1,9 +1,9 @@
 "use strict";
 import React, {Component} from 'react';
-
-import expect from 'expect';
-import stringInjector from '../lib/stringInjector';
 import PropTypes from 'subschema-prop-types';
+import expect from 'expect';
+
+import stringInjector from '../lib/stringInjector';
 import injectorFactory from '../lib/injectorFactory';
 
 describe('stringInjector', function () {

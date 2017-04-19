@@ -1,5 +1,5 @@
 "use strict";
-import {toArray} from "../tutils";
+import {toArray} from "subschema-utils";
 
 function toOptions(nval) {
     const tnval = typeof nval;

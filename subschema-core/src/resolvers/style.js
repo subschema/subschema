@@ -1,5 +1,5 @@
 "use strict";
-import PropTypes from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
 
 
 /**

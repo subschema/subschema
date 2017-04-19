@@ -1,4 +1,3 @@
-"use strict";
 
 import escape from "lodash/escape";
 import loget from "lodash/get";

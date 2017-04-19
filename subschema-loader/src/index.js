@@ -1,4 +1,4 @@
-import {isArray, toArray, isFunction, isString, isRegExp} from 'subschema-utils';
+import {isArray, isString} from 'subschema-utils';
 const concat = Function.apply.bind(Array.prototype.concat, []);
 
 export default function loaderFactory(loaders = []) {

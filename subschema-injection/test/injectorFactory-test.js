@@ -1,6 +1,5 @@
-"use strict";
 import expect from 'expect';
-import injectorFactory from '../src/injectorFactory';
+import injectorFactory from '../lib/injectorFactory';
 const RESOLVER = new Map();
 const listen = _ => {
 };

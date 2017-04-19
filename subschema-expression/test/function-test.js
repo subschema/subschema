@@ -1,5 +1,6 @@
-var expect = require('expect');
-var expression = require('../dist/expression').default;
+import expect from 'expect';
+import expression from '../lib';
+
 
 
 describe('expression/function', function () {

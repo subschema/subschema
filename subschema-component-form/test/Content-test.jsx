@@ -1,34 +1,43 @@
-"use strict";
 import React, {Component} from "react";
-import {findNode, into, intoWithContext, context, expect} from "subschema-test-support";
+import {Form, findNode, into, intoWithContext, context, expect} from "subschema-test-support";
 import ReactServer from "react-dom/server";
-import {ValueManager, PropTypes, loader as _loader, injector, loaderFactory, types, Editor, Form} from "Subschema";
+import _Content from 'subschema-core/lib/Content';
+import ValueManager from 'subschema-valuemanager';
+import PropTypes from 'subschema-prop-types';
+import newSubschemaContext from './newSubschemaContext';
 
-describe('types/Content', function () {
+class TestClass extends Component {
+    render() {
+        return <div><span>hello</span>{this.props.children}</div>
+    }
+
+}
+
+function ctx(opts) {
+    const {loader, valueManager, injector} = newSubschemaContext(opts);
+    loader.addType('Test', TestClass);
+    return {
+        loader, valueManager, injector
+    }
+}
+
+describe('subschema-core/Content', function () {
     let loader;
     let Content;
 
-    class TestClass extends Component {
-        render() {
-            return <div><span>hello</span>{this.props.children}</div>
-        }
+    beforeEach(function () {
+        let _context = newSubschemaContext();
 
-    }
-
-    before(function () {
-        loader = loaderFactory([_loader]);
+        loader = _context.loader;
         loader.addType('Test', TestClass);
-        Content = injector.inject(types.Content);
+        Content = _context.injector.inject(_Content);
 
     });
     it('should do simple subsitution', function () {
 
         var valueManager = ValueManager({test: 2});
-        var root = intoWithContext(<Content key='t1' content='your value is {test}' path="test"/>, {
-            valueManager,
-            loader,
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content key='t1' content='your value is {test}'
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is 2');
@@ -37,11 +46,8 @@ describe('types/Content', function () {
     it('should do simple subsitution escape html in values', function () {
         var what = '<' + 'h1' + '>2<' + '/h1>';
         var valueManager = ValueManager({what});
-        var root = intoWithContext(<Content key='t2' content='your value is {what}' path="test"/>, {
-            valueManager,
-            loader,
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content key='t2' content='your value is {what}'
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML + '';
         expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -52,10 +58,8 @@ describe('types/Content', function () {
         var more = 1;
         var valueManager = ValueManager({what, more});
         var content = ['your value is {what}', 'is more'];
-        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {
-            valueManager, loader,
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content key='t2' content={content}
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -67,10 +71,8 @@ describe('types/Content', function () {
         var more = 1;
         var valueManager = ValueManager({what, more});
         var content = {h3: 'your value is {what}', div: 'is more'};
-        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {
-            valueManager, loader,
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content key='t2' content={content}
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -87,10 +89,8 @@ describe('types/Content', function () {
                 content: ['is more']
             }
         };
-        var root = intoWithContext(<Content key='t2' content={content} path="test"/>, {
-            valueManager, loader,
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content key='t2' content={content}
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML + '';
         //expect(str).toBe('your value is &lt;h1&gt;2&lt;/h1&gt;');
@@ -103,10 +103,7 @@ describe('types/Content', function () {
         var valueManager = ValueManager({what, more});
 
         var root = intoWithContext(<Content key='t2' dataType='p' className='stuff' content={''}
-                                            path="test"/>, {
-            valueManager, loader,
-            injector
-        }, true, PropTypes.contextTypes);
+                                            path="test"/>, ctx({valueManager}), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML;
         expect(str).toBe('');
@@ -123,11 +120,8 @@ describe('types/Content', function () {
 
         };
 
-        var root = intoWithContext(<Content content={title} className='panel panel-default'/>, {
-            loader,
-            valueManager: ValueManager(),
-            injector
-        }, true, PropTypes.contextTypes);
+        var root = intoWithContext(<Content content={title}
+                                            className='panel panel-default'/>, ctx(), true, PropTypes.contextTypes);
 
         var node = findNode(root);
     });
@@ -142,10 +136,7 @@ describe('types/Content', function () {
 
         var root = intoWithContext(<Content content={title} className='panel panel-default'>
             <div>What</div>
-        </Content>, {
-            loader, valueManager: ValueManager(),
-            injector
-        }, true, PropTypes.contextTypes);
+        </Content>, ctx(), true, PropTypes.contextTypes);
         var node = findNode(root);
         var str = node.innerHTML;
     });
@@ -182,22 +173,22 @@ describe('types/Content', function () {
             }
         ];
         var valueManager = ValueManager({hello: 'Joe'});
-        var Context = context({valueManager, loader, injector}, PropTypes.contextTypes);
+        var Context = context(ctx({valueManager}), PropTypes.contextTypes);
         var node = ReactServer.renderToStaticMarkup(<Context><Content content={content} className='panel panel-default'
         /></Context>);
         //@formatter:off
         /*
-        <span class="panel panel-default">
-            <span class="clz-left">
-                <h1>Heading stuff Joe</h1>
-                <p>Super special content</p>
-                <button class="btn btn-primary">Activate</button>
-            </span>
-            <span class="clz-right">
-                <img class="super-img" src="about:blank"/>
-            </span>
-        </span>
-        */
+         <span class="panel panel-default">
+         <span class="clz-left">
+         <h1>Heading stuff Joe</h1>
+         <p>Super special content</p>
+         <button class="btn btn-primary">Activate</button>
+         </span>
+         <span class="clz-right">
+         <img class="super-img" src="about:blank"/>
+         </span>
+         </span>
+         */
         //@formatter:on
         expect(node).toEqual('<span class="panel panel-default"><span class="clz-left"><h1>Heading stuff Joe</h1><p>Super special content</p><button class="btn btn-primary">Activate</button></span><span class="clz-right"><img class="super-img" src="about:blank"/></span></span>');
     });
@@ -243,9 +234,11 @@ describe('types/Content', function () {
                 }
             },
             fields: ["test"]
-        };
 
-        var form = into(<Form schema={schema} valueManager={ValueManager({hello:'Joe'})}
+        };
+        const {Form, loader, injector} = newSubschemaContext();
+        ;
+        var form = into(<Form schema={schema} injector={injector} valueManager={ValueManager({hello: 'Joe'})}
                               loader={loader}/>, true);
         var node = findNode(form);
         var str = node.innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');

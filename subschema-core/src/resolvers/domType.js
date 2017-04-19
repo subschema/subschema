@@ -1,8 +1,8 @@
 "use strict";
 
 import React from 'react';
-import PropTypes from '../PropTypes';
-import {FREEZE_OBJ} from '../tutils';
+import PropTypes from 'subschema-prop-types';
+import {FREEZE_OBJ} from 'subschema-utils';
 
 const DOM = React.DOM || FREEZE_OBJ;
 

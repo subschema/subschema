@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import UninjectedContent from '../types/Content';
+import PropTypes from 'subschema-prop-types';
+import UninjectedContent from '../Content';
 
 export const settings = {
     Content: UninjectedContent

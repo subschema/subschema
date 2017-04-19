@@ -2,12 +2,30 @@
   "name": "subschema-component-form",
   "version": "1.7.0",
   "description": "Subschema",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "babel -s true src --out-dir lib",
+    "test": "yarn run compile && mocha --compilers js:babel-register test/**/*-test.jsx?",
+    "karma": "karma start --no-single-run --log-level debug"
+  },
   "dependencies": {
-    "subschema-core": "1.7.0"
+    "subschema-core": "^1.7.0",
+    "subschema-transition": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "lodash": "^4.6.1"
   },
   "devDependencies": {
-    "subschema-test-support": "1.7.0",
-    "subschema-valuemanager": "1.7.0"
+    "mocha": "^3.2.0",
+    "subschema-test-support": "^1.7.0",
+    "subschema-expression": "^1.7.0",
+    "subschema-transition": "^1.7.0",
+    "subschema-injection": "^1.7.0",
+    "subschema-loader": "^1.7.0",
+    "subschema-processors": "^1.7.0",
+    "subschema-validators": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "karma-cli": "1.0.1"
   }
 }

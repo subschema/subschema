@@ -1,6 +1,6 @@
 "use strict";
 
-import {isString,isArray, slice, isFunction, push} from '../tutils';
+import {isString,isArray, slice, isFunction, push} from 'subschema-utils';
 
 export const settings = {
     inputClassName:'form-control'

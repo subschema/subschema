@@ -1,6 +1,6 @@
 "use strict";
 
-import {toArray} from '../tutils';
+import {toArray} from 'subschema-utils';
 
 export function normalizeFields(fields) {
     if (fields == null) {

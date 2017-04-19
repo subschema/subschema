@@ -1,6 +1,12 @@
 {
   "name": "subschema-prop-types",
   "version": "1.7.0",
+  "main":"lib/index",
+  "scripts": {
+    "compile": "babel -s true src --out-dir lib",
+    "test": "yarn run compile && mocha --compilers babel-register test/*-test.js",
+    "prepublish": "yarn run test"
+  },
   "dependencies": {
     "prop-types": "^15.5.4"
   },

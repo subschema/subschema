@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from '../PropTypes';
-import {resolveKey} from '../tutils';
+import PropTypes from 'subschema-prop-types';
+import {resolveKey} from 'subschema-utils';
 
 function handleListeners(value, key, props, context) {
     if (value == null) {

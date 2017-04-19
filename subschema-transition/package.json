@@ -2,11 +2,21 @@
   "name": "subschema-transition",
   "version": "1.7.0",
   "description": "Subschema Transition",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "babel -s true src --out-dir lib",
+    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
+    "prepublish": "yarn run test"
+  },
   "dependencies": {
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
-    "react-transition": "^15.5.4"
+    "react-transition-group": "^1.1.1",
+    "prop-types": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "mocha": "^3.2.0"
   }
 }
 

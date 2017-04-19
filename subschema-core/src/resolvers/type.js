@@ -1,7 +1,5 @@
-"use strict";
-
-import PropTypes from "../PropTypes";
-import warning from "../warning";
+import PropTypes from "subschema-prop-types";
+import warning from "subschema-utils/lib/warning";
 export const defaultPropTypes = {
     onChange: PropTypes.targetEvent,
     onBlur: PropTypes.blurValidate,
@@ -14,7 +12,8 @@ export const defaultPropTypes = {
     name: PropTypes.htmlFor,
     className: PropTypes.typeClass,
     placeholder: PropTypes.string,
-    fieldAttrs: PropTypes.fieldAttrs
+//TODO -Figure out a better way - consider using intospection on DOM types.
+//    fieldAttrs: PropTypes.fieldAttrs
 };
 //Expose for configurability
 export const settings = {

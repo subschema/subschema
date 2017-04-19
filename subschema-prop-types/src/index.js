@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
+import {string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOf, oneOfType} from "prop-types";
 
 //we'll re-export these for convenience in the babel6 world.
-const {string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOf, oneOfType} = PropTypes;
+
 
 function customPropType(type, name) {
     function customPropType$return(...args) {
@@ -31,7 +31,7 @@ function propTypeToName(propType) {
 }
 
 function propTypesToNames(props) {
-    return Object.keys(props).reduce((ret, k)=> {
+    return Object.keys(props).reduce((ret, k) => {
         ret[k] = propTypeToName(props[k]);
         return ret;
     }, {});
@@ -137,8 +137,8 @@ const typeDescription = oneOfType([string, shape({
 })]);
 
 const _transitionTypes = oneOf(['appear', 'enter', 'leave']);
-const transition = oneOfType([PropTypes.string, shape({
-    transition: PropTypes.string,
+const transition = oneOfType([string, shape({
+    transition: string,
     on: _transitionTypes
 })]);
 

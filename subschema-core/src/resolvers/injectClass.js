@@ -1,6 +1,5 @@
-"use strict";
 
-import PropTypes from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
 
 export function injectClass(value, key, props, {injector}) {
     if (value == null) return;

@@ -1,6 +1,6 @@
 "use strict";
 
-import {noop} from '../tutils';
+import {noop} from 'subschema-utils';
 
 function handleEvent(value) {
     if (value == null) return noop;

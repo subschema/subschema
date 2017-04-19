@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from "../PropTypes";
-import {resolveKey} from "../tutils";
+import PropTypes from "subschema-prop-types";
+import {resolveKey} from "subschema-utils";
 
 function handleErrorListeners(value, key, props, {valueManager, validate}) {
     const resolvedPath = resolveKey(props.path, value);

@@ -1,0 +1,19 @@
+{
+  "name": "subschema-processors",
+  "version": "1.7.0",
+  "description": "Subschema Processors System.",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "babel -s true src --out-dir lib",
+    "test": "yarn run compile && mocha --compilers babel-register test/*-test.js",
+    "prepublish": "yarn run test"
+  },
+  "dependencies": {
+    "subschema-utils": "^1.7.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "mocha": "^3.2.0",
+    "subschema-prop-types": "^1.7.0"
+  }
+}

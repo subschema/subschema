@@ -1,6 +1,6 @@
 "use strict";
 
-import {push, toArray,isString} from '../tutils';
+import {push, toArray,isString} from 'subschema-utils';
 
 export function normalizeFieldsets(fieldsets, fields) {
     if (!(fieldsets || fields)) return {};

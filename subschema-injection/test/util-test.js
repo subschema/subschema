@@ -1,5 +1,6 @@
-import {onlyKeys} from "../src/util";
 import expect from "expect";
+
+import {onlyKeys} from "../lib/util";
 
 describe('util', function () {
 

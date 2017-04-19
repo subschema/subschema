@@ -2,9 +2,10 @@
   "name": "subschema-injection",
   "version": "1.7.0",
   "description": "Subschema Injection System.",
+  "main": "lib/index",
   "scripts": {
     "compile": "babel -s true src --out-dir lib",
-    "test": "yarn run compile && mocha --compilers babel-register test/*-test.js",
+    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
     "prepublish": "yarn run test"
   },
   "dependencies": {

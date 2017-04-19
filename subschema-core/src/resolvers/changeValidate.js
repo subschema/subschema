@@ -1,7 +1,7 @@
 "use strict";
 
-import PropTypes from "../PropTypes";
-import {noop, resolveKey} from "../tutils";
+import PropTypes from "subschema-prop-types";
+import {noop, resolveKey} from "subschema-utils";
 
 /**
  * Validates on change, used in checkbox.  As it needs validation without blur.  In cases like text,

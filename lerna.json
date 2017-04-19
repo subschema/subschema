@@ -1,14 +1,18 @@
 {
   "lerna": "2.0.0-rc.2",
   "packages": [
+    "subschema-core",
     "subschema-injection",
     "subschema-expression",
     "subschema-loader",
-    "subschema-core",
     "subschema-prop-types",
+    "subschema-processors",
+    "subschema-transition",
     "subschema-utils",
-    "subschema-valuemanager"
+    "subschema-valuemanager",
+    "subschema-validators",
+    "subschema-test-support",
+    "subschema-component-form"
   ],
   "version": "1.7.0"
-
 }

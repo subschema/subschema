@@ -5,7 +5,8 @@
  * @providesModule ReactCSSTransitionReplace
  */
 
-import React, {PropTypes, createElement, Children} from 'react';
+import React, { createElement, Children} from 'react';
+import PropTypes from 'prop-types';
 import {findDOMNode} from 'react-dom';
 
 import ReactCSSTransitionGroupChild from './ReactCSSTransitionGroupChild';

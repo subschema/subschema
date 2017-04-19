@@ -17,6 +17,7 @@
     "subschema-injection": "1.7.0",
     "subschema-expression": "1.7.0",
     "subschema-utils": "1.7.0",
+    "subschema-validators": "^1.7.0",
     "subschema-transition":"1.7.0"
   }
 }
