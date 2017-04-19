@@ -1,11 +1,9 @@
-"use strict";
-
 import React, {Component} from "react";
-import {path, noop, clone} from "../tutils";
-import UninjectedObjectType from "./Object";
-import PropTypes from "../PropTypes";
+import {path, noop, clone} from "subschema-utils";
+import UninjectedObjectType from "subschema-core/lib/Object";
+import PropTypes from "subschema-prop-types";
 import defaults from "lodash/defaults";
-import RenderTemplate from "../components/RenderTemplate";
+import RenderTemplate from "subschema-core/RenderTemplate";
 
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
@@ -116,7 +114,7 @@ export default class CollectionMixin extends Component {
         this.reorder(pos, val, -1);
     };
 
-    handleMoveDown = (pos, val)=> {
+    handleMoveDown = (pos, val) => {
         this.reorder(pos, val, 1);
     };
 
@@ -129,7 +127,7 @@ export default class CollectionMixin extends Component {
         }
     }
 
-    handleDelete = (pos, val, pid)=> {
+    handleDelete = (pos, val, pid) => {
         const values = this.props.value, oval = values && values.concat();
         if (this.props.onWillDelete(pos, val) !== false) {
             values.splice(pos, 1);
@@ -138,7 +136,7 @@ export default class CollectionMixin extends Component {
     };
 
 
-    changeValue = (newValue, oldValue)=> {
+    changeValue = (newValue, oldValue) => {
         if (this.props.onChange(newValue) !== false) {
             this.setState({
                 showAdd: this.props.showAdd,
@@ -147,7 +145,7 @@ export default class CollectionMixin extends Component {
         }
     };
 
-    handleAddBtn = (e)=> {
+    handleAddBtn = (e) => {
         e && e.preventDefault();
         const key = this.createPid();
         this.context.valueManager.update(makeEditPid(this.props.path, key), {
@@ -174,7 +172,7 @@ export default class CollectionMixin extends Component {
         this.setState({showAdd: this.props.showAdd, showEdit: false});
     };
 
-    handleBtnClick = (e, action)=> {
+    handleBtnClick = (e, action) => {
         e && e.preventDefault();
 
         if (action == 'submit') {
@@ -190,7 +188,7 @@ export default class CollectionMixin extends Component {
         }
     };
 
-    handleSubmit = (e)=> {
+    handleSubmit = (e) => {
         e && e.preventDefault();
         var {valueManager} = this.context;
         var origKey = makeEditPid(this.props.path, this.state.editPid);
@@ -246,7 +244,7 @@ export default class CollectionMixin extends Component {
                 <ObjectType key="addEdit"
                             onButtonClick={this.handleBtnClick}
                             schema={this.createItemSchema(childPath, edit)}
-                            path={makeEditPid(this.props.path,this.state.editPid)}
+                            path={makeEditPid(this.props.path, this.state.editPid)}
                 />
             </RenderTemplate>);
     }
@@ -306,7 +304,7 @@ export default class CollectionMixin extends Component {
         const {itemTemplate, contentTemplate} = this.props;
         const v = {value};
         return <RenderTemplate template={itemTemplate}
-                               key={this.props.path+'.'+pos}
+                               key={this.props.path + '.' + pos}
                                pos={pos}
                                path={ path(this.props.path, key)}
                                onMoveUp={this.handleMoveUp}
@@ -317,7 +315,7 @@ export default class CollectionMixin extends Component {
                                canDelete={this.props.canDelete}
                                canEdit={this.props.canEdit}
                                value={v}
-                               last={pos+1 === this._length}
+                               last={pos + 1 === this._length}
                                errors={this.props.errors}>
             {this.props.inline && this.state.editPid === pos ? this.renderAddEditTemplate(v, false) :
                 <RenderTemplate template={contentTemplate}

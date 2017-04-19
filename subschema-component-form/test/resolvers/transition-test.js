@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import resolvers from 'subschema-core/lib/resolvers';
 const {transition} = resolvers;
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 describe("resolvers/transition", function () {
     const {loader} = newSubschemaContext();

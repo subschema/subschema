@@ -17,15 +17,25 @@ import {
     byComponents
 } from 'subschema-test-support';
 
-import {templates, Form} from 'Subschema';
+import {templates,styles} from 'subschema-component-form';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
+import {styles as listStyles, templates as listTemplates, types as listTypes} from 'subschema-component-list';
 
-const {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, EditorTemplate} = templates;
+const {ListItemTemplate, CollectionCreateTemplate,} = listTemplates;
+const {ButtonTemplate, EditorTemplate} = templates;
 
 function controlBtn(task, action) {
     return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
 }
-
+function newContext(){
+    const ctx = newSubschemaContext({styles});
+    ctx.loader.addTemplate(listTemplates);
+    ctx.loader.addType(listTypes);
+    ctx.loader.addStyle(listStyles);
+    return ctx;
+}
 describe('types/List', function () {
+
     this.timeout(50000);
     function add(root, c) {
         var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
@@ -62,7 +72,8 @@ describe('types/List', function () {
     }
 
 
-    it('should render a list with data without canAdd', function () {
+    it.only('should render a list with data without canAdd', function () {
+        const {Form, context} = newContext();
         const schema = {
             schema: {
                 tasks: {
@@ -81,7 +92,7 @@ describe('types/List', function () {
                 'three'
             ]
         };
-        const root = into(<Form schema={schema} value={data}/>, true);
+        const root = into(<Form {...context} schema={schema} value={data}/>, true);
         const tasks = byComponents(root, ListItemTemplate);
         const addBtn = byClass(root, 'btn-add')[0];
 
@@ -99,6 +110,8 @@ describe('types/List', function () {
 
     });
     it('should render a list with data is not editable', function () {
+        const {Form, context} = newContext();
+
         var schema = {
             schema: {
                 tasks: {
@@ -127,6 +140,8 @@ describe('types/List', function () {
     });
 
     it.skip('should render a list without data and add values', function () {
+        const {Form, context} = newContext();
+
         var schema = {
             schema: {
                 tasks: {
@@ -177,6 +192,8 @@ describe('types/List', function () {
 
     });
     it('should edit a value', function () {
+        const {Form, context} = newContext();
+
         var schema = {
             schema: {
                 tasks: {
@@ -195,6 +212,8 @@ describe('types/List', function () {
         edit(root, 0);
     });
     it('should render edit a value with an error', function () {
+        const {Form, context} = newContext();
+
         var schema = {
             schema: {
                 tasks: {

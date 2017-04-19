@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {expect, byTag, into} from "subschema-test-support";
 import {types, templates} from 'subschema-component-form';
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 //TODO - Figure these out.
 describe.skip("resolvers/fieldAttrs", function () {

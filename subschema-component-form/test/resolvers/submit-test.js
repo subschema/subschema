@@ -6,7 +6,7 @@ import Form from 'subschema-core/lib/Form';
 import ObjectType from 'subschema-core/lib/Object';
 import {types, templates} from 'subschema-component-form';
 import {into, Simulate, byTag, byComponent} from "subschema-test-support";
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 import expect from 'expect';
 

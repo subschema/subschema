@@ -1,13 +1,13 @@
 import React from 'react';
 import {findNode, into, expect, byComponents, byComponent}  from 'subschema-test-support';
 import {types, templates} from 'subschema-component-form';
-import newSubschemaContext from '../newSubschemaContext';
-
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
+import styles from '../../styles';
 const {ButtonTemplate, ButtonsTemplate} = templates;
 
 describe('templates/ButtonsTemplate', function () {
     it('should render buttons', function () {
-        const {Form, context} = newSubschemaContext();
+        const {Form, context} = newSubschemaContext({styles});
         const form = into(<Form {...context} schema={
             {
                 schema: {},
@@ -24,7 +24,7 @@ describe('templates/ButtonsTemplate', function () {
         }
     });
     it('should render buttons with actions', function () {
-        const {Form, context} = newSubschemaContext();
+        const {Form, context} = newSubschemaContext({styles});
 
         const form = into(<Form {...context} schema={
             {

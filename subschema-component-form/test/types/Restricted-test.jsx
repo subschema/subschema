@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {types, templates} from 'subschema-component-form';
 import { into, byType,byTag, intoWithState, TestUtils,expect, Simulate, change} from 'subschema-test-support';
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 const {Restricted} = types;
 

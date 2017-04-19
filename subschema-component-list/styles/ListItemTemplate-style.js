@@ -1,4 +1,4 @@
-module.exports = {
+export default ({
     moveUp: 'glyphicon glyphicon-chevron-up btn-up',
     moveDown: 'glyphicon glyphicon-chevron-down btn-down',
     delete: 'glyphicon glyphicon-remove btn-delete',
@@ -8,5 +8,5 @@ module.exports = {
     hasError: 'has-error',
     help: "help-block",
     clickable: 'clickable',
-    ctrlButtons:'btn-group'
-};
+    ctrlButtons: 'btn-group'
+});

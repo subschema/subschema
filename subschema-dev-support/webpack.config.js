@@ -33,5 +33,4 @@ var webpack = {
         ]
     }
 };
-console.log('webpack', JSON.stringify(webpack, null, 2));
 module.exports = webpack;

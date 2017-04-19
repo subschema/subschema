@@ -1,6 +1,6 @@
 import expect from 'expect';
 import {normalizeSchema} from 'subschema-core/lib/resolvers/schema';
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 describe('resolvers/schema', function () {
 

@@ -15,7 +15,7 @@ import ValueManager from 'subschema-valuemanager';
 import PropTypes from 'subschema-prop-types';
 import _Conditional from 'subschema-core/lib/Conditional';
 import {types, templates} from 'subschema-component-form';
-import newSubschemaContext from './newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 const {Select} = types;
 

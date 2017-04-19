@@ -2,7 +2,8 @@ import React from 'react';
 import {into, intoWithContext, TestUtils, expect, findNode, Simulate} from 'subschema-test-support';
 import ValueManager from 'subschema-valuemanager';
 import {types} from 'subschema-component-form';
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
+import styles from '../../styles';
 const ObjectType = types.Object
 const TextInput = types.Text;
 
@@ -30,7 +31,7 @@ describe('types/Object', function () {
     };
 
     it('should not other objects', function () {
-        const {Form, context} = newSubschemaContext();
+        const {Form, context} = newSubschemaContext({styles});
         var form = into(<Form {...context} schema={schema}/>, true);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
@@ -47,7 +48,7 @@ describe('types/Object', function () {
         Simulate.focus(findNode(n2));
     });
     it('should not validate nested objects', function () {
-        const {Form} = newSubschemaContext();
+        const {Form} = newSubschemaContext({styles});
 
         var vm = ValueManager({}, {'nested.n2': [{message: 'borked'}]});
         var form = into(<Form schema={schema} valueManager={vm}/>, true);

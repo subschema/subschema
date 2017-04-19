@@ -1,10 +1,9 @@
-"use strict";
-
 import React from "react";
 import CollectionMixin from "./CollectionMixin";
-import {isString} from "../tutils";
+import {isString} from "subschema-utils";
 import defaults from "lodash/defaults";
-import PropTypes from "../PropTypes";
+import PropTypes from "subschema-prop-types";
+
 export default class MixedInput extends CollectionMixin {
 
     static propTypes = defaults({
@@ -23,8 +22,7 @@ export default class MixedInput extends CollectionMixin {
     }, CollectionMixin.defaultProps);
 
 
-
-    uniqueCheck = (value)=> {
+    uniqueCheck = (value) => {
         if (!value) {
             return null;
         }
@@ -55,7 +53,7 @@ export default class MixedInput extends CollectionMixin {
 
     renderRows() {
         const {value} = this.props;
-        return value ? Object.keys(value).map((key, i)=>this.renderRow(value[key], null,  i, key), this) : null;
+        return value ? Object.keys(value).map((key, i) => this.renderRow(value[key], null, i, key), this) : null;
     }
 
     getTemplateItem(edit) {

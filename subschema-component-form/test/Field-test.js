@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import expect from 'expect';
 import PropTypes from 'subschema-prop-types';
 import Field from 'subschema-core/lib/Field';
-import newSubschemaContext from './newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 import {templates, types} from 'subschema-component-form';
 const {EditorTemplate} = templates;
 const {Text} = types;

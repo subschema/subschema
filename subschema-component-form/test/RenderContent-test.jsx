@@ -6,7 +6,7 @@ import loaderFactory from 'subschema-loader';
 import injector from 'subschema-injection';
 import ValueManager from 'subschema-valuemanager';
 import PropTypes from 'subschema-prop-types';
-import newSubschemaContext from './newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 const tests = {
     '<span>your value is 2</span>': {

@@ -2,8 +2,8 @@ import React from "react";
 import {into, byTag, expect, select, byTags} from "subschema-test-support";
 import {types} from "subschema-component-form";
 import ValueManager from 'subschema-valuemanager';
-import newSubschemaContext from '../newSubschemaContext';
-
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
+import styles from '../../styles';
 const {Select} = types;
 
 describe('types/Select', function () {
@@ -55,7 +55,7 @@ describe('types/Select', function () {
 
     it('should have the value selected with numbers', function () {
         const vm = ValueManager({select: 2});
-        const {Form, ...context} = newSubschemaContext({valueManager: vm});
+        const {Form, ...context} = newSubschemaContext({valueManager: vm, styles});
         const form = into(<Form {...context} schema={{schema: {select: {type: 'Select', options: [1, 2, 3]}}}}
                                 valueManager={vm}/>, true);
 
@@ -81,7 +81,7 @@ describe('types/Select', function () {
         const {
             Form,
             ...context
-        } = newSubschemaContext({valueManager: vm});
+        } = newSubschemaContext({valueManager: vm, styles});
 
         function noThree(v) {
             return v == 3 ? {message: 'No threes for you'} : null
@@ -91,7 +91,7 @@ describe('types/Select', function () {
             {...context}
             validate={true}
             schema={{schema: {select: {type: 'Select', validators: [noThree], options: [1, 2, 3]}}}}
-            />, true);
+        />, true);
 
         expect(form).toExist();
         expect(values.length).toBe(0);

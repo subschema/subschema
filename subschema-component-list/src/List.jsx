@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import {isString} from '../tutils';
+import {isString} from 'subschema-utils';
 import CollectionMixin from './CollectionMixin';
 
 export default class ListInput extends CollectionMixin {

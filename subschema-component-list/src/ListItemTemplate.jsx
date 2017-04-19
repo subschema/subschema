@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {path, noop} from '../tutils';
-import UninjectedButtons from './ButtonsTemplate';
-import PropTypes from '../PropTypes';
+import {path, noop} from 'subschema-utils';
+import UninjectedButtons from 'subschema-component-form/lib/templates/ButtonsTemplate';
+import PropTypes from 'subschema-prop-types';
 
 export default class ListItemTemplate extends Component {
     static propTypes = {

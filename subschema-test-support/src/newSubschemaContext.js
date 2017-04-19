@@ -6,7 +6,6 @@ import _resolvers from 'subschema-core/lib/resolvers';
 import __Form from 'subschema-core/lib/Form';
 import _validators from 'subschema-validators';
 import {types as _types, templates as _templates} from 'subschema-component-form';
-import styles from '../styles';
 import * as _processors from 'subschema-processors';
 import {styles as transitions} from 'subschema-transition';
 const newSubschemaContext = (opts) => {
@@ -21,7 +20,8 @@ const newSubschemaContext = (opts) => {
         validators = _validators,
         types = _types,
         templates = _templates,
-        processors = _processors
+        processors = _processors,
+        styles = {}
     } = opts || {};
 
     class Form extends _Form {

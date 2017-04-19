@@ -11,15 +11,16 @@ import {
     expect,
     Simulate
 } from 'subschema-test-support';
+import styles from '../../styles';
 import {types, templates} from 'subschema-component-form';
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 const {Checkbox} = types;
 const {EditorTemplate} = templates;
 
 
 describe('types/Checkbox', function () {
     it('should create a form', function () {
-        const {Form, valueManager} = newSubschemaContext();
+        const {Form, valueManager} = newSubschemaContext({styles});
         var root = into(<Form valueManager={valueManager} schema={{
             schema: {
                 c1: 'Checkbox',
@@ -39,9 +40,10 @@ describe('types/Checkbox', function () {
     });
 
     it('should trigger on and off if the value matches', function () {
-        var changes = [], onChange = (value) => {
+        const {context} = newSubschemaContext({styles});
+        var changes = [], onChange = (value = false) => {
             state.setState({value});
-        }, {state, child} = intoWithState(<Checkbox value="nolo" onChange={onChange}/>), checkbox = child;
+        }, {state, child} = intoWithState(<Checkbox value="nolo" onChange={onChange}/>, true), checkbox = child;
 
         expect(findNode(checkbox).checked).toBe(true);
         check(findNode(checkbox), true);
@@ -52,7 +54,7 @@ describe('types/Checkbox', function () {
 
     });
     it('should validate on change', function () {
-        const {Form, valueManager} = newSubschemaContext();
+        const {Form, valueManager} = newSubschemaContext({styles});
         var root = into(<Form valueManager={valueManager} schema={{
             schema: {
                 checkbox: {

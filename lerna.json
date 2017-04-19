@@ -12,7 +12,9 @@
     "subschema-valuemanager",
     "subschema-validators",
     "subschema-test-support",
-    "subschema-component-form"
+    "subschema-dev-support",
+    "subschema-component-form",
+    "subschema-component-list"
   ],
   "version": "1.7.0"
 }

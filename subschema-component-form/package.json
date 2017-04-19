@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "babel -s true src --out-dir lib",
-    "test": "yarn run compile && mocha --compilers js:babel-register test/**/*-test.jsx?",
-    "karma": "karma start --no-single-run --log-level debug"
+    "test": "yarn run compile && subschema-karma start",
+    "karma": "subschema-karma start --no-single-run --log-level debug"
   },
   "dependencies": {
     "subschema-core": "^1.7.0",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "mocha": "^3.2.0",
+    "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
     "subschema-expression": "^1.7.0",
     "subschema-transition": "^1.7.0",
@@ -25,7 +26,6 @@
     "subschema-processors": "^1.7.0",
     "subschema-validators": "^1.7.0",
     "subschema-valuemanager": "^1.7.0",
-    "subschema-utils": "^1.7.0",
-    "karma-cli": "1.0.1"
+    "subschema-utils": "^1.7.0"
   }
 }

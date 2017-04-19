@@ -1,6 +1,8 @@
 // Karma configuration
 var webpack = require('./webpack.config');
 var path = require('path');
+const test = path.resolve(__dirname, 'test-index.js');
+webpack.resolve.alias.test = path.resolve(process.cwd(), 'test');
 
 module.exports = function (config) {
     config.set({
@@ -15,7 +17,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'test/**/*-test.js*'
+            test
         ],
         customLaunchers: {
             Chrome_with_debugging: {
@@ -26,7 +28,7 @@ module.exports = function (config) {
 
         // list of preprocessors
         preprocessors: {
-            'test/**/*-test.js*': ['webpack', 'sourcemap']
+            [test]: ['webpack', 'sourcemap']
         },
 
 

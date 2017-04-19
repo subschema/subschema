@@ -4,7 +4,7 @@ import ReactServer from "react-dom/server";
 import _Content from 'subschema-core/lib/Content';
 import ValueManager from 'subschema-valuemanager';
 import PropTypes from 'subschema-prop-types';
-import newSubschemaContext from './newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 class TestClass extends Component {
     render() {

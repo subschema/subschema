@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "es2015-loose",
+    "react",
+    "stage-2",
+    "es2017"
+  ],
+  "plugins": [
+    "transform-function-bind"
+  ]
+}

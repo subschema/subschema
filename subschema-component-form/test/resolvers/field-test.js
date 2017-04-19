@@ -5,7 +5,7 @@ import ValueManager from 'subschema-valuemanager';
 import {intoWithContext, byComponent} from 'subschema-test-support';
 
 const {field} = PropTypes;
-import newSubschemaContext from '../newSubschemaContext';
+import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 describe('resolvers/field', function () {
     this.timeout(50000);

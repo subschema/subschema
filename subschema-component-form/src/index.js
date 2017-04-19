@@ -27,8 +27,11 @@ import ObjectType from 'subschema-core/lib/Object';
 import _RestrictedMixin from './types/RestrictedMixin';
 import _Dom from './Dom';
 import _css from './css';
+import _styles from '../styles'
 
 export const RestrictedMixin = _RestrictedMixin;
+
+export const styles = _styles;
 
 export const Dom = _Dom;
 
@@ -63,3 +66,9 @@ export const types = {
     Text,
     TextArea,
 };
+
+export default ({
+    types,
+    styles,
+    templates
+});
