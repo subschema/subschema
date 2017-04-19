@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-
+import LessStyles from 'subschema-css-bootstrap';
 import {
     byName,
     into,
@@ -21,6 +21,7 @@ import {templates,styles} from 'subschema-component-form';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 import {styles as listStyles, templates as listTemplates, types as listTypes} from 'subschema-component-list';
 
+console.log('LessStyles',LessStyles);
 const {ListItemTemplate, CollectionCreateTemplate,} = listTemplates;
 const {ButtonTemplate, EditorTemplate} = templates;
 
@@ -32,6 +33,7 @@ function newContext(){
     ctx.loader.addTemplate(listTemplates);
     ctx.loader.addType(listTypes);
     ctx.loader.addStyle(listStyles);
+    ctx.loader.addStyle(LessStyles);
     return ctx;
 }
 describe('types/List', function () {

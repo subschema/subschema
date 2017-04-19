@@ -1,4 +1,4 @@
-import PT from '../dist/index';
+import PT from '../lib/index';
 import expect from 'expect';
 import PropTypes from 'prop-types';
 

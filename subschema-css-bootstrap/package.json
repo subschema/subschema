@@ -1,0 +1,15 @@
+{
+  "name": "subschema-css-bootstrap",
+  "version": "1.7.0",
+  "main": "lib/index.js",
+  "description": "Bootstrap CSS support for subschema",
+  "scripts": {
+    "compile": "subschema-webpack"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  },
+  "devDependencies": {
+    "subschema-dev-support": "^1.7.0"
+  }
+}
