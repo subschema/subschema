@@ -27,6 +27,8 @@
     "subschema-loader": "^1.7.0",
     "subschema-processors": "^1.7.0",
     "subschema-validators": "^1.7.0",
-    "subschema-valuemanager": "^1.7.0"
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-css-bootstrap": "^1.7.0"
+
   }
 }

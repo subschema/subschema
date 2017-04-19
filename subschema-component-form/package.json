@@ -8,7 +8,7 @@
     "test": "yarn run compile && subschema-karma start",
     "karma": "subschema-karma start --no-single-run --log-level debug"
   },
-  "dependencies": {
+  "peerDependencies": {
     "subschema-core": "^1.7.0",
     "subschema-transition": "^1.7.0",
     "subschema-utils": "^1.7.0",

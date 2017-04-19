@@ -1,10 +1,8 @@
-"use strict";
-
 import React, {Component} from "react";
-import {noop} from "../tutils";
-import Dom from "../Dom";
-import PropTypes from "../PropTypes";
-import RenderTemplate from "../components/RenderTemplate";
+import {noop} from "subschema-utils";
+import Dom from "subschema-component-form/lib/Dom";
+import RenderTemplate from "subschema-core/lib/RenderTemplate";
+import PropTypes from 'subschema-prop-types';
 
 export default class Autocomplete extends Component {
 
@@ -91,7 +89,7 @@ export default class Autocomplete extends Component {
             var input = props.processor.format(value);
             if (input == null) {
                 //It didn't format to a value, go fetch it so we can display it.
-                props.processor.fetch(props.url, value, this, (e, o)=> {
+                props.processor.fetch(props.url, value, this, (e, o) => {
                     if (o && o.length === 1) {
                         this.setValue(o[0]);
                     } else {
@@ -115,7 +113,7 @@ export default class Autocomplete extends Component {
      * So if there is only 1 selection select it.
      * If
      */
-    hide = (selectValue)=> {
+    hide = (selectValue) => {
         var {selected, input, suggestions, focus} = this.state, i = 0, l, options, found = false;
         suggestions = suggestions || [];
         if (selectValue) {
@@ -164,7 +162,7 @@ export default class Autocomplete extends Component {
     };
 
 
-    bindDocument = ()=> {
+    bindDocument = () => {
         if (this._bound) {
             return;
         }
@@ -199,7 +197,7 @@ export default class Autocomplete extends Component {
     }
 
 
-    handleDocumentEnter = (e)=> {
+    handleDocumentEnter = (e) => {
 
         if (e.keyCode === 13 && this.state.suggestions && this.state.suggestions.length) {
             e.preventDefault();
@@ -209,7 +207,7 @@ export default class Autocomplete extends Component {
     };
 
 
-    handleDocumentKeyUp = (e)=> {
+    handleDocumentKeyUp = (e) => {
 
         if (e.keyCode === 27) {
             this.hide(false);
@@ -217,7 +215,7 @@ export default class Autocomplete extends Component {
     };
 
 
-    handleDocumentClick = (e)=> {
+    handleDocumentClick = (e) => {
         // If the click originated from within this component
         // don't do anything.
         if (Dom.isNodeInRoot(e.target, this)) {
@@ -232,11 +230,11 @@ export default class Autocomplete extends Component {
         return this.props.processor;
     }
 
-    handleSuggestionClick = (o)=> {
+    handleSuggestionClick = (o) => {
         this.onSelect(o);
     };
 
-    onSelect = (o)=> {
+    onSelect = (o) => {
         if (this.props.onSelect(o) === false) {
             return;
         }
@@ -255,7 +253,7 @@ export default class Autocomplete extends Component {
         }
     };
 
-    _handleDispatch = (input)=> {
+    _handleDispatch = (input) => {
         this.setState({
             input,
             selected: null
@@ -283,7 +281,7 @@ export default class Autocomplete extends Component {
     };
 
 
-    handleKeyUp = (e)=> {
+    handleKeyUp = (e) => {
         if (this.props.onKeyUp) {
             this.props.onKeyUp.call(this, e);
         }
@@ -293,22 +291,19 @@ export default class Autocomplete extends Component {
             switch (e.key || e.keyCode) {
                 case 'Up':
                 case 38:
-                case 'ArrowUp':
-                {
+                case 'ArrowUp': {
                     focus = Math.max(-1, focus - 1);
                     update = true;
                     break;
                 }
                 case 40:
                 case 'Down':
-                case 'ArrowDown':
-                {
+                case 'ArrowDown': {
                     focus = Math.min(s.length, focus + 1)
                     update = true;
                     break;
                 }
-                case 'Enter':
-                {
+                case 'Enter': {
                     if (e) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -337,14 +332,14 @@ export default class Autocomplete extends Component {
 
     handlePaste = (event) => {
         var items = event.clipboardData && event.clipboardData.items;
-        items && items[0] && items[0].getAsString((input)=> {
+        items && items[0] && items[0].getAsString((input) => {
 
             this.setState({input, suggestions: [], showing: false});
         });
     };
 
 
-    handleBlur = (event)=> {
+    handleBlur = (event) => {
         var suggestions = this.state.suggestions || [];
         if (suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);

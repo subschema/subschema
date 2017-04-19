@@ -41,3 +41,9 @@ function _isNodeInRoot(node, root) {
 
     return false;
 }
+
+export default ({
+    listen,
+    ownerDocument,
+    isNodeInRoot
+});

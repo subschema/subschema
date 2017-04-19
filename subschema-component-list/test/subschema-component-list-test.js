@@ -74,7 +74,7 @@ describe('types/List', function () {
     }
 
 
-    it.only('should render a list with data without canAdd', function () {
+    it('should render a list with data without canAdd', function () {
         const {Form, context} = newContext();
         const schema = {
             schema: {
@@ -140,7 +140,7 @@ describe('types/List', function () {
             expect(controlBtn(task, 'delete')).toNotExist();
         })
     });
-
+    //TODO - This shoes the double edit problem with strings.
     it.skip('should render a list without data and add values', function () {
         const {Form, context} = newContext();
 

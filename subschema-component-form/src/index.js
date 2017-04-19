@@ -3,8 +3,6 @@ import ButtonsTemplate from './templates/ButtonsTemplate';
 import CheckboxTemplate from './templates/CheckboxTemplate';
 import CheckboxesGroupTemplate from './templates/CheckboxesGroupTemplate';
 import CheckboxesTemplate from './templates/CheckboxesTemplate';
-import CollectionCreateTemplate from './templates/CollectionCreateTemplate';
-import ContentItemTemplate from './templates/ContentItemTemplate';
 import EditorTemplate from './templates/EditorTemplate';
 import FieldSetTemplate from './templates/FieldSetTemplate';
 import FormTemplate from './templates/FormTemplate';
@@ -43,8 +41,6 @@ export const templates = {
     CheckboxTemplate,
     CheckboxesGroupTemplate,
     CheckboxesTemplate,
-    CollectionCreateTemplate,
-    ContentItemTemplate,
     EditorTemplate,
     FieldSetTemplate,
     FormTemplate,

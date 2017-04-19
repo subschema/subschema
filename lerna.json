@@ -15,7 +15,9 @@
     "subschema-dev-support",
     "subschema-component-form",
     "subschema-component-list",
-    "subschema-css-bootstrap"
+    "subschema-css-bootstrap",
+    "subschema-component-modal",
+    "subschema-component-autocomplete"
   ],
   "version": "1.7.0"
 }

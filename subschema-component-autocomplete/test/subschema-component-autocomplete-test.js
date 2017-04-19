@@ -1,15 +1,20 @@
-"use strict";
-
-import {React, check, intoWithState, change, into, byType, click, byTypes, byTag, findNode,expect} from 'subschema-test-support';
-import {Form, ValueManager, processors, templates, types} from 'Subschema';
-const {Autocomplete} = types;
-const {OptionsProcessor} = processors;
-const {AutocompleteItemTemplate} = templates;
-
+import React from 'react';
+import {
+    intoWithState,
+    change,
+    click,
+    byTypes,
+    byTag,
+    expect
+} from 'subschema-test-support';
+import SubschemaCssBootstrap from 'subschema-css-bootstrap';
+import {Autocomplete, AutocompleteItemTemplate, styles, templates, types} from 'subschema-component-autocomplete';
+import {OptionsProcessor} from 'subschema-processors';
+import {types as formTypes} from 'subschema-component-form';
 function noop() {
 
 }
-describe('types/Autocomplete', function () {
+describe('subschema-component-autocomplete', function () {
     this.timeout(50000);
     var options = [
         {label: 'ABC', val: 'abc'},
@@ -18,7 +23,9 @@ describe('types/Autocomplete', function () {
     ];
 
     it('should render an autocomplete and select suggested', function () {
-        var {child, state} = intoWithState(<Autocomplete inputType={types.Text} itemTemplate={AutocompleteItemTemplate}
+
+        var {child, state} = intoWithState(<Autocomplete inputType={formTypes.Text}
+                                                         itemTemplate={AutocompleteItemTemplate}
                                                          options={options} processor={OptionsProcessor}
                                                          onInputChange={noop} onChange={noop} onSelect={noop}/>, {});
         expect(child).toExist('should render autocomplete');
@@ -37,7 +44,7 @@ describe('types/Autocomplete', function () {
 
     it('should render an autocomplete  with a value and autoSelectSingle set to true', function () {
         var {child, state} = intoWithState(<Autocomplete itemTemplate={AutocompleteItemTemplate}
-                                                         inputType={types.Text}
+                                                         inputType={formTypes.Text}
                                                          value="abc"
                                                          autoSelectSingle={true}
                                                          options={options} processor={OptionsProcessor}

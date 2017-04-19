@@ -2,9 +2,35 @@
   "name": "subschema-component-autocomplete",
   "version": "1.7.0",
   "description": "Subschema Autocomplete",
-  "main": "dist/index.js",
-  "dependencies": {
-    "subschema-component-form": "1.7.0"
+  "main": "lib/index.js",
+  "scripts": {
+    "karma": "subschema-karma",
+    "compile": "babel -s true src --out-dir lib"
+  },
+  "peerDependencies": {
+    "lodash": "^4.6.1",
+    "subschema-core": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-component-form": "^1.7.0",
+    "subschema-processors": "^1.7.0"
+  },
+  "devDependencies": {
+    "lodash": "^4.6.1",
+    "subschema-core": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-component-form": "^1.7.0",
+    "subschema-transition": "^1.7.0",
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-support": "^1.7.0",
+    "subschema-expression": "^1.7.0",
+    "subschema-injection": "^1.7.0",
+    "subschema-loader": "^1.7.0",
+    "subschema-processors": "^1.7.0",
+    "subschema-validators": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-css-bootstrap": "^1.7.0"
   }
 }
 

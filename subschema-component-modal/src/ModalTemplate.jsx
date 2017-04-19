@@ -1,7 +1,7 @@
-import React, {Component, Children} from "react";
+import React, {Component} from "react";
 import PropTypes from "subschema-prop-types";
 import cloneDeep from "lodash/cloneDeep";
-import RenderContent from "subschema-core/lib/components/RenderContent";
+import RenderContent from "subschema-core/lib/RenderContent";
 import RenderTemplate from "subschema-core/lib/RenderTemplate";
 
 
@@ -54,14 +54,13 @@ export default class ModalTemplate extends Component {
     }
 
 
-    handleClose = (e)=> {
+    handleClose = (e) => {
         e && e.preventDefault();
         this.props.dismiss();
     };
     handleBtnClose = (e, action) => {
         switch (action) {
-            case 'submit':
-            {
+            case 'submit': {
                 if (this.props.error) {
                     break;
                 }
@@ -89,12 +88,12 @@ export default class ModalTemplate extends Component {
     render() {
         const {title, legend, buttons, path, value, bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
-        return <div className={`${namespaceClass} ${overlayClass}`} style={{display:'block'}}>
+        return <div className={`${namespaceClass} ${overlayClass}`} style={{display: 'block'}}>
             <div className={backdropClass}></div>
-            <div className={dialogClass} role="document" style={{zIndex:2000}}>
+            <div className={dialogClass} role="document" style={{zIndex: 2000}}>
                 <div className={contentClass}>
                     <div className={headerClass}>
-                        <button onClick={this.handleClose} className={closeClass} name={this.props.path+'@dismiss'}
+                        <button onClick={this.handleClose} className={closeClass} name={this.props.path + '@dismiss'}
                                 value={value}
                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <RenderContent type='h4' content={title || legend}/>
