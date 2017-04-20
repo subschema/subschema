@@ -2,15 +2,21 @@
   "name": "subschema",
   "version": "1.7.0",
   "description": "Subschema",
-  "main": "dist/subschema-server.js",
+  "main": "lib/index.js",
   "browser": "dist/subschema.js",
   "web": "dist/subschema-noreact.js",
   "webpack": "src/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir lib",
-    "karma": "subschema-karma"
+    "compile-lib": "babel -s true src --out-dir lib",
+    "compile-web": "subschema-webpack -p --output-path dist --no-style-loader --output-filename subschema.js",
+    "compile-web-stats": "subschema-webpack -p --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
+    "compile-web-noreact": "subschema-webpack -p --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
+    "compile": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats",
+    "karma": "subschema-karma",
+    "prepublish": "yarn run compile"
   },
-  "dependencies": {
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
     "subschema-core": "^1.7.0",
     "subschema-injection": "^1.7.0",
     "subschema-expression": "^1.7.0",
@@ -26,9 +32,7 @@
     "subschema-css-bootstrap": "^1.7.0",
     "subschema-component-modal": "^1.7.0",
     "subschema-component-autocomplete": "^1.7.0",
-    "subschema-component-wizard": "^1.7.0"
-  },
-  "devDependencies": {
+    "subschema-component-wizard": "^1.7.0",
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0"
   }

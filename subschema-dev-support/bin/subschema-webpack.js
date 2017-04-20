@@ -25,6 +25,21 @@ if (process.argv.indexOf('--output-library') == -1) {
 
 if (process.argv.indexOf('--output-library-target') == -1) {
     process.argv.push('--output-library-target', 'umd');
-
+}
+var idx;
+if ((idx = process.argv.indexOf('--no-style-loader')) != -1) {
+    console.log(`disabling style loader`);
+    process.env.SUBSCHEMA_NO_STYLE_LOADER = 1;
+    process.argv.splice(idx, 1);
+}
+if ((idx = process.argv.indexOf('--use-stats-file')) != -1) {
+    var statsFile = process.argv.splice(idx, 2).pop();
+    console.log(`outputing stats file '${statsFile}'`);
+    process.env.SUBSCHEMA_USE_STATS_FILE = statsFile;
+}
+if ((idx = process.argv.indexOf('--use-externals')) != -1) {
+    var externals = process.argv.splice(idx, 2).pop();
+    console.log(`using externals ${externals}`);
+    process.env.SUBSCHEMA_USE_EXTERNALS = externals;
 }
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'webpack'));

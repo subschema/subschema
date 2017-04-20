@@ -32,3 +32,5 @@ build/Release
 node_modules
 lib/*
 */lib
+dist/*
+*/dist

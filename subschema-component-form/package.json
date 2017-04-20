@@ -10,13 +10,13 @@
   },
   "peerDependencies": {
     "subschema-core": "^1.7.0",
-    "subschema-transitions": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "lodash": "^4.6.1"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
+    "subschema-transitions": "^1.7.0",
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
     "subschema-expression": "^1.7.0",

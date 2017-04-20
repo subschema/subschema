@@ -15,48 +15,6 @@ import ValueManager from 'subschema-valuemanager';
 import css from 'subschema-component-form/lib/css';
 import {injectorFactory, cachedInjector, stringInjector} from 'subschema-injection';
 
-export {
-    Conditional,
-    Field,
-    FieldSet,
-    RenderContent,
-    RenderTemplate,
-    Form,
-    Dom,
-    PropTypes,
-    ValueManager,
-    css,
-    eventable,
-    loaderFactory,
-    tutils,
-    validators,
-    warning,
-    injectorFactory,
-    stringInjector,
-    cachedInjector,
-    newSubschemaContext
-};
-export default {
-    Conditional,
-    Field,
-    FieldSet,
-    RenderContent,
-    RenderTemplate,
-    Form,
-    Dom,
-    PropTypes,
-    ValueManager,
-    css,
-    eventable,
-    cachedInjector,
-    injectorFactory,
-    loaderFactory,
-    tutils,
-    validators,
-    warning,
-    newSubschemaContext
-}
-
 /**
  * Used to initialize new subschema for testing.  But also to override behaviours if necessary.
  *
@@ -110,4 +68,46 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
 
     return rest;
 
+}
+
+export {
+    Conditional,
+    Field,
+    FieldSet,
+    RenderContent,
+    RenderTemplate,
+    Form,
+    Dom,
+    PropTypes,
+    ValueManager,
+    css,
+    eventable,
+    loaderFactory,
+    tutils,
+    validators,
+    warning,
+    injectorFactory,
+    stringInjector,
+    cachedInjector,
+    newSubschemaContext
+};
+export default {
+    Conditional,
+    Field,
+    FieldSet,
+    RenderContent,
+    RenderTemplate,
+    Form,
+    Dom,
+    PropTypes,
+    ValueManager,
+    css,
+    eventable,
+    cachedInjector,
+    injectorFactory,
+    loaderFactory,
+    tutils,
+    validators,
+    warning,
+    newSubschemaContext
 }

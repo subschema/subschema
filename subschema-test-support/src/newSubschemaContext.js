@@ -7,7 +7,7 @@ import __Form from 'subschema-core/lib/Form';
 import _validators from 'subschema-validators';
 import {types as _types, templates as _templates} from 'subschema-component-form';
 import * as _processors from 'subschema-processors';
-import {styles as transitions} from 'subschema-transitions';
+import {transitions} from 'subschema-transitions';
 const newSubschemaContext = (opts) => {
     let {
         valueManager,

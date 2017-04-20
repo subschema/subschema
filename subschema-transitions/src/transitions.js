@@ -1,10 +1,8 @@
-module.exports = {
+export default {
     rollUp: {
         transitionAppearTimeout: 800,
         transitionEnterTimeout: 800,
         transitionLeaveTimeout: 800,
-
-
     },
     slideLeft: {
         transitionAppearTimeout: 500,

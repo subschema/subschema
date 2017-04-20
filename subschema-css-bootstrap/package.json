@@ -4,12 +4,16 @@
   "main": "lib/index.js",
   "description": "Bootstrap CSS support for subschema",
   "scripts": {
-    "compile": "subschema-webpack"
+    "compile": "subschema-webpack --no-style-loader"
   },
   "dependencies": {
     "bootstrap": "^3.3.7"
   },
+  "peerDependencies": {
+    "subschema-transitions": "^1.7.0"
+  },
   "devDependencies": {
-    "subschema-dev-support": "^1.7.0"
+    "subschema-dev-support": "^1.7.0",
+    "subschema-transitions": "^1.7.0"
   }
 }

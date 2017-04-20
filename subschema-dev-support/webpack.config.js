@@ -9,6 +9,7 @@ const deps = require(project('./package.json'));
 
 const alias = Object.keys(deps.dependencies || {}).concat(Object.keys(deps.devDependencies || {})).reduce(function (ret, key) {
     if (/subschema/.test(key)) {
+        ret[key + '/lib/style.css'] = project('..', key, 'lib', 'style.css');
         ret[key + '/lib'] = project('..', key, 'src');
         ret[key] = project('..', key, 'src');
     }
@@ -27,9 +28,36 @@ const autoprefixer = function () {
         })
     ];
 };
+var plugins = [];
+var externals = {};
+var useStyle;
+if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
+    var ExtractTextPlugin = require('extract-text-webpack-plugin');
+    const extractCSS = new ExtractTextPlugin(process.env.SUBSCHEMA_USE_STATS_FILE ? '[hash].style.css' : 'style.css');
+    useStyle = function useStyleExtractText() {
+        return extractCSS.extract(Array.prototype.slice.call(arguments));
+    };
+    plugins.push(extractCSS);
+} else {
+    useStyle = function useStyleWithStyleLoader() {
+        return ['style-loader'].concat(Array.prototype.slice.call(arguments));
+    };
+}
 
+if (process.env.SUBSCHEMA_USE_STATS_FILE) {
+    plugins.push(new (require("webpack-stats-plugin").StatsWriterPlugin)({
+        filename: process.env.SUBSCHEMA_USE_STATS_FILE,
+        transform(data, opts){
+            var chunks = data.assetsByChunkName["null"];
+            return JSON.stringify({main: chunks[0], css: chunks[1]}, null, 2);
+        }
+    }))
+}
+if (process.env.SUBSCHEMA_USE_EXTERNALS) {
+    //react,...
+    externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/);
+}
 var webpack = {
-    devtool: '#inline-source-map',
     devServer: {
         noInfo: true,
         hot: true,
@@ -42,22 +70,19 @@ var webpack = {
         extensions: ['.js', '.jsx'],
         alias
     },
+    plugins,
+    externals,
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
                 //       exclude: /(node_modules|bower_components)/,
                 include: [/test\/*/, /src\/*/, /subschema*\/src\/*/],
-                use: {
-                    loader: 'babel-loader'
-                }
+                use: 'babel-loader'
             },
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
+                use: useStyle('css-loader')
             },
             {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=application/font-woff'},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=application/octet-stream'},
@@ -65,8 +90,7 @@ var webpack = {
             {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=image/svg+xml'},
             {
                 test: /\.less$/,
-                use: [
-                    "style-loader",
+                use: useStyle(
                     {
                         loader: "css-loader",
                         options: {
@@ -87,8 +111,7 @@ var webpack = {
                         options: {
                             plugins: autoprefixer
                         }
-                    }
-                ]
+                    })
             }
         ]
     }
@@ -98,7 +121,7 @@ if (fs.existsSync(customWebpack)) {
     var custom = require(customWebpack);
     custom = custom.default || custom;
     var backup = webpack;
-    webpack = custom(webpack);
+    webpack = typeof custom == 'function' ? custom(webpack) : custom;
     if (!webpack) webpack = backup;
 }
 module.exports = webpack;

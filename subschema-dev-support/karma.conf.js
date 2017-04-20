@@ -3,6 +3,8 @@ var webpack = require('./webpack.config');
 var path = require('path');
 const test = path.resolve(__dirname, 'test-index.js');
 webpack.resolve.alias.test = path.resolve(process.cwd(), 'test');
+webpack.devtool = '#inline-source-map';
+
 console.log('running tests in ', webpack.resolve.alias.test);
 module.exports = function (config) {
     config.set({
