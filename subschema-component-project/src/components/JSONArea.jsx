@@ -1,6 +1,5 @@
-"use strict";
 import React, {Component} from 'react';
-import {PropTypes} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 
 
 export default class JSONArea extends Component {
@@ -13,7 +12,7 @@ export default class JSONArea extends Component {
         this.state = {};
     }
 
-    commitChange = e=> {
+    commitChange = e => {
         var value = e.target.value;
         try {
             var obj = JSON.parse(value);
@@ -29,7 +28,7 @@ export default class JSONArea extends Component {
      * Commit on blur, otherwise cursor focus gets screwey
      **/
     handleChange = e => {
-        var {value}= e.target;
+        var {value} = e.target;
         var ovalue = value;
         var error;
         try {

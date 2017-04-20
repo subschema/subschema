@@ -4,6 +4,7 @@ var project = function (...args) {
     let p = path.resolve(process.cwd(), path.join(...args));
     return p;
 };
+
 const deps = require(project('./package.json'));
 
 const alias = Object.keys(deps.dependencies || {}).concat(Object.keys(deps.devDependencies || {})).reduce(function (ret, key) {
@@ -29,6 +30,14 @@ const autoprefixer = function () {
 
 var webpack = {
     devtool: '#inline-source-map',
+    devServer: {
+        noInfo: true,
+        hot: true,
+        inline: true,
+        contentBase: path.resolve(process.cwd(), 'public'),
+        publicPath: '/',
+        port: 8082
+    },
     resolve: {
         extensions: ['.js', '.jsx'],
         alias
@@ -84,4 +93,12 @@ var webpack = {
         ]
     }
 };
+var customWebpack = path.resolve(process.cwd(), 'webpack.subschema.js');
+if (fs.existsSync(customWebpack)) {
+    var custom = require(customWebpack);
+    custom = custom.default || custom;
+    var backup = webpack;
+    webpack = custom(webpack);
+    if (!webpack) webpack = backup;
+}
 module.exports = webpack;

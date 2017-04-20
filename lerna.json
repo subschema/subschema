@@ -7,7 +7,7 @@
     "subschema-loader",
     "subschema-prop-types",
     "subschema-processors",
-    "subschema-transition",
+    "subschema-transitions",
     "subschema-utils",
     "subschema-valuemanager",
     "subschema-validators",

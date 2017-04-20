@@ -1,54 +1,44 @@
-import _ReactCSSReplaceTransition from "subschema-transition/lib/ReactCSSReplaceTransition";
-import _DefaultLoader from "./DefaultLoader";
-import * as _templates from "./templates";
-import * as _types from "./types";
-import * as _processors from "./processors";
-import * as _styles from "./styles";
-import * as _resolvers from "./resolvers";
-import {transitions as _transitions} from "./subschema-transition";
-import {injectorFactory as _injectorFactory} from "subschema-injection";
-import Subschema, {
-    Conditional as _C,
-    Field as _Field,
-    FieldSet as _FieldSet,
-    RenderContent as _RenderContent,
-    RenderTemplate as _RenderTemplate,
-    Form as _F,
-    NewChildContext as _N,
-    Dom as _D,
-    PropTypes as _PropTypes,
-    Template as _T,
-    ValueManager as _V,
-    css as _c,
-    eventable as _e,
-    listenUtil as _l,
-    loaderFactory as _loaderFactory,
-    stringInjector as _stringInjector,
-    tutils as _t,
-    validators as _v,
-    warning as _w,
-    newSubschemaContext as _newSubschemaContext
-} from "./core.js";
+import _ReactCSSReplaceTransition from "subschema-transitions/lib/ReactCSSReplaceTransition";
+import _PropTypes from 'subschema-prop-types';
+import _ValueManager from 'subschema-valuemanager';
+import _processors from 'subschema-processors';
+import _expression from 'subschema-expression';
+import _transition from 'subschema-transitions';
+import _Form from 'subschema-core/lib/Form';
+import _resolvers from 'subschema-core/lib/resolvers';
+import _Dom from 'subschema-component-form/lib/Dom';
+import _Field from 'subschema-core/lib/Field';
+import _FieldSet from 'subschema-core/lib/FieldSet';
+import _Conditional from 'subschema-core/lib/Conditional';
+import _RenderContent from 'subschema-core/lib/RenderContent';
+import _RenderTemplate from 'subschema-core/lib/RenderTemplate';
+import _css from 'subschema-component-form/lib/css';
+import _validators from 'subschema-validators';
+import _tutils from 'subschema-utils';
+import _warning from 'subschema-utils/warning';
+import _eventable from 'subschema-valuemanager/lib/eventable';
+import _DefaultLoader from './DefaultLoader';
+import {_newSubschemaContext} from './core';
+import _loaderFactory from 'subschema-loader';
+import {stringInjector as _stringInjector, injectorFactory as _injectorFactory} from 'subschema-injection';
+import {transitions as _transitions} from 'subschema-transistions';
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;
 export const RenderContent = _RenderContent;
 export const loaderFactory = _loaderFactory;
-export const Conditional = _C;
+export const Conditional = _Conditional;
 export const Field = _Field;
 export const FieldSet = _FieldSet;
-export const Form = _F;
-export const NewChildContext = _N;
-export const Dom = _D;
+export const Form = _Form;
+export const Dom = _Dom;
 export const PropTypes = _PropTypes;
-export const Template = _T;
-export const ValueManager = _V;
-export const css = _c;
-export const eventable = _e;
-export const listenUtil = _l;
-export const tutils = _t;
-export const validators = _v;
-export const warning = _w;
+export const ValueManager = _ValueManager;
+export const css = _css;
+export const eventable = _eventable;
+export const tutils = _tutils;
+export const validators = _validators;
+export const warning = _warning;
 export const transitions = _transitions;
 export const templates = _templates;
 export const types = _types;
@@ -58,16 +48,9 @@ export const DefaultLoader = _DefaultLoader;
 export const resolvers = _resolvers;
 export const ReactCSSReplaceTransition = _ReactCSSReplaceTransition;
 
-Subschema.types = _types;
-Subschema.templates = _templates;
-Subschema.processors = _processors;
-Subschema.styles = _styles;
-Subschema.resolvers = _resolvers;
-Subschema.DefaultLoader = _DefaultLoader;
-
-const _initSubchemaContext = newSubschemaContext();
+const _initSubchemaContext = _newSubschemaContext();
 export const loader = _initSubchemaContext.loader;
-export const injector = Subschema.injector = _initSubchemaContext.injector;
+export const injector = injectorFactory();
 export default _initSubchemaContext;
 
 /**

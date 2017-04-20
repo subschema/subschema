@@ -1,24 +1,20 @@
-"use strict";
-
-import Conditional from './components/Conditional';
-import Field from './components/Field';
-import FieldSet from './components/FieldSet';
-import RenderContent from './components/RenderContent';
-import RenderTemplate from './components/RenderTemplate';
-import NewChildContext from './components/NewChildContext';
-import Form from './components/Form';
-import Dom from './Dom';
-import eventable from 'subschame-valuemanager/lib/eventable';
-import loaderFactory from './loaderFactory';
+import Conditional from 'subschema-core/lib/Conditional';
+import Field from 'subschema-core/lib/Field';
+import FieldSet from 'subschema-core/lib/FieldSet';
+import RenderContent from 'subschema-core/lib/RenderContent';
+import RenderTemplate from 'subschema-core/lib/RenderTemplate';
+import Form from 'subschema-core/lib/Form';
+import Dom from 'subschema-component-form/lib/Dom';
+import eventable from 'subschema-valuemanager/lib/eventable';
+import loaderFactory from 'subschema-loader';
 import PropTypes from 'subschema-prop-types';
 import validators from 'subschema-validators';
-import warning from 'subschema-util/lib/warning';
+import warning from 'subschema-utils/lib/warning';
 import * as tutils from 'subschema-utils';
 import ValueManager from 'subschema-valuemanager';
-import css from './css';
-import {injectorFactory} from 'subschema-injection';
-import cachedInjector from './cachedInjector';
-import stringInjector from './stringInjector';
+import css from 'subschema-component-form/lib/css';
+import {injectorFactory, cachedInjector, stringInjector} from 'subschema-injection';
+
 export {
     Conditional,
     Field,
@@ -26,7 +22,6 @@ export {
     RenderContent,
     RenderTemplate,
     Form,
-    NewChildContext,
     Dom,
     PropTypes,
     ValueManager,
@@ -48,7 +43,6 @@ export default {
     RenderContent,
     RenderTemplate,
     Form,
-    NewChildContext,
     Dom,
     PropTypes,
     ValueManager,
@@ -80,7 +74,6 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     RenderContent,
     RenderTemplate,
     Form,
-    NewChildContext,
     Dom,
     PropTypes,
     ValueManager,
@@ -111,6 +104,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     // properties.
     rest.Form.defaultProps.loader = defaultLoader;
     rest.Form.defaultProps.injector = defaultInjector;
+    rest.Form.defaultValueManager = ValueManager;
     rest.loader = defaultLoader;
     rest.injector = defaultInjector;
 

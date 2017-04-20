@@ -1,7 +1,6 @@
-"use strict";
 import React, {Component} from 'react';
 import {Basic} from 'subschema-test-samples';
-import {PropTypes} from 'Subschema';
+import Proptypes from 'subschema-prop-types';
 import DownloadButton from './DownloadButton.jsx';
 import capitalize from 'lodash/string/capitalize';
 

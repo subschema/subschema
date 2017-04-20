@@ -5,19 +5,31 @@
   "main": "dist/subschema-server.js",
   "browser": "dist/subschema.js",
   "web": "dist/subschema-noreact.js",
-  "webpack": "src/index.jsx",
+  "webpack": "src/index.js",
+  "scripts": {
+    "compile": "babel -s true src --out-dir lib",
+    "karma": "subschema-karma"
+  },
   "dependencies": {
-    "subschema-component-autocomplete": "1.7.0",
-    "subschema-component-form": "1.7.0",
-    "subschema-component-list": "1.7.0",
-    "subschema-component-content": "1.7.0",
-    "subschema-core": "1.7.0",
-    "subschema-valuemanager": "1.7.0",
-    "subschema-prop-types": "1.7.0",
-    "subschema-injection": "1.7.0",
-    "subschema-expression": "1.7.0",
-    "subschema-utils": "1.7.0",
+    "subschema-core": "^1.7.0",
+    "subschema-injection": "^1.7.0",
+    "subschema-expression": "^1.7.0",
+    "subschema-loader": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-processors": "^1.7.0",
+    "subschema-transitions": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
     "subschema-validators": "^1.7.0",
-    "subschema-transition":"1.7.0"
+    "subschema-component-form": "^1.7.0",
+    "subschema-component-list": "^1.7.0",
+    "subschema-css-bootstrap": "^1.7.0",
+    "subschema-component-modal": "^1.7.0",
+    "subschema-component-autocomplete": "^1.7.0",
+    "subschema-component-wizard": "^1.7.0"
+  },
+  "devDependencies": {
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-support": "^1.7.0"
   }
 }

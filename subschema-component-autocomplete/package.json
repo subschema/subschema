@@ -21,7 +21,7 @@
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "subschema-component-form": "^1.7.0",
-    "subschema-transition": "^1.7.0",
+    "subschema-transitions": "^1.7.0",
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
     "subschema-expression": "^1.7.0",

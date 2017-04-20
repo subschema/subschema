@@ -1,6 +1,10 @@
 "use strict";
 import React, {Component} from 'react';
-import {Form, ValueManager, decorators, loader, loaderFactory, PropTypes} from 'Subschema';
+import Form from 'subschema-core/lib/Form';
+import ValueManager from 'subschema-valuemanager';
+import loaderFactory from 'subschema-loader';
+
+//import {Form, ValueManager, decorators, loader, loaderFactory, PropTypes} from 'Subschema';
 import DownloadButton from './DownloadButton.jsx';
 import samples from '../samples';
 import camelCase from 'lodash/string/camelCase';

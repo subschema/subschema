@@ -26,6 +26,14 @@ import _RestrictedMixin from './types/RestrictedMixin';
 import _Dom from './Dom';
 import _css from './css';
 import _styles from '../styles'
+import _ReactCSSReplaceTransition from './ReactCSSReplaceTransition';
+import _ReactCSSTransitionGroupChild from './ReactCSSTransitionGroupChild';
+import {resolvers} from 'subschema-core/lib/resolvers';
+import Conditional from 'subschema-core/lib/Conditional';
+
+export const ReactCSSReplaceTransition = Conditional.Transition = resolvers.transitions.Transition = _ReactCSSReplaceTransition;
+
+export const ReactCSSTransitionGroupChild = _ReactCSSTransitionGroupChild;
 
 export const RestrictedMixin = _RestrictedMixin;
 

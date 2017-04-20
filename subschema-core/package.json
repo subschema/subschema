@@ -24,7 +24,7 @@
   "dependencies": {
     "subschema-expression": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
-    "subschema-transition": "^1.7.0",
+    "subschema-transitions": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "lodash": "^4.6.1"
   }

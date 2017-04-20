@@ -1,10 +1,10 @@
 {
-  "name": "subschema-transition",
+  "name": "subschema-transitions",
   "version": "1.7.0",
-  "description": "Subschema Transition",
+  "description": "Subschema Transitions",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir lib",
+    "compile": "subschema-webpack",
     "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
     "prepublish": "yarn run test"
   },
@@ -15,8 +15,7 @@
     "prop-types": "^15.5.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "mocha": "^3.2.0"
+    "subschema-dev-support": "^1.7.0"
   }
 }
 

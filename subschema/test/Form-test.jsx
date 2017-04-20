@@ -1,8 +1,8 @@
-"use strict";
 import React, {Component} from "react";
 import {into, TestUtils, expect, Simulate, byTag, byTags, byType, click} from "subschema-test-support";
-import {loader, Form, templates, ValueManager} from "Subschema";
-var {EditorTemplate, ButtonTemplate} = templates;
+import {loader, Form, ValueManager} from "subschema";
+import {templates} from "subschema-component-form";
+const {EditorTemplate, ButtonTemplate} = templates;
 
 describe('components/Form', function () {
     this.timeout(50000);
@@ -66,9 +66,11 @@ describe('components/Form', function () {
     });
     it('should create a form with a schema', function () {
 
-        var root = into(<Form schema={{schema:{
-            name:'Text'
-        }}}/>);
+        var root = into(<Form schema={{
+            schema: {
+                name: 'Text'
+            }
+        }}/>);
 
         expect(root).toExist();
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
@@ -76,9 +78,11 @@ describe('components/Form', function () {
     });
     it('should create a form with a schema and value', function () {
 
-        var root = into(<Form value={{name:'Joe'}} schema={{schema:{
-            name:'Text'
-        }}}/>);
+        var root = into(<Form value={{name: 'Joe'}} schema={{
+            schema: {
+                name: 'Text'
+            }
+        }}/>);
 
         expect(root).toExist();
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
@@ -231,7 +235,7 @@ describe('components/Form', function () {
                 fields: 'test',
                 buttons: ["submit"]
             }]
-        }, value = {}, submitArgs, onSubmit = (e, ...args)=> {
+        }, value = {}, submitArgs, onSubmit = (e, ...args) => {
             e && e.preventDefault();
 
             submitArgs = args;
@@ -256,7 +260,7 @@ describe('components/Form', function () {
                 fields: 'test',
                 buttons: ["submit"]
             }]
-        }, value, error, count = 0, onSubmit = (e, err, val, ...args)=> {
+        }, value, error, count = 0, onSubmit = (e, err, val, ...args) => {
             e && e.preventDefault();
             value = val;
             error = err;
@@ -284,16 +288,16 @@ describe('components/Form', function () {
     it('should validate checkbox on submit', function () {
         const valueManager = ValueManager({});
         var root = into(<Form valueManager={valueManager} schema={{
-            schema:{
-                c1:{type:'Checkbox',validators:['required']}
+            schema: {
+                c1: {type: 'Checkbox', validators: ['required']}
             },
-            fieldsets:[{
-                buttons:[{
-                   action:"submit",
-                   label:"Submit"
+            fieldsets: [{
+                buttons: [{
+                    action: "submit",
+                    label: "Submit"
                 }],
-                legend:"C1",
-                fields:"c1"
+                legend: "C1",
+                fields: "c1"
             }]
         }}/>, true);
         expect(root).toExist();
@@ -313,7 +317,7 @@ describe('components/Form', function () {
             state = {form: 0};
 
             render() {
-                return <Form schema={{schema:schemas[this.state.form]}}/>
+                return <Form schema={{schema: schemas[this.state.form]}}/>
             }
         }
 

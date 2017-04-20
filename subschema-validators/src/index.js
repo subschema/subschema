@@ -121,6 +121,9 @@ export const match = function (options) {
         if (value !== attrs.path(options.field)) return err;
     };
 };
-export default ({
+
+export const validators = {
     match, url, email, regexp, number, required
-})
+};
+
+export default validators;

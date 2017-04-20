@@ -4,7 +4,6 @@ import _ListItemTemplate from './ListItemTemplate.less';
 import _WizardProgressTemplate from './WizardProgressTemplate.less';
 import _WizardTemplate from './WizardTemplate.less';
 
-
 export const Autocomplete = _Autocomplete;
 export const ListItemTemplate = _ListItemTemplate;
 export const WizardProgressTemplate = _WizardProgressTemplate;

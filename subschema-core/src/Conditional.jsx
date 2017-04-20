@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import CSSTransitionGroup from 'subschema-transition/lib/ReactCSSReplaceTransition';
 import RenderTemplate from './RenderTemplate';
+import {settings} from './resolvers/transition';
 
 export default class Conditional extends Component {
     static contextTypes = PropTypes.contextTypes;
     static displayName = "Conditional";
+    static Transition = settings.Transition;
     static defaultProps = {
         operator: "!=",
         animate: false,
         error: null,
         listen: '.',
-        value: null
+        value: null,
     };
 
     static propTypes = {
@@ -99,11 +100,14 @@ export default class Conditional extends Component {
 
 
     render() {
-        if (!this.props.transition) {
+        const {TransitionGroup} = this.constructor;
+
+        if (!this.props.transition || !TransitionGroup) {
             return this.renderContent();
         }
-        return <CSSTransitionGroup {...this.props.transition}>
+
+        return <TransitionGroup {...this.props.transition}>
             {this.renderContent()}
-        </CSSTransitionGroup>
+        </TransitionGroup>
     }
 }

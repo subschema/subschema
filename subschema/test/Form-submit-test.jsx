@@ -1,6 +1,6 @@
 "use strict";
 import React from "react";
-import {Form, ValueManager} from "Subschema";
+import {Form, ValueManager} from "subschema";
 import {renderToString, renderToStaticMarkup} from "react-dom/server";
 import {into, expect, Simulate, byTags} from "subschema-test-support";
 

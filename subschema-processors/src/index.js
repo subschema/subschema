@@ -3,8 +3,12 @@ import _OptionsProcessor from './OptionsProcessor';
 
 export const ArrayProcessor = _ArrayProcessor;
 export const OptionsProcessor = _OptionsProcessor;
-
-export default ({
+export const processors = {
     ArrayProcessor,
     OptionsProcessor
+};
+export default ({
+    ArrayProcessor,
+    OptionsProcessor,
+    processors
 });

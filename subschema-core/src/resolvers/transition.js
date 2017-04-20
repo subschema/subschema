@@ -1,12 +1,18 @@
-"use strict";
 import PropTypes from 'subschema-prop-types';
-import Transition from 'subschema-transition/lib/ReactCSSReplaceTransition';
-
+import warning from 'subschema-utils/lib/warning'
 const EMPTY = {};
 export const settings = {
     transition: 'rollUp',
     on: ['enter', 'leave'],
-    Transition: Transition
+    Transition({children}) {
+        try {
+            throw new Error(`Please set resolvers.transition.settings.Transition to a transition handler`)
+        } catch (e) {
+            warning(e);
+        }
+        return children ? children[0] : null;
+    }
+
 };
 
 
@@ -18,7 +24,7 @@ export function handleTransition(value, key, props, {loader}) {
         value = {transition: value};
     }
 
-    const {transition, ...config} =  {...settings, ...value};
+    const {transition, ...config} = {...settings, ...value};
 
     const {
         transitionAppearTimeout,

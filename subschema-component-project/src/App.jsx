@@ -1,13 +1,19 @@
 "use strict";
-import  './global-fix';
+import './global-fix';
 import React, {Component} from 'react';
-import Subschema, {loader, ValueManager,PropTypes,resolvers, Form} from 'Subschema';
-import JSONArea from './JSONArea';
+import ValueManager from 'subschema-valuemanager';
+import PropTypes from 'subschema-prop-types';
+import resolvers from 'subschema-core/lib/resolvers';
+import Form from 'subschema-core/lib/Form';
+import JSONArea from './components/JSONArea';
 import samples from 'subschema-test-samples';
 import kebabCase from 'lodash/string/kebabCase';
 import {saveAs} from 'browser-filesaver';
-import ExportButtons from '../src/components/ExportButtons.jsx';
+import ExportButtons from './components/ExportButtons.jsx';
+
 resolvers.type.defaultPropTypes.defaultValue = PropTypes.expression;
+
+const loader = loaderFactory();
 
 loader.addType({JSONArea, ExportButtons});
 //A simple Schema for this configuration
@@ -25,7 +31,7 @@ var schema = {
         },
         userOrOrg: {
             type: "Text",
-            title:"Username or organization",
+            title: "Username or organization",
             help: "Username or organization to publish module"
         },
         project: {
@@ -112,13 +118,13 @@ valueManager.addListener('samples', function (value) {
             description: ''
         }
     }
-    var {...copy } = sample;
+    var {...copy} = sample;
     this.update('sample', null);
     this.update('jsName', value);
     this.update('project.name', 'example-' + kebabCase(copy.name || value));
     this.update('project.description', copy.description);
     this.update('project.version', '1.0.0');
-    Object.keys(copy).forEach(k=>this.update(`sample.${k}`, copy[k]));
+    Object.keys(copy).forEach(k => this.update(`sample.${k}`, copy[k]));
 
 }, valueManager, true);
 
