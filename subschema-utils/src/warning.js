@@ -11,16 +11,17 @@ if (process.env.NODE_ENV !== 'production') {
             return;
         }
 
-        var args = arguments, i = 2, message = 'Subschema Warning: ' + format.replace(/%s/g, ()=>args[i++]);
+        var args = arguments, i = 2, message = 'Subschema Warning: ' + format.replace(/%s/g, () => args[i++]);
 
         if (typeof console !== void(0)) {
             console.error(message);
         }
-        
+
         try {
             //trigger debugger;
             throw new Error(message);
         } catch (x) {
+            console.trace(x);
         }
     }
 }

@@ -126,4 +126,4 @@ export const validators = {
     match, url, email, regexp, number, required
 };
 
-export default validators;
+export default ({validators});

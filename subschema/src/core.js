@@ -43,7 +43,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     warning,
     injectorFactory,
     cachedInjector,
-    stringInjector
+    stringInjector,
 
 }) {
     const {loader, injector, ...rest} = Subschema;
@@ -62,7 +62,7 @@ function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, default
     // properties.
     rest.Form.defaultProps.loader = defaultLoader;
     rest.Form.defaultProps.injector = defaultInjector;
-    rest.Form.defaultValueManager = ValueManager;
+    rest.valueManager = rest.Form.defaultProps.valueManager = ValueManager();
     rest.loader = defaultLoader;
     rest.injector = defaultInjector;
 

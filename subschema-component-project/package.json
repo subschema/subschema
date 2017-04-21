@@ -5,13 +5,17 @@
   "main": "dist/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "subschema-webpack"
+    "compile": "subschema-webpack",
+    "server": "subschema-webpack-dev-server"
   },
   "dependencies": {
-    "validate-npm-package-name":"^3.0.0"
+    "validate-npm-package-name": "^3.0.0",
+    "browser-filesaver": "1.1.1",
+    "subschema-test-samples": "^1.7.0"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",
+    "subschema": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
@@ -19,6 +23,7 @@
     "subschema-processors": "^1.7.0"
   },
   "devDependencies": {
+    "subschema": "^1.7.0",
     "lodash": "^4.6.1",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
@@ -33,6 +38,7 @@
     "subschema-processors": "^1.7.0",
     "subschema-validators": "^1.7.0",
     "subschema-valuemanager": "^1.7.0",
-    "subschema-css-bootstrap": "^1.7.0"
+    "subschema-css-bootstrap": "^1.7.0",
+    "subschema-test-samples":"^1.7.0"
   }
 }

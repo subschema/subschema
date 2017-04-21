@@ -1,10 +1,9 @@
+import React from 'react';
+import importer from './importer';
 import {
     ReactCSSReplaceTransition  as _ReactCSSReplaceTransition,
-    templates as _templates,
-    types as _types
 } from  "subschema-component-form";
 import {transistions as _transitions, styles as _styles} from "subschema-css-bootstrap";
-
 import _PropTypes from 'subschema-prop-types';
 import _ValueManager from 'subschema-valuemanager';
 import _processors from 'subschema-processors';
@@ -19,12 +18,27 @@ import _RenderTemplate from 'subschema-core/lib/RenderTemplate';
 import _css from 'subschema-component-form/lib/css';
 import _validators from 'subschema-validators';
 import _tutils from 'subschema-utils';
-import _warning from 'subschema-utils/warning';
+import _warning from 'subschema-utils/lib/warning';
 import _eventable from 'subschema-valuemanager/lib/eventable';
 import _DefaultLoader from './DefaultLoader';
 import {newSubschemaContext as _newSubschemaContext} from './core';
 import _loaderFactory from 'subschema-loader';
 import {stringInjector as _stringInjector, injectorFactory as _injectorFactory} from 'subschema-injection';
+const _types = new Proxy({}, {
+    get(target, name) {
+        _warning(false, `please do not depend on Subschema.types, use the loader.loadType('%s') instead`, name);
+        return _DefaultLoader.loadType(name);
+    }
+});
+const _templates = new Proxy({}, {
+    get(target, name) {
+        _warning(false, `please do not depend on Subschema.templates, use the loader.loadTemplate('%s') instead`, name);
+        return _DefaultLoader.loadTemplate(name);
+    }
+});
+function subschemaRequire(name) {
+
+}
 const stringInjector = _stringInjector;
 const injectorFactory = _injectorFactory;
 const RenderTemplate = _RenderTemplate;
@@ -95,7 +109,11 @@ const Subschema = {
  * @param defaultPropTypes
  */
 function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory, defaultSubschema = Subschema) {
-    return _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectorFactory, defaultSubschema);
+    const ctx = _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectorFactory, defaultSubschema);
+
+    ctx.importer = importer(ctx, React);
+
+    return ctx;
 }
 
 export {

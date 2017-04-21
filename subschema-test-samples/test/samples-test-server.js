@@ -26,7 +26,7 @@ describe('samples', function () {
                     var loader = Subschema.loader;
                     var valueManager = ValueManager(sample.data);
                     if (sample.setupFunc) {
-                        sample.setupFunc(loader, sample.schema, Subschema, React, valueManager);
+                        sample.setupFunc(Subschema.importer, sample.schema);
                     }
                     var form = ReactServer.renderToString(React.createElement(Form, {
                         schema: sample.schema,

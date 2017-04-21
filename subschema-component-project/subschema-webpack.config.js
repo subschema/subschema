@@ -1,3 +1,5 @@
+var path = require('path');
+var join = path.join.bind(path, __dirname);cd
 module.exports = function (config) {
     config.module.rules.push(
         {
@@ -7,24 +9,16 @@ module.exports = function (config) {
                 join('src')
             ]
         },
-
-        {
-            test: /\.jsx?$/,
-            //do this to prevent babel from translating everything.
-            use: 'babel-loader',
-            exclude: [/dist/, /babylon\/.*/, /babel/],
-            include: [
-                join('src'),
-                join('public'),
-                join('samples'),
-                join('test')
-            ]
-        },
         {
             test: /\.json$/,
             use: 'json-loader'
         });
-
+    if (Array.isArray(config.externals)) {
+        config.externals = config.externals.reduce(function (ret, key) {
+            ret[key] = key;
+            return ret;
+        }, {})
+    }
     Object.assign(config.externals, {
         'babel-standalone-internal': {
             'var': 'Babel',
@@ -32,5 +26,6 @@ module.exports = function (config) {
             'commonjs2': 'babel'
         }
     });
+    console.log('config', JSON.stringify(config, null, 2));
     return config;
 };

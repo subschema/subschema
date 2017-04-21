@@ -19,7 +19,9 @@
     "subschema-component-modal",
     "subschema-component-autocomplete",
     "subschema-component-wizard",
-    "subschema"
+    "subschema",
+    "subschema-test-samples",
+    "subschema-component-project"
   ],
   "version": "1.7.0"
 }

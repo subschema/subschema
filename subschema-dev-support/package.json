@@ -3,8 +3,9 @@
   "version": "1.7.0",
   "description": "Tools for developing with subschema",
   "bin": {
-    "subschema-karma": "./bin/subschema-karma.js",
-    "subschema-webpack": "./bin/subschema-webpack.js"
+    "subschema-karma": "bin/subschema-karma.js",
+    "subschema-webpack": "bin/subschema-webpack.js",
+    "subschema-webpack-dev-server": "bin/subschema-webpack-dev-server.js"
   },
   "dependencies": {
     "karma-cli": "^1.0.1",

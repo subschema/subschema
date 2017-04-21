@@ -1,5 +1,9 @@
 import {isArray, isString} from 'subschema-utils';
+import warning from 'subschema-utils/lib/warning';
+
 const concat = Function.apply.bind(Array.prototype.concat, []);
+
+const upFirst = (str) => `${str[0].toUpperCase()}${str.substring(1)}`;
 
 export default function loaderFactory(loaders = []) {
     const types = {load, list, add},
@@ -12,12 +16,16 @@ export default function loaderFactory(loaders = []) {
                     }, this)
                 }
                 Object.keys(loader).forEach(function (key) {
-                    if (!(key in this)) {
-                        var parts = /^(load|list)(.*)/.exec(key);
-                        if (parts && parts.length > 2 && parts[1] in types) {
-                            this[key] = types[parts[1]](parts[2]);
+                    var parts = /^(load|list)(.*)/.exec(key);
+                    if (key in this && parts && parts.length > 2 && parts[1] in types) {
+                        this[key] = types[parts[1]](parts[2]);
+                    } else {
+                        //allow for an array of objects to be loaded.
+                        const _add = this[`add${upFirst(key)}`];
+                        if (typeof _add === 'function') {
+                            _add.call(this, loader[key]);
                         } else {
-                            console.log('do not understand ' + key);
+                            warning(false, 'do not understand "%s"', key);
                         }
                     }
                 }, this);
@@ -67,6 +75,7 @@ export default function loaderFactory(loaders = []) {
                     return ret;
                 }
             }
+            warning(false, `'%s' did not find '%s'`, method, load);
         }
     }
 
@@ -97,7 +106,7 @@ export default function loaderFactory(loaders = []) {
 
     function loaderType(name, addF = add, loadF = load, listF = list) {
         if (addF) {
-            this[`add${name}`] = addF(name);
+            this[`add${name}s`] = this[`add${name}`] = addF(name);
         }
         if (loadF) {
             this[`load${name}`] = loadF(name);

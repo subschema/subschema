@@ -12,6 +12,7 @@ import unique from 'lodash/uniq';
 import noop from 'lodash/noop';
 import each from 'lodash/each';
 import values from 'lodash/values';
+import warning from './warning';
 
 const FREEZE_OBJ = Object.freeze({});
 const FREEZE_ARR = Object.freeze([]);
@@ -178,6 +179,7 @@ function nextFunc(f1, f2) {
 
 //re-exports
 export {
+    warning,
     extend,
     isFunction,
     isString,
@@ -214,6 +216,7 @@ export {
     inherits
 };
 export default {
+    warning,
     extend,
     isFunction,
     isString,

@@ -1,20 +1,64 @@
 var path = require('path');
 var fs = require('fs');
 var project = function (...args) {
-    let p = path.resolve(process.cwd(), path.join(...args));
-    return p;
+    return path.resolve(process.cwd(), path.join(...args));
 };
 
-const deps = require(project('./package.json'));
+var deps = require(project('./package.json'));
+function wrapFunc(f) {
+    if (!f) return;
+    return function (conf, opts) {
+        return f.call(this, conf, opts) || conf;
+    }
+}
+function applyFuncs(f1, f2) {
+    f1 = f1 && (f1.default ? f1.default : f1);
+    f2 = f2 && (f2.default ? f2.default : f2);
+    if (!f2) {
+        return wrapFunc(f1);
+    }
+    if (!f1 && f2) {
+        return wrapFunc(f2);
+    }
+    if (!f1 && !f2) {
+        return null;
+    }
+    f1 = wrapFunc(f1);
+    f2 = wrapFunc(f2);
+    return function (conf, opts) {
+        //keep scope.
+        return f1.call(this, (f2.call(this, conf, opts)), opts);
+    }
+}
+var SUBSCHEMA_CONF = 'subschema-webpack.config.js';
+var customConf = null;
+var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys(deps.devDependencies || {}), Object.keys(deps.peerDependencies || {})).reduce(function (ret, key) {
+    if (key in ret) return ret;
+    if (fs.existsSync(project('..', key, SUBSCHEMA_CONF))) {
+        customConf = applyFuncs(customConf, require(project('..', key, SUBSCHEMA_CONF)));
+        console.log(`using custom config for ${key}`);
+    } else {
+        var resolvedTo;
+        try {
+            resolvedTo = require.resolve(`${key}/${SUBSCHEMA_CONF}`);
+        } catch (e) {
+            //swallow it probably does not exists.
+        }
+        if (resolvedTo) {
+            //don't swallow. because it does exist but theres a problem;
+            customConf = applyFuncs(customConf, require(resolvedTo));
+            console.log(`using custom config for ${key}`);
 
-const alias = Object.keys(deps.dependencies || {}).concat(Object.keys(deps.devDependencies || {})).reduce(function (ret, key) {
-    if (/subschema/.test(key)) {
+        }
+    }
+    if (/subschema/.test(key) && fs.existsSync(project('..', key, 'package.json'))) {
         ret[key + '/lib/style.css'] = project('..', key, 'lib', 'style.css');
         ret[key + '/lib'] = project('..', key, 'src');
+
         ret[key] = project('..', key, 'src');
     }
     return ret;
-}, {[deps.name]: project('src')});
+}, {});
 
 const autoprefixer = function () {
     return [
@@ -29,7 +73,7 @@ const autoprefixer = function () {
     ];
 };
 var plugins = [];
-var externals = {};
+var externals = [];
 var useStyle;
 if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
     var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -57,6 +101,7 @@ if (process.env.SUBSCHEMA_USE_EXTERNALS) {
     //react,...
     externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/);
 }
+
 var webpack = {
     devServer: {
         noInfo: true,
@@ -77,7 +122,7 @@ var webpack = {
             {
                 test: /\.jsx?$/,
                 //       exclude: /(node_modules|bower_components)/,
-                include: [/test\/*/, /src\/*/, /subschema*\/src\/*/],
+                include: [/test\/*/, /src\/*/, /public\/*/, /subschema*\/src\/*/],
                 use: 'babel-loader'
             },
             {
@@ -116,12 +161,20 @@ var webpack = {
         ]
     }
 };
-var customWebpack = path.resolve(process.cwd(), 'webpack.subschema.js');
-if (fs.existsSync(customWebpack)) {
-    var custom = require(customWebpack);
-    custom = custom.default || custom;
-    var backup = webpack;
-    webpack = typeof custom == 'function' ? custom(webpack) : custom;
-    if (!webpack) webpack = backup;
+
+
+if (process.env.SUBSCHEMA_USE_HTML) {
+    var HtmlWebpackPlugin = require('html-webpack-plugin');
+    if (!webpack.output) webpack.output = {};
+    webpack.output.path = path.resolve(process.cwd(), '.tmp');
+    webpack.output.filename = '[name].bundle.js';
+    plugins.push(new HtmlWebpackPlugin({
+        'title': deps.name + (deps.description ? `:${deps.description}` : ''),
+        'filename': path.resolve(__dirname, 'public', 'index.html')
+    }));
+}
+
+if (customConf) {
+    webpack = customConf(webpack);
 }
 module.exports = webpack;

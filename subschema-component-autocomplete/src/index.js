@@ -14,4 +14,4 @@ export const types = {
     Autocomplete
 };
 
-export default ({AutocompleteItemTemplate, Autocomplete, templates, types});
+export default ({templates, types});

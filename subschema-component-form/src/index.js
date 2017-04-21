@@ -25,7 +25,6 @@ import ObjectType from 'subschema-core/lib/Object';
 import _RestrictedMixin from './types/RestrictedMixin';
 import _Dom from './Dom';
 import _css from './css';
-import _styles from '../styles'
 import _ReactCSSReplaceTransition from './ReactCSSReplaceTransition';
 import _ReactCSSTransitionGroupChild from './ReactCSSTransitionGroupChild';
 import _resolvers from 'subschema-core/lib/resolvers';
@@ -40,8 +39,6 @@ export const ReactCSSReplaceTransition = Conditional.Transition = resolvers.tran
 export const ReactCSSTransitionGroupChild = _ReactCSSTransitionGroupChild;
 
 export const RestrictedMixin = _RestrictedMixin;
-
-export const styles = _styles;
 
 export const Dom = _Dom;
 
@@ -77,6 +74,5 @@ export const types = {
 
 export default ({
     types,
-    styles,
     templates
 });

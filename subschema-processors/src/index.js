@@ -8,7 +8,5 @@ export const processors = {
     OptionsProcessor
 };
 export default ({
-    ArrayProcessor,
-    OptionsProcessor,
     processors
 });

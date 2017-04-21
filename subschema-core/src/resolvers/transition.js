@@ -5,12 +5,8 @@ export const settings = {
     transition: 'rollUp',
     on: ['enter', 'leave'],
     Transition({children}) {
-        try {
-            throw new Error(`Please set resolvers.transition.settings.Transition to a transition handler`)
-        } catch (e) {
-            warning(e);
-        }
-        return children ? children[0] : null;
+        warning(true, `Please set subschema-core.resolvers.transition.settings.Transition to a transition handler`);
+        return Array.isArray(children) ? children[0] : children;
     }
 
 };
