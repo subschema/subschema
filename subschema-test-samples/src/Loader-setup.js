@@ -1,12 +1,15 @@
-const {types} = Subschema;
-const {Select, Checkbox} = types;
-//Provide a template named SimpleTempalte
+import React, {Component} from 'react';
+import Select from 'subschema-component-form/lib/types/Select';
+import Checkbox from 'subschema-component-form/lib/types/Select';
+import loaderFactory from 'subschema-loader';
 
-class SimpleTemplate extends React.Component {
+//Provide a template named SimpleTemplate
+
+class SimpleTemplate extends Component {
     render() {
-        var {name, title, help, errorClassName, message, fieldClass, children} = this.props;
+        const {name, title, help, errorClassName, message, fieldClass, children} = this.props;
         return (<div
-            className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' +  fieldClass}>
+            className={"form-group field-name " + (message != null ? errorClassName : '') + ' ' + fieldClass}>
             <div className="col-sm-offset-1 col-sm-10">
                 {children}
                 <p className="help-block" ref="help">{message || help}</p>
@@ -14,6 +17,7 @@ class SimpleTemplate extends React.Component {
         </div>);
     }
 }
+const loader = loaderFactory();
 loader.addTemplate('SimpleTemplate', SimpleTemplate);
 //Provide a type named CheckboxSelect
 
@@ -31,8 +35,8 @@ class CheckboxSelect extends React.Component {
     //inline styles, because this is an example
     render() {
         return <div>
-            <Checkbox className='' style={{position: 'absolute',  left:'-5px', top:'5px'}}
-                      onChange={(e)=>this.setState({disabled: !e})} checked={!this.state.disabled}/>
+            <Checkbox className='' style={{position: 'absolute', left: '-5px', top: '5px'}}
+                      onChange={(e) => this.setState({disabled: !e})} checked={!this.state.disabled}/>
             <Select {...this.props} disabled={this.state.disabled}/>
         </div>
     }

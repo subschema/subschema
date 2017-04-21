@@ -1,7 +1,10 @@
-const {PropTypes} = Subschema;
+import PropTypes from 'subschema-prop-types';
+import loaderFactory from 'subschema-loader';
+import React, {Component} from 'react';
+
 
 //This adds it to the loader, loader.addType still works.
-class SwitchButton extends React.Component {
+class SwitchButton extends Component {
     //Prevents form-control from being passed to className.
     static inputClassName = ' ';
 
@@ -9,8 +12,8 @@ class SwitchButton extends React.Component {
         //This tells subschema to not process e.target.value, but just take the value.
         onChange: PropTypes.valueEvent,
         //Normal React.PropTypes
-        onText: React.PropTypes.string,
-        offText: React.PropTypes.string
+        onText: PropTypes.string,
+        offText: PropTypes.string
     };
 
     static defaultProps = {
@@ -24,19 +27,21 @@ class SwitchButton extends React.Component {
     }
 
     //This is bound to the object instance
-    handleClick = (e)=> {
+    handleClick = (e) => {
         //This updates the valueManager
         this.props.onChange(this.isChecked(this.props.value) ? '' : 'on');
     };
 
     render() {
-        var props = this.props;
-        var isChecked = this.isChecked(props.value);
+        const props = this.props;
+        const isChecked = this.isChecked(props.value);
 
         //you prolly won't do it this way, but use classes instead, but the demo platform
         // has its limitations.
-        var container = Object.assign({}, styles.container, isChecked ? styles.on : styles.off);
-        var button = Object.assign({}, styles.button, isChecked ? styles.buttonOn : styles.buttonOff);
+        const toggleOnOff = isChecked ? styles.on : styles.off;
+        const toggleBtn = isChecked ? styles.buttonOn : styles.buttonOff;
+        const container = {...styles.container, ...toggleOnOff};
+        const button = {...styles.button, ...toggleBtn};
 
         return <div className={props.className} style={styles.fieldContainer}>
             <div style={container} onClick={this.handleClick}>
@@ -48,7 +53,8 @@ class SwitchButton extends React.Component {
     }
 
 }
-
+const loader = loaderFactory();
+loader.addType('SwitchButton', SwitchButton);
 //Normally you would do this via CSS but the demo can't load css dynamically, so this a workaround.
 var styles = {
     fieldContainer: {
@@ -104,4 +110,3 @@ var styles = {
         marginLeft: '-18px',
     }
 };
-loader.addType('SwitchButton', SwitchButton);

@@ -1,3 +1,5 @@
+import {loader} from 'subschema';
+
 /**
  * Register a fake loader.
  * @type {{fetch: Function, format: Function}}

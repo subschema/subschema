@@ -1,5 +1,6 @@
+import React from 'react';
+
 import {
-    React,
     into,
     expect,
     byTypes,
@@ -9,9 +10,8 @@ import {
     byComponents,
 }  from 'subschema-test-support';
 
-import  {ValueManager, types, templates, newSubschemaContext} from 'Subschema';
+import  {newSubschemaContext} from 'subschema';
 import  {Autocomplete} from 'subschema-test-samples';
-
 describe('public/Autocomplete', function () {
     this.timeout(50000);
     it('should not be selectable', function () {
@@ -19,30 +19,32 @@ describe('public/Autocomplete', function () {
         const Subschema = newSubschemaContext();
         const {Form, loader} = Subschema;
         const schema = Autocomplete.schema;
-        const valueManager = ValueManager();
-        Autocomplete.setupFunc(loader, schema, Subschema, React, valueManager);
+        const AutocompleteItemTemplate = loader.loadTemplate('AutocompleteItemTemplate');
+        const AutocompleteType = loader.loadType('Autocomplete');
+        Autocomplete.setupFunc(Subschema.importer);
 
-        const form = into(<Form schema={schema} loader={loader} valueManager={valueManager}/>, true);
+        const form = into(<Form schema={schema} loader={Subschema.loader}
+                                valueManager={Subschema.valueManager}/>, true);
         expect(form);
 
-        const [simple, ajax] = byTypes(form, types.Autocomplete, 2);
+        const [simple, ajax] = byTypes(form, AutocompleteType, 2);
 
         change(byTag(simple, 'input'), 'aaa');
 
-        const suggestions = byComponents(simple, templates.AutocompleteItemTemplate, 4);
+        const suggestions = byComponents(simple, AutocompleteItemTemplate, 4);
 
         click(suggestions[2]);
 
     });
     it('should render and not leak', function () {
         const Subschema = newSubschemaContext();
-        const {Form, ValueManager, loader, injector} = Subschema;
+        const {Form, loader, injector, importer, valueManager} = Subschema;
 
         const schema = Autocomplete.schema;
-        const valueManager = ValueManager();
-        Autocomplete.setupFunc(loader, schema, Subschema, React, valueManager);
+        Autocomplete.setupFunc(importer, schema);
 
-
+        const AutocompleteItemTemplate = loader.loadTemplate('AutocompleteItemTemplate');
+        const AutocompleteType = loader.loadType('Autocomplete');
         class RenderTest extends React.Component {
             state = {count: 1};
 
@@ -79,11 +81,11 @@ describe('public/Autocomplete', function () {
         expect(injector.size()).toBe(12);
 
         //just a simple test to make sure everything still works.
-        const [simple, ajax] = byTypes(form, types.Autocomplete, 2);
+        const [simple, ajax] = byTypes(form, AutocompleteType, 2);
 
         change(byTag(simple, 'input'), 'aaa');
 
-        const suggestions = byComponents(simple, templates.AutocompleteItemTemplate, 4);
+        const suggestions = byComponents(simple, AutocompleteItemTemplate, 4);
 
         click(suggestions[2]);
 

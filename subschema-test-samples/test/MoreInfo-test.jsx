@@ -1,8 +1,6 @@
-"use strict";
-import React, {Component} from 'react';
-import {into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, ValueManager, templates, loaderFactory, DefaultLoader} from 'Subschema';
-
+import React from 'react';
+import {into}  from 'subschema-test-support';
+import {newSubschemaContext} from 'subschema';
 
 describe("public/MoreInfo", function () {
     this.timeout(50000);
@@ -32,6 +30,7 @@ describe("public/MoreInfo", function () {
 
 
         };
+        const {Form} = newSubschemaContext();
         into(<Form schema={schema}/>, true);
     });
 });

@@ -1,9 +1,18 @@
-"use strict";
-import {React, click, change,findNode,  into,TestUtils,expect,byComponents, byTag, byTags, byComponent, select,  Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, templates, ValueManager, loaderFactory, DefaultLoader} from 'Subschema';
+import React from 'react';
+import {
+    click,
+    change,
+    findNode,
+    into,
+    TestUtils,
+    expect,
+    byComponents,
+    byTags,
+    byComponent
+}  from 'subschema-test-support';
+import {newSubschemaContext} from 'subschema';
 import {Modal} from 'subschema-test-samples';
 
-const {ModalTemplate} = templates;
 
 
 function byId(node, id) {
@@ -21,7 +30,9 @@ describe('public/Modal', function () {
     this.timeout(50000);
     it('should render', function () {
         //loader, schema, Subschema, React
-        const valueManager = ValueManager();
+        const {valueManager,loader, Form} = newSubschemaContext();
+        const ModalTemplate = loader.loadTemplate('ModalTemplate');
+
         const form = into(<Form schema={Modal.schema} valueManager={valueManager}/>, true);
         expect(form).toExist();
 

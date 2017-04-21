@@ -1,8 +1,17 @@
-import {React, into, TestUtils, expect, byTypes, byComponents, select, byId, Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, ValueManager, templates} from 'Subschema';
+import React from 'react';
+import {into, expect, byComponents, byId}  from 'subschema-test-support';
 import {NestedForms} from 'subschema-test-samples';
+import {newSubschemaContext, ValueManager} from 'subschema';
 
 describe('public/NestedForms', function () {
+    let Form, loader, Subschema, FieldSetTemplate;
+    beforeEach(function () {
+        Subschema = newSubschemaContext();
+        Form = Subschema.Form;
+        loader = Subschema.loader;
+        FieldSetTemplate = loader.loadTemplate('FieldSetTemplate');
+    });
+
     it('should render simple nested with seperate templates', function () {
         const form = into(<Form
             schema={{
@@ -21,7 +30,7 @@ describe('public/NestedForms', function () {
             }}
         />, true);
         expect(form).toExist();
-        expect(byComponents(form, templates.FieldSetTemplate).length).toBe(3)
+        expect(byComponents(form, FieldSetTemplate).length, 'should find three FieldSetTemplate').toBe(3)
     });
     it('should render simple nested', function () {
         const form = into(<Form
@@ -39,10 +48,10 @@ describe('public/NestedForms', function () {
             }}
         />, true);
         expect(form).toExist();
-        expect(byComponents(form, templates.FieldSetTemplate).length).toBe(2)
+        expect(byComponents(form, FieldSetTemplate).length).toBe(2)
     });
-    it('should render nested forms', ()=> {
-        const valueManager = ValueManager(NestedForms.data);
+    it('should render nested forms', () => {
+        const valueManager = Subschema.valueManager = ValueManager(NestedForms.data);
 
         const form = into(<Form schema={NestedForms.schema} valueManager={valueManager}/>, true);
 

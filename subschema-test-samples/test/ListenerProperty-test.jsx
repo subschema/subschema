@@ -1,24 +1,23 @@
-"use strict";
 import React from 'react';
-import { into,TestUtils,expect,byTypes, byType, byId, select,  Simulate}  from 'subschema-test-support';
-import {newSubschemaContext} from 'Subschema';
+import {into, expect, byType}  from 'subschema-test-support';
+import {newSubschemaContext} from 'subschema';
 import {ListenerProperty} from 'subschema-test-samples';
 
 describe('public/ListenerProperty', function () {
     this.timeout(50000);
     it('should render favorites', function () {
         const Subschema = newSubschemaContext();
-        const {Form, ValueManager, loader} =Subschema;
-        var schema = ListenerProperty.schema;
+        const {Form, importer, valueManager} = Subschema;
 
-        var valueManager = ValueManager(), mod = {exports: {}};
+        var mod = {exports: {}};
 
-        ListenerProperty.setupFunc(loader, schema, Subschema, React, valueManager, mod);
+        ListenerProperty.setupFunc(importer, ListenerProperty.schema);
 
-        var SelectListener = loader.loadType('SelectListen');
+        var SelectListener = Subschema.loader.loadType('SelectListen');
         expect(mod.exports).toExist('SelectListen');
 
-        var form = into(<Form schema={schema} valueManager={valueManager} loader={loader}/>, true);
+        var form = into(<Form schema={ListenerProperty.schema} valueManager={Subschema.valueManager}
+                              loader={Subschema.loader}/>, true);
 
         var select = byType(form, SelectListener);
 

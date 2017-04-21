@@ -1,24 +1,33 @@
 {
   "name": "subschema-test-samples",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Subschema samples",
   "main": "dist/index.js",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
   "scripts": {
-    "prepublish": "npm prune && npm run webpack && npm run test",
-    "karma-ff": "NODE_ENV=test karma start --no-single-run --colors --auto-watch  --browsers Firefox",
-    "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
-    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
-    "webpack": "webpack --display-modules --config ./webpack.config.js"
+    "karma": "subschema-karma",
+    "compile": "subschema-webpack  --output-library SubschemaTestSamples --output-library-target umd --entry ./src/index.js --use-externals react,subschema"
   },
-  "author": "<Justin Spears>speajus@gmail.com",
-  "license": "ISC",
   "devDependencies": {
     "expect": "^1.13.4",
     "subschema": "^1.7.0",
-    "subschema-test-support": "^1.7.0"
+    "subschema-test-support": "^1.7.0",
+    "subschema-dev-support": "^1.7.0",
+    "subschema-core": "^1.7.0",
+    "subschema-injection": "^1.7.0",
+    "subschema-expression": "^1.7.0",
+    "subschema-loader": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-processors": "^1.7.0",
+    "subschema-transitions": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-validators": "^1.7.0",
+    "subschema-component-form": "^1.7.0",
+    "subschema-component-list": "^1.7.0",
+    "subschema-css-bootstrap": "^1.7.0",
+    "subschema-component-modal": "^1.7.0",
+    "subschema-component-autocomplete": "^1.7.0",
+    "subschema-component-wizard": "^1.7.0"
   },
   "peerDependencies": {
   }

@@ -1,21 +1,20 @@
-import {React, into,TestUtils,expect,byTypes, select,  Simulate}  from 'subschema-test-support';
-import {newSubschemaContext, types} from 'Subschema';
+import React from 'react';
+import {into, expect, byTypes, select}  from 'subschema-test-support';
+import {newSubschemaContext} from 'subschema';
 import {CarMake} from 'subschema-test-samples';
-const Select = types.Select;
 
 describe('public/CarMake', function () {
     it('should not be selectable', function () {
-        const SubSchema = newSubschemaContext();
-        const {Form, loader, ValueManager} = SubSchema;
-
+        const Subschema = newSubschemaContext();
+        const {Form, loader, valueManager, importer} = Subschema;
+        const Select = loader.loadType('Select');
         var schema = CarMake.schema;
         //loader, schema, Subschema, React
 
         expect(CarMake).toExist('CarMake-setup should load');
-        var valueManager = ValueManager();
-        CarMake.setupFunc(loader, schema, Subschema, React, valueManager);
+        CarMake.setupFunc(importer, schema);
 
-        var form = into(<Form schema={schema} valueManager={valueManager}/>);
+        var form = into(<Form schema={schema} />);
 
         var selects = byTypes(form, Select);
         expect(selects.length).toBe(2, 'should have 2 selects');

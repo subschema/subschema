@@ -1,7 +1,5 @@
-"use strict";
 import React from 'react';
 import {
-    byName,
     into,
     findNode,
     TestUtils,
@@ -14,17 +12,26 @@ import {
     byComponent,
     byComponents
 } from 'subschema-test-support';
-import {templates, Form} from 'Subschema';
+import {newSubschemaContext} from 'subschema';
 import {Todos} from 'subschema-test-samples';
 
-const {ButtonTemplate, ListItemTemplate, CollectionCreateTemplate} = templates;
-
-function controlBtn(task, action) {
-    return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
-}
 
 describe('public/Todos', function () {
     this.timeout(50000);
+    let ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, Form, loader, Subschema;
+
+    function controlBtn(task, action) {
+        return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
+    }
+
+    before(function () {
+        Subschema = newSubschemaContext();
+        loader = Subschema.loader;
+        Form = Subschema.Form;
+        ButtonTemplate = loader.loadTemplate('ButtonTemplate');
+        ListItemTemplate = loader.loadTemplate('ListItemTemplate');
+        CollectionCreateTemplate = loader.loadTemplate('CollectionCreateTemplate')
+    });
     function add(root, c) {
         var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
         var addBtn = findNode(allBtns[0]);

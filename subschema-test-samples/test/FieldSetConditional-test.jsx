@@ -1,9 +1,11 @@
-"use strict";
-import {React, into,TestUtils,expect,byTypes, click, select, byTag, byType, change, byComponents,Simulate}  from 'subschema-test-support';
-import Subschema, {Form, types, ValueManager, templates, loaderFactory, DefaultLoader} from 'Subschema';
+import React from 'react';
+import {
+    into,
+    byComponents,
+}  from 'subschema-test-support';
+import {newSubschemaContext} from 'subschema';
 
-
-describe("public/FieldSetConditional", function () {
+describe("subschema-test-samples/FieldSetConditional", function () {
     this.timeout(50000);
     it('should render', function (done) {
         const schema = {
@@ -47,13 +49,14 @@ describe("public/FieldSetConditional", function () {
                     }
                 }]
         };
-        const vm = ValueManager();
-        const form = into(<Form schema={schema} valueManager={vm}/>, true);
-        byComponents(form, templates.FieldSetTemplate, 1);
-        vm.update('phoneOrEmail', 'phone');
+        const {Form, loader, valueManager} = newSubschemaContext();
+        const FieldSetTemplate = loader.loadTemplate('FieldSetTemplate');
+        const form = into(<Form schema={schema}/>, true);
+        byComponents(form, FieldSetTemplate, 1);
+        valueManager.update('phoneOrEmail', 'phone');
 
-        setTimeout(()=> {
-            byComponents(form, templates.FieldSetTemplate, 2);
+        setTimeout(() => {
+            byComponents(form, FieldSetTemplate, 2);
             done();
         }, 1000);
     });
