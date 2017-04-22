@@ -8,9 +8,11 @@
   "webpack": "src/index.js",
   "scripts": {
     "compile-lib": "babel -s true src --out-dir lib",
-    "compile-web": "subschema-webpack -p --output-path dist --no-style-loader --output-filename subschema.js",
-    "compile-web-stats": "subschema-webpack -p --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
-    "compile-web-noreact": "subschema-webpack -p --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
+    "compile-web": "subschema-webpack  --output-path dist --no-style-loader --output-filename subschema.js",
+    "compile-web-debug": "subschema-webpack --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
+
+    "compile-web-stats": "subschema-webpack  --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
+    "compile-web-noreact": "subschema-webpack  --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
     "compile": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats",
     "karma": "subschema-karma",
     "test": "subschema-karma start --single-run=true",

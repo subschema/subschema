@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Basic} from 'subschema-test-samples';
-import Proptypes from 'subschema-prop-types';
+import PropTypes from 'subschema-prop-types';
 import DownloadButton from './DownloadButton.jsx';
-import capitalize from 'lodash/string/capitalize';
+import capitalize from 'lodash/capitalize';
 
 export default class ExportButtons extends Component {
     static propTypes = {
@@ -14,7 +14,7 @@ export default class ExportButtons extends Component {
         projectVersion: PropTypes.value,
         projectName: PropTypes.value,
         projectDescription: PropTypes.value,
-        sample:PropTypes.value
+        sample: PropTypes.value
     };
 
     static defaultProps = {
@@ -26,7 +26,7 @@ export default class ExportButtons extends Component {
         projectVersion: "package.version",
         projectName: "project.name",
         projectDescription: "project.description",
-        sample:"sample"
+        sample: "sample"
     };
 
     render() {
@@ -40,7 +40,7 @@ export default class ExportButtons extends Component {
             projectDescription,
             projectName,
             sample
-            } = this.props;
+        } = this.props;
         filename = filename || 'simple';
         description = description || filename;
 
@@ -48,7 +48,7 @@ export default class ExportButtons extends Component {
             jsName: jsName || camelCase(filename),
             name: filename,
             title: title || capitalize(filename.replace('-', ' ')),
-            schema:schema && schema.schema || sample.schema,
+            schema: schema && schema.schema || sample.schema,
             project: {
                 version: projectVersion || '1.0.0',
                 name: projectName || filename,

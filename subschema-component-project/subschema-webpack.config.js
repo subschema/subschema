@@ -1,5 +1,5 @@
 var path = require('path');
-var join = path.join.bind(path, __dirname);cd
+var join = path.join.bind(path, __dirname);
 module.exports = function (config) {
     config.module.rules.push(
         {
@@ -19,6 +19,8 @@ module.exports = function (config) {
             return ret;
         }, {})
     }
+    if (!config.resolve.alias) config.resolve.alias = {};
+    config.resolve.alias['subschema-source'] = join('node_modules', 'subschema');
     Object.assign(config.externals, {
         'babel-standalone-internal': {
             'var': 'Babel',
@@ -26,6 +28,5 @@ module.exports = function (config) {
             'commonjs2': 'babel'
         }
     });
-    console.log('config', JSON.stringify(config, null, 2));
     return config;
 };

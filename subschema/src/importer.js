@@ -1,5 +1,7 @@
+import {warning} from 'subschema-utils';
 
 const MAP = {
+    "react-dom": require("react-dom"),
     "subschema-core": require("subschema-core"),
     "subschema-injection": require("subschema-injection"),
     "subschema-expression": require("subschema-expression"),
@@ -46,15 +48,17 @@ export default function subschemaImport(Subschema, React) {
         const pkg = overrides[pkgName] || MAP[pkgName];
         if (pkg) {
             if (parts.length == 0) {
-                return pkg.default;
+                if (pkg.default != null)
+                    return pkg.default;
+                return pkg;
             }
             if (parts[0] == 'lib') {
                 parts.shift();
-                let ret = descend(pkg.default, parts) || descend(pkg.exports, parts);
+                let ret = descend(pkg.default, parts) || descend(pkg, parts);
                 if (ret != null) return ret;
             }
 
         }
-        console.log('woops can\'t locate dep', dep);
+        warning(false, 'woops can\'t locate dep %s', dep);
     };
 }

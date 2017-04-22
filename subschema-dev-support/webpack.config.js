@@ -104,8 +104,9 @@ if (process.env.SUBSCHEMA_USE_EXTERNALS) {
 
 var webpack = {
     devServer: {
-        noInfo: true,
-        hot: true,
+        //      hot: true,
+        filename: 'index.js',
+        historyApiFallback: true,
         inline: true,
         contentBase: path.resolve(process.cwd(), 'public'),
         publicPath: '/',
@@ -164,13 +165,15 @@ var webpack = {
 
 
 if (process.env.SUBSCHEMA_USE_HTML) {
+    console.log(`using html plugin`);
     var HtmlWebpackPlugin = require('html-webpack-plugin');
-    if (!webpack.output) webpack.output = {};
-    webpack.output.path = path.resolve(process.cwd(), '.tmp');
-    webpack.output.filename = '[name].bundle.js';
+    //if (!webpack.output) webpack.output = {};
+   // webpack.output.path = path.resolve(process.cwd(), '.tmp');
+    //webpack.output.filename = 'app.bundle.js';
+    webpack.devtool = 'inline-source-map';
     plugins.push(new HtmlWebpackPlugin({
         'title': deps.name + (deps.description ? `:${deps.description}` : ''),
-        'filename': path.resolve(__dirname, 'public', 'index.html')
+        'template': path.resolve(__dirname, 'public', 'index.html')
     }));
 }
 

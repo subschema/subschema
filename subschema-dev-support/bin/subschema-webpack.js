@@ -6,24 +6,33 @@ var camelCased = function (str) {
     })
 };
 var cwd = process.cwd();
-
-if (process.argv.indexOf('--config') == -1) {
+function hasArg() {
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        if (process.argv.indexOf(arguments[i]) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+if (!hasArg('--config')) {
     process.argv.push('--config', path.resolve(__dirname, '..', 'webpack.config.js'));
 }
-if (process.argv.indexOf('--entry') == -1) {
+if (!hasArg('--entry')) {
     process.argv.push('--entry', path.resolve(cwd, 'src', 'index.js'));
 }
-if (process.argv.indexOf('--output-path') == -1) {
+if (!hasArg('--output-path')) {
     process.argv.push('--output-path', path.resolve(cwd, 'lib'))
 }
-if (process.argv.indexOf('--output-filename') == -1) {
+if (!hasArg('--output-filename')) {
     process.argv.push('--output-filename', path.join('index.js'));
 }
-if (process.argv.indexOf('--output-library') == -1) {
+if (!hasArg('--output-library')) {
     process.argv.push('--output-library', camelCased(require(path.resolve(cwd, 'package.json')).name));
 }
-
-if (process.argv.indexOf('--output-library-target') == -1) {
+if (hasArg('-p', '--production')) {
+    process.env.NODE_ENV = 'production';
+}
+if (!hasArg('--output-library-target')) {
     process.argv.push('--output-library-target', 'umd');
 }
 var idx;

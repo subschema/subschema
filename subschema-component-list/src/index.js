@@ -9,9 +9,9 @@ export const types = {
     Mixed
 };
 export const templates = {
-    ListItemTemplate,
-    CollectionCreateTemplate,
-    ContentItemTemplate
+    ListItemTemplate:ListItemTemplate,
+    CollectionCreateTemplate:CollectionCreateTemplate,
+    ContentItemTemplate:ContentItemTemplate
 };
 export const styles = _styles;
 

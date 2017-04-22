@@ -11,7 +11,7 @@ Or run it
   git clone @project.repository@
   cd @project.name@
   npm install
-  npm run hot &
+  npm run server &
   open http://localhost:8082
 ```
 
@@ -24,7 +24,7 @@ Or run it
 ```jsx
 
  import React, {Component} from 'react';
- import Subschema, {loader, Form} from 'Subschema';
+ import {loader, Form} from 'Subschema';
  import @jsName@ from '@project.name@';
  
  loader.addLoader(@jsName@);

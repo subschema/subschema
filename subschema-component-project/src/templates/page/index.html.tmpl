@@ -2,12 +2,9 @@
 <html>
 <head>
     <title>@jsName@ Sample</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="https://fb.me/react-0.14.6.js"></script>
-    <script src="https://fb.me/react-dom-0.14.6.js"></script>
     <script  charset="utf-8">
-    //subschema
-    @require('!raw!!subschema-source/subschema-noreact.js')@
+    //subschema inline
+    @require('!raw-loader!!subschema-source/dist/subschema-debug.js')@
     </script>
 </head>
 <body>
@@ -20,14 +17,11 @@
 @scripts.source.replace(/</g, '&lt;')@
 </pre>
 </div>
-<script>
+<script  charset="utf-8">
 //So this adapts the require module from babel to the global libs.
 //If your using a transpiler you wouldn't need this.
-function require(module){
-       if (module === 'react') module = 'React';
-       if (module === 'react-dom') module = 'ReactDOM';
-       return window[module]
-}
+var _Subschema = subschema.newSubschemaContext();
+var require = _Subschema.importer;
 
 </script>
 <script  charset="utf-8">

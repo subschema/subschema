@@ -3,17 +3,17 @@ import './global-fix';
 import React, {Component} from 'react';
 import ValueManager from 'subschema-valuemanager';
 import PropTypes from 'subschema-prop-types';
-import resolvers from 'subschema-core/lib/resolvers';
-import Form from 'subschema-core/lib/Form';
+import {defaultPropTypes} from 'subschema-core/lib/resolvers/type';
+import {Form, DefaultLoader} from 'subschema';
 import JSONArea from './components/JSONArea';
 import samples from 'subschema-test-samples';
-import kebabCase from 'lodash/string/kebabCase';
+import kebabCase from 'lodash/kebabCase';
 import {saveAs} from 'browser-filesaver';
 import ExportButtons from './components/ExportButtons.jsx';
+import loaderFactory from 'subschema-loader';
+//defaultPropTypes.defaultValue = PropTypes.expression;
 
-resolvers.type.defaultPropTypes.defaultValue = PropTypes.expression;
-
-const loader = loaderFactory();
+const loader = loaderFactory([DefaultLoader]);
 
 loader.addType({JSONArea, ExportButtons});
 //A simple Schema for this configuration
@@ -106,6 +106,7 @@ var valueManager = ValueManager({
     samples: 'Basic'
 });
 
+
 valueManager.addListener('samples', function (value) {
     var sample = samples[value];
     if (!sample) {
@@ -119,6 +120,7 @@ valueManager.addListener('samples', function (value) {
         }
     }
     var {...copy} = sample;
+
     this.update('sample', null);
     this.update('jsName', value);
     this.update('project.name', 'example-' + kebabCase(copy.name || value));

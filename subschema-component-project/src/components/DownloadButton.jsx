@@ -1,9 +1,9 @@
 "use strict";
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import {generate} from 'subschema-project';
+import {generate} from 'subschema-component-project';
 import {saveAs} from 'browser-filesaver';
-import kebabCase from 'lodash/string/kebabCase';
+import kebabCase from 'lodash/kebabCase';
 
 export default class DownloadButton extends Component {
 

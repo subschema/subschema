@@ -5,6 +5,14 @@ const concat = Function.apply.bind(Array.prototype.concat, []);
 
 const upFirst = (str) => `${str[0].toUpperCase()}${str.substring(1)}`;
 
+export const LOADER_TYPES = ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'];
+
+export const WarningLoader = LOADER_TYPES.reduce(function (ret, key) {
+    ret[`load${upFirst(key)}`] = function (type) {
+        warning(false, 'unable to find "%s" named "%s', key, type);
+    }
+    return ret;
+}, {});
 export default function loaderFactory(loaders = []) {
     const types = {load, list, add},
         api = {
@@ -75,7 +83,6 @@ export default function loaderFactory(loaders = []) {
                     return ret;
                 }
             }
-            warning(false, `'%s' did not find '%s'`, method, load);
         }
     }
 
@@ -117,6 +124,6 @@ export default function loaderFactory(loaders = []) {
         return this;
     }
 
-    ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'].forEach(v => api::loaderType(v));
+    LOADER_TYPES.forEach(v => api::loaderType(v));
     return api;
 }

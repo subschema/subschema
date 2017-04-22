@@ -1,6 +1,6 @@
 "use strict";
 
-var template = require('lodash/string/template');
+var template = require('lodash/template');
 
 /*{ escape: /<%-([\s\S]+?)%>/g,
  evaluate: /<%([\s\S]+?)%>/g,
