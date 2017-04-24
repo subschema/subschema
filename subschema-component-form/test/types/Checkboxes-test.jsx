@@ -20,7 +20,6 @@ import {
 import {types} from 'subschema-component-form';
 const {Checkboxes, Checkbox} = types;
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
-import {styles} from '../../styles';
 
 describe('types/Checkboxes', function () {
     this.timeout(50000);
@@ -29,7 +28,7 @@ describe('types/Checkboxes', function () {
             Form,
             context,
             valueManager
-        } = newSubschemaContext({styles});
+        } = newSubschemaContext();
 
         var root = into(<Form {...context} schema={{
             schema: {
@@ -62,7 +61,7 @@ describe('types/Checkboxes', function () {
             valueManager,
             context,
             Form
-        } = newSubschemaContext({styles});
+        } = newSubschemaContext();
 
         var root = into(<Form {...context} valueManager={valueManager} schema={{
             schema: {

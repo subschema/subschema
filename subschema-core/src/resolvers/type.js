@@ -13,7 +13,7 @@ export const defaultPropTypes = {
     className: PropTypes.typeClass,
     placeholder: PropTypes.string,
 //TODO -Figure out a better way - consider using intospection on DOM types.
-//    fieldAttrs: PropTypes.fieldAttrs
+    fieldAttrs: PropTypes.fieldAttrs
 };
 //Expose for configurability
 export const settings = {

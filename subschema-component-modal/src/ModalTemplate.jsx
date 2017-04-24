@@ -88,7 +88,7 @@ export default class ModalTemplate extends Component {
     render() {
         const {title, legend, buttons, path, value, bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
-        return <div className={`${namespaceClass} ${overlayClass}`} style={{display: 'block'}}>
+        return (<div className={`${namespaceClass} ${overlayClass}`} style={{display: 'block'}}>
             <div className={backdropClass}></div>
             <div className={dialogClass} role="document" style={{zIndex: 2000}}>
                 <div className={contentClass}>
@@ -104,6 +104,6 @@ export default class ModalTemplate extends Component {
                     {this.renderFooter(buttons)}
                 </div>
             </div>
-        </div>
+        </div>);
     }
 }

@@ -12,9 +12,9 @@ export default class TextInput extends Component {
         value: "."
     };
 
+
     render() {
-        return <input {...this.props}
-        />
+        return <input {...this.props}/>
     }
 }
 

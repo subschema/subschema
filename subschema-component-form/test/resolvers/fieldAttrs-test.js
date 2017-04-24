@@ -4,7 +4,7 @@ import {types, templates} from 'subschema-component-form';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 //TODO - Figure these out.
-describe.skip("resolvers/fieldAttrs", function () {
+describe("resolvers/fieldAttrs", function () {
     it('should insert fieldAttrs', function () {
         const {Form, valueManager, loader} = newSubschemaContext();
         const schema = {

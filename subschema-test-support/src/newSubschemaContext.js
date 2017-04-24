@@ -8,6 +8,8 @@ import _validators from 'subschema-validators';
 import {types as _types, templates as _templates} from 'subschema-component-form';
 import * as _processors from 'subschema-processors';
 import {transitions} from 'subschema-transitions';
+import bootstrap from 'subschema-css-bootstrap';
+
 const newSubschemaContext = (opts) => {
     let {
         valueManager,
@@ -32,8 +34,9 @@ const newSubschemaContext = (opts) => {
             injector.resolver(propTypes[key], resolvers[key]);
         }
     });
+    loader.addLoader(bootstrap);
     loader.addTemplate(templates);
-    loader.addValidator(validators);
+    loader.addLoader(validators);
     loader.addType(types);
     loader.addStyle(styles);
     loader.addTransition(transitions);

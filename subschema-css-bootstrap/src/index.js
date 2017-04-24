@@ -12,6 +12,7 @@ import CheckboxesGroupTemplate from './CheckboxesGroupTemplate-style';
 import EditorTemplate from './EditorTemplate-style';
 import FormTemplate from './FormTemplate-style';
 import RadioItemTemplate from './RadioItemTemplate-style';
+import ModalTemplate from './ModalTemplate-style';
 
 export const transitions = _transitions;
 
@@ -36,6 +37,7 @@ export const styles = ({
             ctrlButtons: 'btn-group'
         },
         ListItemTemplate),
+    ModalTemplate,
     RadioItemTemplate,
     WizardProgressTemplate,
     WizardTemplate

@@ -1,5 +1,4 @@
-"use strict";
-
+import React from 'react';
 import {applyFuncs} from "subschema-utils";
 
 function handleAttrs(value, attr, propKeys) {
@@ -16,22 +15,30 @@ function handleAttrs(value, attr, propKeys) {
         if (value[key] != null || this.injected && this.injected[key] != null) {
             if (!this.injected) this.injected = {};
             //This may be indeterminate, depending if something sets it later.
-
-            this.injected[key] = value[key];
+            if (this.injected)
+                Object.assign(this.injected, value);
+            else {
+                Object.assign(this.injected = {}, value);
+            }
         }
     }
 }
-
+function remove(all, key) {
+    var idx;
+    if ((idx = all.indexOf(key)) != -1) {
+        all.splice(idx, 1);
+        return all;
+    }
+    return all;
+}
 export default function fieldAttrs(Clazz, key, propKeys) {
 
+    //keeps the property from leaking to the wrapped class.
+    remove(Clazz._copyPropTypeKeys, key);
 
     const ClazzP = Clazz.prototype;
 
     ClazzP.componentWillMount = applyFuncs(function () {
-        const idx = propKeys.indexOf(key);
-        if (idx > -1) {
-            propKeys.splice(idx, 1);
-        }
         this::handleAttrs(this.props[key], key, propKeys);
     }, ClazzP.componentWillMount);
 
@@ -40,4 +47,6 @@ export default function fieldAttrs(Clazz, key, propKeys) {
             this::handleAttrs(newProps[key], key);
         }
     }, ClazzP.componentWillReceiveProps);
+
+
 }

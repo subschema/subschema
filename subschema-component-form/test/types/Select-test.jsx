@@ -3,7 +3,6 @@ import {into, byTag, expect, select, byTags} from "subschema-test-support";
 import {types} from "subschema-component-form";
 import ValueManager from 'subschema-valuemanager';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
-import styles from '../../styles';
 const {Select} = types;
 
 describe('types/Select', function () {
@@ -55,7 +54,7 @@ describe('types/Select', function () {
 
     it('should have the value selected with numbers', function () {
         const vm = ValueManager({select: 2});
-        const {Form, ...context} = newSubschemaContext({valueManager: vm, styles});
+        const {Form, ...context} = newSubschemaContext({valueManager: vm});
         const form = into(<Form {...context} schema={{schema: {select: {type: 'Select', options: [1, 2, 3]}}}}
                                 valueManager={vm}/>, true);
 
@@ -81,7 +80,7 @@ describe('types/Select', function () {
         const {
             Form,
             ...context
-        } = newSubschemaContext({valueManager: vm, styles});
+        } = newSubschemaContext({valueManager: vm});
 
         function noThree(v) {
             return v == 3 ? {message: 'No threes for you'} : null
