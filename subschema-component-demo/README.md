@@ -8,14 +8,10 @@ See it in action [here](http://subschema.github.io/subschema)
 Or run it 
 
 ```sh
-  git clone https://github.com/subschema/subschema-demo.git
-  git clone https://github.com/subschema/subschema.git
-  cd subschema
-  npm install 
-  cd ../subschema-demo
-  npm install
-  npm run hot &
-  open http://localhost:8082
+  $ git clone https://github.com/subschema/subschema-demo.git
+  $ cd subschema-demo
+  $ npm install
+  $ npm run hot && open http://localhost:8082
 ```
 
 *Note:
