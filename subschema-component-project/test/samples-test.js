@@ -15,17 +15,10 @@ describe('samples', function () {
                 var blob = generate(ds, 'page', 'string');
                 expect(blob).toExist();
             });
-
-            it(`should execute "${sample}"`, () => {
-                renderPage(ds, (node) => {
-                    var r = into(node, true);
-                    expect(r).toExist();
-                });
-            })
         });
     });
 
-    describe.only('samples/project', function () {
+    describe('samples/project', function () {
         return testEachSample((ds, sample) => {
             it(`should create "${sample}"`, async () => {
 

@@ -6,7 +6,8 @@
   "scripts": {
     "karma": "subschema-karma",
     "compile": "subschema-webpack",
-    "server": "subschema-webpack-dev-server"
+    "server": "subschema-webpack-dev-server",
+    "prepublish":"subschema-webpack && subschema-karma start --single-run"
   },
   "dependencies": {
     "validate-npm-package-name": "^3.0.0",

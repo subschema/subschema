@@ -31,7 +31,7 @@ export function renderPage(sample, verify) {
     const Subschema = newSubschemaContext();
     const {loader, Form, ValueManager} = Subschema;
     var ds = setupData(sample),
-        src = compile(source(ds.sample)).code;
+        src = compile(source(ds)).code;
 
     var f = new Function(['render', 'require', 'document'], src);
     var didRender = false;

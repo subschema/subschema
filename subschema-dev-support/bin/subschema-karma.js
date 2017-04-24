@@ -1,7 +1,19 @@
 #!/usr/bin/env node
 var path = require('path');
-if (process.argv.length == 2) {
-    process.argv.push('start');
+function hasArg() {
+    var args = process.argv.slice(2);
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        var idx = args.indexOf(arguments[i]);
+        if (idx != -1)
+            return idx;
+    }
+    return -1;
 }
-process.argv.push(path.resolve(__dirname, '..', 'karma.conf.js'));
+var conf = path.resolve(__dirname, '..', 'karma.conf.js');
+var pos;
+if ((pos = hasArg('start', 'init', 'run', 'completion')) == -1) {
+    process.argv.splice(2, 0, 'start', conf);
+} else {
+    process.argv.splice(pos-1, 0, conf);
+}
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'karma'));
