@@ -4,9 +4,10 @@
   "description": "Subschema Test Support",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir lib",
-    "test": "yarn run compile",
-    "prepublish": "yarn run test"
+    "compile": "subschema-babel",
+    "karma":"subschema-karma",
+    "test": "subschema-karm --single-run --browsers Firefox",
+    "prepublish": "subschema-babel"
   },
   "dependencies": {
     "subschema-prop-types": "^1.7.0",
@@ -15,7 +16,6 @@
     "subschema-injection": "^1.7.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "mocha": "^3.2.0"
+    "subschema-dev-support": "^1.7.0"
   }
 }

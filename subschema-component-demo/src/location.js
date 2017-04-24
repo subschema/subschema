@@ -1,6 +1,5 @@
-import {  useQueries,useBasename } from 'history'
-import createHistory from 'history/lib/createHashHistory'
-const history = useQueries(useBasename(createHistory))({
+import createHistory from 'history/createHashHistory';
+const history = createHistory({
     basename:'#'
 });
 export default history;

@@ -3,13 +3,42 @@
   "version": "1.7.0",
   "description": "Subschema Demo",
   "scripts": {
-    "karma": "NODE_ENV=test karma start --no-single-run --colors --auto-watch",
-    "test": "NODE_ENV=test karma start --single-run --browsers Firefox",
-    "hot": "NODE_ENV=development webpack-dev-server --hot --inline ${WEBPACK_OPTIONS}  --config ./webpack.config.js --entry ./public/app.jsx --output-filename=app.entry.js",
-    "not-hot": "NODE_ENV=nothot webpack-dev-server --host 0.0.0.0 --dev-tool=#source-map  --port 8181 --config ./webpack.config.js --entry ./public/app.jsx --output-filename=app.entry.js",
-    "demo": "NODE_ENV=production webpack  --display-modules -p --output-path .build --entry ./public/app.jsx --output-filename=app.[hash].js --config ./webpack.config.js",
-    "demo-debug": "NODE_ENV=production webpack  --display-modules --output-path .build --entry ./public/app.jsx --output-filename=app.[hash].debug.js --config ./webpack.config.js",
-    "dist": "NODE_ENV=production webpack --display-modules -p --output-path dist --entry ./src/index.js --output-library-target=umd --output-library-name=SubschemaDemo --output-filename=index.js --config ./webpack.config.js",
-    "dist-debug": "NODE_ENV=production webpack --display-modules -p --output-path dist --entry ./src/index.js --output-library-target=umd --output-library-name=SubschemaDemo --output-filename=index.debug.js --config ./webpack.config.js"
+    "karma": "subschema-karma",
+    "test": "subschema-kama start --single-run --browsers Firefox",
+    "compile": "subschema-webpack",
+    "server": "subschema-webpack-dev-server"
+  },
+  "dependencies": {
+    "babel-standalone": "^6.24.0",
+    "codemirror": "^5.25.2",
+    "jszip": "^3.1.3",
+    "history": "^4.6.1",
+    "lodash": "^4.17.4",
+    "validate-npm-package-name": "^3.0.0",
+    "browser-filesaver": "^1.1.1",
+    "subschema": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-component-project": "^1.7.0",
+    "subschema-core": "^1.7.0",
+    "subschema-utils": "^1.7.0",
+    "subschema-component-form": "^1.7.0",
+    "subschema-transitions": "^1.7.0",
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-support": "^1.7.0",
+    "subschema-expression": "^1.7.0",
+    "subschema-injection": "^1.7.0",
+    "subschema-loader": "^1.7.0",
+    "subschema-processors": "^1.7.0",
+    "subschema-validators": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-css-bootstrap": "^1.7.0",
+    "subschema-test-samples": "^1.7.0",
+    "subschema-component-wizard": "^1.7.0",
+    "subschema-component-modal": "^1.7.0",
+    "subschema-component-autocomplete": "^1.7.0"
+  },
+  "devDependencies": {
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-support": "^1.7.0"
   }
 }

@@ -1,8 +1,5 @@
-"use strict";
 import React, {Component} from 'react';
-import {Form, ValueManager, decorators, loader, loaderFactory, PropTypes} from 'Subschema';
-import DownloadButton from './DownloadButton.jsx';
-
+import {Form, loader, PropTypes} from 'subschema';
 
 const schema = {
     schema: {
@@ -30,10 +27,8 @@ export default class NewProject extends Component {
     };
 
     render() {
-        return (
-            <Form schema={schema} onSubmit={this.handleSubmit} valueManager={this.valueManager}
-                  loader={this.context.loader}/>
-        );
+        return <Form schema={schema} onSubmit={this.handleSubmit} valueManager={this.valueManager}
+                     loader={this.context.loader}/>;
 
     }
 }

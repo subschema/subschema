@@ -24,7 +24,7 @@ project with webpack, karma and more for getting started.
 
 ```es6
 import React, {Component] from 'react';
-import {Form} from 'Subschema';
+import {Form} from 'subschema';
 ```
 
 ###Built In Types
@@ -209,7 +209,7 @@ If you need to listen to a particular path use the PropType.
 You can add new types by adding them to the loader. You can use the default loader
 at Subschema.loader or create a new loader from a loader factory.
 ```jsx
-  import {loaderFactory, DefaultLoader} from 'Subschema';
+  import {loaderFactory, DefaultLoader} from 'subschema';
   const yourLoader = loaderFactory();
   //you may want to have the default loader for the templates and types.
   yourLoader.addLoader(DefaultLoader);

@@ -10,7 +10,7 @@ export const LOADER_TYPES = ['Operator', 'Template', 'Processor', 'Type', 'Schem
 export const WarningLoader = LOADER_TYPES.reduce(function (ret, key) {
     ret[`load${upFirst(key)}`] = function (type) {
         warning(false, 'unable to find "%s" named "%s', key, type);
-    }
+    };
     return ret;
 }, {});
 export default function loaderFactory(loaders = []) {
@@ -24,7 +24,7 @@ export default function loaderFactory(loaders = []) {
                     }, this)
                 }
                 Object.keys(loader).forEach(function (key) {
-                    var parts = /^(load|list)(.*)/.exec(key);
+                    const parts = /^(load)(.+?)$/.exec(key);
                     if (key in this && parts && parts.length > 2 && parts[1] in types) {
                         this[key] = types[parts[1]](parts[2]);
                     } else {
@@ -33,7 +33,7 @@ export default function loaderFactory(loaders = []) {
                         if (typeof _add === 'function') {
                             _add.call(this, loader[key]);
                         } else {
-                            warning(false, 'do not understand "%s"', key);
+                          //  warning(false, 'do not understand "%s"', key);
                         }
                     }
                 }, this);

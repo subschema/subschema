@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "subschema-webpack  --output-library SubschemaTestSamples --output-library-target umd --entry ./src/index.js --use-externals react,subschema"
+    "compile": "subschema-webpack --use-externals react,react-dom,subschema"
   },
   "devDependencies": {
     "expect": "^1.13.4",

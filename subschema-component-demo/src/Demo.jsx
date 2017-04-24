@@ -1,10 +1,9 @@
-"use strict";
-
 import React, {Component} from "react";
-import {Form, PropTypes, ValueManager, DefaultLoader} from "Subschema";
+import {Form, PropTypes, ValueManager, DefaultLoader} from "subschema";
 import history from "./location";
 import "./sample.lessp";
-
+import queryString from 'querystring';
+console.log(`qs`,queryString);
 export default class Demo extends Component {
     static propTypes = {
         valueManager: PropTypes.valueManager,
@@ -34,20 +33,21 @@ export default class Demo extends Component {
 
         function handleDataError(val, old, path) {
             //make sure the poll cycle exists first;
-            setTimeout(()=> {
+            setTimeout(() => {
                 if (loc == null || val == null) {
                     return;
                 }
+                const query = queryString.parse(loc.search) || {};
                 if (val) {
-                    if (loc.query[path] === 'true') return;
-                    loc.query[path] = 'true';
-                    var {pathname, query, state} = loc;
-                    history.push({pathname, query, state});
+                    if (query[path] === 'true') return;
+                    query[path] = 'true';
+                    var {pathname, state} = loc;
+                    history.push({pathname, search: queryString.stringify(query), state});
                 } else {
-                    if (loc.query[path] === 'true') {
-                        delete loc.query[path];
-                        var {pathname, query, state} = loc;
-                        history.push({pathname, query, state});
+                    if (query[path] === 'true') {
+                        delete query[path];
+                        var {pathname, state} = loc;
+                        history.push({pathname, search: queryString.stringify(query), state});
                     }
                 }
             }, 20);
@@ -64,9 +64,10 @@ export default class Demo extends Component {
         const unlisten = history.listen(location => {
             console.log('loc', location);
             const pathname = location.pathname;
+            const query = queryString.parse(location.search);
             this.props.valueManager.update('pathname', pathname);
-            this.props.valueManager.update('useData', location.query.useData == "true");
-            this.props.valueManager.update('useError', location.query.useError == "true");
+            this.props.valueManager.update('useData',  query.useData == "true");
+            this.props.valueManager.update('useError', query.useError == "true");
 
             loc = location;
 

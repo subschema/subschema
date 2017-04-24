@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Subschema, {PropTypes,Editor} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 
 class NavigateItem extends Component {
 
@@ -9,13 +9,16 @@ class NavigateItem extends Component {
         path: PropTypes.path,
         onClick:PropTypes.valueEvent
     };
+
     static defaultProps = {
         pathname: ".",
         onClick:'pathname'
     };
+
     clzName = (name = '')=> {
         return 'list-group-item ' + ('/' + name.replace(/^#+?\//, '') === this.props.pathname ? 'active' : '');
     };
+
     handleClick = (e)=>{
         this.props.onClick(this.props.href);
     };

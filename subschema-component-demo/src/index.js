@@ -1,6 +1,5 @@
-"use strict";
-import React from "React";
-import {loaderFactory} from "Subschema";
+import React from 'react';
+import validateNpmPkgName from "validate-npm-package-name";
 import Navigate from "./components/Navigate.jsx";
 import NavTemplate from "./components/NavTemplate.jsx";
 import ULTemplate from "./components/ULTemplate.jsx";
@@ -10,27 +9,25 @@ import Main from "./components/Main.jsx";
 import Example from "./components/Example.jsx";
 import NotFound from "./components/NotFound.jsx";
 import UpdateValue from "./components/UpdateValue.jsx";
-import validateNpmPkgName from "validate-npm-package-name";
 import Submit from "./components/Submit.jsx";
 
-const loader = loaderFactory();
-
-loader.addType({
+export const types = {
     NotFound,
     Navigate,
     Link,
     Main,
     Example,
     LiLink, UpdateValue, Submit
-});
-loader.addTemplate({
+};
+export const templates = {
     NavTemplate,
     ULTemplate,
     H3(props){
         return <h3>{props.legend || props.children}</h3>
     }
-});
-loader.addValidator({
+};
+
+export const validators = {
     npm_validate(options) {
         options = options || {};
         if (!options.message) {
@@ -47,5 +44,6 @@ loader.addValidator({
             }
         }
     }
-});
-export default loader;
+};
+
+export default ({types, templates, validators});

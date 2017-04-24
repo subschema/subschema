@@ -4,8 +4,8 @@
   "description": "Backbone Forms like declaritive forms for react",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir lib",
-    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
+    "compile": "subschema-babel",
+    "test": "subschema-babel && subschema-mocha",
     "prepublish": "yarn run test"
   },
   "keywords": [
@@ -18,8 +18,9 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "mocha": "^3.2.0"
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-support": "^1.7.0"
+
   },
   "dependencies": {
     "subschema-expression": "^1.7.0",

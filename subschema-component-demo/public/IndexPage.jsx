@@ -1,12 +1,10 @@
-"use strict";
-
 import React, {Component} from 'react';
-import {PropTypes} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 
 import UninjectedNewProject from '../src/components/NewProject.jsx';
 
 const seperator = ' | ';
-export default class Index extends Component {
+export default class IndexPage extends Component {
     static defaultProps = {
         NewProject: UninjectedNewProject
     };

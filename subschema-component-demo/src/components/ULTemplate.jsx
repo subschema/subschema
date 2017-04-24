@@ -1,5 +1,5 @@
 import React, {Component, Children} from 'react';
-import Subschema, {PropTypes} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 
 export default class ULTemplate extends Component {
     static propTypes = {

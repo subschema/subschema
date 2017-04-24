@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "karma": "subschema-karma start --no-single-run --log-level debug",
-    "compile":"babel -s true src --out-dir lib",
-    "prepublish":"yarn run compile"
+    "compile": "subschema-babel",
+    "prepublish": "subschema-babel"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",
@@ -16,7 +16,6 @@
     "subschema-component-form": "^1.7.0"
   },
   "devDependencies": {
-    "babel-cli":"^6.24.1",
     "lodash": "^4.6.1",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
@@ -32,6 +31,5 @@
     "subschema-validators": "^1.7.0",
     "subschema-valuemanager": "^1.7.0",
     "subschema-css-bootstrap": "^1.7.0"
-
   }
 }

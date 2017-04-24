@@ -1,9 +1,10 @@
 "use strict";
-import React, {Component, PropTypes} from "react";
-import {generate} from "subschema-project";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {generate} from "subschema-component-project";
 import {saveAs} from "browser-filesaver";
-import camelCase from "lodash/string/camelCase";
-import kebabCase from "lodash/string/kebabCase";
+import camelCase from "lodash/camelCase";
+import kebabCase from "lodash/kebabCase";
 
 function openBlob(blob, handleDone) {
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {

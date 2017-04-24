@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "subschema-webpack --no-style-loader",
-    "test": "yarn run compile && mocha --compilers js:babel-register test/*-test.js",
+    "test": "yarn run compile && subschema-mocha",
     "prepublish": "yarn run test"
   },
   "dependencies": {

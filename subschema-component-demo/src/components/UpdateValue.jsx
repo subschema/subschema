@@ -1,8 +1,8 @@
 "use strict";
 import React, {Component} from "react";
-import {PropTypes} from "Subschema";
-import camelCase from "lodash/string/camelCase";
-import capitalize from "lodash/string/capitalize";
+import PropTypes from "subschema-prop-types";
+import camelCase from "lodash/camelCase";
+import capitalize from "lodash/capitalize";
 import DownloadButton from "./DownloadButton.jsx";
 
 export default class UpdateValue extends Component {

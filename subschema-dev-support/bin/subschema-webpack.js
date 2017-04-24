@@ -51,4 +51,5 @@ if ((idx = process.argv.indexOf('--use-externals')) != -1) {
     console.log(`using externals ${externals}`);
     process.env.SUBSCHEMA_USE_EXTERNALS = externals;
 }
+
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'webpack'));

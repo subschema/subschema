@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import ReactDOM, {render} from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import samples from 'subschema-test-samples';
-import  {newSubschemaContext} from 'Subschema';
+import  {newSubschemaContext} from 'subschema';
 import {compile, source} from '../src/compile';
 import expect from 'expect';
 

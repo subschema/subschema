@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+var babel = require('./babel-helper');
 var project = function (...args) {
     return path.resolve(process.cwd(), path.join(...args));
 };
@@ -60,6 +61,17 @@ var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys
     return ret;
 }, {});
 
+const set = function (obj, key, value) {
+    const keys = key.split('.');
+    const last = keys.pop();
+    let cobj = obj || {};
+    while (keys.length) {
+        const c = keys.shift();
+        cobj = cobj[c] || (cobj[c] = {});
+    }
+    obj[last] = value;
+    return obj;
+};
 const autoprefixer = function () {
     return [
         require('autoprefixer')({
@@ -73,7 +85,7 @@ const autoprefixer = function () {
     ];
 };
 var plugins = [];
-var externals = [];
+var externals = {};
 var useStyle;
 if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
     var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -87,8 +99,32 @@ if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
         return ['style-loader'].concat(Array.prototype.slice.call(arguments));
     };
 }
-
+var opts = {
+    useStyle,
+    useCss: {
+        loader: "css-loader",
+        options: {
+            modules: true,
+            importLoaders: 1,
+            localIdentName: '[name]__[local]___[hash:base64:5]',
+        }
+    },
+    usePostCss: {
+        loader: 'postcss-loader',
+        options: {
+            plugins: autoprefixer
+        }
+    },
+    useLess: {
+        loader: "less-loader",
+        options: {
+            strictMath: true,
+            noIeCompat: true
+        }
+    }
+};
 if (process.env.SUBSCHEMA_USE_STATS_FILE) {
+    opts.useStatsFile = process.env.SUBSCHEMA_USE_STATS_FILE;
     plugins.push(new (require("webpack-stats-plugin").StatsWriterPlugin)({
         filename: process.env.SUBSCHEMA_USE_STATS_FILE,
         transform(data, opts){
@@ -98,8 +134,21 @@ if (process.env.SUBSCHEMA_USE_STATS_FILE) {
     }))
 }
 if (process.env.SUBSCHEMA_USE_EXTERNALS) {
-    //react,...
-    externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/);
+    /**lodash : {
+    commonjs: "lodash",
+    amd: "lodash",
+    root: "_" // indicates global variable
+    lodash.commonjs=lodash,lodash.amd=lodash,lodash.root=lodash,
+    react,react-dom
+    {
+      react:recct
+    }
+  }**/
+    externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/).reduce(function (ret, key) {
+        const [k, v] = key.split(/\s*=\s*/, 2);
+        set(ret, k, v || k);
+        return ret;
+    }, {});
 }
 
 var webpack = {
@@ -115,16 +164,27 @@ var webpack = {
     resolve: {
         extensions: ['.js', '.jsx'],
         alias
+
+    },
+    resolveLoader: {
+        modules: [
+            path.resolve(process.cwd(), "node_modules"),
+            path.resolve(__dirname, 'node_modules')
+        ]
     },
     plugins,
     externals,
     module: {
         rules: [
+
             {
                 test: /\.jsx?$/,
                 //       exclude: /(node_modules|bower_components)/,
                 include: [/test\/*/, /src\/*/, /public\/*/, /subschema*\/src\/*/],
-                use: 'babel-loader'
+                use: {
+                    loader: 'babel-loader',
+                    options: babel
+                }
             },
             {
                 test: /\.css$/,
@@ -137,27 +197,9 @@ var webpack = {
             {
                 test: /\.less$/,
                 use: useStyle(
-                    {
-                        loader: "css-loader",
-                        options: {
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: '[name]__[local]___[hash:base64:5]',
-                        }
-                    },
-                    {
-                        loader: "less-loader",
-                        options: {
-                            strictMath: true,
-                            noIeCompat: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: autoprefixer
-                        }
-                    })
+                    opts.useCss,
+                    opts.useLess,
+                    opts.usePostCss)
             }
         ]
     }
@@ -165,10 +207,11 @@ var webpack = {
 
 
 if (process.env.SUBSCHEMA_USE_HTML) {
+    opts.useHtml = true;
     console.log(`using html plugin`);
     var HtmlWebpackPlugin = require('html-webpack-plugin');
     //if (!webpack.output) webpack.output = {};
-   // webpack.output.path = path.resolve(process.cwd(), '.tmp');
+    // webpack.output.path = path.resolve(process.cwd(), '.tmp');
     //webpack.output.filename = 'app.bundle.js';
     webpack.devtool = 'inline-source-map';
     plugins.push(new HtmlWebpackPlugin({
@@ -176,8 +219,26 @@ if (process.env.SUBSCHEMA_USE_HTML) {
         'template': path.resolve(__dirname, 'public', 'index.html')
     }));
 }
+if (process.env.SUBSCHEMA_USE_HOT) {
+    opts.useHot = true;
+    console.log('using hot loading');
+    babel.plugins.unshift("react-hot-loader/babel");
+    function modrequire(mod) {
+        console.log('mod', mod);
+        return require(mod);
+    }
 
+    babel.plugins = babel.plugins.map(modrequire);
+    babel.presets = babel.presets.map(modrequire);
+    var entry = process.argv[process.argv.indexOf('--entry') + 1];
+    webpack.entry = [
+        `webpack-dev-server/client?http://localhost:${webpack.devServer.port}`,
+        'webpack/hot/only-dev-server',
+        entry
+    ];
+
+}
 if (customConf) {
-    webpack = customConf(webpack);
+    webpack = customConf(webpack, opts);
 }
 module.exports = webpack;

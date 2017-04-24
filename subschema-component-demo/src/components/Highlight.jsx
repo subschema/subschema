@@ -1,4 +1,3 @@
-"use strict";
 import React  from 'react';
 
 export default class Highlight extends React.Component {

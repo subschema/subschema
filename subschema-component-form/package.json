@@ -1,11 +1,11 @@
 {
   "name": "subschema-component-form",
   "version": "1.7.0",
-  "description": "Subschema",
+  "description": "Subschema Form and DOM support",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "babel -s true src --out-dir lib",
-    "test": "yarn run compile && subschema-karma start",
+    "compile": "subschema-babel",
+    "test": "subschema-babel && subschema-karma start",
     "karma": "subschema-karma start --no-single-run --log-level debug"
   },
   "peerDependencies": {

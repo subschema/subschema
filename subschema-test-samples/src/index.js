@@ -1,8 +1,8 @@
 ///(?!.*(index).js$).*\.js(x)
 //var ctx = require.context('./', false, /(?!.*-setup\.jsx?$)\.jsx?/);
-var jctx = require.context('./', false, /^(?!.*-setup|index|fakeImport\.js$).*\.js$/);
-var rctx = require.context('!!raw-loader!./', false, /(?!.*index\.js$)-setup\.js$/);
-var fctx = require.context('!!raw-loader!babel-loader!./', false, /(?!.*index\.js$)-setup\.js$/);
+var jctx = require.context('./', false, /^(?!.*-setup|index\.js$).*\.jsx?$/);
+var rctx = require.context('!!raw-loader!./', false, /-setup\.jsx?$/);
+var fctx = require.context(`raw-loader!./`, false, /-setup\.jsx?$/);
 var keysRctx = rctx.keys();
 var keys = jctx.keys();
 var __default = keys.reduce(function (obj, key) {

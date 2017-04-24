@@ -1,8 +1,7 @@
-"use strict";
-
 import React, {Component} from 'react';
-import {PropTypes, Form, ValueManager, loaderFactory, DefaultLoader, decorators} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 import UninjectedSubschemaPlayground from './SubschemaPlayground.jsx';
+
 export default class Example extends Component {
 
     static contextTypes = PropTypes.contextTypes;

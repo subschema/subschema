@@ -1,7 +1,5 @@
-"use strict";
-
 import React, {Component} from "react";
-import {PropTypes} from 'Subschema';
+import PropTypes from 'subschema-prop-types';
 import CodeMirror from 'codemirror';
 
 export default class Editor extends Component {

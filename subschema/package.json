@@ -7,10 +7,9 @@
   "web": "dist/subschema-noreact.js",
   "webpack": "src/index.js",
   "scripts": {
-    "compile-lib": "babel -s true src --out-dir lib",
+    "compile-lib": "subschema-babel",
     "compile-web": "subschema-webpack  --output-path dist --no-style-loader --output-filename subschema.js",
     "compile-web-debug": "subschema-webpack --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
-
     "compile-web-stats": "subschema-webpack  --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
     "compile-web-noreact": "subschema-webpack  --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
     "compile": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats",
@@ -19,7 +18,7 @@
     "prepublish": "yarn run compile"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "subschema-dev-support": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-injection": "^1.7.0",
     "subschema-expression": "^1.7.0",

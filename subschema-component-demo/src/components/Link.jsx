@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import { PropTypes} from 'Subschema';
-function clzName(name, active) {
-    return (name === active ? 'active' : '');
-}
-import location from '../location';
+import PropTypes from 'subschema-prop-types';
+
 
 export default class Link extends Component {
 

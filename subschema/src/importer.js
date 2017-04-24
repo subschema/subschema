@@ -1,6 +1,12 @@
 import {warning} from 'subschema-utils';
 
-const MAP = {
+/**
+ * A list of packages that are exported for subschema.  Use this to
+ * test and run pure browser based subschema.
+ *
+ * @type {{react-dom: (*), subschema-core: *, subschema-injection: *, subschema-expression: *, subschema-loader: *, subschema-prop-types: *, subschema-processors: *, subschema-transitions: *, subschema-utils: *, subschema-valuemanager: *, subschema-validators: *, subschema-component-form: *, subschema-component-list: *, subschema-css-bootstrap: *, subschema-component-modal: *, subschema-component-autocomplete: *, subschema-component-wizard: *}}
+ */
+export const EXPORTS = {
     "react-dom": require("react-dom"),
     "subschema-core": require("subschema-core"),
     "subschema-injection": require("subschema-injection"),
@@ -29,23 +35,21 @@ function descend(obj, paths) {
 
 export default function subschemaImport(Subschema, React) {
     const overrides = {
-        subschema: {default: Subschema},
-        react: {default: React},
-        'subschema-valuemanager': {
-            default(){
-                return Subschema.Form.defaultProps.valueManager;
-            }
+        subschema: Subschema,
+        react: React,
+        ['subschema-valuemanager'](){
+            return Subschema.Form.defaultProps.valueManager;
         },
-        'subschema-loader': {
-            default(){
-                return Subschema.loader;
-            }
+        ['subschema-loader'](){
+            return Subschema.loader;
         }
     };
-    return function fakeRequire(dep) {
+    const requireMap = {...EXPORTS, ...overrides};
+
+    return function importer(dep) {
         const parts = dep.split('/');
         const pkgName = parts.shift();
-        const pkg = overrides[pkgName] || MAP[pkgName];
+        const pkg = requireMap[pkgName];
         if (pkg) {
             if (parts.length == 0) {
                 if (pkg.default != null)
@@ -53,8 +57,9 @@ export default function subschemaImport(Subschema, React) {
                 return pkg;
             }
             if (parts[0] == 'lib') {
+                const libPkg = requireMap[`${pkgName}/lib`] || pkg;
                 parts.shift();
-                let ret = descend(pkg.default, parts) || descend(pkg, parts);
+                let ret = (libPkg.default && descend(libPkg.default, parts)) || descend(libPkg, parts);
                 if (ret != null) return ret;
             }
 

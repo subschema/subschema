@@ -1,6 +1,5 @@
-"use strict";
 import React, {Component} from "react";
-import {Form, newSubschemaContext, PropTypes, ReactCSSReplaceTransition} from "Subschema";
+import {Form, newSubschemaContext, PropTypes, ReactCSSReplaceTransition} from "subschema";
 import Editor from "./Editor.jsx";
 import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
@@ -20,7 +19,7 @@ function createPrelude(imports) {
 
     return `"use strict";
 import React, {Component} from 'react';
-import Subschema,{${imports.join(',')}} from 'Subschema';
+import Subschema,{${imports.join(',')}} from 'subschema';
 `;
 }
 function stringify(obj) {
@@ -125,7 +124,7 @@ export default class SubschemaPlayground extends Component {
     createFunction(editorCode) {
         let code = this.state.code;
         const Subschema = newSubschemaContext(this.context.defaultLoaders);
-        const {ValueManager, loader}  = Subschema;
+        const {ValueManager, loader, importer}  = Subschema;
         const valueManager = ValueManager(this.props.useData ? this.props.value : {});
         const {errors, value} = this.props;
         const {...schema} = this.props.schema;
@@ -137,14 +136,12 @@ export default class SubschemaPlayground extends Component {
 ${transform(editorCode, babelrc).code}
 
 return {
-   loader:loader,
-   schema:schema,
-   valueManager:valueManager
+   schema:schema
 };
 `;
 
-            const func = new Function(['React', 'Component', 'Subschema', 'loader', 'valueManager', 'errors', 'value', 'schema'], funcBody);
-            func(React, Component, Subschema, loader, valueManager, errors, value, schema);
+            const func = new Function(['require', 'errors', 'value', 'schema'], funcBody);
+            func(importer, errors, value, schema);
             this._compiled = func;
             this.state.error = null;
         } catch (e) {
@@ -155,7 +152,7 @@ return {
 
         if (this._compiled) {
             try {
-                return this._compiled(React, Component, Subschema, loader, valueManager, errors, value, schema);
+                return this._compiled(importer, errors, value, schema);
             } catch (e) {
                 console.log('error', e, funcBody + '');
                 this.handleError(e);

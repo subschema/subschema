@@ -21,7 +21,8 @@
     "subschema-component-wizard",
     "subschema",
     "subschema-test-samples",
-    "subschema-component-project"
+    "subschema-component-project",
+    "subschema-component-demo"
   ],
   "version": "1.7.0"
 }
