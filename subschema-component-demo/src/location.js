@@ -1,5 +1,6 @@
 import createHistory from 'history/createHashHistory';
 const history = createHistory({
-    basename:'#'
+    hashType: 'slash' // Google's legacy AJAX URL format
+
 });
 export default history;

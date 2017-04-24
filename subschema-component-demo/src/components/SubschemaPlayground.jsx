@@ -66,7 +66,7 @@ export default class SubschemaPlayground extends Component {
         setupTxt: PropTypes.string.isRequired,
         value: PropTypes.any,
         errors: PropTypes.any,
-        formProps: PropTypes.oneOfType([PropTypes.object,PropTypes.arrayOf(PropTypes.string)]),
+        formProps: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.string)]),
         onChange: PropTypes.func,
         filename: PropTypes.string,
         DisplayValueAndErrors: PropTypes.injectClass,
@@ -123,8 +123,8 @@ export default class SubschemaPlayground extends Component {
     createFunction(editorCode) {
         let code = this.state.code;
         const Subschema = newSubschemaContext(this.context.defaultLoaders);
-        const {ValueManager, loader, importer}  = Subschema;
-        const valueManager = ValueManager(this.props.useData ? this.props.value : {});
+        const {Form, ValueManager, loader, importer} = Subschema;
+        const valueManager = Form.defaultProps.valueManager = ValueManager(this.props.useData ? this.props.value : {});
         const {errors, value} = this.props;
         const {...schema} = this.props.schema;
         let funcBody;
@@ -176,7 +176,7 @@ return {
         const error = e.message;
         clearTimeout(this._timeout);
 
-        this._timeout = setTimeout(()=> {
+        this._timeout = setTimeout(() => {
             this.setState({error});
         }, 200);
     }
@@ -237,7 +237,7 @@ return {
         </div>
     }
 
-    handleSubmit = (e, err, values)=> {
+    handleSubmit = (e, err, values) => {
         e && e.preventDefault();
         this.props.onSubmit(values);
     };
@@ -253,16 +253,16 @@ return {
             setupTxt: this.state.code,
             schema,
             data: _data,
-            props: Object.keys(formProps).reduce((obj, v)=> {
+            props: Object.keys(formProps).reduce((obj, v) => {
                 if (v == 'schema' || v == 'valueManager') return obj;
-                    obj[v] = true;
+                obj[v] = true;
                 return obj;
             }, {}),
             errors: _errors,
             description: this.props.description
         };
         if (useError) {
-            setTimeout(()=> {
+            setTimeout(() => {
                 formProps.valueManager.setErrors(_errors);
             }, 500)
         }
@@ -281,7 +281,7 @@ return {
                     {this.renderToggle()}
                     <div className="playgroundPreview clearfix">
                         <Form {...formProps} onSubmit={this::this.handleSubmit}>
-                            <div style={{width:'100%', float:'left'}}>
+                            <div style={{width: '100%', float: 'left'}}>
                                 <DisplayValueAndErrors value="."/>
                             </div>
                         </Form>

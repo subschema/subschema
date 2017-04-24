@@ -1,14 +1,13 @@
-import 'babel-polyfill';
 import React from 'react';
 import {render} from 'react-dom';
-import {Form, ValueManager, loader}  from 'subschema';
-import devel from '../src/index';
-import Index from './IndexPage.jsx';
-import Demo from '../src/Demo.jsx';
+import {ValueManager, loader}  from 'subschema';
 import samples from 'subschema-test-samples';
+import demo from 'subschema-component-demo';
+import Demo from 'subschema-component-demo/lib/Demo.jsx';
+import Index from './IndexPage.jsx';
 import schema from './schema.json';
 
-loader.addLoader(devel);
+loader.addLoader(demo);
 loader.addType({Index});
 
 loader.loaderType('Sample');

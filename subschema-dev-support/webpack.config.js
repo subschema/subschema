@@ -86,21 +86,7 @@ const autoprefixer = function () {
 };
 var plugins = [];
 var externals = {};
-var useStyle;
-if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
-    var ExtractTextPlugin = require('extract-text-webpack-plugin');
-    const extractCSS = new ExtractTextPlugin(process.env.SUBSCHEMA_USE_STATS_FILE ? '[hash].style.css' : 'style.css');
-    useStyle = function useStyleExtractText() {
-        return extractCSS.extract(Array.prototype.slice.call(arguments));
-    };
-    plugins.push(extractCSS);
-} else {
-    useStyle = function useStyleWithStyleLoader() {
-        return ['style-loader'].concat(Array.prototype.slice.call(arguments));
-    };
-}
 var opts = {
-    useStyle,
     useCss: {
         loader: "css-loader",
         options: {
@@ -121,8 +107,24 @@ var opts = {
             strictMath: true,
             noIeCompat: true
         }
-    }
+    },
+    useNameHash: process.env.SUBSCHEMA_USE_NAME_HASH ? true : false,
+    analytics: process.env.SUBSCHEMA_USE_ANALYTICS,
 };
+
+if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
+    var ExtractTextPlugin = require('extract-text-webpack-plugin');
+    const extractCSS = new ExtractTextPlugin('style.css');
+    opts.useStyle = function useStyleExtractText() {
+        return extractCSS.extract(Array.prototype.slice.call(arguments));
+    };
+    plugins.push(extractCSS);
+} else {
+    opts.useStyle = function useStyleWithStyleLoader() {
+        return ['style-loader'].concat(Array.prototype.slice.call(arguments));
+    };
+}
+
 if (process.env.SUBSCHEMA_USE_STATS_FILE) {
     opts.useStatsFile = process.env.SUBSCHEMA_USE_STATS_FILE;
     plugins.push(new (require("webpack-stats-plugin").StatsWriterPlugin)({
@@ -141,7 +143,7 @@ if (process.env.SUBSCHEMA_USE_EXTERNALS) {
     lodash.commonjs=lodash,lodash.amd=lodash,lodash.root=lodash,
     react,react-dom
     {
-      react:recct
+      react:react
     }
   }**/
     externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/).reduce(function (ret, key) {
@@ -188,7 +190,7 @@ var webpack = {
             },
             {
                 test: /\.css$/,
-                use: useStyle('css-loader')
+                use: opts.useStyle('css-loader')
             },
             {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=application/font-woff'},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=application/octet-stream'},
@@ -196,7 +198,7 @@ var webpack = {
             {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=image/svg+xml'},
             {
                 test: /\.less$/,
-                use: useStyle(
+                use: opts.useStyle(
                     opts.useCss,
                     opts.useLess,
                     opts.usePostCss)
@@ -209,14 +211,36 @@ var webpack = {
 if (process.env.SUBSCHEMA_USE_HTML) {
     opts.useHtml = true;
     console.log(`using html plugin`);
+    function charset(ele) {
+        if (!ele.attributes) ele.attributes = {};
+        if (!ele.attributes.charset)
+            ele.attributes.charset = 'UTF-8';
+    }
+
     var HtmlWebpackPlugin = require('html-webpack-plugin');
+    var ogenerateAssetTags = HtmlWebpackPlugin.prototype.generateAssetTags;
+    HtmlWebpackPlugin.prototype.generateAssetTags = function (assets) {
+        var ret = ogenerateAssetTags.call(this, assets);
+        ret.body.forEach(charset);
+        ret.head.forEach(charset);
+        return ret;
+    };
     //if (!webpack.output) webpack.output = {};
     // webpack.output.path = path.resolve(process.cwd(), '.tmp');
     //webpack.output.filename = 'app.bundle.js';
-    webpack.devtool = 'inline-source-map';
+    if (opts.useNameHash) {
+        if (!webpack.output) webpack.output = {};
+        webpack.output.filename = '[hash].app.js';
+        webpack.devtool = 'source-map';
+    } else {
+        webpack.devtool = 'inline-source-map';
+    }
     plugins.push(new HtmlWebpackPlugin({
-        'title': deps.name + (deps.description ? `:${deps.description}` : ''),
-        'template': path.resolve(__dirname, 'public', 'index.html')
+        'title': (deps.description ? deps.description : deps.name),
+        'hash': opts.useNameHash,
+        'template': path.resolve(__dirname, 'public', opts.analytics ? 'index_analytics.ejs' : 'index.ejs'),
+        'filename': 'index.html',
+        analytics: opts.analytics
     }));
 }
 if (process.env.SUBSCHEMA_USE_HOT) {
@@ -224,7 +248,6 @@ if (process.env.SUBSCHEMA_USE_HOT) {
     console.log('using hot loading');
     babel.plugins.unshift("react-hot-loader/babel");
     function modrequire(mod) {
-        console.log('mod', mod);
         return require(mod);
     }
 
@@ -240,5 +263,8 @@ if (process.env.SUBSCHEMA_USE_HOT) {
 }
 if (customConf) {
     webpack = customConf(webpack, opts);
+}
+if (process.env.SUBSCHEMA_DEBUG) {
+    console.log('webpack', JSON.stringify(webpack, null, 2));
 }
 module.exports = webpack;

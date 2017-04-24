@@ -12,10 +12,11 @@ export const List = _List;
 export const ListItemTemplate = _ListItemTemplate;
 export const Mixed = _Mixed;
 
-export default {
-    CollectionCreateTemplate,
-    CollectionMixin,
-    List,
-    ListItemTemplate,
-    Mixed
-}
+export default ({
+    CollectionCreateTemplate: CollectionCreateTemplate,
+    CollectionMixin: CollectionMixin,
+    ItemToStringTemplate: ItemToStringTemplate,
+    List: List,
+    ListItemTemplate: ListItemTemplate,
+    Mixed: Mixed
+});

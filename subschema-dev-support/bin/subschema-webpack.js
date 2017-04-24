@@ -35,21 +35,39 @@ if (hasArg('-p', '--production')) {
 if (!hasArg('--output-library-target')) {
     process.argv.push('--output-library-target', 'umd');
 }
-var idx;
-if ((idx = process.argv.indexOf('--no-style-loader')) != -1) {
-    console.log(`disabling style loader`);
-    process.env.SUBSCHEMA_NO_STYLE_LOADER = 1;
-    process.argv.splice(idx, 1);
-}
-if ((idx = process.argv.indexOf('--use-stats-file')) != -1) {
-    var statsFile = process.argv.splice(idx, 2).pop();
-    console.log(`outputing stats file '${statsFile}'`);
-    process.env.SUBSCHEMA_USE_STATS_FILE = statsFile;
-}
-if ((idx = process.argv.indexOf('--use-externals')) != -1) {
-    var externals = process.argv.splice(idx, 2).pop();
-    console.log(`using externals ${externals}`);
-    process.env.SUBSCHEMA_USE_EXTERNALS = externals;
-}
 
+var idx;
+
+
+if ((idx = process.argv.indexOf('--demo')) != -1) {
+    process.argv.splice(idx, 1);
+    process.env.SUBSCHEMA_USE_NAME_HASH = 1;
+    process.env.SUBSCHEMA_NO_STYLE_LOADER = 1;
+    process.env.SUBSCHEMA_USE_HTML = 1;
+    if (!hasArg('--devtool')) {
+        process.argv.push('--devtool', 'sourcemap');
+    }
+    if (!hasArg('--entry')) {
+        process.argv.push('--entry', './public/index.jsx');
+    }
+    if (!hasArg('--output-path')) {
+        process.argv.push('--output-path', 'dist');
+    }
+} else {
+    if ((idx = process.argv.indexOf('--no-style-loader')) != -1) {
+        console.log(`disabling style loader`);
+        process.env.SUBSCHEMA_NO_STYLE_LOADER = 1;
+        process.argv.splice(idx, 1);
+    }
+    if ((idx = process.argv.indexOf('--use-stats-file')) != -1) {
+        var statsFile = process.argv.splice(idx, 2).pop();
+        console.log(`outputing stats file '${statsFile}'`);
+        process.env.SUBSCHEMA_USE_STATS_FILE = statsFile;
+    }
+    if ((idx = process.argv.indexOf('--use-externals')) != -1) {
+        var externals = process.argv.splice(idx, 2).pop();
+        console.log(`using externals ${externals}`);
+        process.env.SUBSCHEMA_USE_EXTERNALS = externals;
+    }
+}
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'webpack'));

@@ -6,6 +6,7 @@
     "karma": "subschema-karma",
     "test": "subschema-kama start --single-run --browsers Firefox",
     "compile": "subschema-webpack",
+    "compile-demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack",
     "server": "subschema-webpack-dev-server"
   },
   "dependencies": {

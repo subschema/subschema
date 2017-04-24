@@ -3,7 +3,7 @@
     "useData": {
       "type": "LiLink",
       "label": "Data",
-      "href": "?useData={useData}",
+      "href": "useData={useData}",
       "className": "no-class",
       "template": false
     },
@@ -11,7 +11,7 @@
       "type": "LiLink",
       "label": "Errors",
       "className": "no-class",
-      "href": "?useError={useError}",
+      "href": "useError={useError}",
       "template": false
     },
     "samples": {

@@ -3,7 +3,18 @@ import {Form, PropTypes, ValueManager, DefaultLoader} from "subschema";
 import history from "./location";
 import "./sample.lessp";
 import queryString from 'querystring';
-console.log(`qs`,queryString);
+function parse(loc) {
+    if (loc.search) {
+        const ret = queryString.parse(loc.search.replace(/^\?+?/, ''));
+        console.log(loc.search, ret);
+        return ret;
+    }
+    return {};
+}
+function search(query) {
+    return `?${queryString.stringify(query)}`;
+
+}
 export default class Demo extends Component {
     static propTypes = {
         valueManager: PropTypes.valueManager,
@@ -28,50 +39,41 @@ export default class Demo extends Component {
         }
     }
 
-    componentDidMount() {
-        let loc;
-
-        function handleDataError(val, old, path) {
-            //make sure the poll cycle exists first;
-            setTimeout(() => {
-                if (loc == null || val == null) {
-                    return;
-                }
-                const query = queryString.parse(loc.search) || {};
-                if (val) {
-                    if (query[path] === 'true') return;
-                    query[path] = 'true';
+    handleDataError = (val, old, path) => {
+        console.log('change', val, old, path);
+        const loc = this.location;
+        //make sure the poll cycle exists first;
+        setTimeout(() => {
+            if (loc == null || val == null) {
+                return;
+            }
+            const query = parse(loc);
+            if (val) {
+                if (query[path] === 'true') return;
+                query[path] = 'true';
+                var {pathname, state} = loc;
+                history.push({pathname, search: search(query), state});
+            } else {
+                if (query[path] === 'true') {
+                    delete query[path];
                     var {pathname, state} = loc;
-                    history.push({pathname, search: queryString.stringify(query), state});
-                } else {
-                    if (query[path] === 'true') {
-                        delete query[path];
-                        var {pathname, state} = loc;
-                        history.push({pathname, search: queryString.stringify(query), state});
-                    }
+                    history.push({pathname, search: search(query), state});
                 }
-            }, 20);
+            }
+        }, 20);
+    };
 
-        }
+    componentWillMount() {
 
-        const hd = this.props.valueManager.addListener('useData', handleDataError, null, false).remove;
-        const ed = this.props.valueManager.addListener('useError', handleDataError, null, false).remove;
+
+        const hd = this.props.valueManager.addListener('useData', this.handleDataError, null, false).remove;
+        const ed = this.props.valueManager.addListener('useError', this.handleDataError, null, false).remove;
 
 //Handle change of state to showing data or error.
-
+        this._listenToHistory(history.location);
         // Listen for changes to the current location. The
         // listener is called once immediately.
-        const unlisten = history.listen(location => {
-            console.log('loc', location);
-            const pathname = location.pathname;
-            const query = queryString.parse(location.search);
-            this.props.valueManager.update('pathname', pathname);
-            this.props.valueManager.update('useData',  query.useData == "true");
-            this.props.valueManager.update('useError', query.useError == "true");
-
-            loc = location;
-
-        });
+        const unlisten = history.listen(this._listenToHistory);
         this.unlisten = function () {
             hd();
             ed();
@@ -79,6 +81,16 @@ export default class Demo extends Component {
         }
 
     }
+
+    _listenToHistory = (location) => {
+        console.log('loc', location);
+        const pathname = location.pathname;
+        const query = parse(location);
+        this.props.valueManager.update('pathname', pathname);
+        this.props.valueManager.update('useData', query.useData == "true");
+        this.props.valueManager.update('useError', query.useError == "true");
+        this.location = location;
+    };
 
     componentWillUnmount() {
         this.unlisten();
