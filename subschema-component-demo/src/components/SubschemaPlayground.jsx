@@ -5,7 +5,6 @@ import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
 import DownloadButton from "./DownloadButton.jsx";
 
-
 const babelrc = {
     presets: [
         "es2015-loose",
@@ -17,7 +16,7 @@ const babelrc = {
 function createPrelude(imports) {
     imports = ['Form'].concat(imports);
 
-    return `"use strict";
+    return `
 import React, {Component} from 'react';
 import Subschema,{${imports.join(',')}} from 'subschema';
 `;

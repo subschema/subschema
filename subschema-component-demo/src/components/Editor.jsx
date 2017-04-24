@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from 'subschema-prop-types';
 import CodeMirror from 'codemirror';
+import 'codemirror/mode/jsx/jsx';
 
 export default class Editor extends Component {
 
