@@ -114,7 +114,7 @@ var opts = {
 
 if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
     var ExtractTextPlugin = require('extract-text-webpack-plugin');
-    const extractCSS = new ExtractTextPlugin('style.css');
+    const extractCSS = new ExtractTextPlugin(opts.useNameHash ? '[hash].style.css' : 'style.css');
     opts.useStyle = function useStyleExtractText() {
         return extractCSS.extract(Array.prototype.slice.call(arguments));
     };
@@ -225,12 +225,7 @@ if (process.env.SUBSCHEMA_USE_HTML) {
         ret.head.forEach(charset);
         return ret;
     };
-    //if (!webpack.output) webpack.output = {};
-    // webpack.output.path = path.resolve(process.cwd(), '.tmp');
-    //webpack.output.filename = 'app.bundle.js';
     if (opts.useNameHash) {
-        if (!webpack.output) webpack.output = {};
-        webpack.output.filename = '[hash].app.js';
         webpack.devtool = 'source-map';
     } else {
         webpack.devtool = 'inline-source-map';

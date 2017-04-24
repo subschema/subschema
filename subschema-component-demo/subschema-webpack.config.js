@@ -18,17 +18,5 @@ module.exports = function (config, opts) {
 
     config.resolve.alias['subschema-source'] = join('node_modules', 'subschema');
 
-    Object.assign(config.externals, {
-        'babel-standalone-internal': {
-            'var': 'Babel',
-            'commonjs': 'babel',
-            'commonjs2': 'babel'
-        }/*,
-        'codemirror': {
-            'var': 'CodeMirror',
-            'commonjs': 'codemirror',
-            'commonjs2': 'codemirror'
-        }*/
-    });
     return config;
 };

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import loaderFactory from 'subschema-loader';
 

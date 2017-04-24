@@ -39,7 +39,7 @@ export default function generate(data, template, type) {
             type = type.split('-')[1] || 'base64';
             var zip = new JSZip();
             template(zip.file.bind(zip), data);
-            return zip.generate({type})
+            return zip.generateAsync({type})
         }
         case 'js-blob':
         case 'html-blob':

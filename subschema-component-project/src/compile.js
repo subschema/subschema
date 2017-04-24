@@ -2,7 +2,7 @@
 
 import {transform} from "babel-standalone";
 import {tutils} from "Subschema";
-import formTmpl from "./form.tmpl";
+import form from "./form";
 const {each} = tutils;
 const babelrc = {
     "presets": [
@@ -13,55 +13,49 @@ const babelrc = {
 };
 
 
-export function stringify(name, obj) {
+export function stringify(obj) {
 
-    var str = obj == null ? 'null' : JSON.stringify(obj, null, '\t');
-    return `var ${name} = ${str};`;
+    return !obj ? 'null' : JSON.stringify(obj, null, 2)
+
 }
 
-export function source(managed, useData, useError, template = formTmpl) {
-    var {schema, setup, setupTxt, props, data, errors} = managed;
-    var valProps = {
-        schema,
-        value: useData ? data : {},
-        errors: useError ? errors : null
-    };
-    props = props || {};
 
-    var propStr = [], vars = [];
+export function normalize(options) {
+    const {setupTxt = '', data, errors, schema} = options.sample.sample;
 
-    Object.keys(valProps).forEach(function (v) {
-        if (!valProps[v] || props[v]) {
-            return;
-        }
-        vars.push(stringify(v, valProps[v]));
-        propStr.push(`${v}={${v}}`);
-    });
+    var imports = '';
+    var restOfCode = setupTxt.split("\n").map(function (v) {
+        return v.replace(/^\s*import\s+?(.+?);?\s*$/, function (all, imp) {
+            imports += `import ${imp};\n`;
+            return '';
 
-    each(props, (val, v)=> {
-        if (val == true) val = v;
-        else val = JSON.stringify(val);
-        propStr.push(`${v}={${val}}`);
-    });
+        });
+    }).join("\n");
 
-    var codeText = template ? template({
-        setupTxt,
-        propStr: propStr.join(' '),
-        vars: vars.join('\n')
-    }) : {
-        setupTxt,
-        propStr: propStr.join(' '),
-        vars: vars.join('\n')
-    };
-    return codeText;
+    return `
+import React from 'react';    
+import {Form} from 'subschema';    
+import {render} from 'react-dom';
+    
+${imports}\n
+    
+const schema = ${stringify(schema)};
+    
+${options.useData ? `let value = ${stringify(data)};` : ''}
+${options.useErrors ? `let errors = ${stringify(errors)};` : ''}
+
+${restOfCode}
+
+\n`;
+}
+
+export function source(managed, template = form) {
+    const codeText = normalize(managed);
+    const formText = template ? template(managed) : '';
+    return `${codeText}\n${formText}`;
 
 }
 
 export function compile(src) {
     return transform(src, babelrc);
-}
-
-export function toFunc(transpiled) {
-    return new Function(['render', 'React', 'Subschema', 'loader', 'Form', 'ValueManager', 'document'], transpiled.code);
-
 }

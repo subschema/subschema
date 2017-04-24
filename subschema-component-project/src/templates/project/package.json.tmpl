@@ -11,15 +11,16 @@
   "author": "@project.author@",
   "license": "@project.license@",
   "devDependencies": {
-    "subschema":"@pkg.version@"
+    "subschema":"@pkg.version@",
     "subschema-dev-support":"@pkg.version@"
   },
 
   "scripts": {
     "karma": "subschema-karma",
     "test": "subschema-karma --single-run --browsers Firefox",
-    "server":"subschema-webpack-dev-server"
-    "dist":"subschema-webpack"
+    "server":"subschema-webpack-dev-server",
+    "demo":"subschema-webpack --demo ./docs",
+    "dist":"subschema-webpack",
     "preversion": "npm run dist && npm run test"
   }
 }

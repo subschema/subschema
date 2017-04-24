@@ -1,6 +1,6 @@
 @import 'https://highlightjs.org/static/demo/styles/github.css';
-@import '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/codemirror.min.css';
-@import '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/theme/monokai.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/codemirror.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/theme/monokai.min.css';
 
 .navbar-form > div {
   display: inline-block;

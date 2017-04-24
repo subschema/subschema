@@ -1,22 +1,11 @@
-"use strict";
-import React, {Component} from "react";
-import {Form, loader, ValueManager, loaderFactory} from "subschema";
-import @jsName@ from '@project.name@';
+@scripts.source@
 
-loader.addLoader(@jsName@);
-
-//schema
-@scripts.form.vars@
-
-//setupTxt
-@sample.setupTxt@
-
-export default class App extends Component {
+export default class App extends React.Component {
     render(){
         return <div>
             <h3>@title@</h3>
             <p>@project.description@</p>
-            <Form @scripts.form.propStr@/>
+           @scripts.form@
           </div>
     }
 }

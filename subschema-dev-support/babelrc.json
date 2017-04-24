@@ -8,6 +8,7 @@
   ],
   "plugins": [
     "transform-function-bind",
-    "transform-class-properties"
+    "transform-class-properties",
+    "transform-async-to-generator"
   ]
 }

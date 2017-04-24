@@ -1,19 +1,14 @@
 import indexTmpl from './page/index.html.tmpl';
-import {source, compile} from '../compile';
+import {source, compile, normalize} from '../compile';
+import form from '../form';
+export default function (writeFile, options) {
+    var sample = options.sample.sample;
+    var scripts = options.scripts || (options.scripts = {});
 
-export default function (writeFile, data) {
-
-    var scripts = data.scripts || (data.scripts = {});
-    var src = scripts.source = `
-import React, {Component} from "react";
-import {Form, loader, valueManager, loaderFactory} from "subschema";
-import {render} from "react-dom";
-
-
-${source(data.sample, data.useData, data.useError)}
-
-    `;
+    var src = scripts.source = source(options, function () {
+        return `render(${form(options)}, document.getElementById('content'));`;
+    });
     scripts.compiled = compile(src).code;
-    var content = indexTmpl(data);
+    var content = indexTmpl(options);
     return writeFile('index.html', content);
 }

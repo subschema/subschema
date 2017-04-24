@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import Select from 'subschema-component-form/lib/types/Select';
 import Checkbox from 'subschema-component-form/lib/types/Select';
 import loaderFactory from 'subschema-loader';

@@ -1,6 +1,6 @@
+import {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import loaderFactory from 'subschema-loader';
-import React, {Component} from 'react';
 
 
 //This adds it to the loader, loader.addType still works.

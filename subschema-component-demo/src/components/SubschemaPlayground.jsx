@@ -13,14 +13,6 @@ const babelrc = {
     ]
 };
 
-function createPrelude(imports) {
-    imports = ['Form'].concat(imports);
-
-    return `
-import React, {Component} from 'react';
-import Subschema,{${imports.join(',')}} from 'subschema';
-`;
-}
 function stringify(obj) {
     if (obj == null) return 'null';
     return JSON.stringify(obj, null, 2);
@@ -106,7 +98,13 @@ export default class SubschemaPlayground extends Component {
     createEditorCode() {
         var code = '';
         var {data, errors, useData, useError, schema} = this.props;
+        var imports = '';
+        var restOfCode = this.state.code.replace(/import (.*)/g, function (all, imp) {
+            imports += `import ${imp}\n`;
+            return '';
 
+        });
+        code += imports;
         if (useData) {
             code += `var value = ${stringify(this.props.data)};\n`;
         }
@@ -115,7 +113,8 @@ export default class SubschemaPlayground extends Component {
         }
         code += `var schema = ${stringify(schema)};\n`;
 
-        code += this.state.code;
+
+        code += restOfCode;
 
         return code;
     }
@@ -131,7 +130,6 @@ export default class SubschemaPlayground extends Component {
 
         try {
             funcBody = `
-
 ${transform(editorCode, babelrc).code}
 
 return {
@@ -211,14 +209,6 @@ return {
 
     renderEditor(editorCode) {
         return <div key="editor">
-            <div className="prelude">
-                <Editor
-                    className="playgroundStage"
-                    readOnly={true}
-                    codeText={createPrelude(this.props.imports)}
-                    theme={this.props.theme}
-                />
-            </div>
             <Editor
                 onChange={this._handleCodeChange}
                 className="playgroundStage"
@@ -245,7 +235,7 @@ return {
     render() {
         const {DisplayValueAndErrors, collapsableCode, schema, errors, value, useData, useError, filename} = this.props;
         const editorCode = this.createEditorCode();
-        const formProps = this.invokeIfNeccessary(editorCode);
+        const formProps = this.invokeIfNeccessary(editorCode) || {};
         const _errors = useError ? errors : null;
         const _data = useData ? value : {};
 

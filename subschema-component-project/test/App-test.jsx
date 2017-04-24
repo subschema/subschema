@@ -1,9 +1,11 @@
 import React, {DOM} from 'react';
-import App from '../public/App.jsx';
+import App from 'subschema-component-project/lib/App.jsx';
 import expect from 'expect';
 import support, {into} from './support';
-import TestUtils, {scryRenderedComponentsWithType as withType, scryRenderedDOMComponentsWithTag as withTag, Simulate} from 'react-addons-test-utils';
+import  {TestUtils, Simulate} from 'subschema-test-support';
 
+const withType = TestUtils.scryRenderedComponentsWithType;
+const withTag = TestUtils.scryRenderedDOMComponentsWithTag;
 var {click, change} = Simulate;
 describe.skip('App', function () {
     this.timeout(50000);
@@ -16,15 +18,15 @@ describe.skip('App', function () {
         f = filename;
     }
 
-//    before(function () {
+    before(function () {
         app = into(<App saveAs={saveAs}/>, true);
         buttons = withTag(app, 'button');
         select = withTag(app, 'select')[0];
         options = withTag(app, 'option');
         options.shift();
-  //  });
+    });
     //Object.keys(samples)
-      ['Loader']  .forEach(function (value) {
+    ['Loader'].forEach(function (value) {
 //        const value = opt.value;
         it(`should change the option  ${value}`, function () {
             change(select, {
@@ -48,9 +50,9 @@ describe.skip('App', function () {
                 err = new Error(e);
                 done(err);
             };
-            other.addEventListener("DOMContentLoaded", (e)=> {
+            other.addEventListener("DOMContentLoaded", (e) => {
                 console.log('content loaded for ', value, e);
-                setTimeout(()=> {
+                setTimeout(() => {
                     if (!err) {
                         other.close();
                         done();
