@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "yarn run test"
+    "prepublish": "subschema-babel && subschema-mocha"
   },
   "keywords": [
     "react",
@@ -20,7 +20,6 @@
   "devDependencies": {
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0"
-
   },
   "dependencies": {
     "subschema-expression": "^1.7.0",

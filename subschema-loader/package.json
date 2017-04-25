@@ -6,13 +6,12 @@
   "scripts": {
     "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "yarn run test"
+    "prepublish": "subschema-babel && subschema-mocha"
   },
   "dependencies": {
     "subschema-utils": "^1.7.0"
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0"
-
   }
 }

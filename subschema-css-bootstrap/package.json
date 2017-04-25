@@ -5,7 +5,7 @@
   "description": "Bootstrap CSS support for subschema",
   "scripts": {
     "compile": "subschema-webpack --no-style-loader",
-    "prepublish":"yarn run compile"
+    "prepublish": "subschema-webpack --no-style-loader"
   },
   "dependencies": {
     "bootstrap": "^3.3.7"

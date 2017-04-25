@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "subschema-webpack"
+    "compile": "subschema-webpack",
+    "prepublish": "subschema-webpack && subschema-karma --single-run"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",
@@ -32,4 +33,3 @@
     "subschema-css-bootstrap": "^1.7.0"
   }
 }
-

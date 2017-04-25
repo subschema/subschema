@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "babel -s true src --out-dir lib"
+    "compile": "babel -s true src --out-dir lib",
+    "prepublish": "subschema-babel && subschema-karma --single-run"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",
@@ -33,4 +34,3 @@
     "subschema-css-bootstrap": "^1.7.0"
   }
 }
-

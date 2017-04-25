@@ -1,11 +1,11 @@
 {
   "name": "subschema-prop-types",
   "version": "1.7.0",
-  "main":"lib/index",
+  "main": "lib/index",
   "scripts": {
     "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "yarn run test"
+    "prepublish": "subschema-babel && subschema-mocha"
   },
   "dependencies": {
     "prop-types": "^15.5.4"

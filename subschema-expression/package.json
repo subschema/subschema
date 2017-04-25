@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "subschema-babel",
     "test": "yarn run compile && subschema-mocha",
-    "prepublish": "yarn run test"
+    "prepublish": "subschema-babel && subschema-mocha"
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0"

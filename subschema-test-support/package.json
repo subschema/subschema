@@ -5,9 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "subschema-babel",
-    "karma":"subschema-karma",
+    "karma": "subschema-karma",
     "test": "subschema-karm --single-run --browsers Firefox",
-    "prepublish": "subschema-babel"
+    "prepublish": "subschema-babel && subschema-karma"
   },
   "dependencies": {
     "subschema-prop-types": "^1.7.0",

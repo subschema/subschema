@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "subschema-babel",
     "test": "subschema-babel && subschema-karma start",
-    "karma": "subschema-karma start --no-single-run"
+    "karma": "subschema-karma start --no-single-run",
+    "prepublish": "subschema-babel && subschema-karma start --single-run"
   },
   "peerDependencies": {
     "subschema-core": "^1.7.0",

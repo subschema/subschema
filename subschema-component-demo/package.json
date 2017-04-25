@@ -7,7 +7,8 @@
     "test": "subschema-kama start --single-run --browsers Firefox",
     "compile": "subschema-webpack",
     "compile-demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack --demo ../docs",
-    "server": "subschema-webpack-dev-server"
+    "server": "subschema-webpack-dev-server",
+    "prepublish": "subschema-webpack && subschema-karma start --single-run"
   },
   "dependencies": {
     "babel-standalone": "^6.24.0",
