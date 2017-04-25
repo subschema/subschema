@@ -10,6 +10,6 @@
 export default function injected(Clazz, key) {
 
     Clazz::this.property(key, function () {
-        return Clazz;
+        return () => Clazz;
     });
 }

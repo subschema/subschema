@@ -39,22 +39,28 @@ export default function style(Clazz, key, propList, OrigClazz) {
     Clazz.contextTypes.loader = PropTypes.loader;
 
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
-        const {injected} = this;
+        const state = {};
         const Style = value == null || typeof value === 'string' ? loader.loadStyle(value || OrigClazz.displayName || OrigClazz.name) : value;
         if (Style == null) {
             return Style;
         }
         const obj = styleToProps(Style, {});
-        Object.keys(obj).forEach((key)=> {
+        Object.keys(obj).forEach((key) => {
             if (key in props) {
-                injected[key] = props[key] || '';
+                state[key] = props[key] || '';
             } else {
-                injected[key] = obj[key];
+                state[key] = obj[key];
             }
             if (propList.indexOf(key) === -1) {
                 propList.push(key);
             }
         });
+        if (this.mounted) {
+            this.setState(state);
+        } else {
+            Object.assign(this.state, state);
+        }
+
         return Style;
     });
 }

@@ -8,11 +8,12 @@ function handleListeners(value, key, props, context) {
         return null;
     }
     const resolvedPath = resolveKey(props.path, value);
-
-    const {injected} = this;
-    return context.valueManager.addListener(resolvedPath, (v)=> {
-        injected[key] = v;
-        this.mounted && this.forceUpdate();
+    return context.valueManager.addListener(resolvedPath, (v) => {
+        if (this.mounted) {
+            this.setState({[key]: v});
+        } else {
+            this.state[key] = v;
+        }
     }, null, true).remove;
 }
 

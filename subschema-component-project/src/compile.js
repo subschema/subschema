@@ -1,4 +1,3 @@
-"use strict";
 
 import {transform} from "babel-standalone";
 import {tutils} from "Subschema";
@@ -21,23 +20,26 @@ export function stringify(obj) {
 
 
 export function normalize(options) {
-    const {setupTxt = '', data, errors, schema} = options.sample.sample;
+    const {setupTxt = '', imports = {}, data, props, errors, schema} = options.sample;
 
-    var imports = '';
+    var importString = '';
     var restOfCode = setupTxt.split("\n").map(function (v) {
         return v.replace(/^\s*import\s+?(.+?);?\s*$/, function (all, imp) {
-            imports += `import ${imp};\n`;
+            importString += `import ${imp};\n`;
             return '';
 
         });
     }).join("\n");
+    Object.keys(imports).reduce(function (str, key) {
+        const imp = (imports[key] == true) ? key : `{${imports[key].join(', ')}}`;
 
+        return `${importString};\nimport ${imp} from '${key}';\n`
+    }, importString);
     return `
 import React from 'react';    
-import {Form} from 'subschema';    
 import {render} from 'react-dom';
-    
-${imports}\n
+import {Form} from 'subschema';
+${importString}\n
     
 const schema = ${stringify(schema)};
     

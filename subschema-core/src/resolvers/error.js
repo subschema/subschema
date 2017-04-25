@@ -1,5 +1,3 @@
-"use strict";
-
 import PropTypes from "subschema-prop-types";
 import {resolveKey} from "subschema-utils";
 
@@ -13,13 +11,19 @@ function handleErrorListeners(value, key, props, {valueManager, validate}) {
     }
     //no matter what we will show errors at this point
     if (errors && errors[0]) {
-        this.injected[key] = errors[0].message;
+        if (this.mounted) {
+            this.setState({[key]: errors[0].message});
+        } else {
+            this.state[key] = errors[0].message;
+        }
     }
 
-    return valueManager.addErrorListener(resolvedPath, (err)=> {
-        
-        this.injected[key] = err && err[0] && err[0].message;
-        this.mounted && this.forceUpdate();
+    return valueManager.addErrorListener(resolvedPath, (err) => {
+        if (this.mounted) {
+            this.setState({[key]: err && err[0] && err[0].message})
+        } else {
+            this.state[key] = err && err[0] && err[0].message;
+        }
     }, this, /**false so it doesn't override*/false).remove;
 }
 

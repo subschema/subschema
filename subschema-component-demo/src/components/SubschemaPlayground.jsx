@@ -4,7 +4,7 @@ import Editor from "./Editor.jsx";
 import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
 import DownloadButton from "./DownloadButton.jsx";
-
+import {source} from 'subschema-component-project';
 const babelrc = {
     presets: [
         "es2015-loose",
@@ -99,22 +99,6 @@ export default class SubschemaPlayground extends Component {
         var code = '';
         var {data, errors, useData, useError, schema} = this.props;
         var imports = '';
-        var restOfCode = this.state.code.replace(/import (.*)/g, function (all, imp) {
-            imports += `import ${imp}\n`;
-            return '';
-
-        });
-        code += imports;
-        if (useData) {
-            code += `var value = ${stringify(this.props.data)};\n`;
-        }
-        if (useError) {
-            code += `var errors = ${stringify(this.props.errors)};\n`;
-        }
-        code += `var schema = ${stringify(schema)};\n`;
-
-
-        code += restOfCode;
 
         return code;
     }

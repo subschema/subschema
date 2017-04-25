@@ -4,7 +4,7 @@
   "description": "Subschema Demo",
   "scripts": {
     "karma": "subschema-karma",
-    "test": "subschema-kama start --single-run --browsers Firefox",
+    "test":"subschema-karma",
     "compile": "subschema-webpack",
     "compile-demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack --demo ../docs",
     "server": "subschema-webpack-dev-server",

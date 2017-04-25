@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "subschema-babel",
     "karma": "subschema-karma",
-    "test": "subschema-karm --single-run --browsers Firefox",
+    "test": "subschema-karma",
     "prepublish": "subschema-babel && subschema-karma"
   },
   "dependencies": {

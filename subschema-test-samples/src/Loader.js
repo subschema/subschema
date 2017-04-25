@@ -29,8 +29,8 @@ module.exports = {
     errors: {
         'primary.address': [{message: 'No Such Place'}]
     },
-    props: {
-        loader: true,
-        schema: 'Contact'
-    }
+    imports: {
+        'subschema': ['loader']
+    },
+    props: ["loader"]
 };

@@ -11,9 +11,10 @@ module.exports = {
             }
         },
     },
-    props:{
-        loader:true
+    imports: {
+        'subschema': ['loader']
     },
+    props: ["loader"],
     data: {
         areYouSure: true
     }

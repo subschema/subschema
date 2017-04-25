@@ -12,13 +12,12 @@ function handleAttrs(value, attr, propKeys) {
             propKeys.push(key);
         }
 
-        if (value[key] != null || this.injected && this.injected[key] != null) {
-            if (!this.injected) this.injected = {};
+        if (value[key] != null || key in this.state) {
             //This may be indeterminate, depending if something sets it later.
-            if (this.injected)
-                Object.assign(this.injected, value);
-            else {
-                Object.assign(this.injected = {}, value);
+            if (this.mounted) {
+                this.setState(value);
+            } else {
+                this.state[key] = value[key];
             }
         }
     }

@@ -22,7 +22,8 @@ module.exports = {
             label: 'a 1'
         }
     },
-    props: {
-        "loader": true
-    }
+    imports: {
+        'subschema': ['loader']
+    },
+    props: ["loader"]
 };

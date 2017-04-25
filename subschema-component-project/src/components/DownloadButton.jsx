@@ -1,8 +1,7 @@
-"use strict";
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import {generate} from 'subschema-component-project';
-import {saveAs} from 'browser-filesaver';
+import {saveAs as _saveAs} from 'browser-filesaver';
 import kebabCase from 'lodash/kebabCase';
 
 export default class DownloadButton extends Component {
@@ -18,6 +17,19 @@ export default class DownloadButton extends Component {
         buttonTxtProject: 'Download as Project',
         type: 'page'
     };
+    static saveAs = _saveAs;
+    static open = function (blob, filename, done) {
+        const url = URL.createObjectURL(blob), other = window.open(url);
+        if (!other) {
+            alert("Looks like you have blockup popper, disable it and click again");
+            return;
+        } else {
+            if (other.addEventListener) {
+                other.addEventListener('DOMContentLoaded', );
+                return;
+            }
+        }
+    };
 
     constructor(...args) {
         super(...args);
@@ -29,7 +41,7 @@ export default class DownloadButton extends Component {
         return type === 'project' ? buttonTxtProject : buttonTxtPage;
     }
 
-    handleDone = (e)=> {
+    handleDone = (e) => {
         this.setState({done: true});
     };
     handleClick = (e) => {
@@ -55,23 +67,13 @@ export default class DownloadButton extends Component {
                 version: '1.0.0'
             },
             demo: {},
-            schema: sample.schema,
-            sample
+            ...sample
         }, this.props.type, `${ext}-blob`);
         if (isPage) {
-            var url = URL.createObjectURL(blob), other = window.open(url);
-            if (!other) {
-                alert("Looks like you have blockup popper");
-                return;
-            } else {
-                if (other.addEventListener) {
-                    other.addEventListener('DOMContentLoaded', this.handleDone)
-                    return;
-                }
-            }
+            return DownloadButton.open(blob, `${this.props.filename}.${ext}`, this.handleDone);
         }
         try {
-            saveAs(blob, `${this.props.filename}.${ext}`);
+            DownloadButton.saveAs(blob, `${this.props.filename}.${ext}`);
         } catch (err) {
             console.log(err);
             alert('Error saving ' + err.message);
@@ -79,6 +81,7 @@ export default class DownloadButton extends Component {
             this.setState({busy: false});
         }
     };
+
 
     icon() {
 

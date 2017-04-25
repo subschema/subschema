@@ -5,12 +5,19 @@ import {keyIn, onlyKeys, uniqueKeys, extendPrototype, listener, unmount, prop as
 
 export class BaseInjectComponent extends Component {
     state = {};
-    injected = {};
+
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
 
     render() {
         const {_copyPropTypeKeys, Clazz} = this.constructor;
-        const props = onlyKeys(_copyPropTypeKeys, this.injected, this.props);
-        return <Clazz {...props} {...this.injected }>{this.props.children}</Clazz>
+        const props = onlyKeys(_copyPropTypeKeys, this.state, this.props);
+        return <Clazz {...props} {...this.state }>{this.props.children}</Clazz>
     }
 }
 
@@ -90,7 +97,7 @@ export default function injector(resolvers = new Map()) {
 
             const start = hasExtra ? this.createWrapperClass(Clazz, copyPropTypeKeys) : null;
 
-            const injected = propTypeKeys.reduce((injectedClass, key)=> {
+            const injected = propTypeKeys.reduce((injectedClass, key) => {
 
                 const resolver = this.resolveProp(keyIn(key, injectedPropTypes, propTypes, extraPropTypes));
                 //resolver is null, nothing to do just return.

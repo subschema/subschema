@@ -40,8 +40,8 @@ function unique(keys) {
 
 const DEFAULT_EXCLUDE = ['!subschema-(?:component|processors|transitions|css|validators)(?:-.+?)?'];
 
-module.exports = function (options) {
-    const userPkg = options.package;
+module.exports = function (options = {}) {
+    const userPkg = options.package || {};
 
     const {include = [], exclude} = userPkg.subschema || {exclude: DEFAULT_EXCLUDE};
 

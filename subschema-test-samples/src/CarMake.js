@@ -23,9 +23,6 @@ module.exports = {
         },
         fieldsets: [{legend: 'Make And Model Linked Selects', fields: ['make', 'model']}]
     },
-    props: {
-        "loader": true
-    },
     data: {
         make: 'audi',
         model: '4000'

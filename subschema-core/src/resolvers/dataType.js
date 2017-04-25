@@ -14,19 +14,18 @@ export default function dataType(Clazz, key, propTypeKeys) {
 
     //array of keys to allow for prop type renames.  This should not happen much, but we have dataType->type conversion.
     const idx = Clazz._copyPropTypeKeys.indexOf(key);
-    if (idx > -1){
-       Clazz._copyPropTypeKeys.splice(idx, 1, 'type');
+    if (idx > -1) {
+        Clazz._copyPropTypeKeys.splice(idx, 1, 'type');
     }
 
     Clazz::this.extendPrototype('componentWillMount', function dataType$willMount() {
-        if (!this.injected) this.injected = {};
-        this.injected.type = this.props[key] || this.props.type;
+        this.setState({type: this.props[key] || this.props.type});
+
     });
 
     Clazz::this.extendPrototype('componentWillReceiveProps', function dataType$willRecieveProps(newProps) {
-        if (!this.injected) this.injected = {};
         if (this.props[key] !== newProps[key]) {
-            this.injected.type = this.props[key] || this.props.type;
+            this.setState({type: (key in this.props) ? this.props[key] : this.props.type});
         }
     });
 

@@ -4,7 +4,8 @@ module.exports = {
         schema: {},
         fieldsets:[]
     },
-    props: {
-        "loader": true
-    }
+    imports: {
+        'subschema': ['loader']
+    },
+    props: ["loader"]
 };

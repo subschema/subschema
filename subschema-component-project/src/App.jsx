@@ -2,20 +2,11 @@
 import './global-fix';
 import React, {Component} from 'react';
 import ValueManager from 'subschema-valuemanager';
-import PropTypes from 'subschema-prop-types';
-import {defaultPropTypes} from 'subschema-core/lib/resolvers/type';
-import {Form, DefaultLoader} from 'subschema';
-import JSONArea from './components/JSONArea';
+import {Form} from 'subschema';
 import samples from 'subschema-test-samples';
 import kebabCase from 'lodash/kebabCase';
 import {saveAs} from 'browser-filesaver';
-import ExportButtons from './components/ExportButtons.jsx';
-import loaderFactory from 'subschema-loader';
-//defaultPropTypes.defaultValue = PropTypes.expression;
 
-const loader = loaderFactory([DefaultLoader]);
-
-loader.addType({JSONArea, ExportButtons});
 //A simple Schema for this configuration
 var schema = {
     schema: {
@@ -60,23 +51,6 @@ var schema = {
 
                         }
                     }
-                }
-            }
-        },
-
-        sample: {
-            type: 'Object',
-            subSchema: {
-                schema: {
-                    description: 'Text',
-                    schema: 'JSONArea',
-                    props: {
-                        type: 'JSONArea',
-                        name: 'sample_props'
-                    },
-                    data: 'JSONArea',
-                    errors: 'JSONArea',
-                    setupTxt: 'TextArea'
                 }
             }
         },
@@ -138,7 +112,7 @@ export default class App extends Component {
     render() {
         return <div>
             <h3>Subschema Project Setup</h3>
-            <Form schema={schema} loader={loader} valueManager={valueManager}/>
+            <Form schema={schema} valueManager={valueManager} loader={this.props.loader}/>
         </div>
     }
 }

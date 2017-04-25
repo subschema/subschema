@@ -1,14 +1,11 @@
-"use strict";
-
 import PropTypes from "subschema-prop-types";
 import expression from "subschema-expression";
 import {resolveKey, applyFuncs, FREEZE_OBJ} from "subschema-utils";
 import warning from "subschema-utils/lib/warning";
 function handleExpression(value, key, props, {valueManager, loader}) {
-    const scope = this;
     const expressionVals = {};
-    const {listen, format, formatters=[]} = expression(value);
-    const {injected} = this;
+    const {listen, format, formatters = []} = expression(value);
+    let injected = this.state ? {...this.state} : {};
     const {path} = props;
     const fmts = loader && loader.loadFormatter && formatters.reduce(function (obj, key) {
 
@@ -22,8 +19,9 @@ function handleExpression(value, key, props, {valueManager, loader}) {
     if (listen.length === 0 && formatters.length) {
         injected[key] = format({}, fmts);
     }
+    const scope = this;
 
-    const ret = listen.reduce((fn, v)=> {
+    const ret = listen.reduce((fn, v) => {
         if (!(v in expressionVals)) {
             //only need to listen to a value once.
             const resolvedKey = resolveKey(path, v);
@@ -32,10 +30,12 @@ function handleExpression(value, key, props, {valueManager, loader}) {
                     //if the values don't cange the state don't change.
                     expressionVals[v] = val == null ? '' : val;
                     injected[key] = format(expressionVals, fmts);
-                    scope.forceUpdate();
+                    if (scope.mounted)
+                        scope.setState(injected);
+                    else
+                        Object.assign(scope.state, injected);
                 }
             }, null, true).remove, fn);
-
         }
         return fn;
     }, null);

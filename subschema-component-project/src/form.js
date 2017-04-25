@@ -2,7 +2,7 @@ import form from './form.tmpl';
 
 
 export default function formTag({sample, useData, useErrors}) {
-    var {schema, setup, setupTxt = '', props = {}, data, errors} = sample;
+    var {schema, setup, setupTxt = '', props = [], data, errors} = sample;
 
     var propStr = ['schema={schema}'];
     if (useData){
@@ -12,8 +12,12 @@ export default function formTag({sample, useData, useErrors}) {
         propsStr.push('errors={errors}');
     }
 
-    Object.keys(props).forEach(function (v) {
-        propStr.push(`${v}={${v}}`);
+    props.forEach(function (v) {
+        if (Array.isArray(v)){
+            propStr.push(`${v[0]}={${v[1]}}`);
+        }else {
+            propStr.push(`${v}={${v}}`);
+        }
     });
 
     return form({propStr: propStr.join('')});

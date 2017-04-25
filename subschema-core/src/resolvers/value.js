@@ -4,17 +4,23 @@ import PropTypes from 'subschema-prop-types';
 import {resolveKey} from 'subschema-utils';
 import isPlainObject from 'lodash/isPlainObject';
 
-function createHandler(value, key, loader){
-    if (value.processor){
-        const process = typeof value.processor == 'function' ? value.processor: loader.loadProcessor(value.processor).value;
-        return function value$processsorHandler(v){
-            this.injected[key] = process(v);
-            this.mounted && this.forceUpdate();
+function createHandler(value, key, loader) {
+    if (value.processor) {
+        const process = typeof value.processor == 'function' ? value.processor : loader.loadProcessor(value.processor).value;
+        return function value$processsorHandler(v) {
+            if (this.mounted) {
+                this.setState({[key]: process(v)})
+            } else {
+                this.state[key] = process(v);
+            }
         };
     }
-    return function value$handler(v){
-        this.injected[key] = v == null ? '' : v;
-        this.mounted && this.forceUpdate();
+    return function value$handler(v) {
+        if (this.mounted) {
+            this.setState({[key]: v == null ? '' : v})
+        } else {
+            this.state[key] = v == null ? '' : v;
+        }
     };
 }
 

@@ -1,7 +1,8 @@
+
     /**
  * Borrowed from react-native docs.
  */
-var CAR_MAKES_AND_MODELS = {
+const CAR_MAKES_AND_MODELS = {
     amc: {
         name: 'AMC',
         models: ['AMX', 'Concord', 'Eagle', 'Gremlin', 'Matador', 'Pacer']
@@ -42,13 +43,13 @@ var CAR_MAKES_AND_MODELS = {
     }
 };
 
-var fields = schema.fieldsets[0].fields;
+    const fields = schema.fieldsets[0].fields;
 /**
  * Create the schema programatically.
  */
 schema.schema.make.options = Object.keys(CAR_MAKES_AND_MODELS).map(function (key) {
     fields.push(key);
-    var {name, models} = CAR_MAKES_AND_MODELS[key];
+    const {name, models} = CAR_MAKES_AND_MODELS[key];
     //setup the key values of them all.
     schema.schema[key] = {
         title: 'Model',

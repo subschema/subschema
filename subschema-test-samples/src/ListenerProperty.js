@@ -24,9 +24,10 @@ module.exports = {
         },
         fields: ["myDefault", "favorites"]
     },
-    props: {
-        loader: true
+    imports: {
+        'subschema': ['loader']
     },
+    props: ["loader"],
     data: {
         myDefault:'got',
         favorites: [

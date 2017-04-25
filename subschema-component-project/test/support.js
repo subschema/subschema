@@ -62,7 +62,7 @@ export function setupData(sample) {
         project: {
             name: 'hello'
         },
-        sample: {sample}
+        sample
     }
 }
 

@@ -21,7 +21,8 @@ module.exports = {
     data: {
         selectPage: 'Content'
     },
-    props: {
-        "loader": true
-    }
+    imports: {
+        'subschema': ['loader']
+    },
+    props: ["loader"]
 };

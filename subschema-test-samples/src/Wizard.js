@@ -3,9 +3,7 @@ module.exports = {
     The basics are your fieldsets become steps in a wizard.  The legend becomes the label and the fields are rendered\
     Sometimes you a good wizard goes a long way\
     ',
-    props: {
-        template: 'WizardTemplate'
-    },
+    props: [['template', '"WizardTemplate"']],
     data: {
         username: 'a@b.c',
         password: '123',
@@ -39,8 +37,8 @@ module.exports = {
             },
             address: {
                 type: 'Object',
-                title:false,
-                help:false,
+                title: false,
+                help: false,
                 subSchema: {
                     'address': {
                         type: 'Text',
@@ -59,7 +57,7 @@ module.exports = {
             }
 
         },
-        template:'WizardTemplate',
+        template: 'WizardTemplate',
         fieldsets: [{
             legend: 'Account',
             fields: ['username', 'password', 'confirmPassword']

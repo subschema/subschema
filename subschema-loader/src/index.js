@@ -18,6 +18,7 @@ export default function loaderFactory(loaders = []) {
         api = {
 
             addLoader(loader){
+                if (loader == null) return loader;
                 if (isArray(loader)) {
                     return loader.map(function (v) {
                         return this.addLoader(v);
@@ -33,7 +34,7 @@ export default function loaderFactory(loaders = []) {
                         if (typeof _add === 'function') {
                             _add.call(this, loader[key]);
                         } else {
-                          //  warning(false, 'do not understand "%s"', key);
+                            //  warning(false, 'do not understand "%s"', key);
                         }
                     }
                 }, this);
@@ -90,6 +91,7 @@ export default function loaderFactory(loaders = []) {
         var listKey = 'list' + type + 's', loadKey = 'load' + type, lcType = type.toLowerCase();
         return function loader$add(key, value) {
             var map, _api = {};
+            warning(key, `key can not be null`);
             if (isString(key)) {
                 map = {};
                 map[key] = value;

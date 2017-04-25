@@ -60,27 +60,22 @@ function extend(name, fn) {
     const fn2 = this.prototype[name];
     this.prototype[name] = applyNice(fn, fn2);
 }
-function didMount() {
-    this.mounted = true;
-}
 
 function listener(key, fn) {
     function listener$listen(props, context) {
-        if (!this.injected) {
-            this.injected = {};
-        }
         if (!this._listeners) {
             this._listeners = {};
         } else if (this._listeners[key]) {
             this._listeners[key]();
         }
-        this._listeners[key] = this::fn(props[key], key, props, context);
+        let ret = this._listeners[key] = this::fn(props[key], key, props, context);
+        if (ret != null && typeof ret !== 'function')
+            console.warn("function did not return a valid listener %s %s %s", key, this.displayName, fn);
     }
 
-    this::extend('componentDidMount', didMount);
+//    this::extend('componentDidMount', didMount);
 
     this::extend('componentWillMount', function listener$willMount() {
-        this.mounted = false;
         this::listener$listen(this.props, this.context);
     });
 
@@ -96,14 +91,12 @@ function prop(key, fn) {
     //this is class scope.
     this::extend('componentWillMount', function util$prop$willMount() {
         //this is instance scope.
-        if (!this.injected) this.injected = {};
-        this.injected[key] = this::fn(this.props[key], key, this.props, this.context);
+        this.setState({[key]: this::fn(this.props[key], key, this.props, this.context)});
     });
 
     this::extend('componentWillReceiveProps', function util$prop$receiveProps(props, context) {
-        if (!this.injected) this.injected = {};
         if (props[key] !== this.props[key]) {
-            this.injected[key] = this::fn(props[key], key, props, context);
+            this.setState({[key]: this::fn(props[key], key, props, context)});
         }
     });
 
