@@ -13,14 +13,19 @@ function prettyLog(result) {
     console.log(JSON.stringify(result, null, '\t'));
 }
 
-
-function into(node, debug) {
-    if (debug === true) {
-        debug = document.createElement('div');
-        document.body.appendChild(debug);
-        return ReactDOM.render(node, debug);
+function cleanUp() {
+    const nodes = document.getElementsByClassName('__test__inserted__');
+    while(nodes[0]){
+        nodes[0].parentNode.removeChild(nodes[0]);
     }
-    return TestUtils.renderIntoDocument(node);
+}
+function into(node, debug) {
+    const ele = document.createElement('div');
+    ele.className = `__test__inserted__`;
+    if (debug === true) {
+        document.body.appendChild(ele);
+    }
+    return ReactDOM.render(node, ele);
 }
 
 function notByType(node, type, description) {
@@ -205,6 +210,7 @@ function intoWithState(child, state, debug) {
 }
 
 export {
+    cleanUp,
     React,
     ReactDOM,
     TestUtils,

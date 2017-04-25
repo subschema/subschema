@@ -1,11 +1,21 @@
 import React, {Component} from "react";
-import {into, TestUtils, expect, Simulate, byTag, byTags, byType, click} from "subschema-test-support";
-import {loader, Form, ValueManager} from "subschema";
-import {templates} from "subschema-component-form";
-const {EditorTemplate, ButtonTemplate} = templates;
+import {into, TestUtils, expect, Simulate, byTag, byTags, byType, click, cleanUp} from "subschema-test-support";
+import {newSubschemaContext} from "subschema";
 
 describe('components/Form', function () {
     this.timeout(50000);
+    let Form, ValueManager, EditorTemplate, ButtonTemplate, loader;
+
+    beforeEach(function () {
+        const context = newSubschemaContext();
+        loader = context.loader;
+        Form = context.Form;
+        ValueManager = context.ValueManager;
+        EditorTemplate = context.loader.loadTemplate('EditorTemplate');
+        ButtonTemplate = context.loader.loadTemplate('ButtonTemplate')
+    });
+    afterEach(cleanUp);
+
     it('should create a form with a schema and value and triggered error only after having been valid', function (done) {
         var value = {}, schema = {
             schema: {
@@ -17,7 +27,7 @@ describe('components/Form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>, true);
+        var root = into(<Form value={value} schema={schema} errors={errors} loader={loader}/>);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0];
         var input = byTag(edit, 'input');
         Simulate.blur(input);
@@ -116,7 +126,7 @@ describe('components/Form', function () {
             }
         }, errors = {};
 
-        var root = into(<Form valueManager={valueManager} schema={schema} errors={errors}/>, true);
+        var root = into(<Form valueManager={valueManager} schema={schema} errors={errors}/>);
         var edit = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate)[0]
         var input = byTag(edit, 'input');
         //   Simulate.blur(input);
@@ -241,7 +251,7 @@ describe('components/Form', function () {
             submitArgs = args;
         };
 
-        var root = into(<Form value={value} schema={schema} onSubmit={onSubmit}/>, true);
+        var root = into(<Form value={value} schema={schema} onSubmit={onSubmit}/>);
         var button = byType(root, ButtonTemplate);
         expect(button).toExist('it should have rendered');
         click(button);
@@ -267,7 +277,7 @@ describe('components/Form', function () {
             count++;
         };
 
-        var root = into(<Form value={{}} schema={schema} onSubmit={onSubmit}/>, true);
+        var root = into(<Form value={{}} schema={schema} onSubmit={onSubmit}/>);
         var button = byType(root, ButtonTemplate);
         expect(button).toExist('it should have rendered');
         click(button);
@@ -299,7 +309,7 @@ describe('components/Form', function () {
                 legend: "C1",
                 fields: "c1"
             }]
-        }}/>, true);
+        }}/>);
         expect(root).toExist();
         let submit = byTag(root, 'button');
         click(submit);
@@ -321,7 +331,7 @@ describe('components/Form', function () {
             }
         }
 
-        const sform = into(<StateForm/>, true);
+        const sform = into(<StateForm/>);
         const test = byTag(sform, 'input');
         expect(test.name).toBe('test');
 

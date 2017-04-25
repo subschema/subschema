@@ -1,13 +1,22 @@
-"use strict";
 import React from "react";
-import {Form, ValueManager} from "subschema";
+import {newSubschemaContext} from "subschema";
 import {renderToString, renderToStaticMarkup} from "react-dom/server";
-import {into, expect, Simulate, byTags} from "subschema-test-support";
+import {into, expect, Simulate, byTags, cleanUp} from "subschema-test-support";
 
 
-describe('components/Form/submit', function () {
+describe('Form/submit', function () {
     this.timeout(5000);
+    let Form, ValueManager, EditorTemplate, ButtonTemplate, loader;
 
+    beforeEach(function () {
+        const context = newSubschemaContext();
+        loader = context.loader;
+        Form = context.Form;
+        ValueManager = context.ValueManager;
+        EditorTemplate = context.loader.loadTemplate('EditorTemplate');
+        ButtonTemplate = context.loader.loadTemplate('ButtonTemplate')
+    });
+    afterEach(cleanUp);
     it('should submit the form and have handler by name', function (done) {
         const schema = {
             template: 'ObjectTemplate',
