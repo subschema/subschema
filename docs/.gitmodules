@@ -1,0 +1,44 @@
+[submodule "subschema-test-support"]
+	path = subschema-test-support
+	url = git@github.com:subschema/subschema-test-support.git
+	master = master
+[submodule "subschema"]
+	path = subschema
+	url = git@github.com:subschema/subschema.git
+	master = master
+[submodule "subschema-demo"]
+	path = subschema-demo
+	url = git@github.com:subschema/subschema-demo.git
+	master = master
+[submodule "subschema-project"]
+	path = subschema-project
+	url = git@github.com:subschema/subschema-project.git
+	master = master
+[submodule "subschema-server-utils"]
+	path = subschema-server-utils
+	url = git@github.com:subschema/subschema-server-utils.git
+	master = master
+[submodule "subschema-prop-types"]
+	path = subschema-prop-types
+	url = git@github.com:subschema/subschema-prop-types.git
+	master = master
+[submodule "subschema-injection"]
+	path = subschema-injection
+	url = git@github.com:subschema/subschema-injection.git
+	master = master
+[submodule "subschema-expression"]
+	path = subschema-expression
+	url = git@github.com:subschema/subschema-expression.git
+	master = master
+[submodule "subschema-redux"]
+	path = subschema-redux
+	url = git@github.com:subschema/subschema-redux.git
+	master = master
+[submodule "subschema-blueprint"]
+	path = subschema-blueprint
+	url = git@github.com:subschema/subschema-blueprint.git
+	master = master
+[submodule "subschema-test-samples"]
+	path = subschema-test-samples
+	url = git@github.com:subschema/subschema-test-samples.git
+	master = master
