@@ -4,9 +4,8 @@
   "description": "Subschema Loader",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel && subschema-mocha"
+    "prepublish": "subschema-babel"
   },
   "dependencies": {
     "subschema-utils": "^1.7.0"

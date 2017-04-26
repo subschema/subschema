@@ -12,7 +12,7 @@ import {
 
 import  {newSubschemaContext} from 'subschema';
 import  {Autocomplete} from 'subschema-test-samples';
-describe('public/Autocomplete', function () {
+describe('subschema-test-samples/Autocomplete', function () {
     this.timeout(50000);
     it('should not be selectable', function () {
 

@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "subschema-babel",
-    "test": "yarn run compile && subschema-mocha",
-    "prepublish": "subschema-babel && subschema-mocha"
+    "test": "subschema-babel && subschema-mocha",
+    "prepublish": "subschema-babel"
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0"

@@ -2,6 +2,9 @@
   "name": "subschema-dev-support",
   "version": "1.7.0",
   "description": "Tools for developing with subschema",
+  "scripts":{
+    "test":"echo 'No Tests for dev-support'"
+  },
   "bin": {
     "subschema-mocha": "bin/subschema-mocha.js",
     "subschema-babel": "bin/subschema-babel.js",
@@ -24,6 +27,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-runtime": "^6.23.0",
+    "karma-coverage-istanbul-reporter": "^1.2.0",
     "css-loader": "^0.28.0",
     "expect": "^1.20.2",
     "extract-text-webpack-plugin": "^2.1.0",
@@ -31,6 +35,9 @@
     "filesize": "^3.3.0",
     "html-webpack-plugin": "^2.28.0",
     "html-webpack-template": "^6.0.1",
+    "nyc": "^10.2.0",
+
+    "istanbul-instrumenter-loader": "^2.0.0",
     "karma": "^1.6.0",
     "karma-firefox-launcher": "^1.0.1",
     "karma-chrome-launcher": "^2.0.0",

@@ -3,7 +3,7 @@ import {into, expect, byComponent}  from 'subschema-test-support';
 import {newSubschemaContext} from 'subschema';
 import {CustomType} from 'subschema-test-samples';
 
-describe('public/CustomType', function () {
+describe('subschema-test-samples/CustomType', function () {
     it('should render', function () {
         const schema = CustomType.schema;
         //loader, schema, Subschema, React

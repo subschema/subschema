@@ -7,7 +7,6 @@
   "web": "dist/subschema-noreact.js",
   "webpack": "src/index.js",
   "scripts": {
-    "env":"env",
     "compile-default-loader":"rm -f lib/DefaultLoader.js*; node -p -e  'require(\"./src/DefaultLoader\")({}).code' | subschema-babel --out-file ./lib/DefaultLoader.js",
     "compile-lib":"subschema-babel && yarn run compile-default-loader",
     "compile-server": "subschema-webpack --output-path lib --no-style-loader --target node --output-filename index.js --use-externals react,react-dom,fbjs",
@@ -15,10 +14,9 @@
     "compile-web-debug": "subschema-webpack --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
     "compile-web-stats": "subschema-webpack  --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
     "compile-web-noreact": "subschema-webpack  --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
-    "compile": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats",
     "karma": "subschema-karma",
-    "test": "subschema-karma start --single-run=true",
-    "prepublish": "yarn run compile"
+    "test": "subschema-karma",
+    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats"
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0",

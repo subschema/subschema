@@ -4,10 +4,8 @@
   "description": "Subschema Test Support",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-babel",
-    "karma": "subschema-karma",
-    "test": "subschema-karma",
-    "prepublish": "subschema-babel && subschema-karma"
+    "test": "subschema-babel && subschema-mocha",
+    "prepublish": "subschema-babel"
   },
   "dependencies": {
     "subschema-prop-types": "^1.7.0",

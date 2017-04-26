@@ -3,7 +3,7 @@ import {into, expect, byComponents, byId}  from 'subschema-test-support';
 import {NestedForms} from 'subschema-test-samples';
 import {newSubschemaContext, ValueManager} from 'subschema';
 
-describe('public/NestedForms', function () {
+describe('subschema-test-samples/NestedForms', function () {
     let Form, loader, Subschema, FieldSetTemplate;
     beforeEach(function () {
         Subschema = newSubschemaContext();

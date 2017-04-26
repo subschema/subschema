@@ -3,9 +3,8 @@
   "version": "1.7.0",
   "main": "lib/index",
   "scripts": {
-    "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel && subschema-mocha"
+    "prepublish": "subschema-babel"
   },
   "dependencies": {
     "prop-types": "^15.5.4"

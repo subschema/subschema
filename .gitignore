@@ -34,3 +34,5 @@ lib/*
 */lib
 dist/*
 */dist
+.nyc_output
+*/.nyc_output

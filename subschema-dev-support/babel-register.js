@@ -33,5 +33,6 @@ Module._load = function (file, parent) {
     }
     return oload(file, parent);
 };
+
 babelRegister(conf);
 

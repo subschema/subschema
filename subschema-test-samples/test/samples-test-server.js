@@ -11,7 +11,7 @@ var ReactServer = require('react-dom/server');
 var expect = require('expect');
 var samples = require('subschema-test-samples');
 
-describe('samples', function () {
+describe('subschema-test-samples/server', function () {
     ['First', 'Second'].forEach(function (key) {
         describe(key + ' Run', function () {
             var subschema = require('../dist/subschema-server.js');

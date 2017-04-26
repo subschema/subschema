@@ -16,7 +16,7 @@ import {newSubschemaContext} from 'subschema';
 import {Todos} from 'subschema-test-samples';
 
 
-describe('public/Todos', function () {
+describe('subschema-test-samples/Todos', function () {
     this.timeout(50000);
     let ButtonTemplate, ListItemTemplate, CollectionCreateTemplate, Form, loader, Subschema;
 

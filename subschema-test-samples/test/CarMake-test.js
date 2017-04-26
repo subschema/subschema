@@ -3,7 +3,7 @@ import {into, expect, byTypes, select}  from 'subschema-test-support';
 import {newSubschemaContext} from 'subschema';
 import {CarMake} from 'subschema-test-samples';
 
-describe('public/CarMake', function () {
+describe('subschema-test-samples/CarMake', function () {
     it('should not be selectable', function () {
         const Subschema = newSubschemaContext();
         const {Form, loader, valueManager, importer} = Subschema;

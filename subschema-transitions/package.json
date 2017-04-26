@@ -4,9 +4,8 @@
   "description": "Subschema Transitions",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-webpack --no-style-loader",
-    "test": "yarn run compile && subschema-mocha",
-    "prepublish": "subschema-webpack && subschema-mocha"
+    "test": "subschema-webpack --no-style-loader && subschema-mocha",
+    "prepublish": "subschema-webpack --no-style-loader"
   },
   "dependencies": {
     "subschema-utils": "^1.7.0",

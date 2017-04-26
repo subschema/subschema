@@ -32,5 +32,9 @@ if ((idx = process.argv.indexOf('--use-externals')) != -1) {
     console.log(`using externals ${externals}`);
     process.env.SUBSCHEMA_USE_EXTERNALS = externals;
 }
+if (process.argv.indexOf('-h') || process.argv.indexOf('--help')) {
+    console.log(`${process.argv[1]}
+    \t--use-externals a comma seperated dot valued list of externals to use`);
+}
 process.env.SUBSCHEMA_USE_HTML = 1;
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'webpack-dev-server'));

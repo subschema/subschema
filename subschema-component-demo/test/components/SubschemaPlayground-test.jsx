@@ -1,15 +1,15 @@
 import React from 'react';
-import SubschemaPlayground from 'subschema-component-demo/lib/components/SubschemaPlayground.jsx';
+import SubschemaPlayground from 'subschema-component-demo/lib/components/SubschemaPlayground';
 import {into} from 'subschema-test-support';
 import expect from 'expect';
 import samples from 'subschema-test-samples';
 
 describe('components/SubschemaPlayground', function () {
-    it.only('should render', function () {
+    it('should render', function () {
         const {Loader} = samples;
         var sp = into(<SubschemaPlayground schema={Loader.schema} setupTxt={Loader.setupTxt}
-                                           formProps={['schema', 'value', 'loader']}
-                                           imports={['loader', 'valueManager']}/>, true);
+                                           props={Loader.props}
+                                           imports={Loader.imports}/>, true);
         expect(sp).toExist();
     });
 });

@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "subschema-webpack --use-externals react,react-dom,subschema",
-    "prepublish": "yarn run compile && subschema-karma --single-run"
+    "test": "subschema-karma",
+    "prepublish": "subschema-webpack --use-externals react,react-dom,subschema"
   },
   "devDependencies": {
     "expect": "^1.13.4",

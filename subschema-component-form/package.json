@@ -4,10 +4,9 @@
   "description": "Subschema Form and DOM support",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-babel",
-    "test": "subschema-babel && subschema-karma",
+    "test": "subschema-karma",
     "karma": "subschema-karma",
-    "prepublish": "subschema-babel && subschema-karma start --single-run"
+    "prepublish": "subschema-babel"
   },
   "peerDependencies": {
     "subschema-core": "^1.7.0",

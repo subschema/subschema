@@ -1,4 +1,3 @@
-"use strict";
 import React from 'react';
 import {
     byComponent,
@@ -11,7 +10,7 @@ import {newSubschemaContext} from 'subschema';
 import {Wizard} from 'subschema-test-samples';
 import ValueManager from 'subschema-valuemanager';
 
-describe('public/Wizard', function () {
+describe('subschema-test-samples/Wizard', function () {
     this.timeout(5000);
     it('should create a new form with a wizard template', function () {
         const Subschema = newSubschemaContext();

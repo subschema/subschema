@@ -21,7 +21,7 @@ if (!check('test', process.cwd())) {
     console.log('no tests for project', require(path.resolve(process.cwd(), 'package.json')).name);
     process.exit(0);
 }
-function hasArg() {
+function indexOfArg() {
     var args = process.argv.slice(2);
     for (var i = 0, l = arguments.length; i < l; i++) {
         var idx = args.indexOf(arguments[i]);
@@ -32,19 +32,27 @@ function hasArg() {
 }
 var conf = path.resolve(__dirname, '..', 'karma.conf.js');
 var pos;
-if ((pos = hasArg('start', 'init', 'run', 'completion')) == -1) {
+if ((pos = indexOfArg('start', 'init', 'run', 'completion')) == -1) {
     process.argv.splice(2, 0, 'start', conf);
 } else {
     process.argv.splice(pos - 1, 0, conf);
 }
-//only do single run if test event cycle.
-if (process.env.npm_lifecycle_event === 'test') {
-    if (hasArg('--single-run') == -1)
+//only do single run if test event cycle or prepublish.
+if (process.env.npm_lifecycle_event === 'test' || process.env.npm_lifecycle_event === 'prepublish') {
+    if (indexOfArg('--single-run') == -1)
         process.argv.push('--single-run');
 }
-
-if (hasArg('--single-run') != -1 && hasArg('--browser') == -1) {
-    process.argv.push('--browser', 'Firefox');
+if (process.env.SUBSCHEMA_COVERAGE || process.env.SUBSCHEMA_COVERAGE_DIR || process.env.SUBSCHEMA_COVERAGE_USE_GLOBAL) {
+    process.env.SUBSCHEMA_COVERAGE=1;
+    if (indexOfArg('--single-run') == -1) {
+        process.argv.push('--single-run');
+    }
+    if (process.env.SUBSCHEMA_COVERAGE_USE_GLOBAL){
+        process.env.SUBSCHEMA_COVERAGE_DIR = path.resolve(process.cwd(), '..', 'coverage', path.basename(process.cwd()))
+    }
 }
 
+if (indexOfArg('--single-run') != -1 && indexOfArg('--browser') == -1) {
+    process.argv.push('--browser', 'Firefox');
+}
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'karma'));

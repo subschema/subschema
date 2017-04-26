@@ -4,7 +4,7 @@ import {Loader} from 'subschema-test-samples'
 import {newSubschemaContext}  from 'subschema';
 
 
-describe('public/Loader', function () {
+describe('subschema-test-samples/Loader', function () {
 
     this.timeout(50000);
     it('should load a custom type', () => {

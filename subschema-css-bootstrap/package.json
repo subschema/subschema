@@ -4,7 +4,7 @@
   "main": "lib/index.js",
   "description": "Bootstrap CSS support for subschema",
   "scripts": {
-    "compile": "subschema-webpack --no-style-loader",
+    "test": "subschema-karma",
     "prepublish": "subschema-webpack --no-style-loader"
   },
   "dependencies": {

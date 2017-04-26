@@ -5,10 +5,9 @@
   "scripts": {
     "karma": "subschema-karma",
     "test":"subschema-karma",
-    "compile": "subschema-webpack",
-    "compile-demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack --demo ../docs",
+    "demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack --demo ../docs",
     "server": "subschema-webpack-dev-server",
-    "prepublish": "subschema-webpack && subschema-karma start --single-run"
+    "prepublish": "subschema-webpack"
   },
   "dependencies": {
     "babel-standalone": "^6.24.0",

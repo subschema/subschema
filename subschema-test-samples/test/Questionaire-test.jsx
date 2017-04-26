@@ -12,7 +12,7 @@ import {
 import {newSubschemaContext} from 'subschema';
 import {Questionaire} from 'subschema-test-samples';
 
-describe('public/Questionaire', function () {
+describe('subschema-test-samples/Questionaire', function () {
     let loader,
         Form,
         Mixed,

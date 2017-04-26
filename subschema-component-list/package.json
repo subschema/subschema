@@ -4,9 +4,9 @@
   "description": "Subschema",
   "main": "lib/index.js",
   "scripts": {
-    "karma": "subschema-karma start --no-single-run --log-level debug",
-    "compile": "subschema-babel",
-    "prepublish": "subschema-babel && subschema-karma --single-run"
+    "karma": "subschema-karma",
+    "test": "subschema-karma",
+    "prepublish": "subschema-babel"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",

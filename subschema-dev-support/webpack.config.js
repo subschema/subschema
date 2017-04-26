@@ -52,7 +52,7 @@ var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys
 
         }
     }
-    if (/subschema/.test(key) && fs.existsSync(project('..', key, 'package.json'))) {
+    if (/subschema(?!-dev-support$)/.test(key) && fs.existsSync(project('..', key, 'package.json'))) {
         ret[key + '/lib/style.css'] = project('..', key, 'lib', 'style.css');
         ret[key + '/lib'] = project('..', key, 'src');
 
@@ -183,10 +183,10 @@ var webpack = {
                 test: /\.jsx?$/,
                 //       exclude: /(node_modules|bower_components)/,
                 include: [/test\/*/, /src\/*/, /public\/*/, /subschema*\/src\/*/],
-                use: {
+                use: [{
                     loader: 'babel-loader',
                     options: babel
-                }
+                }]
             },
             {
                 test: /\.css$/,
@@ -206,6 +206,7 @@ var webpack = {
         ]
     }
 };
+
 
 
 if (process.env.SUBSCHEMA_USE_HTML) {

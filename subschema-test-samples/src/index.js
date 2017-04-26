@@ -16,7 +16,7 @@ var __default = keys.reduce(function (obj, key) {
         setup.setupFile = setupFile;
         setup.setupTxt = rctx(setupFile);
 
-        setup.setupFunc = new Function(['require', 'schema'], fctx(setupFile));
+        setup.setupFunc = new Function(['require', 'schema'],`var React = require('react');\n${fctx(setupFile)}`);
     }
     return obj;
 }, {});

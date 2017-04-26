@@ -1,4 +1,4 @@
-import loaderFactory from '../lib/index';
+import loaderFactory from '../src/index';
 import expect from 'expect';
 function A() {
 }

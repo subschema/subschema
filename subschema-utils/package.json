@@ -4,9 +4,8 @@
   "description": "Subschema Utils",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel && subschema-mocha"
+    "prepublish": "subschema-babel"
   },
   "dependencies": {
     "lodash": "^4.17.4"

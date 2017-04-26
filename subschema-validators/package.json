@@ -4,9 +4,8 @@
   "description": "Subschema Validators",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel && subschema-mocha"
+    "prepublish": "subschema-babel"
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0"

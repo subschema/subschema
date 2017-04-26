@@ -6,7 +6,7 @@
   "scripts": {
     "karma": "subschema-karma",
     "compile": "subschema-webpack",
-    "prepublish": "subschema-webpack && subschema-karma --single-run"
+    "prepublish": "subschema-webpack"
   },
   "peerDependencies": {
     "lodash": "^4.6.1",

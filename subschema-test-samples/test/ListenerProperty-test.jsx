@@ -3,7 +3,7 @@ import {into, expect, byType}  from 'subschema-test-support';
 import {newSubschemaContext} from 'subschema';
 import {ListenerProperty} from 'subschema-test-samples';
 
-describe('public/ListenerProperty', function () {
+describe('subschema-test-samples/ListenerProperty', function () {
     this.timeout(50000);
     it('should render favorites', function () {
         const Subschema = newSubschemaContext();

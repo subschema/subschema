@@ -2,7 +2,7 @@ import React from 'react';
 import {into}  from 'subschema-test-support';
 import {newSubschemaContext} from 'subschema';
 
-describe("public/MoreInfo", function () {
+describe("subschema-test-samples/MoreInfo", function () {
     this.timeout(50000);
     it('should render', function () {
         const schema = {
