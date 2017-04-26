@@ -6,13 +6,14 @@
   "scripts": {
     "test": "subschema-karma",
     "karma": "subschema-karma",
-    "prepublish": "subschema-babel"
+    "prepublish": "subschema-babel",
+    "clean": "rimraf ./lib ./dist"
   },
   "peerDependencies": {
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
-    "lodash": "^4.6.1"
+    "lodash": "*"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
@@ -21,12 +22,12 @@
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
     "subschema-expression": "^1.7.0",
-    "subschema-transitions": "^1.7.0",
     "subschema-injection": "^1.7.0",
     "subschema-loader": "^1.7.0",
     "subschema-processors": "^1.7.0",
     "subschema-validators": "^1.7.0",
     "subschema-valuemanager": "^1.7.0",
-    "subschema-utils": "^1.7.0"
+    "subschema-utils": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

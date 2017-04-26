@@ -7,7 +7,8 @@
     "karma": "subschema-karma",
     "test": "subschema-karma",
     "server": "subschema-webpack-dev-server",
-    "prepublish": "subschema-webpack"
+    "prepublish": "subschema-webpack --externalize-peers",
+    "clean": "rimraf ./lib ./dist"
   },
   "dependencies": {
     "validate-npm-package-name": "^3.0.0",
@@ -19,7 +20,7 @@
     "lodash": "^4.17.4"
   },
   "peerDependencies": {
-    "lodash": "^4.6.1",
+    "lodash": "*",
     "subschema": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
@@ -29,7 +30,7 @@
   },
   "devDependencies": {
     "subschema": "^1.7.0",
-    "lodash": "^4.6.1",
+    "lodash": "^4.17.4",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
@@ -47,6 +48,7 @@
     "subschema-test-samples": "^1.7.0",
     "subschema-component-wizard": "^1.7.0",
     "subschema-component-modal": "^1.7.0",
-    "subschema-component-autocomplete": "^1.7.0"
+    "subschema-component-autocomplete": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

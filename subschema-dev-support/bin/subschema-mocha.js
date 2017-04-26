@@ -41,5 +41,4 @@ if (process.env.SUBSCHEMA_COVERAGE || process.env.SUBSCHEMA_COVERAGE_DIR || proc
     mocha = path.resolve(__dirname, '..', 'node_modules', '.bin', 'nyc');
 }
 
-console.log(mocha, process.argv.slice(2).join(' '));
 require(mocha);

@@ -34,5 +34,4 @@ if (process.env.SUBSCHEMA_COVERAGE_LOAD_PLUGIN) {
 }
 conf.plugins = conf.plugins.map(fix(`babel-plugin`));
 conf.presets = conf.presets.map(fix(`babel-preset`));
-console.log('babel', JSON.stringify(conf, null, 2));
 module.exports = conf;

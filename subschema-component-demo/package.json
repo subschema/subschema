@@ -4,10 +4,11 @@
   "description": "Subschema Demo",
   "scripts": {
     "karma": "subschema-karma",
-    "test":"subschema-karma",
+    "test": "subschema-karma",
     "demo": "SUBSCHEMA_USE_ANALYTICS='UA-72459938-1' subschema-webpack --demo ../docs",
     "server": "subschema-webpack-dev-server",
-    "prepublish": "subschema-webpack"
+    "prepublish": "subschema-webpack",
+    "clean": "rimraf ./lib ./dist"
   },
   "dependencies": {
     "babel-standalone": "^6.24.0",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0",
-    "subschema-test-support": "^1.7.0"
+    "subschema-test-support": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "subschema-webpack --no-style-loader && subschema-mocha",
-    "prepublish": "subschema-webpack --no-style-loader"
+    "prepublish": "subschema-webpack --no-style-loader",
+    "clean": "rimraf ./lib ./dist"
   },
   "dependencies": {
     "subschema-utils": "^1.7.0",
@@ -14,6 +15,7 @@
     "prop-types": "^15.5.4"
   },
   "devDependencies": {
-    "subschema-dev-support": "^1.7.0"
+    "subschema-dev-support": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

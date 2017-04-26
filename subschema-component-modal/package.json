@@ -5,18 +5,19 @@
   "main": "lib/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "compile": "subschema-webpack",
-    "prepublish": "subschema-webpack"
+    "test": "subschema-karma",
+    "prepublish": "subschema-webpack --externalize-peers",
+    "clean": "rimraf ./lib ./dist"
   },
   "peerDependencies": {
-    "lodash": "^4.6.1",
+    "lodash": "*",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "subschema-component-form": "^1.7.0"
   },
   "devDependencies": {
-    "lodash": "^4.6.1",
+    "lodash": "^4.17.4",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
@@ -30,6 +31,7 @@
     "subschema-processors": "^1.7.0",
     "subschema-validators": "^1.7.0",
     "subschema-valuemanager": "^1.7.0",
-    "subschema-css-bootstrap": "^1.7.0"
+    "subschema-css-bootstrap": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

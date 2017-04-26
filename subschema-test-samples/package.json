@@ -6,7 +6,8 @@
   "scripts": {
     "karma": "subschema-karma",
     "test": "subschema-karma",
-    "prepublish": "subschema-webpack --use-externals react,react-dom,subschema"
+    "prepublish": "subschema-webpack --use-externals react,react-dom,subschema",
+    "clean": "rimraf ./lib ./dist"
   },
   "devDependencies": {
     "expect": "^1.13.4",
@@ -28,7 +29,8 @@
     "subschema-css-bootstrap": "^1.7.0",
     "subschema-component-modal": "^1.7.0",
     "subschema-component-autocomplete": "^1.7.0",
-    "subschema-component-wizard": "^1.7.0"
+    "subschema-component-wizard": "^1.7.0",
+    "rimraf": "^2.6.1"
   },
   "peerDependencies": {}
 }

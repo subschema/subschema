@@ -1,3 +1,12 @@
+Subschema 1.3.0 ->2.0.0-rc1
+## Api Changes
+* Changed the layout of the samples configuration, imports get imported and props are passed to the Form in the demo
+* Removed injected from subschema-injection, now just uses state to maintain the values.  Faster,easier,better. If
+  you have written resolvers using this.injected, you are pretty safe to move to this.state/this.setState.
+* DefaultLoader.js is now generated need to document.
+* Removed duplicate DownloadButton.js from demo.
+* webpack.config.js has beeen removed use the new subschema-webpack.config.js and the subschema-webpack tool.
+
 Subschema 1.2.x ->1.3.0
 ## API Changes
 * Removed SubstituteMixin functionality now exists in subschema-expression.

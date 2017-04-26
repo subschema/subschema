@@ -6,14 +6,21 @@ var camelCased = function (str) {
     })
 };
 var cwd = process.cwd();
-function hasArg() {
+function indexOfArg() {
+    var argv = process.argv.slice(2);
+    var idx = -1;
     for (var i = 0, l = arguments.length; i < l; i++) {
-        if (process.argv.indexOf(arguments[i]) != -1) {
-            return true;
+        if ((idx = argv.indexOf(arguments[i])) != -1) {
+            return idx + 2;
         }
     }
-    return false;
+    return -1;
 }
+
+function hasArg() {
+    return indexOfArg.apply(null, arguments) != -1;
+}
+
 var idx;
 if (hasArg('-p', '--production')) {
     process.env.NODE_ENV = 'production';
@@ -21,6 +28,18 @@ if (hasArg('-p', '--production')) {
 if (!hasArg('--config')) {
     process.argv.push('--config', path.resolve(__dirname, '..', 'webpack.config.js'));
 }
+if ((idx = indexOfArg('--externalize-peers')) != -1) {
+    process.argv.splice(idx, 1);
+    process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
+}
+
+if ((idx = indexOfArg('--no-externalize-peers')) != -1) {
+    process.argv.splice(idx, 1);
+} else {
+    //By default we externalize peer dependencies.
+    process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
+}
+
 
 if ((idx = process.argv.indexOf('--demo')) != -1) {
     process.env.SUBSCHEMA_USE_NAME_HASH = 1;
@@ -32,7 +51,7 @@ if ((idx = process.argv.indexOf('--demo')) != -1) {
     if (!hasArg('--entry')) {
         process.argv.push('--entry', './public/index.jsx');
     }
-    if (!hasArg('--output-filename')){
+    if (!hasArg('--output-filename')) {
         process.argv.push('--output-filename', '[hash].app.js');
     }
     let docs = path.resolve(process.cwd(), process.argv[idx + 1]);
@@ -80,14 +99,18 @@ if ((idx = process.argv.indexOf('--demo')) != -1) {
         process.env.SUBSCHEMA_USE_EXTERNALS = externals;
     }
 }
-if (hasArg('--help', '-h')){
+if (hasArg('--help', '-h')) {
     console.log(`
+ARGS: ${process.argv.slice(2)}    
 subschema-webpack extensions
     --demo [path]\t\tgenerate a demo app a that location
     --no-style-loader\t\tdon't use style loader (better for server side).
     --use-stats-file [file]\toutput a file with css and compiled information.
     --use-externals [externals]\tuse the following as externals react,...
+    --externalize-peers\t\t (default) use this to make externalize the peerDependencies.
+    --no-externalize-peers Do not externalize peer dependencies.
     --debug\t\t\toutput some debug information.
+    
     
 Otherwise supports webpack commands:    
 `)

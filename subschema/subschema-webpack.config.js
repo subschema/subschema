@@ -11,6 +11,8 @@ module.exports = function (webpack, options) {
             }
         }
     });
+    //make sure everyone uses the same lodash.
+    webpack.resolve.alias.lodash = path.resolve(__dirname, 'node_modules', 'lodash');
     return webpack;
 
 };

@@ -5,12 +5,15 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel"
+    "prepublish": "subschema-babel",
+    "clean": "rimraf ./lib ./dist"
   },
-  "dependencies": {
-    "lodash": "^4.17.4"
+  "peerDependencies": {
+    "lodash": "*"
   },
   "devDependencies": {
-    "subschema-dev-support": "^1.7.0"
+    "lodash": "^4.17.4",
+    "subschema-dev-support": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }

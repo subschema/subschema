@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
-    "prepublish": "subschema-babel"
+    "prepublish": "subschema-babel",
+    "clean": "rimraf ./lib ./dist"
   },
   "keywords": [
     "react",
@@ -18,13 +19,14 @@
   },
   "devDependencies": {
     "subschema-dev-support": "^1.7.0",
-    "subschema-test-support": "^1.7.0"
+    "subschema-test-support": "^1.7.0",
+    "rimraf": "^2.6.1"
   },
   "dependencies": {
     "subschema-expression": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "subschema-transitions": "^1.7.0",
     "subschema-utils": "^1.7.0",
-    "lodash": "^4.6.1"
+    "lodash": "^4.17.4"
   }
 }

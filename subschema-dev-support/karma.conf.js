@@ -114,7 +114,7 @@ module.exports = function (config) {
             {
                 test: /\.jsx?$/,
                 // instrument only testing sources with Istanbul
-                include: [path.join(process.cwd(), 'src'), path.join(process.cwd(), 'public')],
+                include: [/subschema*/, path.join(process.cwd(), 'src'), path.join(process.cwd(), 'public')],
                 use: 'istanbul-instrumenter-loader'
             }
         );

@@ -12,7 +12,6 @@ conf.only = /subschema[^/]*\/(src|test|lib)/;
 var cwd = process.cwd();
 
 Module._load = function (file, parent) {
-
     var isRelative = file.startsWith('.');
 
     var fullpath = isRelative ? path.resolve(path.dirname(parent.filename), file).replace(project, '') : file.startsWith('/') ? file.replace(project, '') : file;

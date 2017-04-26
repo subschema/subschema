@@ -152,6 +152,20 @@ if (process.env.SUBSCHEMA_USE_EXTERNALS) {
         return ret;
     }, {});
 }
+if (process.env.SUBSCHEMA_EXTERNALIZE_PEERS) {
+    var localPkg = path.resolve(process.cwd(), 'package.json');
+    var peers = require(localPkg).peerDependencies;
+    if (!peers) {
+        console.warn(`using --externalize-peers however there are no peerDependencies in ${localPkg}`);
+    } else {
+        Object.keys(peers).reduce(function (ret, key) {
+            if (!(key in ret)) {
+                ret[key] = key;
+            }
+            return ret;
+        }, externals);
+    }
+}
 
 var webpack = {
     devServer: {
@@ -206,7 +220,6 @@ var webpack = {
         ]
     }
 };
-
 
 
 if (process.env.SUBSCHEMA_USE_HTML) {

@@ -7,18 +7,28 @@
   "web": "dist/subschema-noreact.js",
   "webpack": "src/index.js",
   "scripts": {
-    "compile-default-loader":"rm -f lib/DefaultLoader.js*; node -p -e  'require(\"./src/DefaultLoader\")({}).code' | subschema-babel --out-file ./lib/DefaultLoader.js",
-    "compile-lib":"subschema-babel && yarn run compile-default-loader",
+    "compile-default-loader": "rm -f lib/DefaultLoader.js*; node -p -e  'require(\"./src/DefaultLoader\")({}).code' | subschema-babel --out-file ./lib/DefaultLoader.js",
+    "compile-lib": "subschema-babel && yarn run compile-default-loader",
     "compile-server": "subschema-webpack --output-path lib --no-style-loader --target node --output-filename index.js --use-externals react,react-dom,fbjs",
-    "compile-web": "subschema-webpack  --output-path dist --no-style-loader --output-filename subschema.js",
+    "compile-web": "subschema-webpack -p  --output-path dist --no-externalize-peers --output-filename subschema.js",
     "compile-web-debug": "subschema-webpack --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
-    "compile-web-stats": "subschema-webpack  --output-path dist --use-stats-file stats.json --no-style-loader --output-filename [hash].js",
-    "compile-web-noreact": "subschema-webpack  --output-path dist --output-filename subschema-noreact.js --use-externals react,react-dom",
+    "compile-web-noreact": "subschema-webpack -p  --output-path dist --output-filename subschema-noreact.js",
     "karma": "subschema-karma",
     "test": "subschema-karma",
-    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact && yarn run compile-web-stats"
+    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact",
+    "clean": "rimraf ./lib ./dist"
+  },
+
+  "peerDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8"
   },
   "devDependencies": {
+    "lodash": "^4.17.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
     "subschema-dev-support": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-injection": "^1.7.0",
@@ -36,7 +46,7 @@
     "subschema-component-modal": "^1.7.0",
     "subschema-component-autocomplete": "^1.7.0",
     "subschema-component-wizard": "^1.7.0",
-    "subschema-dev-support": "^1.7.0",
-    "subschema-test-support": "^1.7.0"
+    "subschema-test-support": "^1.7.0",
+    "rimraf": "^2.6.1"
   }
 }
