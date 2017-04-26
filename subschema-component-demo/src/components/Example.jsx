@@ -29,8 +29,7 @@ export default class Example extends Component {
 
     renderEdit() {
         const {SubschemaPlayground, conf} = this.props;
-        const {schema, setup, setupTxt, props, description, data, errors} =conf || {};
-        const formProps = props || {};
+        const {schema, setup, setupTxt, props, description, data, imports, errors} =conf || {};
         return <div className='sample-example-playground'>
             <SubschemaPlayground key={'form-' + this.props.example}
                                  theme='monokai'
@@ -41,9 +40,9 @@ export default class Example extends Component {
                                  useData={this.props.useData}
                                  useError={this.props.useError}
                                  errors={errors}
-                                 formProps={formProps}
                                  filename={`Example ${this.props.example}`}
-                                 imports={Object.keys(formProps)}
+                                 imports={imports}
+                                 props={props}
                                  description={description}
                                  schema={schema}
                                  collapsableCode={true}

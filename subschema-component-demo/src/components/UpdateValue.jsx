@@ -1,9 +1,8 @@
-"use strict";
 import React, {Component} from "react";
 import PropTypes from "subschema-prop-types";
 import camelCase from "lodash/camelCase";
 import capitalize from "lodash/capitalize";
-import DownloadButton from "./DownloadButton.jsx";
+import DownloadButton from "subschema-component-project/lib/components/DownloadButton";
 
 export default class UpdateValue extends Component {
     static contextTypes = {

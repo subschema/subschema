@@ -1,5 +1,4 @@
 import React from 'react';
-import validateNpmPkgName from "validate-npm-package-name";
 import Navigate from "./components/Navigate.jsx";
 import NavTemplate from "./components/NavTemplate.jsx";
 import ULTemplate from "./components/ULTemplate.jsx";
@@ -27,23 +26,4 @@ export const templates = {
     }
 };
 
-export const validators = {
-    npm_validate(options) {
-        options = options || {};
-        if (!options.message) {
-            options.message = "Invalid Package Name"
-        }
-        if (!options.validType) {
-            options.validType = 'validForNewPackages'
-        }
-        return function package_name$validator(value) {
-            if (!validateNpmPkgName(value)[options.validType]) {
-                return {
-                    message: options.message
-                }
-            }
-        }
-    }
-};
-
-export default ({types, templates, validators});
+export default ({types, templates});

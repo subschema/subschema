@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import Select from 'subschema-component-form/lib/types/Select';
-import Checkbox from 'subschema-component-form/lib/types/Select';
+import Checkbox from 'subschema-component-form/lib/types/Checkbox';
 import loaderFactory from 'subschema-loader';
 
 //Provide a template named SimpleTemplate

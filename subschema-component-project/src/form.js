@@ -2,7 +2,7 @@ import form from './form.tmpl';
 
 
 export default function formTag({sample, useData, useErrors}) {
-    var {schema, setup, setupTxt = '', props = [], data, errors} = sample;
+    var {props = []} = sample;
 
     var propStr = ['schema={schema}'];
     if (useData){
@@ -20,5 +20,5 @@ export default function formTag({sample, useData, useErrors}) {
         }
     });
 
-    return form({propStr: propStr.join('')});
+    return form({propStr: propStr.join(' ')});
 }

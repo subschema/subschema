@@ -23,11 +23,9 @@ export default class DownloadButton extends Component {
         if (!other) {
             alert("Looks like you have blockup popper, disable it and click again");
             return;
-        } else {
-            if (other.addEventListener) {
-                other.addEventListener('DOMContentLoaded', );
-                return;
-            }
+        } else if (other.addEventListener) {
+            other.addEventListener('DOMContentLoaded', done);
+            return;
         }
     };
 
@@ -44,6 +42,24 @@ export default class DownloadButton extends Component {
     handleDone = (e) => {
         this.setState({done: true});
     };
+
+    handleBlob = (blob) => {
+        this.setState({busy: false});
+
+        var isPage = this.props.type === 'page';
+        var ext = this.props.type === 'project' ? 'zip' : 'html';
+        if (isPage) {
+            return DownloadButton.open(blob, `${this.props.filename}.${ext}`, this.handleDone);
+        }
+        try {
+            DownloadButton.saveAs(blob, `${this.props.filename}.${ext}`, true);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            this.handleDone();
+        }
+    };
+
     handleClick = (e) => {
         e && e.preventDefault();
         this.setState({busy: true});
@@ -54,11 +70,9 @@ export default class DownloadButton extends Component {
         if (this.props.useErrors) {
             sample.errors = errors;
         }
-
-        var isPage = this.props.type === 'page';
         var ext = this.props.type === 'project' ? 'zip' : 'html';
         var filename = kebabCase(this.props.filename);
-        var blob = generate({
+        Promise.resolve(generate({
             jsName: filename,
             title: this.props.filename,
             project: {
@@ -68,18 +82,8 @@ export default class DownloadButton extends Component {
             },
             demo: {},
             ...sample
-        }, this.props.type, `${ext}-blob`);
-        if (isPage) {
-            return DownloadButton.open(blob, `${this.props.filename}.${ext}`, this.handleDone);
-        }
-        try {
-            DownloadButton.saveAs(blob, `${this.props.filename}.${ext}`);
-        } catch (err) {
-            console.log(err);
-            alert('Error saving ' + err.message);
-        } finally {
-            this.setState({busy: false});
-        }
+        }, this.props.type, `${ext}-blob`)).then(this.handleBlob);
+
     };
 
 

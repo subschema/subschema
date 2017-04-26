@@ -3,8 +3,10 @@ import {Form, newSubschemaContext, PropTypes, ReactCSSReplaceTransition} from "s
 import Editor from "./Editor.jsx";
 import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
-import DownloadButton from "./DownloadButton.jsx";
-import {source} from 'subschema-component-project';
+import DownloadButton from "subschema-component-project/lib/components/DownloadButton";
+import form from 'subschema-component-project/lib/form';
+import {source, normalize} from 'subschema-component-project/lib/compile';
+
 const babelrc = {
     presets: [
         "es2015-loose",
@@ -13,22 +15,8 @@ const babelrc = {
     ]
 };
 
-function stringify(obj) {
-    if (obj == null) return 'null';
-    return JSON.stringify(obj, null, 2);
-}
 function createForm(props) {
-    props = props || {};
-    if (!props.schema) {
-        props.schema = 'schema';
-    }
-    var propStr = map(props, function (v, k) {
-        if (typeof v !== 'string') {
-            v = k;
-        }
-        return `${k}={${v}}`;
-    }).join(' ');
-    return `<Form ${propStr}/>`;
+    return form({sample: {props}});
 }
 
 function map(obj, fn, scope) {
@@ -53,12 +41,12 @@ export default class SubschemaPlayground extends Component {
         previewComponent: PropTypes.node,
         expandTxt: PropTypes.string,
         collapseTxt: PropTypes.string,
-        imports: PropTypes.arrayOf(PropTypes.string),
+        imports: PropTypes.object,
         schema: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
         setupTxt: PropTypes.string.isRequired,
         value: PropTypes.any,
         errors: PropTypes.any,
-        formProps: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.string)]),
+        props: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)), PropTypes.arrayOf(PropTypes.string)]),
         onChange: PropTypes.func,
         filename: PropTypes.string,
         DisplayValueAndErrors: PropTypes.injectClass,
@@ -96,11 +84,8 @@ export default class SubschemaPlayground extends Component {
     }
 
     createEditorCode() {
-        var code = '';
-        var {data, errors, useData, useError, schema} = this.props;
-        var imports = '';
-
-        return code;
+        var {data, errors, useData, useError, imports, props, schema, setupTxt} = this.props;
+        return normalize({sample: {data, errors, schema, imports, props, setupTxt}, useData, useError});
     }
 
     createFunction(editorCode) {
@@ -139,12 +124,12 @@ return {
                 this.handleError(e);
             }
         }
-        return;
+        return Subschema.context;
 
     }
 
     invokeIfNeccessary(editorCode) {
-        if (editorCode != this._editorCode) {
+        if (editorCode != this._editorCode || !this._lastInvoked) {
             this._editorCode = editorCode;
             var invoked = this.createFunction(editorCode);
             if (invoked) {
@@ -204,7 +189,7 @@ return {
                 <Editor
                     readOnly={true}
                     className="playgroundStage"
-                    codeText={createForm(this.props.formProps)}
+                    codeText={createForm(this.props.props)}
                     theme={this.props.theme}
                 />
             </div>
@@ -217,7 +202,7 @@ return {
     };
 
     render() {
-        const {DisplayValueAndErrors, collapsableCode, schema, errors, value, useData, useError, filename} = this.props;
+        const {DisplayValueAndErrors, collapsableCode, schema, imports, props, errors, value, useData, useError, filename} = this.props;
         const editorCode = this.createEditorCode();
         const formProps = this.invokeIfNeccessary(editorCode) || {};
         const _errors = useError ? errors : null;
@@ -227,11 +212,8 @@ return {
             setupTxt: this.state.code,
             schema,
             data: _data,
-            props: Object.keys(formProps).reduce((obj, v) => {
-                if (v == 'schema' || v == 'valueManager') return obj;
-                obj[v] = true;
-                return obj;
-            }, {}),
+            props,
+            imports,
             errors: _errors,
             description: this.props.description
         };
