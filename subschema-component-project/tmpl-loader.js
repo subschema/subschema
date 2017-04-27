@@ -2,24 +2,17 @@
 
 var template = require('lodash/template');
 
-/*{ escape: /<%-([\s\S]+?)%>/g,
- evaluate: /<%([\s\S]+?)%>/g,
- interpolate: /<%=([\s\S]+?)%>/g,
- variable: '',
- imports: { _: { escape: [Function: escape] } } }*/
-// var t = template('@hello@', { interpolate:/@([\s\S]+?)@/g })
 var options = {
     interpolate: /@([\s\S]+?)@/g,
-    escape: /@-([\s\S]+?)@/g,
-   // evaluate:/@~([\s\S]+?)@/g
+    escape: /@-([\s\S]+?)@/g
 };
 
 module.exports = function (content) {
     this.cacheable && this.cacheable();
     var tmpl;
     try {
-         tmpl = template(content, options);
-    }catch(e){
+        tmpl = template(content, options);
+    } catch (e) {
         console.error(e, content);
         throw e;
     }

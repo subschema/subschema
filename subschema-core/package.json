@@ -15,18 +15,22 @@
   ],
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "lodash": "*"
   },
   "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "lodash": "^4.17.4"
   },
   "dependencies": {
     "subschema-expression": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "subschema-transitions": "^1.7.0",
-    "subschema-utils": "^1.7.0",
-    "lodash": "^4.17.4"
+    "subschema-utils": "^1.7.0"
   }
 }

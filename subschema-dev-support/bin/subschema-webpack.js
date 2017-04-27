@@ -28,17 +28,6 @@ if (hasArg('-p', '--production')) {
 if (!hasArg('--config')) {
     process.argv.push('--config', path.resolve(__dirname, '..', 'webpack.config.js'));
 }
-if ((idx = indexOfArg('--externalize-peers')) != -1) {
-    process.argv.splice(idx, 1);
-    process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
-}
-
-if ((idx = indexOfArg('--no-externalize-peers')) != -1) {
-    process.argv.splice(idx, 1);
-} else {
-    //By default we externalize peer dependencies.
-    process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
-}
 
 
 if ((idx = process.argv.indexOf('--demo')) != -1) {
@@ -61,12 +50,23 @@ if ((idx = process.argv.indexOf('--demo')) != -1) {
         docs = process.argv[process.argv.indexOf('--output-path') + 1];
     }
     process.argv.splice(idx, 2);
-    console.log(`docs will be in ${docs}`, process.argv);
+    console.warn(`docs will be in ${docs}`);
 
 
 } else {
 
 
+    if ((idx = indexOfArg('--externalize-peers')) != -1) {
+        process.argv.splice(idx, 1);
+        process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
+    }
+
+    if ((idx = indexOfArg('--no-externalize-peers')) != -1) {
+        process.argv.splice(idx, 1);
+    } else {
+        //By default we externalize peer dependencies.
+        process.env.SUBSCHEMA_EXTERNALIZE_PEERS = 1;
+    }
     if (!hasArg('--entry')) {
         process.argv.push('--entry', path.resolve(cwd, 'src', 'index.js'));
     }
@@ -84,23 +84,23 @@ if ((idx = process.argv.indexOf('--demo')) != -1) {
     }
 
     if ((idx = process.argv.indexOf('--no-style-loader')) != -1) {
-        console.log(`disabling style loader`);
+        console.warn(`disabling style loader`);
         process.env.SUBSCHEMA_NO_STYLE_LOADER = 1;
         process.argv.splice(idx, 1);
     }
     if ((idx = process.argv.indexOf('--use-stats-file')) != -1) {
         var statsFile = process.argv.splice(idx, 2).pop();
-        console.log(`outputing stats file '${statsFile}'`);
+        console.warn(`outputing stats file '${statsFile}'`);
         process.env.SUBSCHEMA_USE_STATS_FILE = statsFile;
     }
     if ((idx = process.argv.indexOf('--use-externals')) != -1) {
         var externals = process.argv.splice(idx, 2).pop();
-        console.log(`using externals ${externals}`);
+        console.warn(`using externals ${externals}`);
         process.env.SUBSCHEMA_USE_EXTERNALS = externals;
     }
 }
 if (hasArg('--help', '-h')) {
-    console.log(`
+    console.warn(`
 ARGS: ${process.argv.slice(2)}    
 subschema-webpack extensions
     --demo [path]\t\tgenerate a demo app a that location

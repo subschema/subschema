@@ -18,7 +18,7 @@ function check(file, parent) {
 }
 
 if (!check('test', process.cwd())) {
-    console.log('no tests for project', require(path.resolve(process.cwd(), 'package.json')).name);
+    console.warn('no tests for project', require(path.resolve(process.cwd(), 'package.json')).name);
     process.exit(0);
 }
 function indexOfArg() {

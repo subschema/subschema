@@ -10,14 +10,14 @@ export default class Main extends Component {
 
     static propTypes = {
         useData: PropTypes.listener,
-        useError: PropTypes.listener,
+        useErrors: PropTypes.listener,
         notFound: PropTypes.type,
         value: PropTypes.value
     };
 
     static defaultProps = {
         useData: "useData",
-        useError: "useError",
+        useErrors: "useErrors",
         notFound: "NotFound",
         value: "pathname"
 

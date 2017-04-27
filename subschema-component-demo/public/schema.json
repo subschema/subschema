@@ -7,11 +7,11 @@
       "className": "no-class",
       "template": false
     },
-    "useError": {
+    "useErrors": {
       "type": "LiLink",
       "label": "Errors",
       "className": "no-class",
-      "href": "useError={useError}",
+      "href": "useErrors={useErrors}",
       "template": false
     },
     "samples": {
@@ -36,7 +36,7 @@
           "template": "NavTemplate",
           "fields": [
             "useData",
-            "useError"
+            "useErrors"
           ]
         },
         {

@@ -11,7 +11,7 @@ export default class Example extends Component {
         SubschemaPlayground: PropTypes.injectClass,
         conf: PropTypes.any,
         useData: PropTypes.bool,
-        useError: PropTypes.bool
+        useErrors: PropTypes.bool
     };
     static defaultProps = {
         SubschemaPlayground: UninjectedSubschemaPlayground
@@ -38,7 +38,7 @@ export default class Example extends Component {
                                  setupTxt={setupTxt}
                                  value={data}
                                  useData={this.props.useData}
-                                 useError={this.props.useError}
+                                 useErrors={this.props.useErrors}
                                  errors={errors}
                                  filename={`Example ${this.props.example}`}
                                  imports={imports}

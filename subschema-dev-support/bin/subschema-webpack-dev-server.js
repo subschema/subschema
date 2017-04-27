@@ -29,11 +29,11 @@ if ((idx = process.argv.indexOf('--no-hot')) != -1) {
 
 if ((idx = process.argv.indexOf('--use-externals')) != -1) {
     var externals = process.argv.splice(idx, 2).pop();
-    console.log(`using externals ${externals}`);
+    console.warn(`using externals ${externals}`);
     process.env.SUBSCHEMA_USE_EXTERNALS = externals;
 }
-if (process.argv.indexOf('-h') || process.argv.indexOf('--help')) {
-    console.log(`${process.argv[1]}
+if (process.argv.indexOf('-h') != -1 || process.argv.indexOf('--help') != -1) {
+    console.warn(`${process.argv[1]}
     \t--use-externals a comma seperated dot valued list of externals to use`);
 }
 process.env.SUBSCHEMA_USE_HTML = 1;

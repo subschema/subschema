@@ -43,7 +43,8 @@ export default class Demo extends Component {
         console.log('change', val, old, path);
         const loc = this.location;
         //make sure the poll cycle exists first;
-        setTimeout(() => {
+        clearTimeout(this._to);
+        this._to = setTimeout(() => {
             if (loc == null || val == null) {
                 return;
             }
@@ -60,14 +61,14 @@ export default class Demo extends Component {
                     history.push({pathname, search: search(query), state});
                 }
             }
-        }, 20);
+        }, 100);
     };
 
     componentWillMount() {
-
+        if (this.unlisten) this.unlisten();
 
         const hd = this.props.valueManager.addListener('useData', this.handleDataError, null, false).remove;
-        const ed = this.props.valueManager.addListener('useError', this.handleDataError, null, false).remove;
+        const ed = this.props.valueManager.addListener('useErrors', this.handleDataError, null, false).remove;
 
 //Handle change of state to showing data or error.
         this._listenToHistory(history.location);
@@ -88,7 +89,7 @@ export default class Demo extends Component {
         const query = parse(location);
         this.props.valueManager.update('pathname', pathname);
         this.props.valueManager.update('useData', query.useData == "true");
-        this.props.valueManager.update('useError', query.useError == "true");
+        this.props.valueManager.update('useErrors', query.useErrors == "true");
         this.location = location;
     };
 

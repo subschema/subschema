@@ -39,7 +39,14 @@
     "subschema-component-modal": "^1.7.0",
     "subschema-component-autocomplete": "^1.7.0"
   },
+  "peerDepenencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
   "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
     "subschema-dev-support": "^1.7.0",
     "subschema-test-support": "^1.7.0",
     "rimraf": "^2.6.1"

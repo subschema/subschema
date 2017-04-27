@@ -8,10 +8,10 @@ if (!webpack.output) webpack.output = {};
 webpack.output.pathinfo = true;
 var useCoverage = false;
 if (process.env.SUBSCHEMA_COVERAGE) {
-    console.log(`enabling code coverage for karma`);
+    console.warn(`enabling code coverage for karma`);
     useCoverage = true;
 }
-console.log('running tests in ', webpack.resolve.alias.test);
+console.warn('running tests in ', webpack.resolve.alias.test);
 module.exports = function (config) {
     const karmaConf = {
 

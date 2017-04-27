@@ -1,12 +1,10 @@
 import React, {Component} from "react";
 import {Form, newSubschemaContext, PropTypes, ReactCSSReplaceTransition} from "subschema";
-import Editor from "./Editor.jsx";
 import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
 import DownloadButton from "subschema-component-project/lib/components/DownloadButton";
-import form from 'subschema-component-project/lib/form';
 import {source, normalize} from 'subschema-component-project/lib/compile';
-
+import Compiler from './Compiler';
 const babelrc = {
     presets: [
         "es2015-loose",
@@ -15,9 +13,6 @@ const babelrc = {
     ]
 };
 
-function createForm(props) {
-    return form({sample: {props}});
-}
 
 function map(obj, fn, scope) {
     if (obj == null) return null;
@@ -51,7 +46,7 @@ export default class SubschemaPlayground extends Component {
         filename: PropTypes.string,
         DisplayValueAndErrors: PropTypes.injectClass,
         useData: PropTypes.bool,
-        useError: PropTypes.bool,
+        useErrors: PropTypes.bool,
         rollUp: PropTypes.transition,
         onSubmit: PropTypes.valueEvent
 
@@ -77,91 +72,10 @@ export default class SubschemaPlayground extends Component {
     constructor(props, ...rest) {
         super(props, ...rest);
         this.state = {
-            code: props.setupTxt,
             expandedCode: props.initiallyExpanded,
-            external: true
+            external: true,
         };
     }
-
-    createEditorCode() {
-        var {data, errors, useData, useError, imports, props, schema, setupTxt} = this.props;
-        return normalize({sample: {data, errors, schema, imports, props, setupTxt}, useData, useError});
-    }
-
-    createFunction(editorCode) {
-        let code = this.state.code;
-        const Subschema = newSubschemaContext(this.context.defaultLoaders);
-        const {Form, ValueManager, loader, importer} = Subschema;
-        const valueManager = Form.defaultProps.valueManager = ValueManager(this.props.useData ? this.props.value : {});
-        const {errors, value} = this.props;
-        const {...schema} = this.props.schema;
-        let funcBody;
-
-        try {
-            funcBody = `
-${transform(editorCode, babelrc).code}
-
-return {
-   schema:schema
-};
-`;
-
-            const func = new Function(['require', 'errors', 'value', 'schema'], funcBody);
-            func(importer, errors, value, schema);
-            this._compiled = func;
-            this.state.error = null;
-        } catch (e) {
-            console.log('error', e, funcBody + '');
-            this.handleError(e);
-            return
-        }
-
-        if (this._compiled) {
-            try {
-                return this._compiled(importer, errors, value, schema);
-            } catch (e) {
-                console.log('error', e, funcBody + '');
-                this.handleError(e);
-            }
-        }
-        return Subschema.context;
-
-    }
-
-    invokeIfNeccessary(editorCode) {
-        if (editorCode != this._editorCode || !this._lastInvoked) {
-            this._editorCode = editorCode;
-            var invoked = this.createFunction(editorCode);
-            if (invoked) {
-                this._lastInvoked = invoked
-            }
-        }
-        return this._lastInvoked;
-    }
-
-    handleError(e) {
-        const error = e.message;
-        clearTimeout(this._timeout);
-
-        this._timeout = setTimeout(() => {
-            this.setState({error});
-        }, 200);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            code: nextProps.setupTxt,
-            external: true
-        });
-    }
-
-    _handleCodeChange = (code) => {
-        this.props.onChange(code);
-        this.setState({
-            code,
-            external: false
-        });
-    };
 
     _toggleCode = () => {
         this.setState({
@@ -176,78 +90,55 @@ return {
             </span>
     }
 
-    renderEditor(editorCode) {
-        return <div key="editor">
-            <Editor
-                onChange={this._handleCodeChange}
-                className="playgroundStage"
-                codeText={editorCode}
-                external={this.state.external}
-                theme={this.props.theme}
-            />
-            <div className="prelude">
-                <Editor
-                    readOnly={true}
-                    className="playgroundStage"
-                    codeText={createForm(this.props.props)}
-                    theme={this.props.theme}
-                />
-            </div>
-        </div>
-    }
-
     handleSubmit = (e, err, values) => {
         e && e.preventDefault();
         this.props.onSubmit(values);
     };
 
-    render() {
-        const {DisplayValueAndErrors, collapsableCode, schema, imports, props, errors, value, useData, useError, filename} = this.props;
-        const editorCode = this.createEditorCode();
-        const formProps = this.invokeIfNeccessary(editorCode) || {};
-        const _errors = useError ? errors : null;
-        const _data = useData ? value : {};
+    handleContextChange = (context) => {
+        this.setState({context});
+    };
+    renderForm(){
+        const {DisplayValueAndErrors} = this.props;
 
-        const sample = {
-            setupTxt: this.state.code,
-            schema,
-            data: _data,
-            props,
-            imports,
-            errors: _errors,
-            description: this.props.description
-        };
-        if (useError) {
-            setTimeout(() => {
-                formProps.valueManager.setErrors(_errors);
-            }, 500)
+        if (!this.state.context){
+            return <div>Loading...</div>
         }
+        return   <Form {...this.state.context} onSubmit={this.props.onSubmit}>
+            <div style={{width: '100%', float: 'left'}}>
+                <DisplayValueAndErrors value="."/>
+            </div>
+        </Form>
+    }
+
+    render() {
+        const {form, schema, imports, props, errors, value, useData, useErrors, filename} = this.props;
 
         return (
             <div>
-                <div className={`playground ${collapsableCode ? "collapsableCode" : ""}`}>
-                    <div className={`playgroundCode ${this.state.expandedCode ? " expandedCode" : ""}`}>
-                        <ReactCSSReplaceTransition key="transition" {...this.props.rollUp}>
-                            {this.state.expandedCode ? this.renderEditor(editorCode) : <span key="no-show"/> }
-                        </ReactCSSReplaceTransition>
-                    </div>
-                    {this.state.error ? <div className="error">
-                        {this.state.error}
-                    </div> : null}
-                    {this.renderToggle()}
-                    <div className="playgroundPreview clearfix">
-                        <Form {...formProps} onSubmit={this::this.handleSubmit}>
-                            <div style={{width: '100%', float: 'left'}}>
-                                <DisplayValueAndErrors value="."/>
-                            </div>
-                        </Form>
-                    </div>
+                <div className={`playgroundCode ${this.state.expandedCode ? " expandedCode" : ""}`}>
+                    <ReactCSSReplaceTransition key="transition" {...this.props.rollUp}>
+                        <Compiler onError={this.handleError} onContextChange={this.handleContextChange}
+                                  theme={this.props.theme}
+                                  collapsableCode={this.state.collapsableCode}
+                                  display={this.state.expandedCode}
+                                  schema={schema}
+                                  imports={imports}
+                                  setupTxt={this.props.setupTxt}
+                                  form={form}
+                                  props={props}
+                                  value={value}
+                                  useErrors={useErrors}
+                                  useData={useData}
+                                  filename={filename}
+                                  errors={errors}
+                        />
+
+                    </ReactCSSReplaceTransition>
                 </div>
-                <div className='btn-group'>
-                    <DownloadButton type="page" useData={useData} useError={useError} data={{sample}}
-                                    filename={filename}/>
-                    <DownloadButton type="project" useData={useData} useError={useError} data={{sample}}
-                                    filename={filename}/>
+                {this.renderToggle()}
+                <div className="playgroundPreview clearfix">
+                    {this.renderForm()}
                 </div>
 
             </div>

@@ -37,7 +37,7 @@ var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys
     if (key in ret) return ret;
     if (fs.existsSync(project('..', key, SUBSCHEMA_CONF))) {
         customConf = applyFuncs(customConf, require(project('..', key, SUBSCHEMA_CONF)));
-        console.log(`using custom config for ${key}`);
+        console.warn(`using custom config for ${key}`);
     } else {
         var resolvedTo;
         try {
@@ -48,7 +48,7 @@ var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys
         if (resolvedTo) {
             //don't swallow. because it does exist but theres a problem;
             customConf = applyFuncs(customConf, require(resolvedTo));
-            console.log(`using custom config for ${key}`);
+            console.warn(`using custom config for ${key}`);
 
         }
     }
@@ -224,7 +224,7 @@ var webpack = {
 
 if (process.env.SUBSCHEMA_USE_HTML) {
     opts.useHtml = true;
-    console.log(`using html plugin`);
+    console.warn(`using html plugin`);
     function charset(ele) {
         if (!ele.attributes) ele.attributes = {};
         if (!ele.attributes.charset)
@@ -254,7 +254,7 @@ if (process.env.SUBSCHEMA_USE_HTML) {
 }
 if (process.env.SUBSCHEMA_USE_HOT) {
     opts.useHot = true;
-    console.log('using hot loading');
+    console.warn('using hot loading');
     babel.plugins.unshift("react-hot-loader/babel");
     function modrequire(mod) {
         return require(mod);
@@ -263,17 +263,22 @@ if (process.env.SUBSCHEMA_USE_HOT) {
     babel.plugins = babel.plugins.map(modrequire);
     babel.presets = babel.presets.map(modrequire);
     var entry = process.argv[process.argv.indexOf('--entry') + 1];
+    var client = `${path.resolve(__dirname, 'node_modules', 'webpack-dev-server', 'client')}?http://localhost:${webpack.devServer.port}`;
+    var onlyError = path.resolve(__dirname, 'node_modules', 'webpack/hot/only-dev-server.js');
+    webpack.resolve.alias['webpack/hot/dev-server'] = path.resolve(__dirname, 'node_modules', 'webpack', 'hot', 'dev-server.js');
+    webpack.resolve.alias['webpack/hot/only-dev-server'] = onlyError;
     webpack.entry = [
-        `webpack-dev-server/client?http://localhost:${webpack.devServer.port}`,
+        client,
         'webpack/hot/only-dev-server',
         entry
     ];
+    console.log(webpack.entry);
 
 }
 if (customConf) {
     webpack = customConf(webpack, opts);
 }
 if (process.env.SUBSCHEMA_DEBUG) {
-    console.log('webpack', JSON.stringify(webpack, null, 2));
+    console.warn('webpack', JSON.stringify(webpack, null, 2));
 }
 module.exports = webpack;

@@ -10,13 +10,18 @@
     "clean": "rimraf ./lib ./dist"
   },
   "peerDependencies": {
+    "lodash": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
+    "mocha": "^3.2.0",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
-    "lodash": "*"
-  },
-  "devDependencies": {
-    "mocha": "^3.2.0",
     "subschema-css-bootstrap": "^1.7.0",
     "subschema-transitions": "^1.7.0",
     "subschema-dev-support": "^1.7.0",

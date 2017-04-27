@@ -17,7 +17,6 @@ Module._load = function (file, parent) {
     var fullpath = isRelative ? path.resolve(path.dirname(parent.filename), file).replace(project, '') : file.startsWith('/') ? file.replace(project, '') : file;
     if (isRelative && /subschema(?:[a-z-]*)(\/lib\/(.*))$/.test(fullpath)) {
         const pp = /^\/?(subschema(?:[a-z-]*))(?:\/lib\/)(.+?)$/.exec(fullpath);
-        // console.log(cwd, fullpath, pp);
         if (pp) {
             return oload(path.join(cwd, '..', pp[1], 'src', pp[2] || 'index.js'));
         }

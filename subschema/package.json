@@ -11,11 +11,11 @@
     "compile-lib": "subschema-babel && yarn run compile-default-loader",
     "compile-server": "subschema-webpack --output-path lib --no-style-loader --target node --output-filename index.js --use-externals react,react-dom,fbjs",
     "compile-web": "subschema-webpack -p  --output-path dist --no-externalize-peers --output-filename subschema.js",
-    "compile-web-debug": "subschema-webpack --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
+    "compile-web-debug": "subschema-webpack  --no-externalize-peers --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
     "compile-web-noreact": "subschema-webpack -p  --output-path dist --output-filename subschema-noreact.js",
     "karma": "subschema-karma",
     "test": "subschema-karma",
-    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-noreact",
+    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-debug && yarn run compile-web-noreact",
     "clean": "rimraf ./lib ./dist"
   },
 
@@ -25,10 +25,11 @@
     "prop-types": "^15.5.8"
   },
   "devDependencies": {
-    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "prop-types": "^15.5.8",
+    "lodash": "^4.17.4",
+    "val-loader":"^1.0.2",
     "subschema-dev-support": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-injection": "^1.7.0",

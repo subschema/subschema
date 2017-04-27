@@ -16,7 +16,10 @@ module.exports = function (config, opts) {
             use: opts.useStyle('css-loader', opts.useLess, opts.usePostCss)
         });
 
-    config.resolve.alias['subschema-source'] = join('node_modules', 'subschema');
-
+    if (!config.externals.react) {
+        config.resolve.alias.react = join('node_modules', 'react');
+        config.resolve.alias['react-dom'] = join('node_modules', 'react-dom');
+        config.resolve.alias['prop-types'] = join('node_modules', 'prop-types');
+    }
     return config;
 };

@@ -9,9 +9,11 @@
     "clean": "rimraf ./lib ./dist"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.0"
+    "prop-types": "^15.5.0",
+    "react": "*"
   },
   "devDependencies": {
+    "react": "^15.5.4",
     "prop-types": "^15.5.8",
     "subschema-dev-support": "^1.7.0",
     "rimraf": "^2.6.1"

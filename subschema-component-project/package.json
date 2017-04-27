@@ -20,8 +20,9 @@
     "lodash": "^4.17.4"
   },
   "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
     "lodash": "*",
-    "subschema": "^1.7.0",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
@@ -29,6 +30,9 @@
     "subschema-processors": "^1.7.0"
   },
   "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
     "subschema": "^1.7.0",
     "lodash": "^4.17.4",
     "subschema-core": "^1.7.0",

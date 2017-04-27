@@ -11,12 +11,18 @@
   },
   "peerDependencies": {
     "lodash": "*",
+    "react": "*",
+    "react-dom": "*",
+    "prop-types": "*",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
     "subschema-prop-types": "^1.7.0",
     "subschema-component-form": "^1.7.0"
   },
   "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "prop-types": "^15.5.8",
     "lodash": "^4.17.4",
     "subschema-core": "^1.7.0",
     "subschema-utils": "^1.7.0",
