@@ -47,7 +47,7 @@ module.exports = function (options = {}) {
 
     const isExclude = wrapExcludes(exclude);
 
-    const all = [].concat(
+    const all = [userPkg.name].concat(
         Object.keys(pkg.devDependencies || EMPTY),
         Object.keys(pkg.peerDependencies || EMPTY),
         Object.keys(pkg.dependencies || EMPTY),
@@ -60,12 +60,12 @@ module.exports = function (options = {}) {
 
     let code = `
 import loaderFactory from 'subschema-loader';
+import Subschema from 'subschema';
 
 //Automagically imported
 ${deps.map(writeImport).join(';\n')} 
 
-const loader = loaderFactory();    
-
+const loader = loaderFactory();
 //Automagically added to importer
 ${deps.map(writeLoader).join(';\n')} 
 

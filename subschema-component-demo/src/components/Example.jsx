@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import UninjectedSubschemaPlayground from './SubschemaPlayground.jsx';
+import {PropTypes as NavTypes} from 'subschema-component-navigation';
+import UninjectedSubschemaPlayground from '../../../subschema-component-playground/src/SubschemaPlayground.jsx';
 
 export default class Example extends Component {
 
@@ -10,11 +11,14 @@ export default class Example extends Component {
         example: PropTypes.string,
         SubschemaPlayground: PropTypes.injectClass,
         conf: PropTypes.any,
-        useData: PropTypes.bool,
-        useErrors: PropTypes.bool
+        useData: NavTypes.queryExists,
+        useErrors: NavTypes.queryExists
     };
+
     static defaultProps = {
-        SubschemaPlayground: UninjectedSubschemaPlayground
+        SubschemaPlayground: UninjectedSubschemaPlayground,
+        "useData": "useData",
+        "useErrors": "useErrors"
     };
 
     render() {
@@ -28,8 +32,9 @@ export default class Example extends Component {
 
 
     renderEdit() {
-        const {SubschemaPlayground, conf} = this.props;
-        const {schema, setup, setupTxt, props, description, data, imports, errors} =conf || {};
+        const {SubschemaPlayground} = this.props;
+        const conf = this.context.loader.loadSample(this.props.example);
+        const {schema, setup, setupTxt, props, description, data, imports, errors} = conf || {};
         return <div className='sample-example-playground'>
             <SubschemaPlayground key={'form-' + this.props.example}
                                  theme='monokai'

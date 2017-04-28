@@ -3,10 +3,11 @@ import Field from 'subschema-core/lib/Field';
 import FieldSet from 'subschema-core/lib/FieldSet';
 import RenderContent from 'subschema-core/lib/RenderContent';
 import RenderTemplate from 'subschema-core/lib/RenderTemplate';
+
 import Form from 'subschema-core/lib/Form';
 import Dom from 'subschema-component-form/lib/Dom';
 import eventable from 'subschema-valuemanager/lib/eventable';
-import loaderFactory from 'subschema-loader';
+import loaderFactory, {resolverLoader} from 'subschema-loader';
 import PropTypes from 'subschema-prop-types';
 import validators from 'subschema-validators';
 import warning from 'subschema-utils/lib/warning';
@@ -25,38 +26,41 @@ import {injectorFactory, cachedInjector, stringInjector} from 'subschema-injecti
  * @param Subschema
  */
 
-function newSubschemaContext(defaultLoaders = [], defaultResolvers = {}, defaultPropTypes = PropTypes, defaultInjectorFactory = injectorFactory, Subschema = {
-    Conditional,
-    Field,
-    FieldSet,
-    RenderContent,
-    RenderTemplate,
-    Form,
-    Dom,
-    PropTypes,
-    ValueManager,
-    css,
-    eventable,
-    loaderFactory,
-    tutils,
-    validators,
-    warning,
-    injectorFactory,
-    cachedInjector,
-    stringInjector,
+function newSubschemaContext(defaultLoaders = [],
+                             defaultResolvers = {},
+                             defaultPropTypes = PropTypes,
+                             defaultInjectorFactory = injectorFactory,
+                             Subschema = {
+                                 Conditional,
+                                 Field,
+                                 FieldSet,
+                                 RenderContent,
+                                 RenderTemplate,
+                                 Form,
+                                 Dom,
+                                 PropTypes,
+                                 ValueManager,
+                                 css,
+                                 eventable,
+                                 loaderFactory,
+                                 tutils,
+                                 validators,
+                                 warning,
+                                 injectorFactory,
+                                 cachedInjector,
+                                 stringInjector,
 
-}) {
+                             }) {
     const {loader, injector, ...rest} = Subschema;
 
-
-    const _injector = defaultInjectorFactory();
-    for (let key of Object.keys(defaultResolvers)) {
-        if (key in defaultPropTypes) {
-            _injector.resolver(defaultPropTypes[key], defaultResolvers[key]);
-        }
-    }
     const defaultLoader = loaderFactory(defaultLoaders);
+    defaultLoader.addResolvers(defaultPropTypes, defaultResolvers);
+
+    //injector can take a loader use it.
+    const _injector = defaultInjectorFactory(defaultLoader);
+
     const defaultInjector = cachedInjector(stringInjector(_injector, defaultPropTypes));
+
 
     //Form needs these to kick off the whole thing.  Its defaults can be overriden with
     // properties.

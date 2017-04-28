@@ -272,8 +272,6 @@ if (process.env.SUBSCHEMA_USE_HOT) {
         'webpack/hot/only-dev-server',
         entry
     ];
-    console.log(webpack.entry);
-
 }
 if (customConf) {
     webpack = customConf(webpack, opts);

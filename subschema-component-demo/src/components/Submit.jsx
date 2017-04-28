@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Editor from "./Editor.jsx";
+import {Editor} from "subschema-component-project";
 
 export default class Submit extends Component {
 

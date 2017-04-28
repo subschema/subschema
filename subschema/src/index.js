@@ -24,21 +24,26 @@ import _DefaultLoader from './DefaultLoader';
 import {newSubschemaContext as _newSubschemaContext} from './core';
 import _loaderFactory from 'subschema-loader';
 import {stringInjector as _stringInjector, injectorFactory as _injectorFactory} from 'subschema-injection';
-const _types = new Proxy({}, {
-    get(target, name) {
-        _warning(false, `please do not depend on Subschema.types, use the loader.loadType('%s') instead`, name);
-        return _DefaultLoader.loadType(name);
-    }
-});
-const _templates = new Proxy({}, {
-    get(target, name) {
-        _warning(false, `please do not depend on Subschema.templates, use the loader.loadTemplate('%s') instead`, name);
-        return _DefaultLoader.loadTemplate(name);
-    }
-});
-function subschemaRequire(name) {
 
+let _types, _templates;
+
+try {
+    _types = new Proxy({}, {
+        get(target, name) {
+            _warning(false, `please do not depend on Subschema.types, use the loader.loadType('%s') instead`, name);
+            return _DefaultLoader.loadType(name);
+        }
+    });
+    _templates = new Proxy({}, {
+        get(target, name) {
+            _warning(false, `please do not depend on Subschema.templates, use the loader.loadTemplate('%s') instead`, name);
+            return _DefaultLoader.loadTemplate(name);
+        }
+    });
+} catch (e) {
+    warning(false, `types/templates property is longer supported and proxy failed. `, e);
 }
+
 const stringInjector = _stringInjector;
 const injectorFactory = _injectorFactory;
 const RenderTemplate = _RenderTemplate;
@@ -67,7 +72,7 @@ const ReactCSSReplaceTransition = _ReactCSSReplaceTransition;
 
 const _initSubchemaContext = newSubschemaContext();
 const loader = _initSubchemaContext.loader;
-const injector = injectorFactory();
+const injector = _initSubchemaContext.injector;
 const Subschema = {
     stringInjector,
     injectorFactory,

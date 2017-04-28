@@ -1,17 +1,17 @@
 {
   "schema": {
     "useData": {
-      "type": "LiLink",
+      "type": "ToggleLink",
       "label": "Data",
-      "href": "useData={useData}",
+      "name": "useData",
       "className": "no-class",
       "template": false
     },
     "useErrors": {
-      "type": "LiLink",
+      "type": "ToggleLink",
       "label": "Errors",
       "className": "no-class",
-      "href": "useErrors={useErrors}",
+      "name": "useErrors",
       "template": false
     },
     "samples": {
@@ -19,10 +19,13 @@
       "template": false,
       "href": "#/{.}"
     },
-
     "main": {
-      "type": "Main",
-      "template": false
+      "type": "Routes",
+      "routes": {
+        "/doc/:page": "Doc",
+        "/:example": "Example",
+        "": "Index"
+      }
     },
     "submit": {
       "type": "Submit"

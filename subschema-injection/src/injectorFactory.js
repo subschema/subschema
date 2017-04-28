@@ -1,4 +1,3 @@
-"use strict";
 import React, {Component} from "react";
 import {keyIn, onlyKeys, uniqueKeys, extendPrototype, listener, unmount, prop as property} from "./util";
 
@@ -33,17 +32,20 @@ function isIterable(obj) {
     return obj[Symbol.iterator] !== void(0)
 }
 export default function injector(resolvers = new Map()) {
-    if (!(resolvers instanceof Map )) {
-        if (isIterable(resolvers)) {
-            resolvers = new Map(resolvers);
-        } else {
-            throw new Error('resolvers must be iterable');
-        }
-    }
-    function resolveProp(propType) {
+    let resolveProp = function resolveProp(propType) {
         if (propType == null) return propType;
         const resolved = resolvers.get(propType);
         return resolved;
+    };
+
+    if (!(resolvers instanceof Map )) {
+        if (isIterable(resolvers)) {
+            resolvers = new Map(resolvers);
+        } else if (resolvers && typeof resolvers.loadResolver == 'function') {
+            resolveProp = resolvers.loadResolver;
+        } else {
+            throw new Error('resolvers must be iterable or have a loadResolver function');
+        }
     }
 
 

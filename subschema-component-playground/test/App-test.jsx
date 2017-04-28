@@ -1,10 +1,12 @@
 import React, {DOM} from 'react';
 import App from 'subschema-component-project/lib/App.jsx';
 import expect from 'expect';
-import support, {into} from './support';
+import support, {into} from '../../subschema-component-project/test/support';
 import  {TestUtils, Simulate, cleanUp} from 'subschema-test-support';
-import {unmountComponentAtNode,findDOMNode} from 'react-dom';
-import {types} from 'subschema-component-project';
+import {unmountComponentAtNode, findDOMNode} from 'react-dom';
+
+import playground from 'subschema-component-playground';
+
 import samples from 'subschema-test-samples';
 import {loader} from 'subschema';
 const {DownloadButton} = types;
@@ -15,7 +17,7 @@ var {click, change} = Simulate;
 describe('App', function () {
     this.timeout(50000);
     var b, f, app, select, buttons, options = [];
-    loader.addLoader({types});
+    loader.addLoader(playground);
 
     function sleep(time, value) {
         return new Promise(resolve => setTimeout(resolve, time, value));

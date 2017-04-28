@@ -3,7 +3,7 @@ import {path, noop, clone} from "subschema-utils";
 import UninjectedObjectType from "subschema-core/lib/Object";
 import PropTypes from "subschema-prop-types";
 import defaults from "lodash/defaults";
-import RenderTemplate from "subschema-core/RenderTemplate";
+import RenderTemplate from "subschema-core/lib/RenderTemplate";
 
 function makeEditPid(path, pid) {
     return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');

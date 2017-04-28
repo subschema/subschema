@@ -1,5 +1,4 @@
-"use strict";
-import './global-fix';
+import 'subschema-component-playground/lib/global-fix';
 import React, {Component} from 'react';
 import ValueManager from 'subschema-valuemanager';
 import {Form} from 'subschema';

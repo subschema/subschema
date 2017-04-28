@@ -1,6 +1,5 @@
-"use strict";
 import React, {Component} from 'react';
-import {PropTypes} from 'subschema';
+import PropTypes from 'subschema-prop-types';
 
 /**
  * This class is used to display errors and or values.

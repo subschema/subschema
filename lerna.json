@@ -21,7 +21,9 @@
     "subschema-component-wizard",
     "subschema",
     "subschema-test-samples",
+    "subschema-component-navigation",
     "subschema-component-project",
+    "subschema-component-playground",
     "subschema-component-demo"
   ],
   "version": "1.7.0"

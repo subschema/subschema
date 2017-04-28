@@ -1,0 +1,42 @@
+{
+  "name": "subschema-component-playground",
+  "version": "1.7.0",
+  "description": "A tool for editing and playing with subschema components",
+  "scripts": {
+    "karma": "subschema-karma",
+    "test": "subschema-karma",
+    "server": "subschema-webpack-dev-server",
+    "prepublish": "subschema-webpack"
+  },
+  "dependencies": {
+    "validate-npm-package-name": "^3.0.0",
+    "browser-filesaver": "^1.1.1",
+    "subschema-component-project": "^1.7.0",
+    "babel-standalone": "^6.24.0",
+    "codemirror": "^5.25.2"
+  },
+  "devDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-component-form": "^1.7.0",
+    "subschema-dev-support": "^1.7.0",
+    "subschema-test-samples": "^1.7.0",
+    "subschema-component-wizard": "^1.7.0",
+    "subschema-component-list": "^1.7.0",
+    "subschema-component-modal": "^1.7.0",
+    "subschema-component-autocomplete": "^1.7.0",
+    "subschema": "^1.7.0",
+    "lodash": "^4.17.4",
+    "subschema-valuemanager": "^1.7.0"
+  },
+  "peerDependencies": {
+    "lodash": "*",
+    "react-dom": "*",
+    "react": "*",
+    "subschema": "^1.7.0",
+    "subschema-prop-types": "^1.7.0",
+    "subschema-valuemanager": "^1.7.0",
+    "subschema-component-form": "^1.7.0"
+  }
+}

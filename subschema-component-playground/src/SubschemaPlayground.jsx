@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Form, newSubschemaContext, PropTypes, ReactCSSReplaceTransition} from "subschema";
+import PropTypes from 'subschema-prop-types';
+import {ReactCSSReplaceTransition} from 'subschema-component-form';
+import {Form, newSubschemaContext} from "subschema";
 import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
-import DownloadButton from "subschema-component-project/lib/components/DownloadButton";
 import {source, normalize} from 'subschema-component-project/lib/compile';
 import Compiler from './Compiler';
 const babelrc = {

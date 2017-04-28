@@ -4,10 +4,52 @@ import warning from 'subschema-utils/lib/warning';
 const concat = Function.apply.bind(Array.prototype.concat, []);
 
 const upFirst = (str) => `${str[0].toUpperCase()}${str.substring(1)}`;
+const addResolver = function () {
+    const map = [];
 
-export const LOADER_TYPES = ['Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'];
+    const _api = {
+        listResolvers (){
+            return map.map(function ([propType, resolver]) {
+                return {propType, resolver};
+            });
+        },
+        loadResolver(_propType){
+            if (_propType == null) return;
+            for (let i = 0, l = map.length; i < l; i++) {
+                const c = map[i];
+                if (c[0] === _propType) {
+                    return c[1];
+                }
+            }
+        }
+    };
+    Object.assign(this, _api);
+    return function loader$addResolver(propType, resolver) {
+        if (!propType) return;
+        if (Array.isArray(propType) && !resolver) {
+            return loader$addResolver.call(this, propType[0], propType[1]);
+        }
+        const pType = typeof propType, rType = typeof resolver;
+        if (pType === 'function' && rType === 'function') {
+            map[map.length] = [propType, resolver];
+        } else if (pType === 'object' && rType === 'object') {
+            Object.keys(propType).forEach(function (key) {
+                if (propType[key] && resolver[key]) {
+                    map[map.length] = [propType[key], resolver[key]];
+                }
+            });
+        }
+        this.addLoader(_api);
+        return _api;
+    }
+};
+
+export const LOADER_TYPES = [['Resolver', addResolver, null, null], 'Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'];
 
 export const WarningLoader = LOADER_TYPES.reduce(function (ret, key) {
+    if (Array.isArray(key)) {
+        key = key[0];
+    }
     ret[`load${upFirst(key)}`] = function (type) {
         warning(false, 'unable to find "%s" named "%s', key, type);
     };
@@ -32,8 +74,7 @@ export default function loaderFactory(loaders = []) {
                         //allow for an array of objects to be loaded.
                         const _add = this[`add${upFirst(key)}`];
                         if (typeof _add === 'function') {
-                            _add.call(this, loader[key]);
-                        } else {
+                            _add.call(api, loader[key]);
                             //  warning(false, 'do not understand "%s"', key);
                         }
                     }
@@ -77,9 +118,9 @@ export default function loaderFactory(loaders = []) {
     function load(method) {
         method = 'load' + method;
         return function load$load(load) {
-            var i = 0, l = loaders.length, ret = null, scope;
+            var i = 0, l = loaders.length, ret = null;
             for (; i < l; i++) {
-                var ret = loaders[i][method] && loaders[i][method].apply(this, arguments);
+                ret = loaders[i][method] && loaders[i][method].apply(this, arguments);
                 if (ret != null) {
                     return ret;
                 }
@@ -113,19 +154,25 @@ export default function loaderFactory(loaders = []) {
         }
     }
 
+
     function loaderType(name, addF = add, loadF = load, listF = list) {
         if (addF) {
-            this[`add${name}s`] = this[`add${name}`] = addF(name);
+            this[`add${name}s`] = this[`add${name}`] = this::addF(name);
         }
         if (loadF) {
-            this[`load${name}`] = loadF(name);
+            this[`load${name}`] = this::loadF(name);
         }
         if (listF) {
-            this[`list${name}s`] = listF(name);
+            this[`list${name}s`] = this::listF(name);
         }
         return this;
     }
 
-    LOADER_TYPES.forEach(v => api::loaderType(v));
+    LOADER_TYPES.forEach(v => {
+        if (Array.isArray(v)) api::loaderType(...v);
+        else api::loaderType(v)
+    });
+
+
     return api;
 }
