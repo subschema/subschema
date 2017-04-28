@@ -117,6 +117,7 @@ export default class SubschemaPlayground extends Component {
 
         return (
             <div>
+                {this.renderToggle()}
                 <div className={`playgroundCode ${this.state.expandedCode ? " expandedCode" : ""}`}>
                     <ReactCSSReplaceTransition key="transition" {...this.props.rollUp}>
                         <Compiler onError={this.handleError} onContextChange={this.handleContextChange}
@@ -137,7 +138,6 @@ export default class SubschemaPlayground extends Component {
 
                     </ReactCSSReplaceTransition>
                 </div>
-                {this.renderToggle()}
                 <div className="playgroundPreview clearfix">
                     {this.renderForm()}
                 </div>

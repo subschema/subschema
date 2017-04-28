@@ -21,6 +21,17 @@ export default class Example extends Component {
         "useErrors": "useErrors"
     };
 
+    constructor(props, context, ...args) {
+        super(props, context, ...args);
+        this.conf = this.context.loader.loadSample(props.example);
+    }
+
+    componentWillReceiveProps(props) {
+        if (this.props.example != props.example) {
+            this.conf = this.context.loader.loadSample(props.example);
+        }
+    }
+
     render() {
         return <div>
             <h3>{this.props.example}</h3>
@@ -33,8 +44,7 @@ export default class Example extends Component {
 
     renderEdit() {
         const {SubschemaPlayground} = this.props;
-        const conf = this.context.loader.loadSample(this.props.example);
-        const {schema, setup, setupTxt, props, description, data, imports, errors} = conf || {};
+        const {schema, setup, setupTxt, props, description, data, imports, errors} = this.conf || {};
         return <div className='sample-example-playground'>
             <SubschemaPlayground key={'form-' + this.props.example}
                                  theme='monokai'
