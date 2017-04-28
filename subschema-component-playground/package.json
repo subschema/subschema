@@ -1,6 +1,6 @@
 {
   "name": "subschema-component-playground",
-  "version": "1.7.0",
+  "version": "1.7.1-2.0.0-rc0.0",
   "description": "A tool for editing and playing with subschema components",
   "scripts": {
     "karma": "subschema-karma",
@@ -9,34 +9,34 @@
     "prepublish": "subschema-webpack"
   },
   "dependencies": {
-    "validate-npm-package-name": "^3.0.0",
-    "browser-filesaver": "^1.1.1",
-    "subschema-component-project": "^1.7.0",
     "babel-standalone": "^6.24.0",
-    "codemirror": "^5.25.2"
+    "browser-filesaver": "^1.1.1",
+    "codemirror": "^5.25.2",
+    "subschema-component-project": "^1.7.1-2.0.0-rc0.0",
+    "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
+    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "subschema-prop-types": "^1.7.0",
-    "subschema-component-form": "^1.7.0",
-    "subschema-dev-support": "^1.7.0",
-    "subschema-test-samples": "^1.7.0",
-    "subschema-component-wizard": "^1.7.0",
-    "subschema-component-list": "^1.7.0",
-    "subschema-component-modal": "^1.7.0",
-    "subschema-component-autocomplete": "^1.7.0",
-    "subschema": "^1.7.0",
-    "lodash": "^4.17.4",
-    "subschema-valuemanager": "^1.7.0"
+    "subschema": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-autocomplete": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-form": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-list": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-modal": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-wizard": "^1.7.1-2.0.0-rc0.0",
+    "subschema-dev-support": "^1.7.1-2.0.0-rc0.0",
+    "subschema-prop-types": "^1.7.1-2.0.0-rc0.0",
+    "subschema-test-samples": "^1.7.1-2.0.0-rc0.0",
+    "subschema-valuemanager": "^1.7.1-2.0.0-rc0.0"
   },
   "peerDependencies": {
     "lodash": "*",
-    "react-dom": "*",
     "react": "*",
-    "subschema": "^1.7.0",
-    "subschema-prop-types": "^1.7.0",
-    "subschema-valuemanager": "^1.7.0",
-    "subschema-component-form": "^1.7.0"
+    "react-dom": "*",
+    "subschema": "^1.7.1-2.0.0-rc0.0",
+    "subschema-component-form": "^1.7.1-2.0.0-rc0.0",
+    "subschema-prop-types": "^1.7.1-2.0.0-rc0.0",
+    "subschema-valuemanager": "^1.7.1-2.0.0-rc0.0"
   }
 }
