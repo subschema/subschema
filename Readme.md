@@ -15,40 +15,16 @@ More on [Subschema](https://github.com/subschema/subschema), [demo](https://subs
 #Requirements
 * NPM >3 - There are known issues with npm2 and babel. 
 ```sh
-  $ sudo npm install npm@latest -g
+  $ npm install npm@latest -g
+  $ npm install yarn@latest -g
 ```
-* node > 4 - Seems to be fine on node 4 and up.
+* node > 6 - Seems to be fine on node 6 and up.
 
 #Installation
 ```sh
-  $ git clone --recursive git@github.com:subschema/subschema-devel.git
-  $ cd subschema-devel
-  $ git submodule init
-  $ git submodule update --remote --merge
-  $ git submodule update --recursive
-  $ bash install.sh
-  $ cd subschema-demo
-  $ npm run hot
+  $ git clone  git@github.com:subschema/subschema-devel.git
+  $ yarn install
+  $ lerna bootstrap
+  $ cd subschema-component-demo
+  $ yarn run server
 ```
-
-#Publishing
-This cleans all the modules, installs them, runs publish and then gh-pages to publish
-demos.  It takes a few minutes.  
-
-Switches
- -a all - Run everything
- -c clean - Just Clean
- -g github - github pages
- -t tag - git commit tag and push
- -i install
- -p publish 
-
-```sh
-  $ ./publish.sh <VERSION> -a -c -g -t -i [...pkg]
-
-```
-
-##Notes to self.
-* git push per submodule, git commit in subschema-devel.
-* make sure remotes are up to date.
-* 
