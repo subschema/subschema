@@ -1,2 +1,2 @@
-Subschema has moved to [subschema-devel](../subschem-devel)
+Subschema Development has moved to [subschema-devel](../../subschem-devel)
 ===
