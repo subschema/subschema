@@ -279,13 +279,12 @@ if (process.env.SUBSCHEMA_USE_HOT) {
     babel.plugins = babel.plugins.map(modrequire);
     babel.presets = babel.presets.map(modrequire);
     var entry = process.argv[process.argv.indexOf('--entry') + 1];
-    var client = `${path.resolve(__dirname, 'node_modules', 'webpack-dev-server', 'client')}?http://localhost:${webpack.devServer.port}`;
-    var onlyError = path.resolve(__dirname, 'node_modules', 'webpack/hot/only-dev-server.js');
-    webpack.resolve.alias['webpack/hot/dev-server'] = path.resolve(__dirname, 'node_modules', 'webpack', 'hot', 'dev-server.js');
-    webpack.resolve.alias['webpack/hot/only-dev-server'] = onlyError;
+    webpack.resolve.alias['webpack/hot/dev-server'] = require.resolve('webpack/hot/dev-server.js');
+    if (!webpack.resolve.alias.subschema){
+        webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
+    }
     webpack.entry = [
-        client,
-        'webpack/hot/only-dev-server',
+        require.resolve('webpack/hot/only-dev-server.js'),
         entry
     ];
 }
