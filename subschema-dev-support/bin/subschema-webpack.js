@@ -52,7 +52,6 @@ if ((idx = process.argv.indexOf('--demo')) != -1) {
     process.argv.splice(idx, 2);
     console.warn(`docs will be in ${docs}`);
 
-
 } else {
 
 

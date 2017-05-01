@@ -18,6 +18,7 @@
   "devDependencies": {
     "expect": "^1.20.2",
     "lodash": "^4.17.4",
+    "prop-types": "^15.5.8",
     "subschema": "^2.0.0-0",
     "subschema-component-autocomplete": "^2.0.0-0",
     "subschema-component-form": "^2.0.0-0",
@@ -36,6 +37,7 @@
     "lodash": "*",
     "react": "*",
     "react-dom": "*",
+    "prop-types": "*",
     "subschema": "^2.0.0-0",
     "subschema-component-form": "^2.0.0-0",
     "subschema-css-bootstrap": "^2.0.0-0",

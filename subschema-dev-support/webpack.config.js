@@ -290,8 +290,12 @@ if (customConf) {
     webpack = customConf(webpack, opts);
 }
 //Think hard if this should be the default.
-if (!webpack.resolve.alias.subschema){
-    webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
+if (!webpack.resolve.alias.subschema) {
+    try {
+        webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
+    } catch (e) {
+        //swallow?
+    }
 }
 
 if (process.env.SUBSCHEMA_DEBUG) {

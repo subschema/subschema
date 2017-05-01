@@ -1,5 +1,3 @@
-"use strict";
-
 import React from 'react';
 import LessStyles from 'subschema-css-bootstrap';
 import {
@@ -21,7 +19,6 @@ import {templates,styles} from 'subschema-component-form';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 import {styles as listStyles, templates as listTemplates, types as listTypes} from 'subschema-component-list';
 
-console.log('LessStyles',LessStyles);
 const {ListItemTemplate, CollectionCreateTemplate,} = listTemplates;
 const {ButtonTemplate, EditorTemplate} = templates;
 
