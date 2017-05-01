@@ -289,7 +289,7 @@ if (process.env.SUBSCHEMA_USE_HOT) {
 if (customConf) {
     webpack = customConf(webpack, opts);
 }
-
+//Think hard if this should be the default.
 if (!webpack.resolve.alias.subschema){
     webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
 }
