@@ -1,6 +1,6 @@
 {
   "name": "subschema-prop-types",
-  "version": "1.7.1-2.0.0-rc0.0",
+  "version": "2.0.0-0",
   "main": "lib/index",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
@@ -11,9 +11,9 @@
     "prop-types": "*"
   },
   "devDependencies": {
+    "expect": "^1.20.2",
     "prop-types": "^15.5.8",
     "rimraf": "^2.6.1",
-    "expect": "^1.20.2",
-    "subschema-dev-support": "^1.7.1-2.0.0-rc0.0"
+    "subschema-dev-support": "^2.0.0-0"
   }
 }
