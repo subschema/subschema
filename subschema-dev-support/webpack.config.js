@@ -280,9 +280,7 @@ if (process.env.SUBSCHEMA_USE_HOT) {
     babel.presets = babel.presets.map(modrequire);
     var entry = process.argv[process.argv.indexOf('--entry') + 1];
     webpack.resolve.alias['webpack/hot/dev-server'] = require.resolve('webpack/hot/dev-server.js');
-    if (!webpack.resolve.alias.subschema){
-        webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
-    }
+
     webpack.entry = [
         require.resolve('webpack/hot/only-dev-server.js'),
         entry
@@ -291,6 +289,11 @@ if (process.env.SUBSCHEMA_USE_HOT) {
 if (customConf) {
     webpack = customConf(webpack, opts);
 }
+
+if (!webpack.resolve.alias.subschema){
+    webpack.resolve.alias.subschema = require.resolve('subschema/dist/subschema-noreact');
+}
+
 if (process.env.SUBSCHEMA_DEBUG) {
     console.warn('webpack', JSON.stringify(webpack, null, 2));
 }
