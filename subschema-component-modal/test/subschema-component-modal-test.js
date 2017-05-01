@@ -1,19 +1,9 @@
 import React from 'react';
-import {templates, styles} from 'subschema-component-modal';
+import {templates} from 'subschema-component-modal';
 
 import {
-    click,
-    change,
-    findNode,
     into,
-    TestUtils,
     expect,
-    byComponents,
-    byTag,
-    byTags,
-    byComponent,
-    select,
-    Simulate
 }  from 'subschema-test-support';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
@@ -24,7 +14,6 @@ describe('subschema-component-modal', function () {
         //loader, schema, Subschema, React
         const {context, loader, Form} = newSubschemaContext();
         loader.addTemplate(templates);
-        loader.addStyle(styles);
         const form = into(<Form schema={{
             schema: {
                 test: 'Text'

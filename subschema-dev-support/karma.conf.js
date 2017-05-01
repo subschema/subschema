@@ -31,6 +31,10 @@ module.exports = function (config) {
             Chrome_with_debugging: {
                 base: 'Chrome',
                 chromeDataDir: path.resolve(process.cwd(), '..', '.chrome')
+            },
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
             }
         },
 
@@ -95,6 +99,7 @@ module.exports = function (config) {
         plugins: [
             require('karma-mocha'),
             require('karma-chrome-launcher'),
+            require('karma-firefox-launcher'),
             require('karma-spec-reporter'),
             require('karma-sourcemap-loader'),
             require('karma-webpack')
@@ -119,6 +124,8 @@ module.exports = function (config) {
             }
         );
     }
-
+    if (process.env.TRAVIS) {
+        karmaConf.browsers = ['Chrome_travis_ci'];
+    }
     config.set(karmaConf);
 };

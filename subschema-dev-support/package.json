@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "autoprefixer": "^6.7.7",
+    "rimraf": "^2.6.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "7",
@@ -63,8 +64,5 @@
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2",
     "webpack-stats-plugin": "^0.1.5"
-  },
-  "devDependencies": {
-    "rimraf": "^2.6.1"
   }
 }

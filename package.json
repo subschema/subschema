@@ -2,10 +2,12 @@
   "dependencies": {},
   "scripts": {
     "rebuild": "lerna clean --yes && lerna bootstrap && lr-link && lr-idea",
-    "coverage": "SUBSCHEMA_COVERAGE_USE_GLOBAL=1 lerna run test && istanbul report --dir ./docs/coverage --include './coverage/subschema*/cov*.json' html"
+    "coverage": "SUBSCHEMA_COVERAGE_USE_GLOBAL=1 lerna --concurrency 1 run test && istanbul report --dir ./docs/coverage --include './coverage/subschema*/cov*.json' html",
+    "prepublish": "lerna run clean && lerna clean --yes && lerna bootstrap && yarn run coverage"
   },
   "devDependencies": {
     "lerna": "^2.0.0-rc.4",
-    "lerna-relinker": "^1.4.0"
+    "lerna-relinker": "^1.4.0",
+    "rimraf": "^2.6.1"
   }
 }
