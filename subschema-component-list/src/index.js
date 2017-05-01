@@ -1,7 +1,7 @@
 import List from './List';
 import Mixed from './Mixed';
 import ListItemTemplate from './ListItemTemplate';
-import _styles from '../styles';
+import _styles from './styles';
 import CollectionCreateTemplate from './CollectionCreateTemplate';
 import ContentItemTemplate from './ContentItemTemplate';
 export const types = {

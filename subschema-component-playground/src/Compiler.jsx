@@ -1,23 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {newSubschemaContext} from 'subschema';
-import {transform, availablePlugins} from "babel-standalone";
-import {source, normalize} from 'subschema-component-project/lib/compile';
+import {transform, availablePlugins} from "babel-core";
+import {source, normalize} from 'subschema-project/lib/compile';
 import Editor from './Editor';
-import form from 'subschema-component-project/lib/form';
-const babelrc = {
-    presets: [
-        "es2015-loose",
-        "react",
-        "stage-0"
-    ],
+import babelrcOrig from 'subschema-dev-support/babelrc.json';
+import form from 'subschema-project/lib/form';
+
+//expose for configuration.
+export const babelrc = {
+    ...babelrcOrig,
     retainLines: true
 };
 function createForm(props) {
     return form({sample: {props}});
 }
 export default class Compiler extends Component {
-
     static propTypes = {
         editorCode: PropTypes.string,
         schema: PropTypes.object.isRequired,

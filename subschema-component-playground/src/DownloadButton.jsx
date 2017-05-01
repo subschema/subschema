@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import {generate} from 'subschema-component-project';
+import {generate} from 'subschema-project';
 import {saveAs as _saveAs} from 'browser-filesaver';
 import kebabCase from 'lodash/kebabCase';
 

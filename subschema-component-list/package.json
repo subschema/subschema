@@ -19,7 +19,8 @@
     "subschema-prop-types": "^1.7.1-2.0.0-rc0.0",
     "subschema-utils": "^1.7.1-2.0.0-rc0.0"
   },
-  "devDependencies": {
+  "devDependencies": {    "expect": "^1.20.2",
+
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",

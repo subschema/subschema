@@ -22,7 +22,7 @@
     "subschema",
     "subschema-test-samples",
     "subschema-component-navigation",
-    "subschema-component-project",
+    "subschema-project",
     "subschema-component-playground",
     "subschema-component-demo"
   ],

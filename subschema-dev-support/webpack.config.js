@@ -1,17 +1,46 @@
 var path = require('path');
 var fs = require('fs');
 var babel = require('./babel-helper');
-var project = function (...args) {
-    return path.resolve(process.cwd(), path.join(...args));
+var SUBSCHEMA_CONF = 'subschema-webpack.config.js';
+
+function project() {
+    return path.resolve(process.cwd(), path.join.apply(path, arguments));
 };
 
 var deps = require(project('./package.json'));
+
 function wrapFunc(f) {
     if (!f) return;
     return function (conf, opts) {
         return f.call(this, conf, opts) || conf;
     }
 }
+
+function set(obj, key, value) {
+    const keys = key.split('.');
+    const last = keys.pop();
+    let cobj = obj || {};
+    while (keys.length) {
+        const c = keys.shift();
+        cobj = cobj[c] || (cobj[c] = {});
+    }
+    obj[last] = value;
+    return obj;
+}
+
+function autoprefixer() {
+    return [
+        require('autoprefixer')({
+            browsers: [
+                '>1%',
+                'last 3 versions',
+                'Firefox ESR',
+                'not ie < 9', // React doesn't support IE8 anyway
+            ]
+        })
+    ];
+}
+
 function applyFuncs(f1, f2) {
     f1 = f1 && (f1.default ? f1.default : f1);
     f2 = f2 && (f2.default ? f2.default : f2);
@@ -31,9 +60,15 @@ function applyFuncs(f1, f2) {
         return f1.call(this, (f2.call(this, conf, opts)), opts);
     }
 }
-var SUBSCHEMA_CONF = 'subschema-webpack.config.js';
 var customConf = null;
-var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys(deps.devDependencies || {}), Object.keys(deps.peerDependencies || {})).reduce(function (ret, key) {
+var alias = {};
+if (process.env.SUBSCHEMA_USE_ALIASES) {
+    process.env.SUBSCHEMA_USE_ALIASES.split(/,\s*/).forEach(function (key) {
+        var parts = key.split('=', 2);
+        this[parts[0]] = parts[1] || project('node_modules', parts[0]);
+    }, alias);
+}
+[deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys(deps.devDependencies || {}), Object.keys(deps.peerDependencies || {})).reduce(function (ret, key) {
     if (key in ret) return ret;
     if (fs.existsSync(project('..', key, SUBSCHEMA_CONF))) {
         customConf = applyFuncs(customConf, require(project('..', key, SUBSCHEMA_CONF)));
@@ -59,31 +94,8 @@ var alias = [deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys
         ret[key] = project('..', key, 'src');
     }
     return ret;
-}, {});
+}, alias);
 
-const set = function (obj, key, value) {
-    const keys = key.split('.');
-    const last = keys.pop();
-    let cobj = obj || {};
-    while (keys.length) {
-        const c = keys.shift();
-        cobj = cobj[c] || (cobj[c] = {});
-    }
-    obj[last] = value;
-    return obj;
-};
-const autoprefixer = function () {
-    return [
-        require('autoprefixer')({
-            browsers: [
-                '>1%',
-                'last 3 versions',
-                'Firefox ESR',
-                'not ie < 9', // React doesn't support IE8 anyway
-            ]
-        })
-    ];
-};
 var plugins = [];
 var externals = {};
 var opts = {
@@ -196,7 +208,7 @@ var webpack = {
             {
                 test: /\.jsx?$/,
                 //       exclude: /(node_modules|bower_components)/,
-                include: [/test\/*/, /src\/*/, /public\/*/, /subschema*\/src\/*/],
+                include: [/\/test\/*/, /\/src\/*/, /\/public\/*/, /subschema[^/]*\/src\/*/],
                 use: [{
                     loader: 'babel-loader',
                     options: babel
@@ -216,6 +228,10 @@ var webpack = {
                     opts.useCss,
                     opts.useLess,
                     opts.usePostCss)
+            },
+            {
+                test: /\.json$/,
+                use: 'json-loader'
             }
         ]
     }

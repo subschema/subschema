@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
+    "expect": "^1.20.2",
     "subschema-dev-support": "^1.7.1-2.0.0-rc0.0"
   },
   "dependencies": {

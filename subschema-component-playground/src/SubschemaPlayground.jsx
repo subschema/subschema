@@ -2,18 +2,9 @@ import React, {Component} from "react";
 import PropTypes from 'subschema-prop-types';
 import {ReactCSSReplaceTransition} from 'subschema-component-form';
 import {Form, newSubschemaContext} from "subschema";
-import {transform, availablePlugins} from "babel-standalone";
 import UninjectedDisplayValueAndErrors from "./DisplayValueAndErrors.jsx";
-import {source, normalize} from 'subschema-component-project/lib/compile';
+import {source, normalize} from 'subschema-project/lib/compile';
 import Compiler from './Compiler';
-const babelrc = {
-    presets: [
-        "es2015-loose",
-        "react",
-        "stage-0"
-    ]
-};
-
 
 function map(obj, fn, scope) {
     if (obj == null) return null;

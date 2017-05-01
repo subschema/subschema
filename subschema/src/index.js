@@ -1,29 +1,32 @@
 import React from 'react';
 import importer from './importer';
-import {
-    ReactCSSReplaceTransition  as _ReactCSSReplaceTransition,
-} from  "subschema-component-form";
 import {transistions as _transitions, styles as _styles} from "subschema-css-bootstrap";
 import _PropTypes from 'subschema-prop-types';
 import _ValueManager from 'subschema-valuemanager';
 import _processors from 'subschema-processors';
-import _Form from 'subschema-core/lib/Form';
-import _resolvers from 'subschema-core/lib/resolvers';
-import _Dom from 'subschema-component-form/lib/Dom';
-import _Field from 'subschema-core/lib/Field';
-import _FieldSet from 'subschema-core/lib/FieldSet';
-import _Conditional from 'subschema-core/lib/Conditional';
-import _RenderContent from 'subschema-core/lib/RenderContent';
-import _RenderTemplate from 'subschema-core/lib/RenderTemplate';
-import _css from 'subschema-component-form/lib/css';
-import _validators from 'subschema-validators';
-import _tutils from 'subschema-utils';
-import _warning from 'subschema-utils/lib/warning';
-import _eventable from 'subschema-valuemanager/lib/eventable';
-import _DefaultLoader from './DefaultLoader';
-import {newSubschemaContext as _newSubschemaContext} from './core';
 import _loaderFactory from 'subschema-loader';
+import _validators from 'subschema-validators';
+import _tutils, {warning as _warning} from 'subschema-utils';
+import {
+    Dom as _Dom,
+    css as _css,
+    ReactCSSReplaceTransition  as _ReactCSSReplaceTransition
+} from 'subschema-component-form';
 import {stringInjector as _stringInjector, injectorFactory as _injectorFactory} from 'subschema-injection';
+
+import {
+    resolvers as _resolvers,
+    Form as _Form,
+    Field as _Field,
+    FieldSet as _FieldSet,
+    Conditional as _Conditional,
+    RenderContent as _RenderContent,
+    RenderTemplate as _RenderTemplate,
+    newSubschemaContext as _newSubschemaContext
+} from  "subschema-core";
+
+import _DefaultLoader from './DefaultLoader';
+
 
 let _types, _templates;
 
@@ -57,7 +60,6 @@ const Dom = _Dom;
 const PropTypes = _PropTypes;
 const ValueManager = _ValueManager;
 const css = _css;
-const eventable = _eventable;
 const tutils = _tutils;
 const validators = _validators;
 const warning = _warning;
@@ -87,7 +89,6 @@ const Subschema = {
     PropTypes,
     ValueManager,
     css,
-    eventable,
     tutils,
     validators,
     warning,
@@ -113,8 +114,13 @@ const Subschema = {
  * @param defaultResolvers
  * @param defaultPropTypes
  */
-function newSubschemaContext(defaultLoaders = [_DefaultLoader], defaultResolvers = _resolvers, defaultPropTypes = _PropTypes, defaultInjectorFactory = _injectorFactory, defaultSubschema = Subschema) {
-    const ctx = _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectorFactory, defaultSubschema);
+function newSubschemaContext(defaultLoaders = [_DefaultLoader],
+                             defaultResolvers = _resolvers,
+                             defaultPropTypes = _PropTypes,
+                             defaultInjectionFactory,
+                             defaultValueManagerFactory=_ValueManager,
+                             defaultSubschema = Subschema) {
+    const ctx = _newSubschemaContext(defaultLoaders, defaultResolvers, defaultPropTypes, defaultInjectionFactory, defaultValueManagerFactory, defaultSubschema);
 
     ctx.importer = importer(ctx, React);
 
@@ -136,7 +142,6 @@ export {
     PropTypes,
     ValueManager,
     css,
-    eventable,
     tutils,
     validators,
     warning,

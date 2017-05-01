@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from './App';
+import ProjectWizard from 'subschema-component-playground/lib/ProjectWizard';
 
 
-render(<App/>, document.getElementById('content'));
+render(<ProjectWizard/>, document.getElementById('content'));

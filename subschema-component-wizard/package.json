@@ -24,6 +24,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
+    "expect": "^1.20.2",
     "subschema-component-form": "^1.7.1-2.0.0-rc0.0",
     "subschema-core": "^1.7.1-2.0.0-rc0.0",
     "subschema-css-bootstrap": "^1.7.1-2.0.0-rc0.0",

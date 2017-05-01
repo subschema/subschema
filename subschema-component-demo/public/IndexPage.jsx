@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 
-import UninjectedNewProject from '../src/components/NewProject.jsx';
+import UninjectedNewProject from 'subschema-component-demo/lib/NewProject';
 
 const seperator = ' | ';
 export default class IndexPage extends Component {

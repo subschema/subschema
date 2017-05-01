@@ -1,23 +1,25 @@
-import React, {DOM} from 'react';
-import App from 'subschema-component-project/lib/App.jsx';
-import expect from 'expect';
-import support, {into} from '../../subschema-component-project/test/support';
-import  {TestUtils, Simulate, cleanUp} from 'subschema-test-support';
+import React from 'react';
+import playground, {types} from 'subschema-component-playground';
+import ProjectWizard, {schema} from 'subschema-component-playground/lib/ProjectWizard';
+import  {TestUtils, Simulate, cleanUp, into, expect} from 'subschema-test-support';
 import {unmountComponentAtNode, findDOMNode} from 'react-dom';
-
-import playground from 'subschema-component-playground';
-
 import samples from 'subschema-test-samples';
 import {loader} from 'subschema';
-const {DownloadButton} = types;
-const withType = TestUtils.scryRenderedComponentsWithType;
-const withTag = TestUtils.scryRenderedDOMComponentsWithTag;
-var {click, change} = Simulate;
 
-describe('App', function () {
+loader.addLoader(playground);
+const {DownloadButton} = types;
+const withTag = TestUtils.scryRenderedDOMComponentsWithTag;
+const {click, change} = Simulate;
+
+//disables transitions so tests run faster (10x faster), by not waiting for transitions.
+schema.template = {
+    "template": "WizardTemplate",
+    "transition": false
+};
+
+describe('subschema-component-playground/ProjectWizard', function () {
     this.timeout(50000);
-    var b, f, app, select, buttons, options = [];
-    loader.addLoader(playground);
+    let b, f, app, select, buttons, options = [];
 
     function sleep(time, value) {
         return new Promise(resolve => setTimeout(resolve, time, value));
@@ -35,8 +37,10 @@ describe('App', function () {
 
     beforeEach(function () {
         types.DownloadButton.open = test$open;
-
-        app = into(<App/>, true);
+        if (app) {
+            unmountComponentAtNode(findDOMNode(app).parentElement);
+        }
+        app = into(<ProjectWizard/>, true);
 
         buttons = withTag(app, 'button');
         select = withTag(app, 'select')[0];
@@ -44,12 +48,7 @@ describe('App', function () {
         options.shift();
     });
 
-    afterEach(function () {
-        if (app) {
-            unmountComponentAtNode(findDOMNode(app).parentElement);
-        }
-        cleanUp();
-    });
+
 
     Object.keys(samples).forEach(function (value) {
 
@@ -59,21 +58,18 @@ describe('App', function () {
                     value
                 }
             });
-            await sleep(1500);
         });
         it(`should download page ${value}`, async function () {
             click(buttons[0]);
 
-            await sleep(1000);
             buttons = withTag(app, 'button');
             click(buttons[1]);
 
-            await sleep(1000);
             const downloadBtn = withTag(app, 'button')[1];
             expect(downloadBtn.innerText.trim()).toBe('Preview');
             click(downloadBtn);
 
-            await sleep(1000);
+            await sleep(500);
             expect(b).toExist('should have blob');
             expect(f).toExist('should have filename');
 

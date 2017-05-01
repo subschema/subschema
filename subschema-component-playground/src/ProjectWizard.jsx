@@ -7,7 +7,7 @@ import kebabCase from 'lodash/kebabCase';
 import {saveAs} from 'browser-filesaver';
 
 //A simple Schema for this configuration
-var schema = {
+export const schema = {
     schema: {
         samples: {
             type: 'Select',

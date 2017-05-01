@@ -60,7 +60,6 @@ module.exports = function (options = {}) {
 
     let code = `
 import loaderFactory from 'subschema-loader';
-import Subschema from 'subschema';
 
 //Automagically imported
 ${deps.map(writeImport).join(';\n')} 

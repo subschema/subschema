@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import {PropTypes as NavTypes} from 'subschema-component-navigation';
-import UninjectedSubschemaPlayground from '../../../subschema-component-playground/src/SubschemaPlayground.jsx';
+import {SubschemaPlayground as UninjectedSubschemaPlayground} from 'subschema-component-playground';
 
 export default class Example extends Component {
 
@@ -16,9 +16,7 @@ export default class Example extends Component {
     };
 
     static defaultProps = {
-        SubschemaPlayground: UninjectedSubschemaPlayground,
-        "useData": "useData",
-        "useErrors": "useErrors"
+        SubschemaPlayground: UninjectedSubschemaPlayground
     };
 
     constructor(props, context, ...args) {
@@ -44,23 +42,24 @@ export default class Example extends Component {
 
     renderEdit() {
         const {SubschemaPlayground} = this.props;
-        const {schema, setup, setupTxt, props, description, data, imports, errors} = this.conf || {};
+        const {schema, setupTxt, props, description, data, imports, errors} = this.conf || {};
         return <div className='sample-example-playground'>
             <SubschemaPlayground key={'form-' + this.props.example}
                                  theme='monokai'
                                  expandTxt="Show Example Code"
                                  collapseTxt="Hide Example Code"
-                                 setupTxt={setupTxt}
-                                 value={data}
+                                 filename={`Example ${this.props.example}`}
                                  useData={this.props.useData}
                                  useErrors={this.props.useErrors}
+                                 collapsableCode={true}
+                                 setupTxt={setupTxt}
+                                 value={data}
                                  errors={errors}
-                                 filename={`Example ${this.props.example}`}
                                  imports={imports}
                                  props={props}
                                  description={description}
                                  schema={schema}
-                                 collapsableCode={true}
+
             />
 
         </div>

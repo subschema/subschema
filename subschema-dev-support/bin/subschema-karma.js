@@ -43,11 +43,11 @@ if (process.env.npm_lifecycle_event === 'test' || process.env.npm_lifecycle_even
         process.argv.push('--single-run');
 }
 if (process.env.SUBSCHEMA_COVERAGE || process.env.SUBSCHEMA_COVERAGE_DIR || process.env.SUBSCHEMA_COVERAGE_USE_GLOBAL) {
-    process.env.SUBSCHEMA_COVERAGE=1;
+    process.env.SUBSCHEMA_COVERAGE = 1;
     if (indexOfArg('--single-run') == -1) {
         process.argv.push('--single-run');
     }
-    if (process.env.SUBSCHEMA_COVERAGE_USE_GLOBAL){
+    if (process.env.SUBSCHEMA_COVERAGE_USE_GLOBAL) {
         process.env.SUBSCHEMA_COVERAGE_DIR = path.resolve(process.cwd(), '..', 'coverage', path.basename(process.cwd()))
     }
 }
@@ -55,4 +55,8 @@ if (process.env.SUBSCHEMA_COVERAGE || process.env.SUBSCHEMA_COVERAGE_DIR || proc
 if (indexOfArg('--single-run') != -1 && indexOfArg('--browser') == -1) {
     process.argv.push('--browser', 'Firefox');
 }
+//use these aliases by default, when running in karma. This ensures the same version of react, react-dom are used
+//for all tests, regardless of imports.
+process.env.SUBSCHEMA_USE_ALIASES = 'react,react-dom';
+
 require(path.resolve(__dirname, '..', 'node_modules', '.bin', 'karma'));

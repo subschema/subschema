@@ -34,8 +34,8 @@ export function query(Clazz, key) {
     this.listener.call(Clazz, key, queryListeners);
 }
 export function queryExistsListeners(value, key, props, {history}) {
+    value = value || key;
     const val = parse(history.location.search);
-
     this.state[key] = value ? val.hasOwnProperty(value) : Object.keys(val) > 0;
     return history.listen((location) => {
         const val = parse(location.search);

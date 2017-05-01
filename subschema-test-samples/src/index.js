@@ -15,8 +15,6 @@ var __default = keys.reduce(function (obj, key) {
     if (keysRctx.indexOf(setupFile) > -1) {
         setup.setupFile = setupFile;
         setup.setupTxt = rctx(setupFile);
-
-        setup.setupFunc = new Function(['require', 'schema'],`var React = require('react');\n${fctx(setupFile)}`);
     }
     return obj;
 }, {});

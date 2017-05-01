@@ -1,16 +1,6 @@
-
-import {transform} from "babel-standalone";
-import {tutils} from "Subschema";
+import {transform} from 'babel-core';
 import form from "./form";
-const {each} = tutils;
-const babelrc = {
-    "presets": [
-        "es2015",
-        "react",
-        "stage-0"
-    ]
-};
-
+import babelrc from "subschema-dev-support/babelrc.json";
 
 export function stringify(obj) {
 

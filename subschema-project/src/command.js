@@ -1,10 +1,8 @@
-"use strict";
-
 import samples from "subschema-test-support-samples";
 import generate from "./generate";
 import fs from "fs";
-import camelCase from "lodash/string/camelCase";
-import kebabCase from "lodash/string/kebabCase";
+import camelCase from "lodash/camelCase";
+import kebabCase from "lodash/kebabCase";
 
 function help(error) {
     var code = 0;
@@ -24,7 +22,7 @@ name-of-project
 }
 
 function list() {
-    console.log(Object.keys(samples).map(v=> {
+    console.log(Object.keys(samples).map(v => {
         return `\v${v}\t-\t${samples[v].description}`;
     }).join('\n'));
 

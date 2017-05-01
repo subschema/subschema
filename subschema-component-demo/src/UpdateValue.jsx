@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "subschema-prop-types";
 import camelCase from "lodash/camelCase";
 import capitalize from "lodash/capitalize";
-import DownloadButton from "subschema-component-playground/lib/DownloadButton";
+import {DownloadButton} from "subschema-component-playground";
 
 export default class UpdateValue extends Component {
     static contextTypes = {

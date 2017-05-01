@@ -2,7 +2,7 @@
   "name": "subschema-test-samples",
   "version": "1.7.1-2.0.0-rc0.0",
   "description": "Subschema samples",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "karma": "subschema-karma",
     "test": "subschema-karma",
@@ -32,5 +32,9 @@
     "subschema-validators": "^1.7.1-2.0.0-rc0.0",
     "subschema-valuemanager": "^1.7.1-2.0.0-rc0.0"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "subschema": "*"
+  }
 }

@@ -8,7 +8,7 @@ See it in action [here](http://subschema.github.io/subschema-project)
 Or run it 
 
 ```sh
-  git clone https://github.com/subschema/subschema-project.git
+  git clone https://github.com/subschema-devel/subschema-project.git
   cd subschema-project
   npm install
   npm run hot &

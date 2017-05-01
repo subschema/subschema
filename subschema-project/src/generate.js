@@ -1,5 +1,3 @@
-"use strict";
-
 import templates from './templates';
 import JSZip from 'jszip';
 /**

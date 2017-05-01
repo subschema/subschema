@@ -19,7 +19,7 @@
     "subschema-component-modal": "^1.7.1-2.0.0-rc0.0",
     "subschema-component-navigation": "^1.7.1-2.0.0-rc0.0",
     "subschema-component-playground": "^1.7.1-2.0.0-rc0.0",
-    "subschema-component-project": "^1.7.1-2.0.0-rc0.0",
+    "subschema-project": "^1.7.1-2.0.0-rc0.0",
     "subschema-component-wizard": "^1.7.1-2.0.0-rc0.0",
     "subschema-core": "^1.7.1-2.0.0-rc0.0",
     "subschema-css-bootstrap": "^1.7.1-2.0.0-rc0.0",

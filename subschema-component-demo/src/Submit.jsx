@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Editor} from "subschema-component-project";
+import {Editor} from "subschema-component-playground";
 
 export default class Submit extends Component {
 

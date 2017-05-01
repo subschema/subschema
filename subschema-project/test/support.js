@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import ReactDOM, {render} from 'react-dom';
-import {TestUtils} from 'subschema-test-support';
 import samples from 'subschema-test-samples';
 import  {newSubschemaContext} from 'subschema';
-import {compile, source} from '../src/compile';
+import {compile, source} from '../lib';
+import {into as _into} from 'subschema-test-support';
 import expect from 'expect';
 
+export const into = _into;
 
 export function execMock(gen) {
     var exports = {};
@@ -14,18 +14,6 @@ export function execMock(gen) {
     return exports.default;
 }
 
-export function into(node, debug) {
-    if (debug === true) {
-        debug = document.createElement('div');
-        document.body.appendChild(debug)
-        return render(node, debug);
-    }
-    return TestUtils.renderIntoDocument(node);
-}
-
-export function renderProject(sample) {
-
-}
 
 export function renderPage(sample, verify) {
     const Subschema = newSubschemaContext();
@@ -68,7 +56,6 @@ export function setupData(sample) {
 
 export default {
     into,
-    renderProject,
     renderPage,
     testEachSample,
     execMock,

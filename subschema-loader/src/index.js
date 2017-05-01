@@ -6,7 +6,7 @@ const concat = Function.apply.bind(Array.prototype.concat, []);
 const upFirst = (str) => `${str[0].toUpperCase()}${str.substring(1)}`;
 const addResolver = function () {
     const map = [];
-
+    const recent = [];
     const _api = {
         listResolvers (){
             return map.map(function ([propType, resolver]) {
@@ -17,7 +17,7 @@ const addResolver = function () {
             if (_propType == null) return;
             for (let i = 0, l = map.length; i < l; i++) {
                 const c = map[i];
-                if (c[0] === _propType) {
+                if (c[0] === _propType || c[0].resolver === _propType) {
                     return c[1];
                 }
             }
@@ -35,6 +35,9 @@ const addResolver = function () {
         } else if (pType === 'object' && rType === 'object') {
             Object.keys(propType).forEach(function (key) {
                 if (propType[key] && resolver[key]) {
+                    if (propType[key].isRequired) {
+                        map[map.length] = [propType[key].isRequired, resolver[key]];
+                    }
                     map[map.length] = [propType[key], resolver[key]];
                 }
             });

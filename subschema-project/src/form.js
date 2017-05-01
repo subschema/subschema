@@ -1,4 +1,3 @@
-import form from './form.tmpl';
 
 
 export default function formTag({sample, useData, useErrors}) {
@@ -20,5 +19,5 @@ export default function formTag({sample, useData, useErrors}) {
         }
     });
 
-    return form({propStr: propStr.join(' ')});
+    return `<Form ${propStr.join(' ')}/>`;
 }
