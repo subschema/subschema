@@ -1,0 +1,52 @@
+{
+  "name": "subschema",
+  "version": "2.0.0-0",
+  "description": "Subschema",
+  "main": "lib/index.js",
+  "browser": "dist/subschema.js",
+  "web": "dist/subschema-noreact.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "compile-default-loader": "rm -f lib/DefaultLoader.js*; node -p -e  'require(\"./src/DefaultLoader\")({}).code' | subschema-babel --out-file ./lib/DefaultLoader.js",
+    "compile-lib": "subschema-babel && yarn run compile-default-loader",
+    "compile-server": "subschema-webpack --output-path lib --no-style-loader --target node --output-filename index.js --use-externals react,react-dom,fbjs",
+    "compile-web": "SUBSCHEMA_USE_ALIASES=react,react-dom,prop-types subschema-webpack  -p  --output-path dist --no-externalize-peers --output-filename subschema.js",
+    "compile-web-debug": "SUBSCHEMA_USE_ALIASES=react,react-dom,prop-types subschema-webpack --no-externalize-peers --devtool inline-source-map --output-path dist --output-filename subschema-debug.js",
+    "compile-web-noreact": "subschema-webpack -p  --output-path dist --output-filename subschema-noreact.js",
+    "karma": "subschema-karma",
+    "test": "subschema-karma",
+    "prepublish": "yarn run compile-lib && yarn run compile-web && yarn run compile-web-debug && yarn run compile-web-noreact",
+    "clean": "rimraf ./lib ./dist"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "rimraf": "^2.6.1",
+    "subschema-component-autocomplete": "^2.0.0-0",
+    "subschema-component-form": "^2.0.0-0",
+    "subschema-component-list": "^2.0.0-0",
+    "subschema-component-modal": "^2.0.0-0",
+    "subschema-component-wizard": "^2.0.0-0",
+    "subschema-core": "^2.0.0-0",
+    "subschema-css-bootstrap": "^2.0.0-0",
+    "subschema-dev-support": "^2.0.0-0",
+    "subschema-expression": "^2.0.0-0",
+    "subschema-injection": "^2.0.0-0",
+    "subschema-loader": "^2.0.0-0",
+    "subschema-processors": "^2.0.0-0",
+    "subschema-prop-types": "^2.0.0-0",
+    "subschema-test-support": "^2.0.0-0",
+    "subschema-transitions": "^2.0.0-0",
+    "subschema-utils": "^2.0.0-0",
+    "subschema-validators": "^2.0.0-0",
+    "subschema-valuemanager": "^2.0.0-0",
+    "val-loader": "^1.0.2"
+  }
+}

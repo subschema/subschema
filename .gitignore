@@ -1,4 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
+.chrome
 .idea
 ### Node template
 # Logs
@@ -29,8 +30,9 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
-
-subschema-gh-pages
-subschema-demo-gh-pages
-subschema-project-gh-pages
-
+lib/*
+*/lib
+dist/*
+*/dist
+.nyc_output
+*/.nyc_output

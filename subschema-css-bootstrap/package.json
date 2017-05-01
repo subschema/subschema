@@ -1,0 +1,22 @@
+{
+  "name": "subschema-css-bootstrap",
+  "version": "2.0.0-0",
+  "main": "lib/index.js",
+  "description": "Bootstrap CSS support for subschema",
+  "scripts": {
+    "test": "subschema-karma",
+    "prepublish": "subschema-webpack --no-style-loader",
+    "clean": "rimraf ./lib ./dist"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  },
+  "peerDependencies": {
+    "subschema-transitions": "^2.0.0-0"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "subschema-dev-support": "^2.0.0-0",
+    "subschema-transitions": "^2.0.0-0"
+  }
+}

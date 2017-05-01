@@ -1,0 +1,35 @@
+.namespace {
+  position: relative;
+}
+
+.found {
+
+  :global(.form-control) {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+  }
+  .listGroup {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    padding-left: 0;
+  }
+  :global(.list-group-item:first-child) {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: none;
+  }
+  :global(.list-group-item) {
+    cursor: pointer;
+  }
+  :global(.list-group-item:hover) {
+    background-color: #eee;
+  }
+  :global(.focused) {
+    background-color: #ddd;
+  }
+
+}

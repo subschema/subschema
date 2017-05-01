@@ -1,0 +1,88 @@
+{
+  "schema": {
+    "useData": {
+      "type": "ToggleLink",
+      "label": "Data",
+      "name": "useData",
+      "className": "no-class",
+      "template": false
+    },
+    "useErrors": {
+      "type": "ToggleLink",
+      "label": "Errors",
+      "className": "no-class",
+      "name": "useErrors",
+      "template": false
+    },
+    "samples": {
+      "type": "Navigate",
+      "template": false,
+      "href": "#/{.}"
+    },
+    "main": {
+      "type": "Routes",
+      "routes": {
+        "/doc/:page": "Doc",
+        "/:example": "Example",
+        "": "Index"
+      }
+    },
+    "submit": {
+      "type": "Submit"
+    }
+  },
+  "fieldsets": [
+    {
+      "className": "container-fluid",
+      "fieldsets": [
+        {
+          "template": "NavTemplate",
+          "fields": [
+            "useData",
+            "useErrors"
+          ]
+        },
+        {
+          "template": "ModalTemplate",
+          "fields": "submit",
+          "content": "Values to be Submitted",
+          "legend": "Submit Called",
+          "buttons": [],
+          "conditional": {
+            "listen": "submit",
+            "dismiss": "submit",
+            "value": null,
+            "operator": "truthy"
+          }
+        },
+        {
+          "className": "row",
+          "fieldsets": [
+            {
+              "className": "col-md-2 col-sm-3 col-xs-12",
+              "fieldsets": [
+                {
+                  "legend": "Examples",
+                  "template": "H3"
+                },
+                {
+                  "fields": "samples"
+                },
+                {
+                  "legend": "Develop",
+                  "template": "H3"
+                }
+              ]
+            },
+            {
+              "className": "col-md-10 col-sm-9 col-xs-12",
+              "fields": [
+                "main"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+.namespace {
+  margin: 0;
+  padding-bottom: 2.2rem;
+  list-style-type: none;
+  display: table;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+
+.todo, .doing, .done {
+  text-align: center;
+  line-height: 4.5rem;
+  padding: 0 0.7rem;
+  cursor: pointer;
+  display: table-cell;
+}
+
+.todo {
+  color: silver;
+  border-bottom: 4px solid silver;
+}
+
+.doing {
+  color: black;
+  border-bottom: 4px solid #33C3F0;
+}
+
+.done {
+  color: black;
+  border-bottom: 4px solid #33C3F0;
+}
+
+.todo span, .doing span, .done span {
+  padding: 0 1.5rem;
+}
+
+
+.todo em, .doing em, .done em {
+  display: none;
+  font-weight: 700;
+  padding-left: 1rem;
+}
+
+
+.todo:after, .doing:after, .done:after {
+ // content: "\00a0\00a0";
+}
+
+.todo:before, .doing:before, .done:before {
+  position: relative;
+  bottom: -3.7rem;
+  float: left;
+  left: 50%;
+}
+
+.doing:hover:before, .done:hover:before {
+  color: #0FA0CE;
+}
+.todo:hover:before {
+  color: #203c31;
+}
+
+.todo:before {
+  content: "\2022";
+  color: white;
+  background-color: silver;
+  border-color: white;
+  border-width: 1px;
+  width: 1.2em;
+  height: 1.2em;
+  border-width: 0px;
+  line-height: 1.2em;
+  border-radius: 1.2em;
+}
+
+.doing:before {
+  content: "\2022";
+  color: white;
+  background-color: #33C3F0;
+  width: 1.2em;
+  line-height: 1.2em;
+  border-radius: 1.2em;
+}
+
+.done:before {
+  content: "\2713";
+  color: white;
+  background-color: #33C3F0;
+  width: 1.2em;
+  line-height: 1.2em;
+  border-radius: 1.2em;
+}

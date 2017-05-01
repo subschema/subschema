@@ -1,0 +1,26 @@
+{
+  "name": "subschema-test-support",
+  "version": "2.0.0-0",
+  "description": "Subschema Test Support",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "subschema-babel && subschema-mocha",
+    "prepublish": "subschema-babel",
+    "clean": "rimraf ./lib ./dist"
+  },
+  "dependencies": {
+    "expect": "^1.20.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "subschema-dev-support": "^2.0.0-0",
+    "subschema-injection": "^2.0.0-0",
+    "subschema-loader": "^2.0.0-0",
+    "subschema-prop-types": "^2.0.0-0",
+    "subschema-valuemanager": "^2.0.0-0"
+  }
+}

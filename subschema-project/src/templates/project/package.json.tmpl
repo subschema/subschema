@@ -1,0 +1,28 @@
+{
+  "name": "@project.name@",
+  "version": "@project.version@",
+  "description": "@project.description@",
+  "main": "@project.main@",
+  "dependencies": {},
+  "repository": "@project.repository@",
+  "publishConfig": {
+    "registry": "@project.registry@"
+  },
+  "author": "@project.author@",
+  "license": "@project.license@",
+  "devDependencies": {
+    "react":"@pkg.devDependencies.react@",
+    "react-dom":"@pkg.devDependencies['react-dom']@",
+    "subschema":"^@pkg.version@",
+    "subschema-dev-support":"^@pkg.version@"
+  },
+
+  "scripts": {
+    "karma": "subschema-karma",
+    "test": "subschema-karma --single-run --browsers Firefox",
+    "server":"subschema-webpack-dev-server",
+    "demo":"subschema-webpack --demo ./docs",
+    "dist":"subschema-webpack",
+    "preversion": "npm run dist && npm run test"
+  }
+}

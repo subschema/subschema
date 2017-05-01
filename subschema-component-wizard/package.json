@@ -1,0 +1,43 @@
+{
+  "name": "subschema-component-wizard",
+  "version": "2.0.0-0",
+  "description": "Subschema Wizard Component",
+  "main": "lib/index.js",
+  "scripts": {
+    "karma": "subschema-karma",
+    "test": "subschema-karma",
+    "prepublish": "subschema-babel",
+    "clean": "rimraf ./lib ./dist"
+  },
+  "peerDependencies": {
+    "lodash": "*",
+    "react": "*",
+    "react-dom": "*",
+    "subschema-component-form": "^2.0.0-0",
+    "subschema-core": "^2.0.0-0",
+    "subschema-processors": "^2.0.0-0",
+    "subschema-prop-types": "^2.0.0-0",
+    "subschema-utils": "^2.0.0-0"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "lodash": "^4.17.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "rimraf": "^2.6.1",
+    "subschema-component-form": "^2.0.0-0",
+    "subschema-core": "^2.0.0-0",
+    "subschema-css-bootstrap": "^2.0.0-0",
+    "subschema-dev-support": "^2.0.0-0",
+    "subschema-expression": "^2.0.0-0",
+    "subschema-injection": "^2.0.0-0",
+    "subschema-loader": "^2.0.0-0",
+    "subschema-processors": "^2.0.0-0",
+    "subschema-prop-types": "^2.0.0-0",
+    "subschema-test-support": "^2.0.0-0",
+    "subschema-transitions": "^2.0.0-0",
+    "subschema-utils": "^2.0.0-0",
+    "subschema-validators": "^2.0.0-0",
+    "subschema-valuemanager": "^2.0.0-0"
+  }
+}

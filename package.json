@@ -1,0 +1,11 @@
+{
+  "dependencies": {},
+  "scripts": {
+    "rebuild": "lerna clean --yes && lerna bootstrap && lr-link && lr-idea",
+    "coverage": "SUBSCHEMA_COVERAGE_USE_GLOBAL=1 lerna run test && istanbul report --dir ./docs/coverage --include './coverage/subschema*/cov*.json' html"
+  },
+  "devDependencies": {
+    "lerna": "^2.0.0-rc.4",
+    "lerna-relinker": "^1.4.0"
+  }
+}
