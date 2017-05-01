@@ -1,4 +1,4 @@
-#Subschema [![Build Status](https://travis-ci.org/subschema/subschema.svg?branch=master)](https://travis-ci.org/subschema/subschema)
+# Subschema [![Build Status](https://travis-ci.org/subschema/subschema.svg?branch=master)](https://travis-ci.org/subschema/subschema)
 
 Create forms by  declaring the schema in JSON.  Has validation,
 data update, support for server side errors, and a bunch of input types.  Easily change all your
@@ -9,10 +9,10 @@ from [backbone-forms](https://github.com/powmedia/backbone-forms).
 
 More information can be found on the [wiki](https://github.com/subschema/subschema/wiki)
 
-###Example
+### Example
 You can see examples at [subschema.github.io/subschema](http://subschema.github.io/subschema/)
 
-###Install
+### Install
 
 ```sh
  $ npm install subschema
@@ -27,7 +27,7 @@ import React, {Component] from 'react';
 import {Form} from 'subschema';
 ```
 
-###Built In Types
+### Built In Types
    - [Autocomplete](#autocomplete)
    - [Checkbox](#checkbox)
    - [Checkboxes](#checkboxes)
@@ -47,7 +47,7 @@ import {Form} from 'subschema';
    - [TextArea](#textarea)
 
 
-###Example
+### Example
 You provide the schema and subschema renders it.  Keeping the values,
 and errors in check. 
 
@@ -148,7 +148,7 @@ This example uses 2 registered schemas, one used by the List type the other used
 
 ```
 
-##Events
+## Events
 Events can be registered via the ValueManager.  You can subscribe to a path, a part of a path or all events of a
 type. 
 
@@ -205,7 +205,7 @@ If you need to listen to a particular path use the PropType.
 
 
 
-#Custom Types
+# Custom Types
 You can add new types by adding them to the loader. You can use the default loader
 at Subschema.loader or create a new loader from a loader factory.
 ```jsx
@@ -274,17 +274,17 @@ Example:
 
 
 
-##Types
+## Types
 Subschema comes with a few built in types. You can create your own types as described elsewhere in the document.
 
 
-###<a name="autocomplete"></a>Autocomplete
+### <a name="autocomplete"></a>Autocomplete
 Autocomplete is an autocompleter, it has an optional processor which will resolve against the loaders installed processors.   
 
 See the [example](https://subschema.github.io/subschema/#/Autocomplete)
 
 
-###<a name="checkbox"></a>Checkbox
+### <a name="checkbox"></a>Checkbox
 A checkbox component 
 See the [example](https://http://subschema.github.io/subschema/#/Checkboxes)
 
@@ -322,22 +322,22 @@ See the [example]("http://subschema.github.io/subschema/#/Checkboxes")
 
 
 
-###<a name="date"></a>Date
+### <a name="date"></a>Date
 Barely a component, but oneday it will be made useful
 
 
-###<a name="datetime"></a>DateTime
+### <a name="datetime"></a>DateTime
 Barely a component, but oneday it will be made useful
 
 
-###<a name="hidden"></a> Hidden
+### <a name="hidden"></a> Hidden
 Hidden
 Render a hidden input field
 
 See the [example](http://subschema.github.io/subschema/#/Hidden)
 
 
-###<a name="list"></a>List
+### <a name="list"></a>List
 Renders a list of objects.  A subschema can be specified to
 describe items in the list.
 
@@ -354,28 +354,28 @@ It has the following extra options
 See the [example](http://subschema.github.io/subschema/#/Todos)
 
 
-###<a name="mixed"></a>Mixed
+### <a name="mixed"></a>Mixed
 Much like a list but uses the keys of the objects instead of indexes. 
 
 See the [example](http://subschema.github.io/subschema/#/Questionaire)
 
-###<a name="number"></a>Number
+###  <a name="number"></a>Number
 A number type.  Probably better off using dataType=number.
 
 See the [example](http://subschema.github.io/subschema/#/Basic)
 
-###<a name="object"></a>Object
+### <a name="object"></a>Object
 Renders an object key.   Wrapps said object in a fieldset by default. 
 
 See the [example](http://subschema.github.io/subschema/#/NestedForms)
 
-###<a name="password"></a>Password
+### <a name="password"></a>Password
 Password type.
 
 See the [example](http://subschema.github.io/subschema/#/Login)
 
 
-###<a name="radio"></a>Radio
+### <a name="radio"></a>Radio
 Renders radio groups. Options can be strings or
  {val, label} objects.
 
@@ -403,7 +403,7 @@ See the [example](http://subschema.github.io/subschema/#/Radio)
 
 
 
-###<a name="restricted"></a>Restricted
+### <a name="restricted"></a>Restricted
 Restrict the input format.  Its a little barbaric but 
 has the built in restrictions
 
@@ -419,7 +419,7 @@ The formatter attribute can have the following
 See the [example](http://subschema.github.io/subschema/#/Restricted)
 
 
-###<a name="select"></a>Select
+### <a name="select"></a>Select
 A select component.  Uses the placeholder as the default value if set.   Tries to handle null value gracefully.
 
 * options - An array of strings or {val, label} objects.
@@ -427,18 +427,18 @@ A select component.  Uses the placeholder as the default value if set.   Tries t
 
 See the [example](http://subschema.github.io/subschema/#/CarMake)
 
-###<a name="text"></a>Text
+### <a name="text"></a>Text
 Text input the default and the workhorse.  
 
 See the [example](http://subschema.github.io/subschema/#/Basic)
 
-###<a name="textarea"></a>TextArea
+### <a name="textarea"></a>TextArea
 TextArea input pretty much same as text except its a textarea.
 
-##<a name="templates"></a>Templates
+## <a name="templates"></a>Templates
 Templates are the decoration around form elements.   Templates handle the display of error messages, or the actual type themself.  Anywhere a property is described as a Template, the loader will try to resolve the corresponding string to the template.
 
-###<a name="wizard"></a>WizardTemplate
+### <a name="wizard"></a>WizardTemplate
 The wizard template is used to turn fieldsets into a wizard style entry.
 See the [example](http://subschema.github.io/subschema/#/Wizard)
 
@@ -490,7 +490,7 @@ See the [example](https://subschema.github.io/subschema/#/Conditional)
 
 
 
-##Validators
+## Validators
 Validators are registered on a field as an array of strings or with configuration.
 ```js
   
@@ -521,7 +521,7 @@ Validators are registered on a field as an array of strings or with configuratio
 
 ```
 
-##Templates
+## Templates
 Templates are used in field definitions, fieldsets and other places.   A template
 is generally not very smart, and will be passed children.    If something needs to be
 smart then, it should be a Type.   
@@ -578,7 +578,7 @@ var schema = {
 
 ```
 
-##Fieldsets
+## Fieldsets
 Fieldsets wrap sets of fields.   This allows for grouping of elements.  By Default the FieldSetTemplate template
 is used, and if a different FieldSetTemplate is defined in a  loader that will be used.  FieldSet's can now take any
 other property defined in their template.    
@@ -683,7 +683,7 @@ The default substitution engine can be changed by setting expressionEngine on Ed
 
 See the [example](https://subschema.github.io/subschema/#/Expression)
 
-##Listener Properties
+## Listener Properties
 Sometimes you need a property to be dependent on a value in the value manager.  To do that use the listener propType. 
 The property then will be in sync with the value in the value manager.   The value of the property in the configuration
 should be the path to the value that you are interested in.  PropTypes.error will listen to the first error for the path
