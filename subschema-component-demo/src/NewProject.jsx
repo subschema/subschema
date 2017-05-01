@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Form, loader, PropTypes} from 'subschema';
+import {Form, loader} from 'subschema';
+import PropTypes from 'subschema-prop-types';
 
 const schema = {
     schema: {
