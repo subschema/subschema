@@ -1,21 +1,33 @@
-import loaderFactory from 'subschema-loader';
-import PropTypes from 'subschema-prop-types';
-import validators from 'subschema-validators';
-import warning from 'subschema-utils/lib/warning';
-import * as tutils from 'subschema-utils';
+import _loaderFactory from 'subschema-loader';
+import _PropTypes from 'subschema-prop-types';
+import _tutils, {warning as _warning} from 'subschema-utils';
 import {injectorFactory, cachedInjector, stringInjector} from 'subschema-injection';
 
-import Conditional from './Conditional';
-import Content from './Content';
-import ContentWrapper from './ContentWrapper';
-import Field from './Field';
-import FieldSet from './FieldSet';
-import Form from './Form';
-import Object from './Object';
-import RenderContent from './RenderContent';
-import RenderTemplate from './RenderTemplate';
-import resolvers from './resolvers';
+import _Conditional from './Conditional';
+import _Content from './Content';
+import _ContentWrapper from './ContentWrapper';
+import _Field from './Field';
+import _FieldSet from './FieldSet';
+import _Form from './Form';
+import _Object from './Object';
+import _RenderContent from './RenderContent';
+import _RenderTemplate from './RenderTemplate';
+import _resolvers from './resolvers';
 
+export const PropTypes = _PropTypes;
+export const loaderFactory = _loaderFactory;
+export const warning = _warning;
+export const tutils = _tutils;
+export const Conditional = _Conditional;
+export const Content = _Content;
+export const ContentWrapper = _ContentWrapper;
+export const Field = _Field;
+export const FieldSet = _FieldSet;
+export const Form = _Form;
+export const ObjectType = _Object;
+export const RenderContent = _RenderContent;
+export const RenderTemplate = _RenderTemplate;
+export const resolvers = _resolvers;
 /**
  * Used to initialize new subschema for testing.  But also to override behaviours if necessary.
  *
@@ -26,25 +38,25 @@ import resolvers from './resolvers';
  * @param Subschema
  */
 
-function newSubschemaContext(defaultLoaders = [],
-                             defaultResolvers = {},
-                             defaultPropTypes = PropTypes,
-                             defaultInjectorFactory = (loader, propTypes) => cachedInjector(stringInjector(injectorFactory(loader), propTypes)),
-                             defaultValueManager,
-                             Subschema = {
-                                 Conditional,
-                                 Field,
-                                 FieldSet,
-                                 RenderContent,
-                                 RenderTemplate,
-                                 Form,
-                                 PropTypes,
-                                 loaderFactory,
-                                 tutils,
-                                 validators,
-                                 warning
-                             }) {
-    const {loader, injector, ...rest} = Subschema;
+export function newSubschemaContext(defaultLoaders = [],
+                                    defaultResolvers = {},
+                                    defaultPropTypes = PropTypes,
+                                    defaultInjectorFactory = (loader, propTypes) => cachedInjector(stringInjector(injectorFactory(loader), propTypes)),
+                                    defaultValueManager,
+                                    Subschema = {
+                                        Conditional,
+                                        Field,
+                                        FieldSet,
+                                        RenderContent,
+                                        RenderTemplate,
+                                        Form,
+                                        PropTypes,
+                                        loaderFactory,
+                                        tutils,
+                                        warning
+                                    }) {
+    warning(defaultValueManager, `A default ValueManager is required`);
+    const {...rest} = Subschema;
 
     const defaultLoader = loaderFactory(defaultLoaders);
     defaultLoader.addResolvers(defaultPropTypes, defaultResolvers);
@@ -63,35 +75,15 @@ function newSubschemaContext(defaultLoaders = [],
 
 }
 
-export {
+export default ({
     Conditional,
     Content,
     ContentWrapper,
     Field,
     FieldSet,
     Form,
-    Object,
-    RenderContent,
-    RenderTemplate,
-    PropTypes,
-    loaderFactory,
-    resolvers,
-    tutils,
-    validators,
-    warning,
-    injectorFactory,
-    stringInjector,
-    cachedInjector,
-    newSubschemaContext
-};
-export default {
-    Conditional,
-    Content,
-    ContentWrapper,
-    Field,
-    FieldSet,
-    Form,
-    Object,
+    ObjectType,
+    Object: ObjectType,
     RenderContent,
     RenderTemplate,
     PropTypes,
@@ -100,7 +92,6 @@ export default {
     injectorFactory,
     loaderFactory,
     tutils,
-    validators,
     warning,
     newSubschemaContext
-}
+});

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "subschema-prop-types";
-import warning from "subschema-utils/lib/warning";
-import {isString, isArray, unique, path as _path, noop} from "subschema-utils";
+import {warning} from "subschema-utils";
+import {unique, path as _path, noop} from "subschema-utils";
 import UninjectedField from "./Field";
 import UninjectedFieldSet from "./FieldSet";
 import RenderTemplate from "./RenderTemplate";
