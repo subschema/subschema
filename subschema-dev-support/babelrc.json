@@ -1,7 +1,6 @@
 {
   "presets": [
     "es2015",
-    "es2015-loose",
     "es2017",
     "react",
     "stage-2"
