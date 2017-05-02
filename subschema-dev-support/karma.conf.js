@@ -125,7 +125,7 @@ module.exports = function (config) {
         );
     }
     if (process.env.TRAVIS) {
-        karmaConf.browsers = ['Chrome_travis_ci'];
+        karmaConf.browsers = ['Firefox'];
     }
     config.set(karmaConf);
 };
