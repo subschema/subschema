@@ -1,11 +1,6 @@
 import React, {Component} from "react";
-import loaderFactory from 'subschema-loader';
-import ValueManager from 'subschema-valueManager';
 import PropTypes from 'subschema-prop-types';
-import Form from 'subschema-core/lib/Form';
-import ObjectType from 'subschema-core/lib/Object';
-import {types, templates} from 'subschema-component-form';
-import {into, Simulate, byTag, byComponent} from "subschema-test-support";
+import {into, Simulate, byTag} from "subschema-test-support";
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 
 import expect from 'expect';
