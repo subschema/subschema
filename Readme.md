@@ -1,5 +1,7 @@
 Subschema Devel
 ===
+[![Build Status](https://travis-ci.org/subschema/subschema-devel.svg?branch=master)](https://travis-ci.org/subschema/subschema-devel)
+
 This project is here to make developing subschema itself more convenient.   
 
 While most of the time, I write tests in subschema/test, to develop new
