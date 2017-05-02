@@ -23,8 +23,8 @@ see [@funjs/route-parser](https://github.com/fun-js/route-parser) for more infor
 
     "section1":{
       "type":"Routes",
-      //Will load this type if no routes match.
-      "notFound":"NotFoundType",
+      //Will load this type if no routes match.  It will recieve histories location object in this case.
+      "notFound":"NotFound",
        "routes": {
             // will recieve a param named page
             "/doc/:page": "Doc",
@@ -41,7 +41,8 @@ see [@funjs/route-parser](https://github.com/fun-js/route-parser) for more infor
 This schema needs to be passed into a NavigationForm
 
 ```jsx 
-
+import React from 'react';
+import {NavigationForm} from 'subschema-component-navigation';
 import createHistory from 'history/createHashHistory';
 
 //You can configure the history however you would like.
@@ -70,7 +71,7 @@ This provides a few basic components for managing list of links and Links.
 ### Core components
 - NavigationForm - A component that has the history component.  
 - Routes - This is a type that acts as a container and injects the correct component for specified route.
-### Optional Components
+### Layout Components
 - ToggleLink - Will create a toggler for the query param changing the param based on input
 - Navigate - Provides a list of rendered links.   
 - NavTemplate - Just a simple navigation header.
