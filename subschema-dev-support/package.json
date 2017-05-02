@@ -1,6 +1,6 @@
 {
   "name": "subschema-dev-support",
-  "version": "2.0.0-0",
+  "version": "2.0.0-1",
   "description": "Tools for developing with subschema",
   "scripts": {
     "test": "echo 'No Tests for subschema-dev-support'",
@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "autoprefixer": "^6.7.7",
-    "rimraf": "^2.6.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "7",
@@ -58,6 +57,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-hot-loader": "^3.0.0-beta.6",
+    "rimraf": "^2.6.1",
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
