@@ -14,9 +14,7 @@
     "backbone-forms"
   ],
   "peerDependencies": {
-    "lodash": "*",
-    "react": "*",
-    "react-dom": "*"
+    "lodash": "*"
   },
   "devDependencies": {
     "expect": "^1.20.2",

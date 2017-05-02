@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "expect": "^1.20.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
     "subschema": "^2.0.0-0",
@@ -35,8 +37,8 @@
   },
   "peerDependencies": {
     "lodash": "*",
-    "react": "*",
-    "react-dom": "*",
+    "react":"*",
+    "react-dom":"*",
     "prop-types": "*",
     "subschema": "^2.0.0-0",
     "subschema-component-form": "^2.0.0-0",

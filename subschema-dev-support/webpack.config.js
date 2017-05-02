@@ -291,6 +291,7 @@ var idx;
 if ((idx = process.argv.indexOf('--target')) != -1) {
     opts.target = process.argv[idx + 1];
 }
+
 if (customConf) {
     webpack = customConf(webpack, opts);
 }

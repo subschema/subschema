@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "karma": "subschema-karma",
-    "test": "subschema-webpack --devtool sourcemap && subschema-mocha --no-fix-paths",
+    "test":"subschema-karma",
     "prepublish": "subschema-webpack --devtool sourcemap",
     "clean": "rimraf ./lib ./dist"
   },
