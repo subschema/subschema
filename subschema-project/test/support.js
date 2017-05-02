@@ -13,6 +13,22 @@ export function execMock(gen) {
     new Function(['exports', 'require'], gen.code)(exports, newSubschemaContext().importer);
     return exports.default;
 }
+const noop = function () {
+
+};
+export function setupFunc(sample, Subschema = newSubschemaContext()) {
+    if (!(sample && sample.setupTxt)) {
+        //empty
+        return noop;
+    }
+
+    const gen = compile(source({useData: false, useErrors: false, sample}, null));
+
+    return (new Function(['require', 'loader', 'schema', 'Subschema', 'React', 'valueManager'], `${gen.code}  
+        return {schema:schema, loader:loader, valueManager:valueManager}`
+    ))(Subschema.importer, Subschema.loader, sample.schema, Subschema, React, Subschema.valueManager);
+
+}
 
 
 export function renderPage(sample, verify) {

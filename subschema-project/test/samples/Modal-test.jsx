@@ -13,8 +13,6 @@ import {
 import {newSubschemaContext} from 'subschema';
 import {Modal} from 'subschema-test-samples';
 
-
-
 function byId(node, id) {
     var all = TestUtils.findAllInRenderedTree(node, function (inst) {
         var inode = findNode(inst);

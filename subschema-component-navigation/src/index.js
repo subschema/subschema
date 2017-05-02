@@ -1,5 +1,4 @@
 import _ToggleLink from './ToggleLink';
-import _Link from './Link';
 import _Routes from './Routes';
 import _NavTemplate from './NavTemplate';
 import _Navigate from './Navigate';
@@ -13,7 +12,6 @@ export const NavigationForm = _NavigationForm;
 export const resolvers = _resolvers;
 export const PropTypes = _PropTypes;
 export const ToggleLink = _ToggleLink;
-export const Link = _Link;
 export const Routes = _Routes;
 export const NavTemplate = _NavTemplate;
 export const Navigate = _Navigate;
@@ -22,7 +20,6 @@ export const ULTemplate = _ULTemplate;
 
 export const types = {
     ToggleLink,
-    Link,
     Routes,
     Navigate,
     NotFound,

@@ -55,6 +55,7 @@ if (process.env.SUBSCHEMA_COVERAGE || process.env.SUBSCHEMA_COVERAGE_DIR || proc
 if (indexOfArg('--single-run') != -1 && indexOfArg('--browser') == -1) {
     process.argv.push('--browser', 'Firefox');
 }
+process.env.SUBSCHEMA_KARMA = 1;
 //use these aliases by default, when running in karma. This ensures the same version of react, react-dom are used
 //for all tests, regardless of imports.
 process.env.SUBSCHEMA_USE_ALIASES = 'react,react-dom';

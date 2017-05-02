@@ -10,6 +10,7 @@ var React = require('react');
 var ReactServer = require('react-dom/server');
 var expect = require('expect');
 var samples = require('subschema-test-samples');
+var setupFunc = require('../support').setupFunc;
 
 describe('subschema-test-samples/server', function () {
     ['First', 'Second'].forEach(function (key) {
@@ -25,9 +26,7 @@ describe('subschema-test-samples/server', function () {
                     var Form = Subschema.Form;
                     var loader = Subschema.loader;
                     var valueManager = ValueManager(sample.data);
-                    if (sample.setupFunc) {
-                        sample.setupFunc(Subschema.importer, sample.schema);
-                    }
+                    setupFunc(sample)(Subschema.importer, sample.schema);
                     var form = ReactServer.renderToString(React.createElement(Form, {
                         schema: sample.schema,
                         loader: loader,

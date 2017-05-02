@@ -4,6 +4,7 @@ import {
     byComponents,
 }  from 'subschema-test-support';
 import {newSubschemaContext} from 'subschema';
+import {setupFunc} from '../support';
 
 describe("subschema-test-samples/FieldSetConditional", function () {
     this.timeout(50000);

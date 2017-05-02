@@ -99,6 +99,7 @@ if (process.env.SUBSCHEMA_USE_ALIASES) {
 var plugins = [];
 var externals = {};
 var opts = {
+    isKarma: !!(process.env.SUBSCHEMA_KARMA),
     useCss: {
         loader: "css-loader",
         options: {
@@ -285,6 +286,10 @@ if (process.env.SUBSCHEMA_USE_HOT) {
         require.resolve('webpack/hot/only-dev-server.js'),
         entry
     ];
+}
+var idx;
+if ((idx = process.argv.indexOf('--target')) != -1) {
+    opts.target = process.argv[idx + 1];
 }
 if (customConf) {
     webpack = customConf(webpack, opts);

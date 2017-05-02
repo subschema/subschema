@@ -9,22 +9,20 @@ import {
     change,
     byComponents,
 }  from 'subschema-test-support';
-
+import  {setupFunc} from '../support';
 import  {newSubschemaContext} from 'subschema';
 import  {Autocomplete} from 'subschema-test-samples';
-describe('subschema-test-samples/Autocomplete', function () {
+describe('subschema-project/samples/Autocomplete', function () {
     this.timeout(50000);
     it('should not be selectable', function () {
 
         const Subschema = newSubschemaContext();
         const {Form, loader} = Subschema;
-        const schema = Autocomplete.schema;
         const AutocompleteItemTemplate = loader.loadTemplate('AutocompleteItemTemplate');
         const AutocompleteType = loader.loadType('Autocomplete');
-        Autocomplete.setupFunc(Subschema.importer);
+        const context = setupFunc(Autocomplete, Subschema);
 
-        const form = into(<Form schema={schema} loader={Subschema.loader}
-                                valueManager={Subschema.valueManager}/>, true);
+        const form = into(<Form {...context}/>, true);
         expect(form);
 
         const [simple, ajax] = byTypes(form, AutocompleteType, 2);
@@ -41,7 +39,7 @@ describe('subschema-test-samples/Autocomplete', function () {
         const {Form, loader, injector, importer, valueManager} = Subschema;
 
         const schema = Autocomplete.schema;
-        Autocomplete.setupFunc(importer, schema);
+        const context = setupFunc(Autocomplete, Subschema);
 
         const AutocompleteItemTemplate = loader.loadTemplate('AutocompleteItemTemplate');
         const AutocompleteType = loader.loadType('Autocomplete');

@@ -23,6 +23,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-standalone": "^6.24.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1 ",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-function-bind": "^6.22.0",
@@ -39,7 +40,9 @@
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
     "subschema": "^2.0.0-0",
+    "subschema-test-support": "^2.0.0-0",
     "subschema-test-samples": "^2.0.0-0",
+    "subschema-valuemanager":"^2.0.0-0",
     "subschema-utils": "^2.0.0-0"
   }
 }
