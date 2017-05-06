@@ -4,23 +4,27 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "ios":"haul start --platform ios",
-    "android":"haul start --platform android",
-    "test": "jest",
-    "haul": "haul start"
+    "ios": "haul start --platform ios",
+    "android": "haul start --platform android",
+    "test":"echo \"add tests\"; exit 0",
+    "jest": "jest",
+    "haul": "haul start",
+    "subschema-start":"subschema-haul"
   },
   "dependencies": {
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0"
   },
   "devDependencies": {
+    "subschema-native-dev-support": "^2.0.0-1",
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
     "haul-cli": "^0.5.0",
     "jest": "19.0.2",
     "react-test-renderer": "16.0.0-alpha.6",
     "subschema-core": "^2.0.0-1",
-    "subschema-native": "^2.0.0-1"
+    "subschema-native": "^2.0.0-1",
+    "subschema-dev-support": "^2.0.0-1"
   },
   "jest": {
     "preset": "react-native"

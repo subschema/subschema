@@ -32,15 +32,15 @@ var styles = StyleSheet.create({
         padding: 15,
     },
 });
-const {transitionForward, wizardProgressTemplate, transitionBackward, style, ...propTypes} =  WizardTemplate.propTypes;
+const {transitionForward, wizardProgressTemplate, transitionBackward, style, ...propTypes} = WizardTemplate.propTypes;
 export default class WizardTemplateNative extends WizardMixin {
-    static propTypes = {...propTypes, ObjectType:PropTypes.type};
+    static propTypes = {...propTypes, ObjectType: PropTypes.type};
     static defaultProps = {
         ...WizardTemplate.defaultProps,
-        ObjectType:'Object'
+        ObjectType: 'Object'
     };
 
-    setNavState = (next)=> {
+    setNavState = (next) => {
         const {fieldsets} = this.props.schema;
         var len = fieldsets.length, compState = this.state.compState;
         next = Math.max(Math.min(len - 1, next), 0);
@@ -54,8 +54,11 @@ export default class WizardTemplateNative extends WizardMixin {
             });
         }
     };
-    _handleSubmit = (e)=> {
+    _handleSubmit = (e) => {
         console.log('submit', e);
+    };
+    handleBtn = (e) => {
+        console.log('btn pressed', e);
     };
 
     renderFieldset(current, compState) {
@@ -63,11 +66,11 @@ export default class WizardTemplateNative extends WizardMixin {
         ({schema} = this.props.schema);
         const buttons = current.buttons ? current.buttons : this.createButtons(compState);
         const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], template: Template};
-        return (<View style={styles.tabView} tabLabel={current.legend} key={"wiz-view-"+compState}>
+        return (<View style={styles.tabView} tabLabel={current.legend} key={"wiz-view-" + compState}>
             <ObjectType
                 onSubmit={this._handleSubmit}
                 schema={currentSchema}
-                onButtonClick={this::this.handleBtn}/>
+                onButtonClick={this.handleBtn}/>
         </View>);
     };
 

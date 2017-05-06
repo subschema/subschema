@@ -39,8 +39,8 @@ export const resolvers = _resolvers;
  */
 
 export function newSubschemaContext(defaultLoaders = [],
-                                    defaultResolvers = {},
-                                    defaultPropTypes = PropTypes,
+                                    defaultResolvers = _resolvers,
+                                    defaultPropTypes = _PropTypes,
                                     defaultInjectorFactory = (loader, propTypes) => cachedInjector(stringInjector(injectorFactory(loader), propTypes)),
                                     defaultValueManager,
                                     Subschema = {

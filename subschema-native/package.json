@@ -4,7 +4,8 @@
   "version": "2.0.0-1",
   "main": "lib/index",
   "scripts": {
-    "prepublish": "subschema-babel"
+    "test":"echo 'write some tests'; exit 0",
+    "prepublish": "rimraf lib && subschema-babel"
   },
   "dependencies": {
     "subschema-core": "^2.0.0-1",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "haul-cli": "^0.5.0",
     "react-native": "^0.44.0",
-    "react": "^16.0.0-alpha.11"
+    "react": "^16.0.0-alpha.11",
+    "rimraf": "^2.6.1"
   }
 }

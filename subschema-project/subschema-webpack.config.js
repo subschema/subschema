@@ -1,5 +1,5 @@
 var path = require('path');
-module.exports = function (webpack, opts) {
+module.exports =  function (options, webpack)  {
     webpack.module.rules.push({
         test: /\.tmpl$/,
         use: path.resolve(__dirname, 'tmpl-loader'),
@@ -8,7 +8,7 @@ module.exports = function (webpack, opts) {
         ]
     });
 
-    if (opts.isKarma || opts.target === 'browser') {
+    if (options.isKarma || options.target === 'browser') {
         webpack.resolve.alias['babel-core'] = 'babel-standalone';
     }
     return webpack;

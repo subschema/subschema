@@ -25,6 +25,7 @@
     "subschema-project",
     "subschema-component-playground",
     "subschema-component-demo",
+    "subschema-native-dev-support",
     "subschema-native",
     "SubschemaNativeDemo"
   ],
