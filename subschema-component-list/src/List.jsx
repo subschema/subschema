@@ -1,5 +1,3 @@
-"use strict";
-
 import React from 'react';
 import {isString} from 'subschema-utils';
 import CollectionMixin from './CollectionMixin';

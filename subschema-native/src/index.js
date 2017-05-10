@@ -1,4 +1,5 @@
 import React from 'react';
+
 import _PropTypes from 'subschema-prop-types';
 import _ValueManager from 'subschema-valuemanager';
 import _processors from 'subschema-processors';
@@ -13,11 +14,16 @@ import {
     FieldSet as _FieldSet,
     Conditional as _Conditional,
     RenderContent as _RenderContent,
+    Object as _ObjectType,
     RenderTemplate as _RenderTemplate,
     newSubschemaContext as _newSubschemaContext
 } from  "subschema-core";
 import _templates from './templates';
 import _types from './types';
+import _styles from './styles';
+import NativePropTypes from './PropTypes';
+import NativeResolvers from './resolvers';
+
 /**
  * Allows for a new Subschema instance to be created. Mostly for testing,
  * but for other stuff, may be useful.
@@ -33,7 +39,9 @@ _DefaultLoader.addTypes(_types);
 _DefaultLoader.addTemplates(_templates);
 _DefaultLoader.addLoader(_processors);
 _DefaultLoader.addLoader(_validators);
-
+_DefaultLoader.addStyles(_styles);
+_DefaultLoader.addResolvers(NativePropTypes, NativeResolvers);
+_DefaultLoader.addTypes({ObjectType: _ObjectType, Object: _ObjectType});
 export const stringInjector = _stringInjector;
 export const injectorFactory = _injectorFactory;
 export const RenderTemplate = _RenderTemplate;
@@ -53,6 +61,7 @@ export const types = _types;
 export const processors = _processors;
 export const DefaultLoader = _DefaultLoader;
 export const resolvers = _resolvers;
+resolvers.style = NativeResolvers.style;
 
 export const _initSubchemaContext = newSubschemaContext();
 export const loader = _initSubchemaContext.loader;

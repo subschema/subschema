@@ -1,46 +1,49 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import {TextInput, StyleSheet} from 'react-native';
 
-var styles = StyleSheet.create({
-    input: {
-        height: 40,
-        borderColor: '#9da3a6',
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingTop: 6,
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingBottom: 6
-    }
-});
+import {TextInput, findNodeHandle} from 'react-native';
+import {style, onSubmitEditing} from '../PropTypes';
 
 export default class Text extends Component {
+    static displayName = 'Text';
     static propTypes = {
         onChange: PropTypes.valueEvent,
         secureTextEntry: PropTypes.bool,
         maxLength: PropTypes.number,
         multiline: PropTypes.bool,
         autoCorrect: PropTypes.bool,
+        style,
         autoCapitalize: PropTypes.oneOf(['none', 'sentences', 'words', 'characters']),
-        keyboardType: PropTypes.oneOf(["default", 'numeric', 'email-address', "ascii-capable", 'numbers-and-punctuation', 'url', 'number-pad', 'phone-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search'])
+        keyboardType: PropTypes.oneOf(["default", 'numeric', 'email-address', "ascii-capable", 'numbers-and-punctuation', 'url', 'number-pad', 'phone-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search']),
+        onSubmitEditing
     };
     static defaultProps = {
         secureTextEntry: false,
         autoCorrect: true,
         autoCapitalize: 'none',
-        keyboardType: 'default'
+        keyboardType: 'default',
+        autoFocus: true
     };
     handleTextChange = (text) => {
         this.props.onChange(text);
     };
+    handleKeyDown = (e) => {
+        if (e.nativeEvent.key == 'Tab') {
+            this._text && this._text.blur();
+        }
+    };
+
+    handleRef = (node) => {
+        this._text = node;
+    };
 
     render() {
-        var {onChange, name, ...props} = this.props;
-        return <TextInput
-            style={styles.input}
-            onChangeText={this.handleTextChange}
-            {...props}
+        var {onChange, name, style, styleClass, ...props} = this.props;
+        return <TextInput ref={this.handleRef}
+                          style={styleClass}
+                          onChangeText={this.handleTextChange}
+                          {...props}
+                          onKeyPress={this.handleKeyDown}
         />;
     }
 

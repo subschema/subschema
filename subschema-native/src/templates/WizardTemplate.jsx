@@ -1,44 +1,23 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
-import ScrollableTabView  from 'react-native-scrollable-tab-view';
 import WizardMixin from 'subschema-component-wizard/lib/WizardMixin';
 import WizardTemplate from 'subschema-component-wizard/lib/WizardTemplate';
 import PropTypes from 'subschema-prop-types';
+import {TabViewAnimated, TabBar} from 'react-native-tab-view';
 
-var deviceWidth = Dimensions.get('window').width;
 
 function donner(done) {
     done();
 }
 
-var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 30,
-        backgroundColor: 'rgba(0,0,0,0.01)',
-    },
-    tabView: {
-        overflow: 'hidden',
-        width: deviceWidth,
-        padding: 10,
-        backgroundColor: 'rgba(0,0,0,0.01)',
-    },
-    card: {
-        borderWidth: 1,
-        backgroundColor: '#fff',
-        borderColor: 'rgba(0,0,0,0.1)',
-        margin: 5,
-        marginTop: -10,
-        padding: 15,
-    },
-});
 const {transitionForward, wizardProgressTemplate, transitionBackward, style, ...propTypes} = WizardTemplate.propTypes;
 export default class WizardTemplateNative extends WizardMixin {
     static propTypes = {...propTypes, ObjectType: PropTypes.type};
     static defaultProps = {
         ...WizardTemplate.defaultProps,
-        ObjectType: 'Object'
+        ObjectType: 'ObjectType'
     };
+
 
     setNavState = (next) => {
         const {fieldsets} = this.props.schema;
@@ -46,7 +25,7 @@ export default class WizardTemplateNative extends WizardMixin {
         next = Math.max(Math.min(len - 1, next), 0);
 
         if (this.props.onNavChange(next, compState, fieldsets[next]) !== false) {
-            this.refs.scroll.goToPage(next);
+            // this._scroll.goToPage(next);
             this.setState({
                 compState: next,
                 disabled: false,
@@ -54,31 +33,64 @@ export default class WizardTemplateNative extends WizardMixin {
             });
         }
     };
-    _handleSubmit = (e) => {
-        console.log('submit', e);
-    };
-    handleBtn = (e) => {
-        console.log('btn pressed', e);
-    };
+
 
     renderFieldset(current, compState) {
+
         let {className, ObjectType, Template, template, fieldsets, fields, onButtonClick, transitionLeaveTimeout, transitionEnterTimeout, carouselHeightClass, children, schema, ...rest} = this.props;
         ({schema} = this.props.schema);
-        const buttons = current.buttons ? current.buttons : this.createButtons(compState);
+        const buttons = current.buttons ? current.buttons : this.createButtons(this.state.compState);
+
         const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], template: Template};
-        return (<View style={styles.tabView} tabLabel={current.legend} key={"wiz-view-" + compState}>
+        return (<View style={this.props.tabViewClass} tabLabel={current.legend} key={"wiz-view-" + compState}>
             <ObjectType
-                onSubmit={this._handleSubmit}
+                onSubmit={this.props.onSubmit}
                 schema={currentSchema}
-                onButtonClick={this.handleBtn}/>
+                onButtonClick={this._handleBtn}/>
         </View>);
     };
 
+    _renderFieldset = (key) => {
+        let {current} = this.state;
+        if (!current) {
+            const {fieldsets, schema} = this.props.schema;
+            current = fieldsets[key.index];
+        }
+        return this.renderFieldset(current, key.index);
+    };
+
+
+    _renderHeader = props => {
+        return <TabBar {...props} />;
+    };
+    _handleTabChange = (compState) => {
+        this.setState({compState});
+    };
+    _handleBtn = (...args) => {
+        return this.handleBtn(...args);
+    };
+
+    _navigateState() {
+        if (this._currentState && this._currentState.index === this.state.compState) {
+            return this._currentState;
+        }
+        return (this._currentState = {
+            index: this.state.compState || 0,
+            routes: this.props.schema.fieldsets.map((fs, key) => (
+                {
+                    title: fs.legend,
+                    key: key + ''
+                }))
+        });
+
+    }
+
     render() {
-        let {fieldsets} = this.props.schema;
-        return (<ScrollableTabView ref="scroll" locked={true}>
-                {fieldsets.map(this.renderFieldset, this)}
-            </ScrollableTabView>
-        );
+        return <TabViewAnimated locked={true}
+                                onRequestChangeTab={this._handleTabChange}
+                                lazy={true}
+                                navigationState={this._navigateState()}
+                                renderHeader={this._renderHeader}
+                                renderScene={this._renderFieldset}/>
     }
 }

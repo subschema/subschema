@@ -4,73 +4,7 @@ import Buttons from './ButtonsTemplate';
 import PropTypes from 'subschema-prop-types';
 
 
-var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    innerContainer: {
-        borderRadius: 10,
-        flexDirection: 'column',
-        //  alignItems: 'center',
-        flex: 1,
-        borderColor: '#9da3a6',
-        borderWidth: 1,
-    },
-    body: {
-        alignItems: 'flex-start',
-        flexDirection: 'row',
-
-        flex: 1
-    },
-    row: {
-        alignItems: 'center',
-        //  flex: 1,
-        flexDirection: 'row',
-        marginBottom: 20,
-    },
-    rowTitle: {
-//        flex: 1,
-        flexDirection: 'row',
-        fontWeight: 'bold',
-    },
-    buttons: {
-        /*  flexDirection: 'row',
-         justifyContent: 'space-between',
-         flexWrap: 'nowrap',
-         borderWidth: 1,
-         borderColor: 'red',*/
-    },
-    button: {
-        borderRadius: 5,
-        flex: 1,
-        height: 44,
-        alignSelf: 'stretch',
-        justifyContent: 'center',
-        overflow: 'hidden',
-    },
-    buttonText: {
-        fontSize: 18,
-        margin: 5,
-        textAlign: 'center',
-    },
-    modalButton: {
-        marginTop: 10,
-    },
-    modalBackgroundStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        top: 0
-    },
-    innerContainerTransparentStyle: {
-        backgroundColor: '#fff',
-        padding: 20
-    }
-});
+var styles = StyleSheet.create();
 class ModalTemplate extends Component {
 
     static contextTypes = {
@@ -115,20 +49,18 @@ class ModalTemplate extends Component {
     }
 
     render() {
-        var {title, buttons, path, value, children, ...rest} = this.props;
+        const {title, legend, buttons, path, value, bodyClass, innerContainerTransparentClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
         return (
             <Modal
                 animated={true}
                 transparent={this.state.transparent}
                 visible={this.state.visible}>
-                <View style={[styles.container, styles.modalBackgroundStyle]}>
-                    <View style={[styles.innerContainer, styles.innerContainerTransparentStyle]}>
-                        <Text style={styles.rowTitle}>{title}</Text>
-                        <View style={styles.body}>{children}</View>
-                        <View style={styles.buttons}>
-                            {this.renderFooter(buttons)}
-                        </View>
+                <View style={[overlayClass, backdropClass]}>
+                    <View style={[bodyClass, innerContainerTransparentStyle]}>
+                        <Text style={headerClass}>{title}</Text>
+                        <View style={contentClass}>{children}</View>
+                        {this.renderFooter(buttons)}
                     </View>
                 </View>
             </Modal>

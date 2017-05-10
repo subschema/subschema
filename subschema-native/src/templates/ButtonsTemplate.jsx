@@ -1,41 +1,57 @@
 import React, {Component} from 'react';
-import PropTypes from 'subschema-prop-types';
 import {Text, View, StyleSheet} from 'react-native';
 import Button  from './ButtonTemplate';
 import ButtonsTemplate from 'subschema-component-form/lib/templates/ButtonsTemplate';
-import tutils from 'subschema-utils';
-const {propTypes, defaultProps} = ButtonsTemplate;
-const {isString} = tutils;
+import {styleClass} from '../PropTypes';
+import PropTypes from 'subschema-prop-types';
+const isString = (val) => {
+    if (val == null) return false;
+    return (typeof val === 'string')
+};
 
-export default class ButtonsTemplateNative extends Component {
-    static propTypes = propTypes;
-    static defaultProps = defaultProps;
+const ifArray = (...args) => {
+    const ret = [];
+    for (var i = 0, l = args.length; i < l; i++) {
+        if (args[i] != null) {
+            ret.push(args[i]);
+        }
+    }
+    return ret.length == 0 ? null : ret.length === 1 ? ret[0] : ret;
+};
+
+export default class ButtonsTemplateNative extends ButtonsTemplate {
+    static propTypes = {
+        ...ButtonsTemplate.propTypes,
+        buttonClass: styleClass,
+        onClick: PropTypes.func
+    };
 
     makeButtons(buttons) {
-        var onClick = this.props.onButtonClick || this.props.onClick;
-        return buttons.map((b) => {
+        let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
+        return buttons.map(b => {
             onClick = b.onClick || onClick;
-
-            var btn = isString(b) ? {
+            const btn = isString(b) ? {
                 action: b,
                 label: b,
                 onClick
-            } : Object.assign({}, b, {onClick});
-
+            } : {...b, onClick, template: buttonTemplate};
             if (this.props.buttonClass) {
-                btn.buttonClass = (btn.buttonClass || '') + ' ' + this.props.buttonClass;
+                btn.buttonClass = ifArray(btn.buttonClass, this.props.buttonClass);
+            }
+            if (btn.primary) {
+                btn.buttonClass = ifArray(btn.buttonClass, this.props.primaryClass);
             }
             return btn;
-        })
+        });
     }
 
     render() {
-        var {buttons, buttonsClass} = this.props;
+        let {buttons, buttonsClass} = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
         }
-        return <View>
+        return <View style={buttonsClass}>
             {this.makeButtons(buttons).map((b, i) => {
                 return <Button key={"btn-" + i} {...b}/>
             })}

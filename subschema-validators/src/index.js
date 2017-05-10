@@ -122,6 +122,32 @@ export const match = function (options) {
     };
 };
 
+export const minLength = function (options) {
+    options = {...options, type: 'minLength', message: 'must have more than {length} characters'};
+
+    return function length(value, attrs) {
+        if (value.length < options.length) {
+            return {
+                err: options.type,
+                message: isFunction(options.message) ? options.message(options) : options.message
+            }
+        }
+    }
+};
+
+export const maxLength = function (options) {
+    options = {...options, type: 'maxLength', message: 'must have less than {length} characters'};
+
+    return function length(value) {
+        if (value.length > options.length) {
+            return {
+                err: options.type,
+                message: isFunction(options.message) ? options.message(options) : options.message
+            }
+        }
+    }
+};
+
 export const validators = {
     match, url, email, regexp, number, required
 };

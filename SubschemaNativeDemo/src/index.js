@@ -10,32 +10,70 @@ import {
     AppRegistry,
     StyleSheet,
     Text,
-    View
-} from 'react-native';
+    View,
+    SegmentedControlIOS,
+} from 'react-native'
 
 import {Form} from 'subschema-native';
+
+const schema = {
+    schema: {
+        "email": {
+            type: "Text",
+            validators: ["required", "email"]
+        },
+        "password": {
+            type: "Password",
+            validators: ["required"]
+
+        },
+        "remember": {
+            type: "Checkbox",
+            title: "Remember Me?"
+        },
+        "lollipops": {
+            "type": "List",
+            "canEdit": true,
+            "canAdd": true,
+            "canReorder": true,
+            "canDelete": true
+        }
+    },
+    template: "WizardTemplate",
+    fieldsets: [{legend: "Login", "fields": ["email", "password"]}, {
+        legend: "Switch",
+        fields: "remember"
+    }, {
+        legend: "List", fields: "lollipops",
+        buttons: [{
+            label: "Submit",
+            primary: true
+        }, "Cancel"]
+    }]
+}
 
 export default class SubschemaNativeDemo extends Component {
     render() {
         return (
-            <View style={styles.container}>
-
-                    <Text style={styles.welcome}>
-                    Welcome to React Native IOS!
-                </Text>
-                <Form schema={{schema: {name: {type:"Text", title:"A Name"}}, fieldsets: "name"}}/>
-                <Text style={styles.instructions}>
-                    To get started, edit index.ios.js
-                </Text>
-                <Text style={styles.instructions}>
-                    Press Cmd+R to reload,{'\n'}
-                    Cmd+D or shake for dev menu
-                </Text>
-            </View>
+            <Form schema={schema} value={{email:'hello@test.com', password:'123', lollipops: ["red", "green", "blueberry"]}}/>
         );
     }
 }
+function Default({styles}) {
+    return <View style={styles.container}>
 
+        <Text style={styles.welcome}>
+            Welcome to React Native IOS!
+        </Text>
+        <Text style={styles.instructions}>
+            To get started, edit index.ios.js
+        </Text>
+        <Text style={styles.instructions}>
+            Press Cmd+R to reload,{'\n'}
+            Cmd+D or shake for dev menu
+        </Text>
+    </View>
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,

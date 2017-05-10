@@ -1,23 +1,23 @@
 import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
-import {SwitchAndroid} from 'react-native';
+import {Switch} from 'react-native';
 
 export default class Checkbox extends Component {
     static propTypes = {
         onChange: PropTypes.valueEvent
-    }
+    };
 
-    changeValue() {
-        var value = !this.state.value
+    changeValue = (e)=> {
+        var value = !this.props.value
         this.props.onChange(value ? true : false);
-    }
-
+    };
 
     render() {
+        const {value} = this.props;
         return (
-            <SwitchAndroid
+            <Switch
                 onValueChange={this.changeValue}
-                value={this.props.value == null ? false : this.props.value}/>
+                value={!!value}/>
         );
     }
 }

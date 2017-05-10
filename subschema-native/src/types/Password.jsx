@@ -3,11 +3,13 @@ import Text from './Text';
 
 export default class Password extends Component {
     static propTypes = Text.propTypes;
+    static defaultProps = {
+        ...Text.defaultProps,
+        secureTextEntry: true
+    };
 
     render() {
-        var {secureTextEntry, ...props} = this.props;
-        props.secureTextEntry = true;
-        return <Text {...props}/>;
+        return <Text {...this.props}/>;
     }
 
 }
