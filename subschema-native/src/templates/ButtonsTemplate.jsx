@@ -25,6 +25,10 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
         buttonClass: styleClass,
         onClick: PropTypes.func
     };
+    static defaultProps = {
+        ...ButtonsTemplate.defaultProps,
+        buttonClass: null
+    };
 
     makeButtons(buttons) {
         let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;

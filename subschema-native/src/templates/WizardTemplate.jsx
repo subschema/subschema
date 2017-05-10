@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import WizardMixin from 'subschema-component-wizard/lib/WizardMixin';
 import WizardTemplate from 'subschema-component-wizard/lib/WizardTemplate';
 import PropTypes from 'subschema-prop-types';
 import {TabViewAnimated, TabBar} from 'react-native-tab-view';
-
+import {RenderTemplate} from 'subschema-core';
 
 function donner(done) {
     done();
@@ -15,13 +14,14 @@ export default class WizardTemplateNative extends WizardMixin {
     static propTypes = {...propTypes, ObjectType: PropTypes.type};
     static defaultProps = {
         ...WizardTemplate.defaultProps,
-        ObjectType: 'ObjectType'
+        ObjectType: 'ObjectType',
+        wizardProgressTemplate: TabBar
     };
 
 
     setNavState = (next) => {
         const {fieldsets} = this.props.schema;
-        var len = fieldsets.length, compState = this.state.compState;
+        const len = fieldsets.length, compState = this.state.compState;
         next = Math.max(Math.min(len - 1, next), 0);
 
         if (this.props.onNavChange(next, compState, fieldsets[next]) !== false) {
@@ -42,12 +42,10 @@ export default class WizardTemplateNative extends WizardMixin {
         const buttons = current.buttons ? current.buttons : this.createButtons(this.state.compState);
 
         const currentSchema = {schema, fieldsets: [{buttons, ...current, legend: false}], template: Template};
-        return (<View style={this.props.tabViewClass} tabLabel={current.legend} key={"wiz-view-" + compState}>
-            <ObjectType
-                onSubmit={this.props.onSubmit}
-                schema={currentSchema}
-                onButtonClick={this._handleBtn}/>
-        </View>);
+        return <ObjectType style={this.props.tabViewClass} tabLabel={current.legend} key={"wiz-view-" + compState}
+                           onSubmit={this.props.onSubmit}
+                           schema={currentSchema}
+                           onButtonClick={this._handleBtn}/>;
     };
 
     _renderFieldset = (key) => {
@@ -61,7 +59,11 @@ export default class WizardTemplateNative extends WizardMixin {
 
 
     _renderHeader = props => {
-        return <TabBar {...props} />;
+
+        return <RenderTemplate key="progress-template-key" template={this.props.wizardProgressTemplate}
+                               {...props}
+                               index={this.state.done ? fieldsets.length : this.state.compState}
+                               onClick={this.handleOnClick}/>;
     };
     _handleTabChange = (compState) => {
         this.setState({compState});

@@ -14,7 +14,10 @@ export default ({
         flexDirection: 'row',
     },
     primary: {
-        backgroundColor: 'blue',
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#007BC4',
+        borderRadius: 5
     },
     primaryText: {
         color: 'white',
