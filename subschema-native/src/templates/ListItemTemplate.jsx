@@ -14,8 +14,12 @@ export default class ListItemTemplate extends DomListItemTemplate {
     buttons(...args){
         const btns = super.buttons(...args);
         btns.forEach(function(btn){
-            btn.label = btn.title || btn.action;
-        })
+            switch(btn.action){
+                case 'delete': btn.label = 'x'; break;
+                case 'up':btn.label = '^'; break;
+                case 'down': btn.label = 'v'; break;
+            }
+        });
         return btns;
     }
     render() {

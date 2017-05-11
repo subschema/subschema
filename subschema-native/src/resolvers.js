@@ -70,7 +70,7 @@ export function styleToProps(styles, props = {}, loader, preFix = settings.style
         const fullKey = `${preFix}${key}${postFix}`;
 
         if (typeof value === 'string') {
-            const classes = styles.split(/\s+?/).map(function (path) {
+            const classes = value.split(/\s+?/).map(function (path) {
                 let parts = path.split('.', 2);
                 if (parts.length === 1) {
                     parts.unshift(settings.style.global);
@@ -143,7 +143,10 @@ function resolveStyle(value, Style, loader, ret = []) {
             if (Style[parts[0]]) {
                 return ret.push(Style[parts[0]]);
             }
-            return resolveStyle(parts[0], loader.loadStyle(settings.style.global), loader, ret);
+            const Global = loader.loadStyle(settings.style.global);
+            //once we get here we can go no further.
+            if (!(Global === Style))
+                return resolveStyle(parts[0], Global, loader, ret);
         }
 
     });
@@ -156,19 +159,20 @@ export function styleClass(Clazz, key, propList, OrigClazz) {
     const postReplaceRe = new RegExp(`${settings.style.postFix}$`);
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
-        if (typeof value != 'string') return value;
+        if (value != null && typeof value != 'string') return value;
         let Style = loader.loadStyle(OrigClazz.displayName || OrigClazz.name || settings.style.global);
         if (!Style) {
             return;
         }
-        const state = {[key]: resolveStyle(value || key.replace(postReplaceRe, ''), Style, loader)};
+        const resolvedStyle = resolveStyle(value || key.replace(postReplaceRe, ''), Style, loader)
+        const state = {[key]: resolvedStyle};
         if (this.mounted) {
-            this.setState();
+            this.setState(state);
         } else {
             Object.assign(this.state, state);
         }
 
-        return Style;
+        return resolvedStyle;
     });
 }
 export default ({style, styleClass, onSubmitEditing});

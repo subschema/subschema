@@ -5,6 +5,16 @@ export default ({
     },
     help: {},
     buttons: {},
-    listGroupItem: {},
-    ctrlButtons: {}
+    listGroupItem: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        borderWidth: 1,
+        borderColor: 'pink'
+    },
+    ctrlButtons: {
+        borderWidth: 1,
+        borderColor: 'red',
+        alignSelf: 'flex-start'
+    }
 })

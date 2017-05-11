@@ -8,6 +8,7 @@ export default class ButtonTemplateNative extends ButtonTemplate {
         ...ButtonTemplate.propTypes,
         buttonClass: styleClass,
         iconClass: styleClass,
+        buttonTextClass: styleClass
     };
     static defaultProps = {
         ...ButtonTemplate.defaultProps,
@@ -23,8 +24,9 @@ export default class ButtonTemplateNative extends ButtonTemplate {
     };
 
     render() {
-        let {buttonClass, title, iconStyle, onClick, label, ...props} = this.props;
-        return <Button disabled={this.state.disabled} style={buttonClass}
+        let {buttonClass, buttonTextClass, title, iconStyle, onClick, label, ...props} = this.props;
+        return <Button disabled={this.state.disabled} containerStyle={buttonClass}
+                       style={buttonTextClass}
                        onPress={this._handlePress} {...props}>
             {label}</Button>
     }

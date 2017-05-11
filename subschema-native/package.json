@@ -21,7 +21,8 @@
     "subschema-utils": "^2.0.0-1",
     "subschema-dev-support": "^2.0.0-1",
     "react-native-tab-view": "^0.0.63",
-    "react-native-button": "1.8.2"
+    "react-native-button": "1.8.2",
+    "react-native-swipeout":"^2.1.1"
   },
   "peerDependencies": {
     "subschema-core": "*",

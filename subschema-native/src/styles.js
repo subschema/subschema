@@ -17,7 +17,7 @@ function compile(styles) {
         const current = styles[key];
         const currentString = {};
 
-        compiledStyles[key] = StyleSheet.create(Object.keys(current).filter(function (skey) {
+        const compiled = Object.keys(current).filter(function (skey) {
             if (typeof current[skey] == 'string') {
                 currentString[skey] = current[skey];
                 return false;
@@ -26,8 +26,10 @@ function compile(styles) {
         }).reduce(function (style, skey) {
             style[skey] = current[skey];
             return style;
-        }, {}));
-        Object.assign(current, currentString);
+        }, {});
+
+        compiledStyles[key] = StyleSheet.create(compiled);
+        Object.assign(compiledStyles[key], currentString);
     });
     return compiledStyles;
 }

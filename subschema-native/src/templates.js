@@ -5,6 +5,7 @@ import FieldSetTemplate from './templates/FieldSetTemplate';
 import FormTemplate from './templates/FormTemplate';
 import ObjectTemplate from './templates/ObjectTemplate';
 import WizardTemplate from './templates/WizardTemplate';
+import SlideButtonTemplate from './templates/SlideButtonTemplate';
 //list support
 import ListItemTemplate from './templates/ListItemTemplate';
 import ContentItemTemplate from './templates/ContentItemTemplate';
@@ -20,5 +21,6 @@ export default ({
     ContentItemTemplate,
     CollectionCreateTemplate,
     ObjectTemplate,
+    SlideButtonTemplate,
     WizardTemplate
 })

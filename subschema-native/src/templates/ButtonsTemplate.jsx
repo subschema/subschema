@@ -9,20 +9,32 @@ const isString = (val) => {
     return (typeof val === 'string')
 };
 
-const ifArray = (...args) => {
-    const ret = [];
-    for (var i = 0, l = args.length; i < l; i++) {
-        if (args[i] != null) {
-            ret.push(args[i]);
-        }
+function addClass(classes, add) {
+    if (add == null) return classes;
+    if (classes == null) {
+        classes = [];
+    } else if (!Array.isArray(classes)) {
+        classes = [classes];
     }
-    return ret.length == 0 ? null : ret.length === 1 ? ret[0] : ret;
+    if (Array.isArray(add)) {
+        classes.push(...add);
+    } else {
+        classes.push(add);
+    }
+    return classes;
 };
 
 export default class ButtonsTemplateNative extends ButtonsTemplate {
     static propTypes = {
         ...ButtonsTemplate.propTypes,
+        style: PropTypes.any,
+        buttonsClass: styleClass,
         buttonClass: styleClass,
+        primaryClass: styleClass,
+        primaryTextClass: styleClass,
+        buttonFirstClass: styleClass,
+        buttonLastClass: styleClass,
+        textClass: styleClass,
         onClick: PropTypes.func
     };
     static defaultProps = {
@@ -32,7 +44,8 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
 
     makeButtons(buttons) {
         let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
-        return buttons.map(b => {
+        const {length} = buttons;
+        return buttons.map((b, i) => {
             onClick = b.onClick || onClick;
             const btn = isString(b) ? {
                 action: b,
@@ -40,10 +53,18 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
                 onClick
             } : {...b, onClick, template: buttonTemplate};
             if (this.props.buttonClass) {
-                btn.buttonClass = ifArray(btn.buttonClass, this.props.buttonClass);
+                btn.buttonClass = btn.buttonClass || this.props.buttonClass;
+                btn.buttonTextClass = this.props.textClass;
             }
-            if (btn.primary) {
-                btn.buttonClass = ifArray(btn.buttonClass, this.props.primaryClass);
+            if (btn.primary && this.props.primaryClass) {
+                btn.buttonClass = this.props.primaryClass;
+                btn.buttonTextClass = this.props.primaryTextClass || this.props.textClass;
+            }
+            if (i == 0) {
+                btn.buttonClass = addClass(btn.buttonClass, this.props.buttonFirstClass);
+            }
+            if (i + 1 === length) {
+                btn.buttonClass = addClass(btn.buttonClass, this.props.buttonLastClass);
             }
             return btn;
         });
