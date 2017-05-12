@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Form} from 'subschema-native';
-import schema from './schema.json';
+import schema from './schema.js';
 export default class SubschemaNativeDemo extends Component {
     render() {
         return (

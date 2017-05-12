@@ -4,7 +4,7 @@ import {style} from '../PropTypes';
 import {ListView, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
 import {List as ListDom} from 'subschema-component-list';
 import {RenderTemplate} from 'subschema-core';
-
+import SlideButtonTemplate from '../templates/SlideButtonTemplate';
 export default class ListType extends ListDom {
     static defaultProps = {
         ...ListDom.defaultProps,
@@ -35,7 +35,7 @@ export default class ListType extends ListDom {
 
     _renderRow = (rowData, sectionId, rowId) => {
         return this.renderRow(rowData, sectionId, parseInt(rowId));
-
+      //  return <SlideButtonTemplate value={rowData} sectionId={sectionId} pos={rowId}/>
     };
 
     _pressRow(rowId) {

@@ -44,6 +44,7 @@ module.exports = function (obj, defaults) {
         }),
         entry: cwd(`./index.${obj.platform}.js`)
     };
+
     for (var i = 0, l = defaults.module.rules.length; i < l; i++) {
         var rule = defaults.module.rules[i];
         if (rule.use && rule.use.query && rule.use.query.id == 'babel') {

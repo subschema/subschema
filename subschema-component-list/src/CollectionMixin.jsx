@@ -306,6 +306,7 @@ export default class CollectionMixin extends Component {
         return <RenderTemplate template={itemTemplate}
                                key={this.props.path + '.' + pos}
                                pos={pos}
+                               sectionId={sectionId}
                                path={ path(this.props.path, key)}
                                onMoveUp={this.handleMoveUp}
                                onMoveDown={this.handleMoveDown}

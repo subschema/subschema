@@ -1,4 +1,4 @@
-{
+export default ({
   "schema": {
     "email": {
       "type": "Text",
@@ -25,7 +25,7 @@
       "canDelete": true
     }
   },
-  "template": "WizardTemplate",
+//  "template": "WizardTemplate",
   "fieldsets": [
     {
       "legend": "List",
@@ -53,4 +53,4 @@
       ]
     }
   ]
-}
+});

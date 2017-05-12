@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
-import {View, Dimensions, TouchableOpacity, Animated, Text, StyleSheet, PanResponder} from 'react-native';
+import {
+    View,
+    Dimensions,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Animated,
+    Text,
+    StyleSheet,
+    PanResponder
+} from 'react-native';
 import {ListItemTemplate as DomListItemTemplate} from 'subschema-component-list';
 import Buttons from './ButtonsTemplate';
 import {styleClass} from '../PropTypes';
-import Swipeout from 'react-native-swipeout';
+import Swipeout from '../component/react-native-swipeout/index.js';
 import PropTypes from 'subschema-prop-types';
 
-const {height, width} = Dimensions.get('window');
 export default class SlideButtonTemplate extends DomListItemTemplate {
 
     state = {};
@@ -24,67 +32,74 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
         ctrlButtonsClass: styleClass,
         notAnimatedClass: styleClass,
         wrapperClass: styleClass,
-        rowData: PropTypes.any
+        moveUpClass: styleClass,
+        moveDownClass: styleClass,
+        deleteClass: styleClass,
+        rowData: PropTypes.any,
+        sectionId: PropTypes.any
     };
 
-    width = width;
 
     componentWillMount() {
         this.setState({slide: new Animated.Value(this.width - 10)})
     }
 
-    buttons(...args) {
-        const btns = super.buttons(...args);
-        btns.forEach(function (btn) {
-            btn.label = btn.title;
-        });
-        console.log('btns', ...btns);
-        return btns;
-    }
+    handleMoveUp = () => {
+        this.props.onMoveUp(this.props.pos, this.props.value, this.props.pid);
+    };
+    handleMoveDown = () => {
+        this.props.onMoveDown(this.props.pos, this.props.value, this.props.pid);
+    };
+    handleDelete = () => {
+        this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
+    };
 
-    _toggle = (e) => {
-        this.show = !this.show;
-
-        e && e.stopPropagation();
-        Animated.timing(                            // Animate over time
-            this.state.slide,                      // The animated value to drive
-            {
-                duration: 500,
-                toValue: this.show ? 0 : this.width - 10,                             // Animate to opacity: 1, or fully opaque
+    buttons(pos, last, canReorder, canDelete) {
+        const buttons = [];
+        if (canReorder) {
+            if (pos > 0) {
+                buttons.push({
+                    onPress: this.handleMoveUp,
+                    text: 'Up',
+                    type: 'secondary',
+                    action: 'up',
+                    buttonClass: this.props.moveUpClass
+                });
             }
-        ).start();
-    };
+            if (!last) {
+                buttons.push({
+                    onPress: this.handleMoveDown,
+                    text: 'Down',
+                    type: 'secondary',
+                    action: 'down',
+                    buttonClass: this.props.moveDownClass,
+                });
 
-    renderSlider() {
+            }
 
-        return <Animated.View style={ [this.props.notAnimatedClass, {width: this.width}, {left: this.state.slide}]}>
-            <Buttons key="buttons"
-                     buttons={this.buttons(this.props.pos, this.props.last, this.props.canReorder, this.props.canDelete)}
-                     buttonClass={this.props.buttonClass}
-                     buttonsClass={this.props.ctrlButtonsClass} buttonContainerClass={this.props.buttonsClass}/>
-        </Animated.View>
+        }
+        if (canDelete) {
+            buttons.push({
+                onClick: this.handleDelete,
+                text: 'Delete',
+                action: 'delete',
+                type: 'delete',
+                buttonClass: this.props.deleteClass,
+                label: ''
+            });
+        }
+        return buttons
     }
 
-    _onLayout = (event) => {
-        this.width = event.nativeEvent.layout.width;
-        this.setState({slide: new Animated.Value(this.width - 10)});
-        console.log('width', this.width);
-    };
-
-    renderOld() {
-        return <TouchableOpacity onLayout={this._onLayout} style={this.props.wrapperClass} onPress={this._toggle}>
-            {this.props.children}
-            {this.renderSlider()}
-        </TouchableOpacity>
-    }
 
     render() {
+        const left = this.props.canEdit ? [{text: 'Edit', onPress: this.handleEdit}] : null;
         return <Swipeout
-                         onOpen={(sectionID, rowID) => console.log('---open: sectionID:' + sectionID + 'rowid:' + rowID) }
-                         onClose={() => console.log('===close') }
-                         scroll={event => console.log('scroll event') }
-        >
-            {this.props.children}
+            rowId={this.props.pos}
+            sectionId={this.props.sectionId}
+            autoClose={true}
+            left={left}
+            right={this.buttons(this.props.pos, this.props.last, this.props.canReorder, this.props.canDelete)}>{this.props.children}
         </Swipeout>
     }
 }
