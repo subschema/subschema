@@ -1,102 +1,19 @@
 import React, {Component,} from 'react';
-
 import {
     PanResponder,
-    TouchableHighlight,
-    StyleSheet,
     Text,
     View,
     ViewPropTypes,
 } from 'react-native';
 
 import tweenState from 'react-tween-state';
-import NativeButton from './NativeButton';
 import styles from './styles';
 import PropTypes from 'prop-types';
 import TweenComponent from './TweenComponent';
-
-
-export class SwipeoutBtn extends Component {
-
-
-    static propTypes = {
-        backgroundColor: PropTypes.string,
-        color: PropTypes.string,
-        component: PropTypes.node,
-        onPress: PropTypes.func,
-        text: PropTypes.string,
-        type: PropTypes.string,
-        underlayColor: PropTypes.string,
-    };
-
-    static defaultProps = {
-        backgroundColor: null,
-        color: null,
-        component: null,
-        underlayColor: null,
-        height: 0,
-        onPress: null,
-        disabled: false,
-        text: 'Click me',
-        type: '',
-        width: 0,
-    };
-
-
-    render() {
-        const btn = this.props;
-
-        const styleSwipeoutBtn = [styles.swipeoutBtn];
-
-        //  apply "type" styles (delete || primary || secondary)
-        if (btn.type === 'delete') styleSwipeoutBtn.push(styles.colorDelete);
-        else if (btn.type === 'primary') styleSwipeoutBtn.push(styles.colorPrimary);
-        else if (btn.type === 'secondary') styleSwipeoutBtn.push(styles.colorSecondary);
-
-        //  apply background color
-        if (btn.backgroundColor) styleSwipeoutBtn.push([{backgroundColor: btn.backgroundColor}]);
-
-        styleSwipeoutBtn.push([{
-            height: btn.height,
-            width: btn.width,
-        }]);
-
-        const styleSwipeoutBtnComponent = [];
-
-        //  set button dimensions
-        styleSwipeoutBtnComponent.push([{
-            height: btn.height,
-            width: btn.width,
-        }]);
-
-        const styleSwipeoutBtnText = [styles.swipeoutBtnText];
-
-        //  apply text color
-        if (btn.color) styleSwipeoutBtnText.push([{color: btn.color}]);
-
-        return (<NativeButton
-            onPress={this.props.onPress}
-            underlayColor={this.props.underlayColor}
-            disabled={this.props.disabled}
-            style={[styles.swipeoutBtnTouchable, styleSwipeoutBtn]}
-            textStyle={styleSwipeoutBtnText}>
-            {
-                (btn.component ?
-                        <View style={styleSwipeoutBtnComponent}>{btn.component}</View>
-                        :
-                        btn.text
-                )
-            }
-        </NativeButton>);
-    }
-}
-
+import SwipeoutBtn from './SwipeoutBtn';
 
 export default class Swipeout extends TweenComponent {
 
-
-    static NativeButton = NativeButton;
-    static SwipeoutButton = SwipeoutBtn;
     static propTypes = {
         autoClose: PropTypes.bool,
         backgroundColor: PropTypes.string,
@@ -110,6 +27,7 @@ export default class Swipeout extends TweenComponent {
         sensitivity: PropTypes.number,
         buttonWidth: PropTypes.number,
         disabled: PropTypes.bool,
+        textStyle: Text.propTypes.style,
     };
 
     static defaultProps = {
@@ -166,7 +84,7 @@ export default class Swipeout extends TweenComponent {
                 btnsLeftWidth: this.props.left ? buttonWidth * this.props.left.length : 0,
                 btnsRightWidth: this.props.right ? buttonWidth * this.props.right.length : 0,
                 swiping: true,
-                timeStart: (new Date()).getTime(),
+                timeStart: Date.now(),
             });
         });
     };
@@ -217,7 +135,7 @@ export default class Swipeout extends TweenComponent {
         if (this.state.openedLeft) openLeft = posX + openX > openX;
 
         //  reveal swipeout on quick swipe
-        const timeDiff = (new Date()).getTime() - this.state.timeStart < 200;
+        const timeDiff = (Date.now() - this.state.timeStart) < 200;
         if (timeDiff) {
             openRight = posX < -openX / 10 && !this.state.openedLeft;
             openLeft = posX > openX / 10 && !this.state.openedRight;
@@ -294,7 +212,7 @@ export default class Swipeout extends TweenComponent {
         const contentWidth = this.state.contentWidth;
         const posX = this.getTweeningValue('contentPos');
 
-        const styleSwipeout = [styles.swipeout, this.props.style];
+        const styleSwipeout = [styles.swipeout].concat(this.props.style);
         if (this.props.backgroundColor) {
             styleSwipeout.push([{backgroundColor: this.props.backgroundColor}]);
         }
@@ -377,10 +295,12 @@ export default class Swipeout extends TweenComponent {
             height={this.state.contentHeight}
             key={i}
             onPress={() => this._autoClose(btn)}
-            text={btn.text}
             type={btn.type}
             underlayColor={btn.underlayColor}
             width={this.state.btnWidth}
+            style={btn.style}
+            textStyle={btn.textStyle}
+            text={btn.text}
         />
     };
 }

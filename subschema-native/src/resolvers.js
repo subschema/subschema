@@ -160,7 +160,7 @@ export function styleClass(Clazz, key, propList, OrigClazz) {
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
         if (value != null && typeof value != 'string') return value;
-        let Style = loader.loadStyle(OrigClazz.displayName || OrigClazz.name || settings.style.global);
+        let Style = loadStyle(OrigClazz, loader);
         if (!Style) {
             return;
         }
@@ -175,4 +175,13 @@ export function styleClass(Clazz, key, propList, OrigClazz) {
         return resolvedStyle;
     });
 }
-export default ({style, styleClass, onSubmitEditing});
+function loadStyle(OrigClazz, loader) {
+    let Style = OrigClazz.displayName ? loader.loadStyle(OrigClazz.displayName) : loader.loadStyle(OrigClazz.name);
+    if (!Style) {
+        return loader.loadStyle(settings.style.global);
+    }
+    return Style;
+}
+
+
+export default ({style, styleClass,  onSubmitEditing});

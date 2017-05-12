@@ -42,7 +42,6 @@ export default class ListType extends ListDom {
         this.setState({editPid: rowId});
     }
 
-
     render() {
         return (<View>
             {this.renderAdd()}

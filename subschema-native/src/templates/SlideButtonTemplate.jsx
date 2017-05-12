@@ -1,14 +1,4 @@
 import React, {Component} from 'react';
-import {
-    View,
-    Dimensions,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Animated,
-    Text,
-    StyleSheet,
-    PanResponder
-} from 'react-native';
 import {ListItemTemplate as DomListItemTemplate} from 'subschema-component-list';
 import Buttons from './ButtonsTemplate';
 import {styleClass} from '../PropTypes';
@@ -27,22 +17,21 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
     };
     static propTypes = {
         ...DomListItemTemplate.propTypes,
-        pullTabClass: styleClass,
         containerClass: styleClass,
-        ctrlButtonsClass: styleClass,
-        notAnimatedClass: styleClass,
-        wrapperClass: styleClass,
+        buttonContainer: styleClass,
+        buttonTextClass: styleClass,
+        editClass: styleClass,
         moveUpClass: styleClass,
         moveDownClass: styleClass,
         deleteClass: styleClass,
+        editTextClass: styleClass,
+        moveUpTextClass: styleClass,
+        moveDownTextClass: styleClass,
+        deleteTextClass: styleClass,
         rowData: PropTypes.any,
         sectionId: PropTypes.any
     };
 
-
-    componentWillMount() {
-        this.setState({slide: new Animated.Value(this.width - 10)})
-    }
 
     handleMoveUp = () => {
         this.props.onMoveUp(this.props.pos, this.props.value, this.props.pid);
@@ -51,6 +40,9 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
         this.props.onMoveDown(this.props.pos, this.props.value, this.props.pid);
     };
     handleDelete = () => {
+        this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
+    };
+    handleEdit = () => {
         this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
     };
 
@@ -63,7 +55,8 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
                     text: 'Up',
                     type: 'secondary',
                     action: 'up',
-                    buttonClass: this.props.moveUpClass
+                    style: this.props.moveUpClass,
+                    textStyle: this.props.moveUpTextClass
                 });
             }
             if (!last) {
@@ -71,8 +64,8 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
                     onPress: this.handleMoveDown,
                     text: 'Down',
                     type: 'secondary',
-                    action: 'down',
-                    buttonClass: this.props.moveDownClass,
+                    style: this.props.moveDownClass,
+                    textStyle: this.props.moveDownTextClass
                 });
 
             }
@@ -80,24 +73,34 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
         }
         if (canDelete) {
             buttons.push({
-                onClick: this.handleDelete,
+                onPress: this.handleDelete,
                 text: 'Delete',
-                action: 'delete',
                 type: 'delete',
-                buttonClass: this.props.deleteClass,
-                label: ''
+                style: this.props.deleteClass,
+                textStyle: this.props.deleteTextClass
             });
         }
         return buttons
     }
 
+    _handlePress = (e) => {
+        e && e.stopPropagation();
+        console.log('pressed');
+    };
 
     render() {
-        const left = this.props.canEdit ? [{text: 'Edit', onPress: this.handleEdit}] : null;
+        const left = this.props.canEdit ? [{
+            text: 'Edit',
+            style: this.props.editClass,
+            textStyle: this.props.editTextClass,
+            onPress: this.handleEdit
+        }] : null;
         return <Swipeout
             rowId={this.props.pos}
             sectionId={this.props.sectionId}
             autoClose={true}
+            onPress={this._handlePress}
+            style={this.props.containerClass}
             left={left}
             right={this.buttons(this.props.pos, this.props.last, this.props.canReorder, this.props.canDelete)}>{this.props.children}
         </Swipeout>

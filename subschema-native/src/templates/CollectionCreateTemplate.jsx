@@ -1,10 +1,18 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import Content from '../Content';
-
+import {styleClass} from '../PropTypes'
 import {CollectionCreateTemplate as DomCollectionCreateTemplate} from 'subschema-component-list';
 
 export default class CollectionCreateTemplate extends DomCollectionCreateTemplate {
+    static propTypes = {
+        ...DomCollectionCreateTemplate.propTypes,
+        groupClass: styleClass,
+        panelClass: styleClass,
+        panelBodyClass: styleClass,
+        panelTitleClass: styleClass,
+        panelHeadingClass: styleClass
+    };
 
     renderInline() {
         return <View style={this.props.inlineClass}>{this.props.children}</View>

@@ -10,6 +10,7 @@ import {
     StyleSheet,
     Platform,
     View,
+    ViewPropTypes,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -26,12 +27,24 @@ const styles = StyleSheet.create({
         opacity: 0.8,
     },
 });
-
+function concat(...args) {
+    const ret = [];
+    for (const arg of args) {
+        if (!arg) continue;
+        if (Array.isArray(arg)) {
+            ret.push(...concat(...arg));
+        } else {
+            ret.push(arg);
+        }
+    }
+    return ret.length == 1 ? ret[0] : ret;
+}
 export default class NativeButton extends Component {
 
     static propTypes = {
         // Extract parent props
         ...TouchableWithoutFeedback.propTypes,
+        style: ViewPropTypes.style,
         textStyle: Text.propTypes.style,
         disabledStyle: Text.propTypes.style,
         children: PropTypes.node.isRequired,
@@ -41,8 +54,9 @@ export default class NativeButton extends Component {
 
     static isAndroid = (Platform.OS === 'android');
     static defaultProps = {
-        textStyle: null,
-        disabledStyle: null,
+        disabledStyle: styles.opacity,
+        style: styles.button,
+        textStyle: styles.textButton,
         underlayColor: null,
     };
 
@@ -53,14 +67,13 @@ export default class NativeButton extends Component {
         }
 
         return (
-            <Text style={ [styles.textButton, this.props.textStyle] }>
+            <Text style={this.props.textStyle }>
                 { this.props.children }
             </Text>
         );
     }
 
     render() {
-        const disabledStyle = this.props.disabled ? (this.props.disabledStyle || styles.opacity) : {};
 
         // Extract Button props
         const buttonProps = {
@@ -79,6 +92,7 @@ export default class NativeButton extends Component {
             onLongPress: this.props.onLongPress,
             pressRetentionOffset: this.props.pressRetentionOffset,
         };
+        const style = this.props.disabled ? concat(this.props.style, this.props.disabledStyle) : this.props.style;
 
         // Render Native Android Button
         if (NativeButton.isAndroid) {
@@ -89,7 +103,7 @@ export default class NativeButton extends Component {
             return (
                 <TouchableNativeFeedback
                     {...buttonProps}>
-                    <View style={[styles.button, this.props.style, disabledStyle]}>
+                    <View style={style}>
                         {this._renderText()}
                     </View>
                 </TouchableNativeFeedback>
@@ -100,7 +114,7 @@ export default class NativeButton extends Component {
         return (
             <TouchableHighlight
                 {...buttonProps}
-                style={[styles.button, this.props.style, disabledStyle]}
+                style={style}
                 underlayColor={ this.props.underlayColor }>
                 { this._renderText() }
             </TouchableHighlight>

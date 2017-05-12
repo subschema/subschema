@@ -1,39 +1,59 @@
 export default ({
-    pullTab: {
-        backgroundColor: 'red',
-        width: 10,
-    },
     container: {
-        position: 'absolute',
-
-    },
-    wrapper: {
-        height: 50,
-        position: 'relative',
+        backgroundColor: 'white',
         borderBottomWidth: 1,
-        borderColor: '#ccc'
+        borderColor: '#ccc',
+        overflow: 'hidden'
+    },
+    delete: 'button delete-btn',
+    deleteText: {
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center'
+    },
+    moveUp: 'button secondary-btn',
+    moveUpText: 'buttonText',
+    moveDown: 'button secondary-btn',
+    moveDownText: 'buttonText',
+    edit: 'button secondary-btn',
+    editText: 'buttonText',
+
+
+    buttonText: {
+        color: '#fff',
+        textAlign: 'center'
+    },
+    swipeout: {
+        backgroundColor: '#dbddde',
+        overflow: 'hidden',
+    },
+    swipeoutBtnTouchable: {
+        flex: 1,
     },
     button: {
-        /*       flexGrow:1,
-         flexShrink:1,
-         flexBasis:0
-         */
-    },
-    ctrlButtons: {
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
         alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    notAnimated: {
-        position: 'absolute',
+        backgroundColor: '#b6bec0',
         flex: 1,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
-        borderRadius: 5,
-        margin: 0,
-        backgroundColor: 'blue'
-    }
+        justifyContent: 'center',
+        overflow: 'hidden',
+    },
+
+    buttonContainer: {
+        bottom: 0,
+        flex: 1,
+        flexDirection: 'row',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+    },
+    swipeoutContent: {},
+    'delete-btn': {
+        backgroundColor: '#fb3d38',
+    },
+    'primary-btn': {
+        backgroundColor: '#006fff'
+    },
+    'secondary-btn': {
+        backgroundColor: '#fd9427'
+    },
 })

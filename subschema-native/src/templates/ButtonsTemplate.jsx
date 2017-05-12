@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import Button  from './ButtonTemplate';
+import InjectButton  from './ButtonTemplate';
 import ButtonsTemplate from 'subschema-component-form/lib/templates/ButtonsTemplate';
 import {styleClass} from '../PropTypes';
 import PropTypes from 'subschema-prop-types';
@@ -35,11 +35,13 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
         buttonFirstClass: styleClass,
         buttonLastClass: styleClass,
         textClass: styleClass,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        Button: PropTypes.injectClass
     };
     static defaultProps = {
         ...ButtonsTemplate.defaultProps,
-        buttonClass: null
+        buttonClass: null,
+        Button: InjectButton
     };
 
     makeButtons(buttons) {
@@ -71,13 +73,14 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
     }
 
     render() {
-        let {buttons, buttonsClass} = this.props;
+        let {Button, buttons, buttonsClass} = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
         }
         return <View style={buttonsClass}>
             {this.makeButtons(buttons).map((b, i) => {
+//                const {buttonClass, ...btn} = b;
                 return <Button key={"btn-" + i} {...b}/>
             })}
         </View>

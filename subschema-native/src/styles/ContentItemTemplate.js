@@ -3,5 +3,7 @@ export default ({
         'backgroundColor': 'gray'
     },
     item: {},
-    innerItem: {}
+    innerItem: {
+        padding:10
+    }
 })
