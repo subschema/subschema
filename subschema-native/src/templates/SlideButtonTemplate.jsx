@@ -43,7 +43,7 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
         this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
     };
     handleEdit = () => {
-        this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
+        this.props.onEdit(this.props.pos, this.props.value, this.props.pid);
     };
 
     buttons(pos, last, canReorder, canDelete) {

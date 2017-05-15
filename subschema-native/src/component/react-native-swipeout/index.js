@@ -57,8 +57,8 @@ export default class Swipeout extends TweenComponent {
     componentWillMount() {
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (event, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (event, gestureState) =>
-            this.state.openedLeft || this.state.openedRight,
+            onStartShouldSetPanResponderCapture: (event, gestureState) =>true,
+//    onStartShouldSetPanResponderCapture:()=>        this.state.openedLeft || this.state.openedRight,
             onMoveShouldSetPanResponder: (event, gestureState) =>
             Math.abs(gestureState.dx) > this.props.sensitivity &&
             Math.abs(gestureState.dy) <= this.props.sensitivity,

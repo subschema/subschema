@@ -15,12 +15,12 @@ export default class ModalTemplate extends Component {
         bodyClass: styleClass,
         backdropClass: styleClass,
         innerContainerTransparentStyle: styleClass,
-        Buttons:PropTypes.injectClass
+        Buttons:PropTypes.template
     };
 
     static defaultProps = {
         animationType: "slide",
-        Buttons:ButtonsTemplate
+        Buttons:'ButtonsTemplate'
     };
     state = {
         visible: false

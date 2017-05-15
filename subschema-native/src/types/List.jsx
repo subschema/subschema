@@ -9,13 +9,15 @@ export default class ListType extends ListDom {
     static defaultProps = {
         ...ListDom.defaultProps,
         itemTemplate: 'SlideButtonTemplate',
-        createTemplate:'ModalTemplate',
-        editTemplate:'ModalTemplate',
+        createTemplate: 'ModalTemplate',
+        editTemplate: 'ModalTemplate',
         buttons: {
-            buttonsClass: 'btn-group pull-right',
-            buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
-        }
+            buttons: [{label: 'Cancel', action: 'cancel'}
+                , {label: 'Save', type: 'submit', action: 'submit', primary:true}]
+        },
+        addButton: {
+            "label": "Add"
+        },
     };
     state = {};
 
@@ -36,7 +38,7 @@ export default class ListType extends ListDom {
 
     _renderRow = (rowData, sectionId, rowId) => {
         return this.renderRow(rowData, sectionId, parseInt(rowId));
-      //  return <SlideButtonTemplate value={rowData} sectionId={sectionId} pos={rowId}/>
+        //  return <SlideButtonTemplate value={rowData} sectionId={sectionId} pos={rowId}/>
     };
 
     _pressRow(rowId) {

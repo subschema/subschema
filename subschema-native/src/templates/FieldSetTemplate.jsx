@@ -8,7 +8,7 @@ export default class FieldSetTemplateNative extends Component {
 
     render() {
         const {legend, children, content, legendClass, buttons, className, ...rest} =  {...this.props.field, ...this.props};
-        return (<View style={className}>
+        return (<View style={className}       scrollEnabled={false}>
             {legend ? <Text style={legendClass}>{legend}</Text> : null}
             {children}
             {buttons}

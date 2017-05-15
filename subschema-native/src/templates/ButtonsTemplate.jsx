@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import InjectButton  from './ButtonTemplate';
+import Button  from './ButtonTemplate';
 import ButtonsTemplate from 'subschema-component-form/lib/templates/ButtonsTemplate';
 import {styleClass} from '../PropTypes';
 import PropTypes from 'subschema-prop-types';
@@ -17,9 +17,13 @@ function addClass(classes, add) {
         classes = [classes];
     }
     if (Array.isArray(add)) {
-        classes.push(...add);
+        for (const clz of add) {
+            if (classes.indexOf(clz) == -1)
+                classes.push(...add);
+        }
     } else {
-        classes.push(add);
+        if (classes.indexOf(add) == -1)
+            classes.push(add);
     }
     return classes;
 };
@@ -35,17 +39,16 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
         buttonFirstClass: styleClass,
         buttonLastClass: styleClass,
         textClass: styleClass,
-        onClick: PropTypes.func,
-        Button: PropTypes.injectClass
+        onClick: PropTypes.func
     };
     static defaultProps = {
         ...ButtonsTemplate.defaultProps,
-        buttonClass: null,
-        Button: InjectButton
+        buttonClass: null
     };
 
     makeButtons(buttons) {
         let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
+
         const {length} = buttons;
         return buttons.map((b, i) => {
             onClick = b.onClick || onClick;
@@ -72,17 +75,18 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
         });
     }
 
+    _makeButton(btn, i) {
+        return <Button key={"btn-" + i} {...btn}/>;
+    }
+
     render() {
-        let {Button, buttons, buttonsClass} = this.props;
+        let {buttons, buttonsClass} = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
             buttons = buttons.buttons
         }
         return <View style={buttonsClass}>
-            {this.makeButtons(buttons).map((b, i) => {
-//                const {buttonClass, ...btn} = b;
-                return <Button key={"btn-" + i} {...b}/>
-            })}
+            {this.makeButtons(buttons).map(this._makeButton)}
         </View>
     }
 

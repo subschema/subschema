@@ -17,9 +17,9 @@ export default ({
             "type": "Checkbox",
             "title": "Remember Me?"
         },
-        "fromWhere":{
-            "type":"Select",
-            "options":"Work, Home, School, Kids"
+        "fromWhere": {
+            "type": "Select",
+            "options": "Work, Home, School, Kids"
         },
         "lollipops": {
             "type": "List",

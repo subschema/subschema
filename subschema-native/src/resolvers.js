@@ -132,7 +132,9 @@ export function style(Clazz, key, propList, OrigClazz) {
     });
 }
 function resolveStyle(value, Style, loader, ret = []) {
-    value && value.split(/\s+?/).forEach(function (clz) {
+    value = Array.isArray(value) ? value : value.split(/\s+?/);
+    value.forEach(function (clz) {
+        if (typeof clz === 'number') return clz;
         if (typeof Style[clz] === 'string')
             return resolveStyle(Style[clz], Style, loader, ret);
 
@@ -140,8 +142,12 @@ function resolveStyle(value, Style, loader, ret = []) {
         if (parts.length === 2) {
             return resolveStyle(parts[1], loader.loadStyle(parts[0]), loader, ret);
         } else if (parts.length == 1) {
-            if (Style[parts[0]]) {
-                return ret.push(Style[parts[0]]);
+            if (parts[0] in Style) {
+                const val = Style[parts[0]];
+                if (val == null || ret.indexOf(val) == -1)
+                    return ret.push(Style[parts[0]]);
+                else
+                    return;
             }
             const Global = loader.loadStyle(settings.style.global);
             //once we get here we can go no further.
@@ -159,7 +165,7 @@ export function styleClass(Clazz, key, propList, OrigClazz) {
     const postReplaceRe = new RegExp(`${settings.style.postFix}$`);
     Clazz.contextTypes.loader = PropTypes.loader;
     Clazz::this.property(key, function style$resolver$property(value, key, props, {loader}) {
-        if (value != null && typeof value != 'string') return value;
+        if (value != null && !(typeof value == 'string' || Array.isArray(value))) return value;
         let Style = loadStyle(OrigClazz, loader);
         if (!Style) {
             return;
@@ -184,4 +190,4 @@ function loadStyle(OrigClazz, loader) {
 }
 
 
-export default ({style, styleClass,  onSubmitEditing});
+export default ({style, styleClass, onSubmitEditing});
