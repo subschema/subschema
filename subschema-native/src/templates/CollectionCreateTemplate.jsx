@@ -1,17 +1,22 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import Content from '../Content';
+import PropTypes from 'subschema-prop-types';
 import {styleClass} from '../PropTypes'
 import {CollectionCreateTemplate as DomCollectionCreateTemplate} from 'subschema-component-list';
-
+import ModalTemplate from './ModalTemplate';
 export default class CollectionCreateTemplate extends DomCollectionCreateTemplate {
     static propTypes = {
         ...DomCollectionCreateTemplate.propTypes,
+        Modal: PropTypes.injectClass,
         groupClass: styleClass,
         panelClass: styleClass,
         panelBodyClass: styleClass,
         panelTitleClass: styleClass,
         panelHeadingClass: styleClass
+    };
+    static defaultProps = {
+        Modal: ModalTemplate
     };
 
     renderInline() {
@@ -19,7 +24,7 @@ export default class CollectionCreateTemplate extends DomCollectionCreateTemplat
     }
 
     renderPanel() {
-        let {title, panelClass, editText, createText, panelTitleClass, panelHeadingClass, panelBodyClass, groupClass, create} = this.props;
+        let {Modal,title, panelClass, editText, createText, panelTitleClass, panelHeadingClass, panelBodyClass, groupClass, create} = this.props;
         if (title === false) {
             title = '';
         } else if (title == null) {

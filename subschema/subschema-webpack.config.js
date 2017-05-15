@@ -2,6 +2,7 @@ var path = require('path');
 var webpackUtils = require('subschema-dev-support/webpack-utils');
 var pkg = require('./package.json');
 module.exports = function (options, webpack) {
+    console.log('webpack', JSON.stringify(webpack,null,2));
     webpack.module.rules.push({
         test: path.resolve(__dirname, 'src', 'DefaultLoader.js'),
         use: {

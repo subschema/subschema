@@ -9,7 +9,8 @@ export default class ListType extends ListDom {
     static defaultProps = {
         ...ListDom.defaultProps,
         itemTemplate: 'SlideButtonTemplate',
-
+        createTemplate:'ModalTemplate',
+        editTemplate:'ModalTemplate',
         buttons: {
             buttonsClass: 'btn-group pull-right',
             buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}

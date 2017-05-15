@@ -15,7 +15,7 @@ const addResolver = function () {
         },
         loadResolver(_propType){
             if (_propType == null) return;
-            for (let i = 0, l = map.length; i < l; i++) {
+            for (let i = map.length - 1; i >= 0; --i) {
                 const c = map[i];
                 if (c[0] === _propType || c[0].resolver === _propType) {
                     return c[1];

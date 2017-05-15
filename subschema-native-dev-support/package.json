@@ -32,8 +32,6 @@
     "haul-cli": "^0.5.0",
     "jest": "19.0.2",
     "react-test-renderer": "16.0.0-alpha.6",
-    "subschema-core": "^2.0.0-1",
-    "subschema-native": "^2.0.0-1",
     "subschema-dev-support": "^2.0.0-1"
   },
   "jest": {

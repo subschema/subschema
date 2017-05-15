@@ -4,19 +4,24 @@ export default ({
         justifyContent: 'center',
         padding: 20,
     },
+    header: {
+        padding: 10
+    },
     innerContainer: {
         borderRadius: 10,
         flexDirection: 'column',
-        //  alignItems: 'center',
+        alignItems: 'center',
         flex: 1,
         borderColor: '#9da3a6',
         borderWidth: 1,
     },
     body: {
-        alignItems: 'flex-start',
-        flexDirection: 'row',
-
-        flex: 1
+        /*alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        flex: 1,
+        borderColor: 'red',
+        borderWidth:1*/
     },
     row: {
         alignItems: 'center',
@@ -54,11 +59,11 @@ export default ({
     },
     modalBackgroundStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        top: 0
+        /*        position: 'absolute',
+         bottom: 0,
+         left: 0,
+         right: 0,
+         top: 0*/
     },
     innerContainerTransparentStyle: {
         backgroundColor: '#fff',

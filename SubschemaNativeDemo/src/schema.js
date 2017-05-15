@@ -17,6 +17,10 @@ export default ({
             "type": "Checkbox",
             "title": "Remember Me?"
         },
+        "fromWhere":{
+            "type":"Select",
+            "options":"Work, Home, School, Kids"
+        },
         "lollipops": {
             "type": "List",
             "canEdit": true,
@@ -40,7 +44,7 @@ export default ({
         },
         {
             "legend": "Switch",
-            "fields": "remember"
+            "fields": "remember,fromWhere"
         },
         {
             "legend": "Done",
