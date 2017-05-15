@@ -64,7 +64,9 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
-
+project.ext.react = [
+    cliPath: "node_modules/haul-cli/bin/cli.js"
+]
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -84,7 +86,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.subschemanativedemo"

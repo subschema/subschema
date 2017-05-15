@@ -1,1 +1,1 @@
-module.exports = require('./Select.android');
+module.exports = require('./Select');

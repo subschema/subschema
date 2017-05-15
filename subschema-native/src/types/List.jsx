@@ -38,7 +38,6 @@ export default class ListType extends ListDom {
 
     _renderRow = (rowData, sectionId, rowId) => {
         return this.renderRow(rowData, sectionId, parseInt(rowId));
-        //  return <SlideButtonTemplate value={rowData} sectionId={sectionId} pos={rowId}/>
     };
 
     _pressRow(rowId) {

@@ -15,12 +15,12 @@ export default class ModalTemplate extends Component {
         bodyClass: styleClass,
         backdropClass: styleClass,
         innerContainerTransparentStyle: styleClass,
-        Buttons:PropTypes.template
+        Buttons: PropTypes.template
     };
 
     static defaultProps = {
         animationType: "slide",
-        Buttons:'ButtonsTemplate'
+        Buttons: 'ButtonsTemplate'
     };
     state = {
         visible: false
@@ -31,9 +31,7 @@ export default class ModalTemplate extends Component {
     }
 
     handleClose = (e) => {
-        e && e.preventDefault();
-        // setTimeout(()=>this.setState({visible:false}), 200);
-
+        this.setState({visible: false});
     };
 
     handleBtnClose = (e, action) => {
@@ -61,6 +59,7 @@ export default class ModalTemplate extends Component {
             <Modal
                 animationType={animationType}
                 transparent={this.state.transparent}
+                onRequestClose={this.handleClose}
                 visible={this.state.visible}>
                 <View style={[overlayClass, backdropClass]}>
                     <View style={[bodyClass, innerContainerTransparentClass]}>
