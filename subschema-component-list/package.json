@@ -6,6 +6,7 @@
   "scripts": {
     "karma": "subschema-karma",
     "test": "subschema-karma",
+    "server":"subschema-webpack-dev-server",
     "prepublish": "subschema-babel",
     "clean": "rimraf ./lib ./dist"
   },
