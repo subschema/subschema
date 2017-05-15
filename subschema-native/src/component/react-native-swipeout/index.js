@@ -6,11 +6,11 @@ import {
     ViewPropTypes,
 } from 'react-native';
 
-import tweenState from 'react-tween-state';
 import styles from './styles';
 import PropTypes from 'prop-types';
 import TweenComponent from './TweenComponent';
 import SwipeoutBtn from './SwipeoutBtn';
+import EasingTypes from 'tween-functions';
 
 export default class Swipeout extends TweenComponent {
 
@@ -157,7 +157,7 @@ export default class Swipeout extends TweenComponent {
 
     _tweenContent = (state, endValue) => {
         this.tweenState(state, {
-            easing: tweenState.easingTypes.easeInOutQuad,
+            easing: EasingTypes.easeInOutQuad,
             duration: endValue === 0 ? this.state.tweenDuration * 1.5 : this.state.tweenDuration,
             endValue: endValue,
         });

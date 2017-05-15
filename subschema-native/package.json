@@ -5,10 +5,9 @@
   "main": "lib/index",
   "scripts": {
     "test": "echo 'write some tests'; exit 0",
-    "prepublish": "rimraf lib && subschema-haul "
+    "prepublish": "rimraf lib && subschema-babel"
   },
   "dependencies": {
-    "subschema-native-dev-support":"^2.0.0-1",
     "subschema-core": "^2.0.0-1",
     "subschema-prop-types": "^2.0.0-1",
     "subschema-component-wizard": "^2.0.0-1",
@@ -20,7 +19,6 @@
     "subschema-injection": "^2.0.0-1",
     "subschema-component-list": "^2.0.0-1",
     "subschema-utils": "^2.0.0-1",
-    "subschema-dev-support": "^2.0.0-1",
     "react-native-tab-view": "^0.0.63",
     "raf": "^3.1.0",
     "tween-functions": "^1.0.1"
@@ -32,6 +30,7 @@
     "prop-types": "*"
   },
   "devDependencies": {
+    "subschema-dev-support": "^2.0.0-1",
     "prop-types": "^15.5.8",
     "react-native": "^0.44.0",
     "react": "^16.0.0-alpha.11",

@@ -1,14 +1,34 @@
 import {StyleSheet} from 'react-native';
+import ButtonsTemplate from '././styles/ButtonsTemplate'
+import CollectionCreateTemplate from '././styles/CollectionCreateTemplate'
+import ContentItemTemplate from '././styles/ContentItemTemplate'
+import EditorTemplate from '././styles/EditorTemplate'
+import FieldSetTemplate from '././styles/FieldSetTemplate'
+import FormTemplate from '././styles/FormTemplate'
+import Global from '././styles/Global'
+import List from '././styles/List'
+import ListItemTemplate from '././styles/ListItemTemplate'
+import ModalTemplate from '././styles/ModalTemplate'
+import SlideButtonTemplate from '././styles/SlideButtonTemplate'
+import Text from '././styles/Text'
+import WizardTemplate from '././styles/WizardTemplate'
 
-const styleContext = require.context("./styles", true, /\.js$/);
-
-const Styles = styleContext.keys().reduce(function (ret, key) {
-    const style = styleContext(key);
-    ret[key.replace(/(?:.+?\/)?(.+?)\.js$/, '$1')] = style.default || style;
-    return ret;
-}, {});
-
-Styles.Password = Styles.Text;
+const Styles = {
+    ButtonsTemplate,
+    CollectionCreateTemplate,
+    ContentItemTemplate,
+    EditorTemplate,
+    FieldSetTemplate,
+    FormTemplate,
+    Global,
+    List,
+    ListItemTemplate,
+    ModalTemplate,
+    SlideButtonTemplate,
+    Text,
+    Password:Text,
+    WizardTemplate
+};
 
 function compile(styles) {
 

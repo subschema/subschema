@@ -48,6 +48,7 @@ export default ({
         },
         {
             "legend": "Done",
+            "fieldsets": {template:"JSONView"},
             "buttons": [
                 {
                     "label": "Submit",
