@@ -30,7 +30,9 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
         deleteTextClass: styleClass,
         rowData: PropTypes.any,
         sectionId: PropTypes.any,
-        value:PropTypes.any
+        value: PropTypes.any,
+        pos: PropTypes.any,
+        pid: PropTypes.any
     };
 
 
@@ -89,26 +91,29 @@ export default class SlideButtonTemplate extends DomListItemTemplate {
     }
 
     _handlePress = (e) => {
-        e && e.stopPropagation();
+      //  e && e.stopPropagation();
         console.log('pressed');
+        if (this.props.canEdit) {
+            this.handleEditBtn();
+        }
     };
+    editButton = this.props.canEdit ? [{
+        text: 'Edit',
+        style: this.props.editClass,
+        textStyle: this.props.editTextClass,
+        onPress: this.handleEditBtn
+    }] : null;
 
     render() {
-        const editButton = this.props.canEdit ? [{
-            text: 'Edit',
-            style: this.props.editClass,
-            textStyle: this.props.editTextClass,
-            onPress: this.handleEditBtn
-        }] : null;
 
         return <Swipeout
             rowId={this.props.pos}
             sectionId={this.props.sectionId}
             autoClose={true}
-            onPress={this._handlePress}
             style={this.props.containerClass}
-            left={editButton}
-            right={this.buttons(this.props.pos, this.props.last, this.props.canReorder, this.props.canDelete)}>{this.props.children}
+            left={this.editButton}
+            right={this.buttons(this.props.pos, this.props.last, this.props.canReorder, this.props.canDelete)}>
+            {this.props.children}
         </Swipeout>
     }
 }

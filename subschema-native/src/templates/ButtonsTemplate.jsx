@@ -71,13 +71,11 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
             if (i + 1 === length) {
                 btn.buttonClass = addClass(btn.buttonClass, this.props.buttonLastClass);
             }
-            return btn;
+            return <Button key={"btn-" + i} {...btn}/>;
         });
     }
 
-    _makeButton(btn, i) {
-        return <Button key={"btn-" + i} {...btn}/>;
-    }
+
 
     render() {
         let {buttons, buttonsClass} = this.props;
@@ -86,7 +84,7 @@ export default class ButtonsTemplateNative extends ButtonsTemplate {
             buttons = buttons.buttons
         }
         return <View style={buttonsClass}>
-            {this.makeButtons(buttons).map(this._makeButton)}
+            {this.makeButtons(buttons)}
         </View>
     }
 

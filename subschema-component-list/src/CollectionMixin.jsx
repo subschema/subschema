@@ -240,6 +240,7 @@ export default class CollectionMixin extends Component {
         return (
             <RenderTemplate template={edit ? editTemplate : createTemplate} inline={edit ? this.props.inline : false}
                             create={edit ? false : create}
+                            onButtonClick={this.handleBtnClick}
                             title={this.props.title} key="addEditTemplate">
                 <ObjectType key="addEdit"
                             onButtonClick={this.handleBtnClick}

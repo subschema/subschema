@@ -3,6 +3,7 @@ export default ({
         flex: 1,
         justifyContent: 'center',
         padding: 20,
+        marginTop: 20
     },
     header: {
         padding: 10
@@ -17,11 +18,11 @@ export default ({
     },
     body: {
         /*alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        flex: 1,
-        borderColor: 'red',
-        borderWidth:1*/
+         flexDirection: 'column',
+         justifyContent: 'center',
+         flex: 1,
+         borderColor: 'red',
+         borderWidth:1*/
     },
     row: {
         alignItems: 'center',
@@ -40,6 +41,12 @@ export default ({
          flexWrap: 'nowrap',
          borderWidth: 1,
          borderColor: 'red',*/
+    },
+    backdrop: {
+        paddingTop: 20
+    },
+    backBtn: {
+        alignSelf: 'flex-start'
     },
     button: {
         borderRadius: 5,

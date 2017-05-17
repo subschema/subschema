@@ -1,26 +1,41 @@
 import React, {Component} from 'react';
-import {Form, loader} from 'subschema-native';
-import schema from './schema.js';
+import {ListView} from 'react-native';
+import {Form, loader, ValueManager, compileStyle} from 'subschema-native';
+import _examples from './examples';
+import Example from './types/Example';
+import ExampleItemTemplate from './templates/ExampleItemTemplate';
+import JSONView from './types/JSONView';
+import styles from './styles';
 
-import {Text} from 'react-native';
-import PropTypes from 'subschema-prop-types';
-class JSONView extends Component {
-    static propTypes = {
-        value: PropTypes.value
-    };
+const examples = Object.keys(_examples).map((id) => ({id, example: _examples[id]}));
 
-    render() {
-        return <Text style={
-            {
-                margin: 10,
-                padding: 10
-            }
-        }>{JSON.stringify(this.props.value, null, 2)}</Text>
-    };
-}
+loader.addTypes({JSONView, Example});
+loader.addTemplate({ExampleItemTemplate});
+loader.addStyles(styles);
 
-loader.addTemplate({
-    JSONView
-});
-const def = {email: 'hello@test.com', password: '123', lollipops: ["red", "green", "blueberry"]};
-export default () => <Form schema={schema} value={def}/>
+const schema = {
+    schema: {
+        "examples": {
+            type: "List",
+            template: false,
+            itemType: 'Example',
+            editTemplate: {
+                template: 'ModalTemplate',
+                CloseButton: {
+                    template: 'ButtonTemplate',
+                    label: '< Back',
+                    buttonClass: 'ModalTemplate.backBtn',
+                    action: 'cancel'
+                }
+            },
+            canEdit: true,
+            itemTemplate: "ExampleItemTemplate",
+            contentTemplate: false,
+            buttons: {buttons: []}
+        }
+    },
+    fieldsets: [{fields: ["examples"]}]
+};
+const valueManager = ValueManager({examples});
+console.log('here');
+export default () => <Form schema={schema} valueManager={valueManager} loader={loader}/>

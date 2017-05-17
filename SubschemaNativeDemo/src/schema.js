@@ -1,5 +1,32 @@
 export default ({
     "schema": {
+        "ssn": {
+            "type": "Restricted",
+            "formatter": '###-##'
+        },
+        "radio": {
+            "type": "Radio",
+            "options": [{val: 1, label: 'One'}, {val: 2, label: 'Two'}]
+        },
+        "checkboxes": {
+            title: 'Group of Groups',
+            options: [
+                {
+                    group: 'North America', options: [
+                    {val: 'ca', label: 'Canada'},
+                    {val: 'us', label: 'United States'}
+                ]
+                },
+                {
+                    group: 'Europe', options: [
+                    {val: 'es', label: 'Spain'},
+                    {val: 'fr', label: 'France'},
+                    {val: 'uk', label: 'United Kingdom'}
+                ]
+                }
+            ],
+            type: 'Checkboxes'
+        },
         "email": {
             "type": "Text",
             "validators": [
@@ -32,6 +59,14 @@ export default ({
     "template": "WizardTemplate",
     "fieldsets": [
         {
+            "legend": "SSN",
+            fields: ["ssn"]
+        },
+        {
+            "legend": "Radio",
+            fields: ["radio", "checkboxes"]
+        },
+        {
             "legend": "List",
             "fields": "lollipops"
         },
@@ -43,12 +78,12 @@ export default ({
             ]
         },
         {
-            "legend": "Switch",
-            "fields": "remember,fromWhere"
+            "legend": "Rem",
+            "fields": ["remember", "fromWhere"]
         },
         {
             "legend": "Done",
-            "fieldsets": {template:"JSONView"},
+            "fieldsets": {template: "JSONView"},
             "buttons": [
                 {
                     "label": "Submit",

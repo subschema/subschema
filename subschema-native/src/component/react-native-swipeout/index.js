@@ -28,6 +28,7 @@ export default class Swipeout extends TweenComponent {
         buttonWidth: PropTypes.number,
         disabled: PropTypes.bool,
         textStyle: Text.propTypes.style,
+        onPress: Text.propTypes.func
     };
 
     static defaultProps = {

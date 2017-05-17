@@ -112,7 +112,7 @@ export function style(Clazz, key, propList, OrigClazz) {
 
 
         const obj = styleToProps(Style, {}, loader);
-        Object.keys(obj).forEach((key) => {
+        obj && Object.keys(obj).forEach((key) => {
             if (key in props) {
                 state[key] = props[key];
             } else {

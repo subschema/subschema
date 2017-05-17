@@ -3,24 +3,31 @@ import {Modal, StyleSheet, Text, View} from 'react-native';
 import ButtonsTemplate from './ButtonsTemplate';
 import {styleClass} from '../PropTypes';
 import PropTypes from 'subschema-prop-types';
+import {RenderTemplate} from 'subschema-native';
 
 export default class ModalTemplate extends Component {
 
 
     static propTypes = {
+        ...Modal.propTypes,
         title: PropTypes.string,
+        containerClass: styleClass,
         overlayClass: styleClass,
         contentClass: styleClass,
         headerClass: styleClass,
         bodyClass: styleClass,
         backdropClass: styleClass,
         innerContainerTransparentStyle: styleClass,
-        Buttons: PropTypes.template
+        Buttons: PropTypes.template,
+        CloseButton: PropTypes.template,
+        onButtonClick: PropTypes.func
     };
 
     static defaultProps = {
+        ...Modal.defaultProps,
         animationType: "slide",
-        Buttons: 'ButtonsTemplate'
+        Buttons: 'ButtonsTemplate',
+        CloseButton: false
     };
     state = {
         visible: false
@@ -33,15 +40,21 @@ export default class ModalTemplate extends Component {
     handleClose = (e) => {
         this.setState({visible: false});
     };
-
+    handleCancel = () => {
+        this.props.onButtonClick && this.props.onButtonClick();
+        this.handleClose();
+    };
     handleBtnClose = (e, action) => {
         switch (action) {
             case 'submit': {
                 this.props.onSubmit(e);
+                this.handleClose(e);
+                break;
             }
             case 'close':
             case 'cancel':
-                this.handleClose(e);
+                this.handleCancel(e);
+
                 break;
         }
 
@@ -52,23 +65,33 @@ export default class ModalTemplate extends Component {
         return <Buttons buttons={buttons} onButtonClick={this.handleBtnClose}/>
     }
 
-    render() {
-        const {Buttons, title, animationType, legend, buttons, path, value, bodyClass, innerContainerTransparentClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+    renderCloseButton() {
+        const {CloseButton} = this.props;
+        if (CloseButton) {
+            const {Template, ...props} = CloseButton;
+            return <RenderTemplate template={Template} {...props} onClick={this.handleCancel}/>
+        }
+        return null;
+    }
 
-        return (
-            <Modal
-                animationType={animationType}
-                transparent={this.state.transparent}
-                onRequestClose={this.handleClose}
-                visible={this.state.visible}>
-                <View style={[overlayClass, backdropClass]}>
-                    <View style={[bodyClass, innerContainerTransparentClass]}>
-                        <Text style={headerClass}>{title}</Text>
-                        <View style={contentClass}>{children}</View>
-                        {this.renderFooter(Buttons, buttons)}
-                    </View>
+    render() {
+        const {Buttons, title, containerClass, animationType, legend, buttons, path, value, bodyClass, innerContainerTransparentClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+
+        return (<Modal
+            {...rest}
+            animationType={animationType}
+            transparent={this.state.transparent}
+            onRequestClose={this.handleClose}
+            style={containerClass}
+            visible={this.state.visible}>
+            <View style={[overlayClass, backdropClass]}>
+                {this.renderCloseButton()}
+                <View style={[bodyClass, innerContainerTransparentClass]}>
+                    <Text style={headerClass}>{title}</Text>
+                    <View style={contentClass}>{children}</View>
+                    {this.renderFooter(Buttons, buttons)}
                 </View>
-            </Modal>
-        );
+            </View>
+        </Modal>);
     }
 }

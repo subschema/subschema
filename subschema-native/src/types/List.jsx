@@ -13,7 +13,7 @@ export default class ListType extends ListDom {
         editTemplate: 'ModalTemplate',
         buttons: {
             buttons: [{label: 'Cancel', action: 'cancel'}
-                , {label: 'Save', type: 'submit', action: 'submit', primary:true}]
+                , {label: 'Save', type: 'submit', action: 'submit', primary: true}]
         },
         addButton: {
             "label": "Add"
@@ -48,6 +48,7 @@ export default class ListType extends ListDom {
         return (<View>
             {this.renderAdd()}
             <ListView
+                enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderRow}
             />

@@ -20,7 +20,7 @@ class ContentWrapper extends DefaultContentWrapper {
     }
 }
 ContentCore.Types = ReactNative;
-ContentCore.defaultProps.type = 'Text';
+ContentCore.defaultProps.type = 'DisplayText';
 ContentCore.defaultProps.contentWrapper= ContentWrapper;
 
 export default ContentCore;

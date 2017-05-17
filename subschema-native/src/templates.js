@@ -6,6 +6,7 @@ import FormTemplate from './templates/FormTemplate';
 import ModalTemplate from './templates/ModalTemplate';
 import ObjectTemplate from './templates/ObjectTemplate';
 import WizardTemplate from './templates/WizardTemplate';
+import RadioItemTemplate from './templates/RadioItemTemplate';
 
 import SlideButtonTemplate from './templates/SlideButtonTemplate';
 //list support
@@ -23,7 +24,7 @@ export default ({
     ContentItemTemplate,
     CollectionCreateTemplate,
     ModalTemplate,
-    ModalTemplate,
+    RadioItemTemplate,
     ObjectTemplate,
     SlideButtonTemplate,
     WizardTemplate

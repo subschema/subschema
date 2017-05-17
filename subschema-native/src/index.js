@@ -20,9 +20,11 @@ import {
 } from  "subschema-core";
 import _templates from './templates';
 import _types from './types';
-import _styles from './styles';
+import _styles, {compile} from './styles';
 import NativePropTypes from './PropTypes';
 import NativeResolvers from './resolvers';
+
+export const compileStyle = compile;
 
 /**
  * Allows for a new Subschema instance to be created. Mostly for testing,
