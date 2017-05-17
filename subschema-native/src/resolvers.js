@@ -131,7 +131,7 @@ export function style(Clazz, key, propList, OrigClazz) {
         return Style;
     });
 }
-function resolveStyle(value, Style, loader, ret = []) {
+function resolveStyle(value, Style={}, loader, ret = []) {
     value = Array.isArray(value) ? value : value.split(/\s+?/);
     value.forEach(function (clz) {
         if (typeof clz === 'number') return clz;

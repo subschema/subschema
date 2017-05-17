@@ -13,8 +13,10 @@ import SlideButtonTemplate from './styles/SlideButtonTemplate'
 import Text from './styles/Text'
 import WizardTemplate from './styles/WizardTemplate'
 import Radio from './styles/Radio';
-import RadioItemTemplate from './styles/RadioItemTemplate'
+import RadioItemTemplate from './styles/RadioItemTemplate';
+import Autocomplete from './styles/Autocomplete';
 const Styles = {
+    Autocomplete,
     ButtonsTemplate,
     CollectionCreateTemplate,
     ContentItemTemplate,

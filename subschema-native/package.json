@@ -10,6 +10,7 @@
   "dependencies": {
     "subschema-core": "^2.0.0-1",
     "subschema-prop-types": "^2.0.0-1",
+    "subschema-component-autocomplete": "^2.0.0-1",
     "subschema-component-wizard": "^2.0.0-1",
     "subschema-component-form": "^2.0.0-1",
     "subschema-processors": "^2.0.0-1",

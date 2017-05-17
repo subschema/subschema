@@ -12,7 +12,9 @@ import Restricted from './types/Restricted';
 import {ObjectType} from 'subschema-core';
 import DisplayText from './templates/DisplayText';
 import DisplayView from './templates/DisplayView';
+import Autocomplete from './types/Autocomplete';
 export default ({
+    Autocomplete,
     Checkbox,
     Checkboxes,
     Date,
