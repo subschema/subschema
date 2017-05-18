@@ -1,6 +1,6 @@
 export default ({
     container: {
-        padding: 10
+        padding: 10,
         /*        flex: 1,
          flexDirection: 'column'*/
     },
@@ -12,7 +12,13 @@ export default ({
     },
     form: {
         borderWidth: 1,
-        //    flex: 1,
+        width: '100%',
+        height: 300,
+        /*
+         flex: 1,
+         */
+        //      flexGrow:1,
+        //     flexDirection: 'row',
         borderColor: '#ccc'
     },
     buttonPressed: 'button button-pressed',

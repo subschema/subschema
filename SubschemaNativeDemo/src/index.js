@@ -18,6 +18,7 @@ const schema = {
         "examples": {
             type: "List",
             template: false,
+            title: false,
             itemType: 'Example',
             editTemplate: {
                 template: 'ModalTemplate',
@@ -34,7 +35,7 @@ const schema = {
             buttons: {buttons: []}
         }
     },
-    fieldsets: [ {fields: ["examples"]}]
+    fieldsets: [{fields: ["examples"]}]
 };
 const valueManager = ValueManager({examples});
 export default  () => <Form schema={schema} valueManager={valueManager} loader={loader}/>

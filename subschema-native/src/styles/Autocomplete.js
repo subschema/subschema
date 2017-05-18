@@ -1,19 +1,16 @@
 export default ({
     namespace: {
-        // flex: 1
-        zIndex: 1
-        //   zIndex: 9000,
-        //        position: 'relative'
+//        flex: 1,
     },
     found: {},
     notFound: {},
     suggestions: {
+        /*
          zIndex: 2,
-/*        position: 'absolute',
-
-        left: 0,
-        right: 0,
-        top: '100%',*/
+         position: 'absolute',
+         left: 0,
+         right: 0,
+         top: '100%',*/
         backgroundColor: 'white',
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
@@ -31,7 +28,7 @@ export default ({
         borderColor: '#bbb',
         padding: 5,
         marginBottom: 1,
-       // flex: 1
+        // flex: 1
 
         /*   position: 'relative',
          borderBottomWidth: 1,
