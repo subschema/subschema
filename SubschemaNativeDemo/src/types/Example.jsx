@@ -80,7 +80,7 @@ export default class Example extends Component {
     render() {
         const {DataView, buttonsTemplate, formClass, value = {}, containerClass, headingClass} = this.props;
         const {example = {}} = value;
-        return (<ScrollView style={containerClass}>
+        return (<View style={containerClass}>
             <Text key="txt-name" style={headingClass}>{example.name}</Text>
             <View key="view-form" style={formClass}>
                 <Form key="example-form" schema={example.schema} valueManager={this._valueManager}>
@@ -89,6 +89,6 @@ export default class Example extends Component {
             </View>
             <RenderTemplate template={buttonsTemplate} buttons={this.buttons()}/>
             <JSONView key="schema-view" value={example.schema} label="Schema"/>
-        </ScrollView>);
+        </View>);
     }
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListView} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import {Form, loader, ValueManager, compileStyle} from 'subschema-native';
 import _examples from './examples';
 import Example from './types/Example';
@@ -34,8 +34,7 @@ const schema = {
             buttons: {buttons: []}
         }
     },
-    fieldsets: [{fields: ["examples"]}]
+    fieldsets: [ {fields: ["examples"]}]
 };
 const valueManager = ValueManager({examples});
-console.log('here');
-export default () => <Form schema={schema} valueManager={valueManager} loader={loader}/>
+export default  () => <Form schema={schema} valueManager={valueManager} loader={loader}/>

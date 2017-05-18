@@ -46,13 +46,9 @@ class AutocompleteItemTemplate extends PureComponent {
         if (!__html) {
             return null;
         }
-        return <Text style={itemClass} onPress={this.handleClick}>{__html}</Text>;
-
-
-        /* return (<TouchableHighlight style={ [itemClass, focus ? focusedClass : null]} collapsable={false}
-         underlayColor={this.props.underlayColor}>
-         <Text onPress={this.handleClick}>{__html}</Text>
-         </TouchableHighlight>)*/
+        return (<View style={itemClass} underlayColor={this.props.underlayColor}>
+            <Text onPress={this.handleClick}>{__html}</Text>
+        </View>)
     }
 }
 
@@ -328,6 +324,7 @@ export default class Autocomplete extends PureComponent {
             return null;
         }
         return <Suggestions
+            key="suggestions"
             style={this.props.suggestionsClass}
             suggestions={this.state.suggestions}
             template={this.props.itemTemplate}
@@ -357,7 +354,7 @@ export default class Autocomplete extends PureComponent {
             id
         };
         const Input = inputType;
-        return <View style={[namespaceClass, (suggestions.length > 0) ? foundClass : notFoundClass]}
+        return <View style={namespaceClass}
                      onLayout={this._layout}>
             <Input {...inputProps} key="input"/>
             {this.renderSuggestions()}

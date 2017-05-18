@@ -1,26 +1,38 @@
 export default ({
     namespace: {
-        zIndex: 2000,
-        overflow: 'visible'
-        //    flex: 1,
+        // flex: 1
+        zIndex: 1
+        //   zIndex: 9000,
         //        position: 'relative'
     },
     found: {},
     notFound: {},
     suggestions: {
-        position: 'absolute',
+         zIndex: 2,
+/*        position: 'absolute',
+
         left: 0,
-        // zIndex: 1000,
-        //  flex: 1,
-        top: '100%',
-        width: '100%',
-        height: 100,
-        backgroundColor: '#abc'
+        right: 0,
+        top: '100%',*/
+        backgroundColor: 'white',
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        borderColor: '#bbb',
+        borderWidth: 1,
+        borderTopWidth: 0,
+        margin: 0,
+        marginTop: -5,
+
     },
 
     focused: {},
     item: {
-        flex:1,
+        borderTopWidth: 1,
+        borderColor: '#bbb',
+        padding: 5,
+        marginBottom: 1,
+       // flex: 1
+
         /*   position: 'relative',
          borderBottomWidth: 1,
          borderColor: '#bbb',
