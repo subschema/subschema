@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
-import {View, ScrollView, Text} from 'react-native';
-import PropTypes from 'subschema-prop-types';
-import {styleClass} from 'subschema-native/lib/PropTypes';
-import {Form, RenderTemplate, ValueManager} from 'subschema-native';
+import React, {Component} from "react";
+import {Text, View} from "react-native";
+import PropTypes from "subschema-prop-types";
+import {styleClass} from "subschema-native/lib/PropTypes";
+import {Form, RenderTemplate, ValueManager} from "subschema-native";
+import SyntaxHighlighter from "react-native-syntax-highlighter";
+import {docco} from "react-syntax-highlighter/dist/styles";
 
-import JSONView from './JSONView';
+import JSONView from "./JSONView";
 
 export default class Example extends Component {
     static template = false;
@@ -88,7 +90,8 @@ export default class Example extends Component {
                 </Form>
             </View>
             <RenderTemplate template={buttonsTemplate} buttons={this.buttons()}/>
-            <JSONView key="schema-view" value={example.schema} label="Schema"/>
+            <SyntaxHighlighter language='json'
+                               style={docco}>{JSON.stringify(example.schema, null, 2)}</SyntaxHighlighter>
         </View>);
     }
 }

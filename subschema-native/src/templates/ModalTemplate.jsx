@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, StyleSheet, Text, View} from 'react-native';
+import {Modal, StyleSheet, Text, ScrollView, View} from 'react-native';
 import ButtonsTemplate from './ButtonsTemplate';
 import {styleClass} from '../PropTypes';
 import PropTypes from 'subschema-prop-types';
@@ -86,11 +86,11 @@ export default class ModalTemplate extends Component {
             visible={this.state.visible}>
             <View style={[overlayClass, backdropClass]}>
                 {this.renderCloseButton()}
-                <View style={[bodyClass, innerContainerTransparentClass]}>
+                <ScrollView style={[bodyClass, innerContainerTransparentClass]}>
                     <Text style={headerClass}>{title}</Text>
                     <View style={contentClass}>{children}</View>
                     {this.renderFooter(Buttons, buttons)}
-                </View>
+                </ScrollView>
             </View>
         </Modal>);
     }

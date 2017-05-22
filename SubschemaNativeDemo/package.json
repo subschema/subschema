@@ -13,10 +13,10 @@
   "dependencies": {
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0"
-   
   },
   "devDependencies": {
     "subschema-native-dev-support": "^2.0.0-1",
+    "react-native-syntax-highlighter": "^1.2.0",
     "haul-cli": "https://github.com/callstack-io/haul.git",
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
@@ -28,7 +28,6 @@
     "subschema-component-list": "^2.0.0-1",
     "subschema-prop-types": "^2.0.0-1",
     "subschema-dev-support": "^2.0.0-1",
-    "subschema-component-navigation": "^2.0.0-1",
     "history": "^4.6.1"
   },
   "jest": {
