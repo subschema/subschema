@@ -1,22 +1,24 @@
-import React, {PureComponent} from 'react';
-import {View, FlatList, TouchableHighlight, Text} from 'react-native';
+import React, {PureComponent} from "react";
+import {Text, View} from "react-native";
 import RenderTemplate from "subschema-core/lib/RenderTemplate";
-import PropTypes from 'subschema-prop-types';
-import {styleClass} from '../PropTypes';
+import PropTypes from "subschema-prop-types";
+import {styleClass} from "../PropTypes";
+
 
 class Suggestions extends PureComponent {
-    renderItem(item, index) {
-        return <RenderTemplate key={`suggestions-${index}`} {...this} data={item} focus={item.focus === index}/>
+    renderItem(data, index) {
+        return <RenderTemplate key={`suggestions-${index}`} {...this} data={data} focus={this.focus === index}/>
     };
 
     render() {
         const {suggestions, style, ...props} = this.props;
 
-        return <View style={style}>
+        return <View style={[style]}>
             {suggestions.map(this.renderItem, props)}
         </View>
     }
 }
+
 class AutocompleteItemTemplate extends PureComponent {
     static displayName = 'AutocompleteItemTemplate';
     static propTypes = {
@@ -320,7 +322,7 @@ export default class Autocomplete extends PureComponent {
 
     renderSuggestions() {
         const {suggestions = []} = this.state;
-        if (this.state.showing === false || suggestions.length === 0) {
+        if (this.state.showing === false) {
             return null;
         }
         return <Suggestions
@@ -354,7 +356,7 @@ export default class Autocomplete extends PureComponent {
             id
         };
         const Input = inputType;
-        return <View style={namespaceClass}
+        return <View style={namespaceClass} collapsable={false}
                      onLayout={this._layout}>
             <Input {...inputProps} key="input"/>
             {this.renderSuggestions()}

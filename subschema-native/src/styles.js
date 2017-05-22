@@ -1,25 +1,27 @@
-import {StyleSheet} from 'react-native';
-import ButtonsTemplate from './styles/ButtonsTemplate'
-import CollectionCreateTemplate from './styles/CollectionCreateTemplate'
-import ContentItemTemplate from './styles/ContentItemTemplate'
-import EditorTemplate from './styles/EditorTemplate'
-import FieldSetTemplate from './styles/FieldSetTemplate'
-import FormTemplate from './styles/FormTemplate'
-import Global from './styles/Global'
-import List from './styles/List'
-import ListItemTemplate from './styles/ListItemTemplate'
-import ModalTemplate from './styles/ModalTemplate'
-import SlideButtonTemplate from './styles/SlideButtonTemplate'
-import Text from './styles/Text'
-import WizardTemplate from './styles/WizardTemplate'
-import Radio from './styles/Radio';
-import RadioItemTemplate from './styles/RadioItemTemplate';
-import Autocomplete from './styles/Autocomplete';
+import {StyleSheet} from "react-native";
+import DateType from "./styles/Date";
+import ButtonsTemplate from "./styles/ButtonsTemplate";
+import CollectionCreateTemplate from "./styles/CollectionCreateTemplate";
+import ContentItemTemplate from "./styles/ContentItemTemplate";
+import EditorTemplate from "./styles/EditorTemplate";
+import FieldSetTemplate from "./styles/FieldSetTemplate";
+import FormTemplate from "./styles/FormTemplate";
+import Global from "./styles/Global";
+import List from "./styles/List";
+import ListItemTemplate from "./styles/ListItemTemplate";
+import ModalTemplate from "./styles/ModalTemplate";
+import SlideButtonTemplate from "./styles/SlideButtonTemplate";
+import Text from "./styles/Text";
+import WizardTemplate from "./styles/WizardTemplate";
+import Radio from "./styles/Radio";
+import RadioItemTemplate from "./styles/RadioItemTemplate";
+import Autocomplete from "./styles/Autocomplete";
 const Styles = {
     Autocomplete,
     ButtonsTemplate,
     CollectionCreateTemplate,
     ContentItemTemplate,
+    Date: DateType,
     EditorTemplate,
     FieldSetTemplate,
     FormTemplate,
@@ -29,7 +31,7 @@ const Styles = {
     ModalTemplate,
     SlideButtonTemplate,
     Text,
-    Password:Text,
+    Password: Text,
     Radio,
     RadioItemTemplate,
     WizardTemplate

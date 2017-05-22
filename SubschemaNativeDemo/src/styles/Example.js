@@ -13,7 +13,7 @@ export default ({
     form: {
         borderWidth: 1,
         width: '100%',
-        height: 300,
+        minHeight: 300,
         /*
          flex: 1,
          */

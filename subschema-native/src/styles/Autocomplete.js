@@ -1,16 +1,17 @@
 export default ({
     namespace: {
+        zIndex: 2,
+//        position:'absolute'
 //        flex: 1,
     },
     found: {},
     notFound: {},
     suggestions: {
-        /*
-         zIndex: 2,
-         position: 'absolute',
-         left: 0,
-         right: 0,
-         top: '100%',*/
+
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: '100%',
         backgroundColor: 'white',
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,

@@ -1,5 +1,7 @@
 export default ({
-    container: {},
+    container: {
+        zIndex: -1
+    },
     json: {
         padding: 10,
         margin: 10

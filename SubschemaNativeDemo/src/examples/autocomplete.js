@@ -5,7 +5,8 @@ export default ({
         schema: {
             'simple': {
                 type: 'Autocomplete',
-                options: ['aaaa', 'aaab', 'aba', 'baaa', 'caaa']
+                options: ['aaaa', 'aaab', 'aba', 'baaa', 'caaa'],
+                help:'type a'
             }
         }
     },

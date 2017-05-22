@@ -3,7 +3,7 @@ export default ({
     description: "Wizard template",
     value: {
         "name": "Joe",
-        "birthdate": "02/11",
+        "birthdate": "02/11/2017",
         "confirm": true
     },
     schema: {

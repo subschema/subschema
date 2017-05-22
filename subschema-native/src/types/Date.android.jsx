@@ -1,44 +1,59 @@
-import React, {Component} from 'react';
-import PropTypes from 'subschema-prop-types';
+import React, {Component} from "react";
+import PropTypes from "subschema-prop-types";
 
-import {DatePickerAndroid, StyleSheet} from 'react-native';
-
+import {DatePickerAndroid, StyleSheet} from "react-native";
+const dateType = PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.instanceOf(Date)]);
 export default class DateInputType extends Component {
     static propTypes = {
+        minDate: dateType,
+        maxDate: dateType,
+        mode: PropTypes.oneOf(['calendar', 'spinner', 'default']),
         onChange: PropTypes.valueEvent,
         onError: PropTypes.errorEvent
     };
-    state = {
-        simpleText: ''
+    static defaultProps = {
+        ...DatePickerAndroid.defaultProps
     };
 
-    showPicker = (event, stateKey = 'simple', options) => {
+
+    showPicker = (event, stateKey = 'simple', options = {}) => {
 
         const newState = {};
-        DatePickerAndroid.open(options).then(({action, year, month, day})=> {
+        DatePickerAndroid.open({
+            date: asDate(this.props.value),
+            minDate: this.props.minDate,
+            maxDate: this.props.maxDate,
+            mode: this.props.mode
+        }).then(({action, year, month, day}) => {
             try {
                 if (action === DatePickerAndroid.dismissedAction) {
                     newState[stateKey + 'Text'] = 'dismissed';
                 } else {
                     const date = new Date(year, month, day);
-                    newState[stateKey + 'Text'] = date.toLocaleDateString();
-                    newState[stateKey + 'Date'] = date;
+
                     this.props.onChange(date);
                 }
                 this.setState(newState);
             } catch (e) {
                 const {code, message} = e;
                 this.props.onError(e);
-                console.warn(`Error in example '${stateKey}': `, message);
             }
         });
     };
 
+    asDate(value) {
+        if (value == null) return new Date();
+        if (value instanceof Date) {
+            return value;
+        }
+        return new Date(value);
+    }
+
     render() {
-        var date = this.props.value || new Date();
+        const date = asDate(this.props.value);
         return <TouchableWithoutFeedback
             onPress={this.showPicker}>
-            <Text style={styles.text}>{this.state.simpleText}</Text>
+            <Text style={styles.text}>{date + ''}</Text>
         </TouchableWithoutFeedback>
     }
 
