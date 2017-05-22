@@ -15,7 +15,7 @@ import {
     byComponents
 } from 'subschema-test-support';
 
-import {templates,styles} from 'subschema-component-form';
+import {templates,types,styles} from 'subschema-component-form';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
 import {styles as listStyles, templates as listTemplates, types as listTypes} from 'subschema-component-list';
 
@@ -42,7 +42,7 @@ describe('types/List', function () {
 
         click(addBtn);
         var create = byComponent(root, CollectionCreateTemplate);
-        var input = byTag(create, 'input');
+        var input = findNode(byComponent(create, types.Text));
         Simulate.change(input, {target: {value: 'Hello, world ' + c}});
         var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate);
         expect(buttons[0]).toExist('buttons[0] does not exist');
@@ -137,10 +137,8 @@ describe('types/List', function () {
             expect(controlBtn(task, 'delete')).toNotExist();
         })
     });
-    //TODO - This shoes the double edit problem with strings.
-    it.skip('should render a list without data and add values', function () {
+    it('should render a list without data and add values', function () {
         const {Form, context} = newContext();
-
         var schema = {
             schema: {
                 tasks: {

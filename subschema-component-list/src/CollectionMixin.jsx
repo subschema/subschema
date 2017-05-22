@@ -76,7 +76,7 @@ export default class CollectionMixin extends Component {
         buttons: {
             buttonsClass: 'btn-group pull-right',
             buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                , {label: 'Save', type: 'submit', action: 'submit', buttonClass: 'btn-primary btn'}]
+                , {label: 'Save', type: 'submit', action: 'submit', primary:true, buttonClass: 'btn-primary btn'}]
         },
         ObjectType: UninjectedObjectType
     };
@@ -204,7 +204,7 @@ export default class CollectionMixin extends Component {
             //value fix.
             var clonedValue = !this.props.value ? this.createDefValue() : clone(this.props.value);
             if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
-                if (key) {
+                if (key != null) {
                     clonedValue[key] = value;
                     //if the key changed, remove the original.
                     if (origKey !== makeEditPid(currentPath)) {
@@ -240,6 +240,7 @@ export default class CollectionMixin extends Component {
         return (
             <RenderTemplate template={edit ? editTemplate : createTemplate} inline={edit ? this.props.inline : false}
                             create={edit ? false : create}
+                            onButtonClick={this.handleBtnClick}
                             title={this.props.title} key="addEditTemplate">
                 <ObjectType key="addEdit"
                             onButtonClick={this.handleBtnClick}
@@ -306,6 +307,7 @@ export default class CollectionMixin extends Component {
         return <RenderTemplate template={itemTemplate}
                                key={this.props.path + '.' + pos}
                                pos={pos}
+                               sectionId={sectionId}
                                path={ path(this.props.path, key)}
                                onMoveUp={this.handleMoveUp}
                                onMoveDown={this.handleMoveDown}

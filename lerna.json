@@ -24,7 +24,10 @@
     "subschema-component-navigation",
     "subschema-project",
     "subschema-component-playground",
-    "subschema-component-demo"
+    "subschema-component-demo",
+    "subschema-native-dev-support",
+    "subschema-native",
+    "SubschemaNativeDemo"
   ],
-  "version": "2.0.0-0"
+  "version": "2.0.0-1"
 }

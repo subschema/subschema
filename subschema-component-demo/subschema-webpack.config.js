@@ -1,7 +1,7 @@
 var path = require('path');
 var join = path.join.bind(path, __dirname);
-module.exports = function (config, opts) {
-    config.module.rules.push(
+module.exports =  function (options, webpack)  {
+    webpack.module.rules.push(
         {
             test: /\.md$/,
             include: [
@@ -13,13 +13,13 @@ module.exports = function (config, opts) {
         },
         {
             test: /\.lessp$/,
-            use: opts.useStyle('css-loader', opts.useLess, opts.usePostCss)
+            use: options.useStyle('css-loader', options.useLess, options.usePostCss)
         });
 
-    if (!config.externals.react) {
-        config.resolve.alias.react = join('node_modules', 'react');
-        config.resolve.alias['react-dom'] = join('node_modules', 'react-dom');
-        config.resolve.alias['prop-types'] = join('node_modules', 'prop-types');
+    if (!webpack.externals.react) {
+        webpack.resolve.alias.react = join('node_modules', 'react');
+        webpack.resolve.alias['react-dom'] = join('node_modules', 'react-dom');
+        webpack.resolve.alias['prop-types'] = join('node_modules', 'prop-types');
     }
-    return config;
+    return webpack;
 };

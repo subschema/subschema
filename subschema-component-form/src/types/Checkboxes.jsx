@@ -32,7 +32,7 @@ export default class Checkboxes extends Component {
     };
 
 
-    handleCheckChange = (e)=> {
+    handleCheckChange = (e) => {
         if (this.props.dataType === 'radio') {
             this.props.onChange(e.target.checked ? e.target.value : null);
             if (this.props.onBlur) {
@@ -54,7 +54,7 @@ export default class Checkboxes extends Component {
         this.props.onChange(newValues);
         this.props.onBlur();
 
-    }
+    };
 
 
     _createCheckbox(option, index, group) {
@@ -64,7 +64,7 @@ export default class Checkboxes extends Component {
         val = val == null ? label || labelHTML : val;
         label = labelHTML || label;
         const value = this.props.value;
-        const labelContent = label ? <span dangerouslySetInnerHTML={{__html:label}}/> : val;
+        const labelContent = label ? <span dangerouslySetInnerHTML={{__html: label}}/> : val;
         const opts = {
             onChange: this.handleCheckChange,
             name: group,
@@ -96,7 +96,7 @@ export default class Checkboxes extends Component {
      * @return {String} HTML
      */
     makeOptions(array, group) {
-        return array.map((option, index)=> option.group ? this._createGroup(option, index, group) : this._createCheckbox(option, index, group));
+        return array.map((option, index) => option.group ? this._createGroup(option, index, group) : this._createCheckbox(option, index, group));
     }
 
 

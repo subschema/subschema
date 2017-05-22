@@ -18,7 +18,9 @@ export default class RadioItemTemplate extends Component {
         Content: UninjectedContent,
         namespaceClass: "radio",
         checkedClass: "",
-        uncheckedClass: ""
+        uncheckedClass: "",
+        labelType: 'label',
+        wrapperType: 'div'
     };
 
     render() {
@@ -28,9 +30,9 @@ export default class RadioItemTemplate extends Component {
         checkedClass = checkedClass || '';
         label = typeof label === 'string' ? {
             className: [namespaceClass, checked ? checkedClass : uncheckedClass].join(' '),
-            type: 'div',
+            type: this.props.wrapperType,
             content: [{
-                type: 'label',
+                type: this.props.labelType,
                 className: '',
                 htmlFor: id,
                 //true -outputs child.

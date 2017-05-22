@@ -1,33 +1,10 @@
 var path = require('path');
 var fs = require('fs');
-var cwd = path.resolve.bind(path, process.cwd());
+var babelProcess = require('./babel-process');
+var babelrc = path.resolve(process.cwd(), '.babelrc');
 var conf;
-if (fs.existsSync(cwd('.babelrc'))) {
-    conf = require(cwd('.babelrc'));
-} else {
-    conf = require('./babelrc.json');
+if (fs.existsSync(babelrc)) {
+    conf = JSON.parse(fs.readFileSync(babelrc, 'utf8'));
 }
-
-function fix(prefix) {
-    return function (v) {
-        if (Array.isArray(v)) {
-            v[0] = require.resolve(`${prefix}-${v[0]}`);
-            return v;
-        }
-        return require.resolve(`${prefix}-${v}`);
-    }
-}
-//only needs to be set when using mocha,
-if (process.env.SUBSCHEMA_COVERAGE_LOAD_PLUGIN) {
-    conf.plugins.push([
-        "istanbul",
-        {
-            "exclude": [
-                "**/test/*-test.js"
-            ]
-        }
-    ]);
-}
-conf.plugins = conf.plugins.map(fix(`babel-plugin`));
-conf.presets = conf.presets.map(fix(`babel-preset`));
-module.exports = conf;
+//defaults to ./babelrc.json
+module.exports = babelProcess(conf, void(0), !!process.env.SUBSCHEMA_COVERAGE_LOAD_PLUGIN);

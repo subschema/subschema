@@ -30,8 +30,12 @@ export default class RadioInput extends Component {
         path: PropTypes.path
     };
 
+    renderInput(onChange, ret, val) {
+        return <input type="radio" onChange={onChange} {...ret} value={val}/>
 
-    handleCheckChange = (e)=> {
+    }
+
+    handleCheckChange = (e) => {
         //Make a radio behave like a checkbox when there is only 1.
         if (this.props.forceSelection === false || this.props.options && this.props.options.length === 1) {
             this.props.onChange(compare(e.target.value, this.props.value) ? null : e.target.value);
@@ -45,7 +49,7 @@ export default class RadioInput extends Component {
         const onChange = this.handleCheckChange;
         let {value, path, name, checkedClass} = this.props;
         name = name || path;
-        return options.map((option, index)=> {
+        return options.map((option, index) => {
             const {val, label, labelHTML, ...rest} = option;
             const ret = {
                 ...rest,
@@ -56,7 +60,7 @@ export default class RadioInput extends Component {
 
             return <RenderTemplate key={`radio-item-${index}`} template={this.props.itemTemplate} {...ret}
                                    checkedClass={checkedClass} label={label || labelHTML}>
-                <input type="radio" onChange={onChange} {...ret} value={val}/>
+                {this.renderInput(onChange, ret, val)}
             </RenderTemplate>
         }, this);
     };

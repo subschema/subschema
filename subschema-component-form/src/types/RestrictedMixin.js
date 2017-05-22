@@ -365,11 +365,11 @@ export default class RestrictedMixin extends Component {
     }
 
     componentDidMount() {
-        this.handleSelectionRange(this.state.caret);
+//        this.handleSelectionRange(this.state.caret);
     }
 
     componentDidUpdate() {
-        this.handleSelectionRange(this.state.caret);
+  //      this.handleSelectionRange(this.state.caret);
     }
 
     _handleProps(props) {

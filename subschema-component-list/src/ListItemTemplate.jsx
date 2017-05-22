@@ -96,7 +96,7 @@ export default class ListItemTemplate extends Component {
         return <li className={`${listGroupItemClass} ${(error ? hasErrorClass : '')}`}>
             { error ? <p ref="error" key="error" className={helpClass}>{error}</p> : null }
             <Buttons key="buttons" buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
-                     buttonsClass={ctrlButtonsClass} buttonContainerClass=" "/>
+                     buttonsClass={ctrlButtonsClass} />
             {this.props.children}
         </li>
 

@@ -1,32 +1,14 @@
 var path = require('path');
 var fs = require('fs');
 var babel = require('./babel-helper');
-var SUBSCHEMA_CONF = 'subschema-webpack.config.js';
-
-function project() {
-    return path.resolve(process.cwd(), path.join.apply(path, arguments));
-};
-
-var deps = require(project('./package.json'));
-
-function wrapFunc(f) {
-    if (!f) return;
-    return function (conf, opts) {
-        return f.call(this, conf, opts) || conf;
-    }
-}
-
-function set(obj, key, value) {
-    const keys = key.split('.');
-    const last = keys.pop();
-    let cobj = obj || {};
-    while (keys.length) {
-        const c = keys.shift();
-        cobj = cobj[c] || (cobj[c] = {});
-    }
-    obj[last] = value;
-    return obj;
-}
+var webpackUtils = require('./webpack-utils');
+var deps = webpackUtils.deps,
+    useAlias = webpackUtils.useAlias,
+    useExternals = webpackUtils.useExternals,
+    useExternalizePeers = webpackUtils.useExternalizePeers,
+    useCustomConf = webpackUtils.useCustomConf,
+    useDepAlias = webpackUtils.useDepAlias,
+    dependency = webpackUtils.dependency;
 
 function autoprefixer() {
     return [
@@ -41,63 +23,8 @@ function autoprefixer() {
     ];
 }
 
-function applyFuncs(f1, f2) {
-    f1 = f1 && (f1.default ? f1.default : f1);
-    f2 = f2 && (f2.default ? f2.default : f2);
-    if (!f2) {
-        return wrapFunc(f1);
-    }
-    if (!f1 && f2) {
-        return wrapFunc(f2);
-    }
-    if (!f1 && !f2) {
-        return null;
-    }
-    f1 = wrapFunc(f1);
-    f2 = wrapFunc(f2);
-    return function (conf, opts) {
-        //keep scope.
-        return f1.call(this, (f2.call(this, conf, opts)), opts);
-    }
-}
-var customConf = null;
-var alias = {};
-if (process.env.SUBSCHEMA_USE_ALIASES) {
-    process.env.SUBSCHEMA_USE_ALIASES.split(/,\s*/).forEach(function (key) {
-        var parts = key.split('=', 2);
-        this[parts[0]] = parts[1] || project('node_modules', parts[0]);
-    }, alias);
-}
-[deps.name].concat(Object.keys(deps.dependencies || {}), Object.keys(deps.devDependencies || {}), Object.keys(deps.peerDependencies || {})).reduce(function (ret, key) {
-    if (key in ret) return ret;
-    if (fs.existsSync(project('..', key, SUBSCHEMA_CONF))) {
-        customConf = applyFuncs(customConf, require(project('..', key, SUBSCHEMA_CONF)));
-        console.warn(`using custom config for ${key}`);
-    } else {
-        var resolvedTo;
-        try {
-            resolvedTo = require.resolve(`${key}/${SUBSCHEMA_CONF}`);
-        } catch (e) {
-            //swallow it probably does not exists.
-        }
-        if (resolvedTo) {
-            //don't swallow. because it does exist but theres a problem;
-            customConf = applyFuncs(customConf, require(resolvedTo));
-            console.warn(`using custom config for ${key}`);
-
-        }
-    }
-    if (/subschema(?!-dev-support$)/.test(key) && fs.existsSync(project('..', key, 'package.json'))) {
-        ret[key + '/lib/style.css'] = project('..', key, 'lib', 'style.css');
-        ret[key + '/lib'] = project('..', key, 'src');
-
-        ret[key] = project('..', key, 'src');
-    }
-    return ret;
-}, alias);
 
 var plugins = [];
-var externals = {};
 var opts = {
     isKarma: !!(process.env.SUBSCHEMA_KARMA),
     useCss: {
@@ -127,7 +54,7 @@ var opts = {
 
 if (process.env.SUBSCHEMA_NO_STYLE_LOADER) {
     var ExtractTextPlugin = require('extract-text-webpack-plugin');
-    const extractCSS = new ExtractTextPlugin(opts.useNameHash ? '[hash].style.css' : 'style.css');
+    var extractCSS = new ExtractTextPlugin(opts.useNameHash ? '[hash].style.css' : 'style.css');
     opts.useStyle = function useStyleExtractText() {
         return extractCSS.extract(Array.prototype.slice.call(arguments));
     };
@@ -148,37 +75,8 @@ if (process.env.SUBSCHEMA_USE_STATS_FILE) {
         }
     }))
 }
-if (process.env.SUBSCHEMA_USE_EXTERNALS) {
-    /**lodash : {
-    commonjs: "lodash",
-    amd: "lodash",
-    root: "_" // indicates global variable
-    lodash.commonjs=lodash,lodash.amd=lodash,lodash.root=lodash,
-    react,react-dom
-    {
-      react:react
-    }
-  }**/
-    externals = process.env.SUBSCHEMA_USE_EXTERNALS.split(/,\s*/).reduce(function (ret, key) {
-        const [k, v] = key.split(/\s*=\s*/, 2);
-        set(ret, k, v || k);
-        return ret;
-    }, {});
-}
-if (process.env.SUBSCHEMA_EXTERNALIZE_PEERS) {
-    var localPkg = path.resolve(process.cwd(), 'package.json');
-    var peers = require(localPkg).peerDependencies;
-    if (!peers) {
-        console.warn(`using --externalize-peers however there are no peerDependencies in ${localPkg}`);
-    } else {
-        Object.keys(peers).reduce(function (ret, key) {
-            if (!(key in ret)) {
-                ret[key] = key;
-            }
-            return ret;
-        }, externals);
-    }
-}
+
+var externals = useExternalizePeers(useExternals(externals));
 
 var webpack = {
     devServer: {
@@ -192,13 +90,12 @@ var webpack = {
     },
     resolve: {
         extensions: ['.js', '.jsx'],
-        alias
-
+        alias: useDepAlias(useAlias())
     },
     resolveLoader: {
         modules: [
             path.resolve(process.cwd(), "node_modules"),
-            path.resolve(__dirname, 'node_modules')
+            path.resolve(__dirname, 'node_modules'),
         ]
     },
     plugins,
@@ -292,8 +189,9 @@ if ((idx = process.argv.indexOf('--target')) != -1) {
     opts.target = process.argv[idx + 1];
 }
 
+var customConf = useCustomConf();
 if (customConf) {
-    webpack = customConf(webpack, opts);
+    webpack = customConf(opts, webpack);
 }
 //Think hard if this should be the default.
 if (!webpack.resolve.alias.subschema) {
