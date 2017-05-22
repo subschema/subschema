@@ -5,11 +5,13 @@ import DatePicker from "react-native-modal-datetime-picker";
 import {styleClass} from "../PropTypes";
 import moment from "moment";
 
+const {onConfirm, onCancel, ...propTypes} = DatePicker.propTypes;
+
 export default class DateInputType extends PureComponent {
     static displayName = 'Date';
 
     static propTypes = {
-        ...DatePicker.propTypes,
+        ...propTypes,
         onChange: PropTypes.valueEvent,
         containerStyle: styleClass,
         mode: PropTypes.oneOf(["date", "datetime", "time"])
