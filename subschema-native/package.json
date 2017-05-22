@@ -1,41 +1,41 @@
 {
   "name": "subschema-native",
   "description": "Subschema Native",
-  "version": "2.0.0-1",
+  "version": "2.0.0-2.0.0-3.0",
   "main": "lib/index",
   "scripts": {
     "test": "echo 'write some tests'; exit 0",
     "prepublish": "rimraf lib && subschema-babel"
   },
   "dependencies": {
-    "subschema-core": "^2.0.0-1",
-    "subschema-prop-types": "^2.0.0-1",
-    "subschema-component-autocomplete": "^2.0.0-1",
-    "subschema-component-wizard": "^2.0.0-1",
-    "subschema-component-form": "^2.0.0-1",
-    "subschema-processors": "^2.0.0-1",
-    "subschema-loader": "^2.0.0-1",
-    "subschema-validators": "^2.0.0-1",
-    "subschema-valuemanager": "^2.0.0-1",
-    "subschema-injection": "^2.0.0-1",
-    "subschema-component-list": "^2.0.0-1",
-    "subschema-utils": "^2.0.0-1",
-    "react-native-tab-view": "^0.0.63",
     "raf": "^3.1.0",
-    "tween-functions": "^1.0.1",
-    "react-native-modal-datetime-picker":"^4.6.0"
+    "react-native-modal-datetime-picker": "^4.6.0",
+    "react-native-tab-view": "^0.0.63",
+    "subschema-component-autocomplete": "^2.0.0-2.0.0-3.0",
+    "subschema-component-form": "^2.0.0-2.0.0-3.0",
+    "subschema-component-list": "^2.0.0-2.0.0-3.0",
+    "subschema-component-wizard": "^2.0.0-2.0.0-3.0",
+    "subschema-core": "^2.0.0-2.0.0-3.0",
+    "subschema-injection": "^2.0.0-2.0.0-3.0",
+    "subschema-loader": "^2.0.0-2.0.0-3.0",
+    "subschema-processors": "^2.0.0-2.0.0-3.0",
+    "subschema-prop-types": "^2.0.0-2.0.0-3.0",
+    "subschema-utils": "^2.0.0-2.0.0-3.0",
+    "subschema-validators": "^2.0.0-2.0.0-3.0",
+    "subschema-valuemanager": "^2.0.0-2.0.0-3.0",
+    "tween-functions": "^1.0.1"
   },
   "peerDependencies": {
-    "subschema-core": "*",
+    "prop-types": "*",
     "react": "*",
     "react-native": "*",
-    "prop-types": "*"
+    "subschema-core": "^2.0.0-2.0.0-3.0"
   },
   "devDependencies": {
-    "subschema-dev-support": "^2.0.0-1",
     "prop-types": "^15.5.8",
-    "react-native": "^0.44.0",
     "react": "^16.0.0-alpha.11",
-    "rimraf": "^2.6.1"
+    "react-native": "^0.44.0",
+    "rimraf": "^2.6.1",
+    "subschema-dev-support": "^2.0.0-2.0.0-3.0"
   }
 }

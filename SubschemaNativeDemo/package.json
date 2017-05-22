@@ -1,6 +1,6 @@
 {
   "name": "SubschemaNativeDemo",
-  "version": "0.0.1",
+  "version": "2.0.0-2.0.0-3.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -15,20 +15,20 @@
     "react-native": "0.44.0"
   },
   "devDependencies": {
-    "subschema-native-dev-support": "^2.0.0-1",
-    "react-native-syntax-highlighter": "^1.2.0",
-    "haul-cli": "https://github.com/callstack-io/haul.git",
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
+    "haul-cli": "https://github.com/callstack-io/haul.git",
+    "history": "^4.6.1",
     "jest": "19.0.2",
+    "react-native-syntax-highlighter": "^1.2.0",
     "react-test-renderer": "16.0.0-alpha.6",
-    "subschema-core": "^2.0.0-1",
-    "subschema-native": "^2.0.0-1",
-    "subschema-component-form": "^2.0.0-1",
-    "subschema-component-list": "^2.0.0-1",
-    "subschema-prop-types": "^2.0.0-1",
-    "subschema-dev-support": "^2.0.0-1",
-    "history": "^4.6.1"
+    "subschema-component-form": "^2.0.0-2.0.0-3.0",
+    "subschema-component-list": "^2.0.0-2.0.0-3.0",
+    "subschema-core": "^2.0.0-2.0.0-3.0",
+    "subschema-dev-support": "^2.0.0-2.0.0-3.0",
+    "subschema-native": "^2.0.0-2.0.0-3.0",
+    "subschema-native-dev-support": "^2.0.0-2.0.0-3.0",
+    "subschema-prop-types": "^2.0.0-2.0.0-3.0"
   },
   "jest": {
     "preset": "react-native"

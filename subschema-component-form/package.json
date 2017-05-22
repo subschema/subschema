@@ -1,6 +1,6 @@
 {
   "name": "subschema-component-form",
-  "version": "2.0.0-1",
+  "version": "2.0.0-2.0.0-3.0",
   "description": "Subschema Form and DOM support",
   "main": "lib/index.js",
   "scripts": {
@@ -21,18 +21,18 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema-core": "^2.0.0-1",
-    "subschema-css-bootstrap": "^2.0.0-1",
-    "subschema-dev-support": "^2.0.0-1",
-    "subschema-expression": "^2.0.0-1",
-    "subschema-injection": "^2.0.0-1",
-    "subschema-loader": "^2.0.0-1",
-    "subschema-processors": "^2.0.0-1",
-    "subschema-prop-types": "^2.0.0-1",
-    "subschema-test-support": "^2.0.0-1",
-    "subschema-transitions": "^2.0.0-1",
-    "subschema-utils": "^2.0.0-1",
-    "subschema-validators": "^2.0.0-1",
-    "subschema-valuemanager": "^2.0.0-1"
+    "subschema-core": "^2.0.0-2.0.0-3.0",
+    "subschema-css-bootstrap": "^2.0.0-2.0.0-3.0",
+    "subschema-dev-support": "^2.0.0-2.0.0-3.0",
+    "subschema-expression": "^2.0.0-2.0.0-3.0",
+    "subschema-injection": "^2.0.0-2.0.0-3.0",
+    "subschema-loader": "^2.0.0-2.0.0-3.0",
+    "subschema-processors": "^2.0.0-2.0.0-3.0",
+    "subschema-prop-types": "^2.0.0-2.0.0-3.0",
+    "subschema-test-support": "^2.0.0-2.0.0-3.0",
+    "subschema-transitions": "^2.0.0-2.0.0-3.0",
+    "subschema-utils": "^2.0.0-2.0.0-3.0",
+    "subschema-validators": "^2.0.0-2.0.0-3.0",
+    "subschema-valuemanager": "^2.0.0-2.0.0-3.0"
   }
 }

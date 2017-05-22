@@ -1,6 +1,6 @@
 {
   "name": "subschema-utils",
-  "version": "2.0.0-1",
+  "version": "2.0.0-2.0.0-3.0",
   "description": "Subschema Utils",
   "main": "lib/index.js",
   "scripts": {
@@ -15,6 +15,6 @@
     "expect": "^1.20.2",
     "lodash": "^4.17.4",
     "rimraf": "^2.6.1",
-    "subschema-dev-support": "^2.0.0-1"
+    "subschema-dev-support": "^2.0.0-2.0.0-3.0"
   }
 }

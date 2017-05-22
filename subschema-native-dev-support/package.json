@@ -1,6 +1,6 @@
 {
   "name": "subschema-native-dev-support",
-  "version": "2.0.0-1",
+  "version": "2.0.0-2.0.0-3.0",
   "bin": {
     "subschema-haul": "bin/subschema-haul.js"
   },
@@ -13,12 +13,9 @@
     "haul": "haul start"
   },
   "dependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0",
-    "babel-jest": "19.0.0",
-    "babel-preset-react-native": "1.9.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-jest": "19.0.0",
     "babel-loader": "7",
     "babel-plugin-istanbul": "^4.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1 ",
@@ -27,12 +24,15 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-react-native": "1.9.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-runtime": "^6.23.0",
     "haul-cli": "https://github.com/callstack-io/haul.git",
     "jest": "19.0.2",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.0",
     "react-test-renderer": "16.0.0-alpha.6",
-    "subschema-dev-support": "^2.0.0-1"
+    "subschema-dev-support": "^2.0.0-2.0.0-3.0"
   },
   "jest": {
     "preset": "react-native"
