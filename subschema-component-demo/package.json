@@ -1,6 +1,6 @@
 {
   "name": "subschema-component-demo",
-  "version": "2.0.0-2.0.0-3.0",
+  "version": "2.0.0",
   "description": "Subschema Demo",
   "scripts": {
     "karma": "subschema-karma",
@@ -13,26 +13,26 @@
   "dependencies": {
     "history": "^4.6.1",
     "lodash": "^4.17.4",
-    "subschema": "^2.0.0-2.0.0-3.0",
-    "subschema-component-autocomplete": "^2.0.0-2.0.0-3.0",
-    "subschema-component-form": "^2.0.0-2.0.0-3.0",
-    "subschema-component-modal": "^2.0.0-2.0.0-3.0",
-    "subschema-component-navigation": "^2.0.0-2.0.0-3.0",
-    "subschema-component-playground": "^2.0.0-2.0.0-3.0",
-    "subschema-component-wizard": "^2.0.0-2.0.0-3.0",
-    "subschema-core": "^2.0.0-2.0.0-3.0",
-    "subschema-css-bootstrap": "^2.0.0-2.0.0-3.0",
-    "subschema-expression": "^2.0.0-2.0.0-3.0",
-    "subschema-injection": "^2.0.0-2.0.0-3.0",
-    "subschema-loader": "^2.0.0-2.0.0-3.0",
-    "subschema-processors": "^2.0.0-2.0.0-3.0",
-    "subschema-prop-types": "^2.0.0-2.0.0-3.0",
-    "subschema-test-samples": "^2.0.0-2.0.0-3.0",
-    "subschema-test-support": "^2.0.0-2.0.0-3.0",
-    "subschema-transitions": "^2.0.0-2.0.0-3.0",
-    "subschema-utils": "^2.0.0-2.0.0-3.0",
-    "subschema-validators": "^2.0.0-2.0.0-3.0",
-    "subschema-valuemanager": "^2.0.0-2.0.0-3.0"
+    "subschema": "^2.0.0",
+    "subschema-component-autocomplete": "^2.0.0",
+    "subschema-component-form": "^2.0.0",
+    "subschema-component-modal": "^2.0.0",
+    "subschema-component-navigation": "^2.0.0",
+    "subschema-component-playground": "^2.0.0",
+    "subschema-component-wizard": "^2.0.0",
+    "subschema-core": "^2.0.0",
+    "subschema-css-bootstrap": "^2.0.0",
+    "subschema-expression": "^2.0.0",
+    "subschema-injection": "^2.0.0",
+    "subschema-loader": "^2.0.0",
+    "subschema-processors": "^2.0.0",
+    "subschema-prop-types": "^2.0.0",
+    "subschema-test-samples": "^2.0.0",
+    "subschema-test-support": "^2.0.0",
+    "subschema-transitions": "^2.0.0",
+    "subschema-utils": "^2.0.0",
+    "subschema-validators": "^2.0.0",
+    "subschema-valuemanager": "^2.0.0"
   },
   "peerDepenencies": {
     "react": "*",
@@ -43,9 +43,9 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema-dev-support": "^2.0.0-2.0.0-3.0",
-    "subschema-project": "^2.0.0-2.0.0-3.0",
-    "subschema-test-support": "^2.0.0-2.0.0-3.0"
+    "subschema-dev-support": "^2.0.0",
+    "subschema-project": "^2.0.0",
+    "subschema-test-support": "^2.0.0"
   },
   "subschema": {
     "include": [

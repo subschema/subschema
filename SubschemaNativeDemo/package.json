@@ -1,6 +1,6 @@
 {
   "name": "SubschemaNativeDemo",
-  "version": "2.0.0-2.0.0-3.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -22,13 +22,13 @@
     "jest": "19.0.2",
     "react-native-syntax-highlighter": "^1.2.0",
     "react-test-renderer": "16.0.0-alpha.6",
-    "subschema-component-form": "^2.0.0-2.0.0-3.0",
-    "subschema-component-list": "^2.0.0-2.0.0-3.0",
-    "subschema-core": "^2.0.0-2.0.0-3.0",
-    "subschema-dev-support": "^2.0.0-2.0.0-3.0",
-    "subschema-native": "^2.0.0-2.0.0-3.0",
-    "subschema-native-dev-support": "^2.0.0-2.0.0-3.0",
-    "subschema-prop-types": "^2.0.0-2.0.0-3.0"
+    "subschema-component-form": "^2.0.0",
+    "subschema-component-list": "^2.0.0",
+    "subschema-core": "^2.0.0",
+    "subschema-dev-support": "^2.0.0",
+    "subschema-native": "^2.0.0",
+    "subschema-native-dev-support": "^2.0.0",
+    "subschema-prop-types": "^2.0.0"
   },
   "jest": {
     "preset": "react-native"

@@ -1,6 +1,6 @@
 {
   "name": "subschema-native-dev-support",
-  "version": "2.0.0-2.0.0-3.0",
+  "version": "2.0.0",
   "bin": {
     "subschema-haul": "bin/subschema-haul.js"
   },
@@ -32,7 +32,7 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-test-renderer": "16.0.0-alpha.6",
-    "subschema-dev-support": "^2.0.0-2.0.0-3.0"
+    "subschema-dev-support": "^2.0.0"
   },
   "jest": {
     "preset": "react-native"

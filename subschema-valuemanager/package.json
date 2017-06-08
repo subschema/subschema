@@ -1,6 +1,6 @@
 {
   "name": "subschema-valuemanager",
-  "version": "2.0.0-2.0.0-3.0",
+  "version": "2.0.0",
   "description": "Subschema",
   "main": "lib/index.js",
   "scripts": {
@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "subschema-utils": "^2.0.0-2.0.0-3.0"
+    "subschema-utils": "^2.0.0"
   },
   "devDependencies": {
     "expect": "^1.20.2",
     "rimraf": "^2.6.1",
-    "subschema-dev-support": "^2.0.0-2.0.0-3.0"
+    "subschema-dev-support": "^2.0.0"
   }
 }
