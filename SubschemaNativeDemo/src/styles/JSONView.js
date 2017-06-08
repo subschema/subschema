@@ -1,6 +1,8 @@
 export default ({
     container: {
-        zIndex: -1
+        zIndex: -1,
+        flex:1,
+        height:'100%'
     },
     json: {
         padding: 10,

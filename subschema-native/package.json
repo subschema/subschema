@@ -29,7 +29,7 @@
     "prop-types": "*",
     "react": "*",
     "react-native": "*",
-    "subschema-core": "^2.0.0-2.0.0-3.0"
+    "subschema-core": "*"
   },
   "devDependencies": {
     "prop-types": "^15.5.8",

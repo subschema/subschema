@@ -27,10 +27,11 @@ export default class ModalTemplate extends Component {
         ...Modal.defaultProps,
         animationType: "slide",
         Buttons: 'ButtonsTemplate',
-        CloseButton: false
+        CloseButton: false,
+        transparent:false
     };
     state = {
-        visible: false
+        visible: false,
     };
 
     componentDidMount() {
@@ -75,12 +76,12 @@ export default class ModalTemplate extends Component {
     }
 
     render() {
-        const {Buttons, title, containerClass, animationType, legend, buttons, path, value, bodyClass, innerContainerTransparentClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+        const {CloseButton, Buttons, title, containerClass, animationType, legend, buttons, path, value, bodyClass, innerContainerTransparentClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
 
         return (<Modal
             {...rest}
             animationType={animationType}
-            transparent={this.state.transparent}
+            transparent={this.props.transparent}
             onRequestClose={this.handleClose}
             style={containerClass}
             visible={this.state.visible}>

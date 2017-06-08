@@ -1,16 +1,18 @@
-import React, {Component} from 'react';
-import PropTypes from 'subschema-prop-types';
-import {style} from '../PropTypes';
-import {ListView, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
-import {List as ListDom} from 'subschema-component-list';
-import {RenderTemplate} from 'subschema-core';
-import SlideButtonTemplate from '../templates/SlideButtonTemplate';
+import React, {Component} from "react";
+import {ListView, View} from "react-native";
+import {List as ListDom} from "subschema-component-list";
 export default class ListType extends ListDom {
     static defaultProps = {
         ...ListDom.defaultProps,
         itemTemplate: 'SlideButtonTemplate',
-        createTemplate: 'ModalTemplate',
-        editTemplate: 'ModalTemplate',
+        createTemplate: {
+            template: 'ModalTemplate',
+            transparent: true
+        },
+        editTemplate: {
+            template: 'ModalTemplate',
+            transparent: true
+        },
         buttons: {
             buttons: [{label: 'Cancel', action: 'cancel'}
                 , {label: 'Save', type: 'submit', action: 'submit', primary: true}]

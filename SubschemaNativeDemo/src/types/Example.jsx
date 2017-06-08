@@ -3,8 +3,6 @@ import {Text, View} from "react-native";
 import PropTypes from "subschema-prop-types";
 import {styleClass} from "subschema-native/lib/PropTypes";
 import {Form, RenderTemplate, ValueManager} from "subschema-native";
-import SyntaxHighlighter from "react-native-syntax-highlighter";
-import {docco} from "react-syntax-highlighter/dist/styles";
 
 import JSONView from "./JSONView";
 
@@ -23,6 +21,7 @@ export default class Example extends Component {
         buttonsTemplate: PropTypes.template,
         buttonClass: styleClass,
         buttonPressedClass: styleClass,
+        path: PropTypes.path
     };
 
     static defaultProps = {
@@ -90,8 +89,7 @@ export default class Example extends Component {
                 </Form>
             </View>
             <RenderTemplate template={buttonsTemplate} buttons={this.buttons()}/>
-            <SyntaxHighlighter language='json'
-                               style={docco}>{JSON.stringify(example.schema, null, 2)}</SyntaxHighlighter>
+            <DataView path={`${this.props.path}.example.schema`} label="Schema"/>
         </View>);
     }
 }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, View} from "react-native";
+import {View, Text} from "react-native";
 import PropTypes from "subschema-prop-types";
 import {styleClass} from "subschema-native/lib/PropTypes";
 import SyntaxHighlighter from "react-native-syntax-highlighter";
