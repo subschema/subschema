@@ -7,7 +7,7 @@
   "web": "dist/subschema-noreact.js",
   "webpack": "src/index.js",
   "scripts": {
-    "compile-default-loader": "rm -f lib/DefaultLoader.js*; ./bin/subschema-make-loader.js | subschema-babel --out-file ./lib/DefaultLoader.js",
+    "compile-default-loader": "rimraf -f lib/DefaultLoader.js*; ./bin/subschema-make-loader.js | subschema-babel --out-file ./lib/DefaultLoader.js",
     "compile-lib": "subschema-babel && yarn run compile-default-loader",
     "compile-server": "subschema-webpack --output-path lib --no-style-loader --target node --output-filename index.js --use-externals react,react-dom,fbjs",
     "compile-web": "SUBSCHEMA_USE_ALIASES=react,react-dom,prop-types subschema-webpack --devtool sourcemap -p  --output-path dist --no-externalize-peers --output-filename subschema.js",
@@ -19,16 +19,12 @@
     "clean": "rimraf ./lib ./dist"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.8",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "prop-types": "^15.5.0",
+    "react": "^15.5.0",
+    "react-dom": "^15.5.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "lodash": "^4.17.4",
-    "prop-types": "^15.5.8",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "rimraf": "^2.6.1",
     "subschema-component-autocomplete": "^2.0.0",
     "subschema-component-form": "^2.0.0",
     "subschema-component-list": "^2.0.0",
@@ -46,7 +42,13 @@
     "subschema-transitions": "^2.0.0",
     "subschema-utils": "^2.0.0",
     "subschema-validators": "^2.0.0",
-    "subschema-valuemanager": "^2.0.0",
+    "subschema-valuemanager": "^2.0.0"
+  },
+  "devDependencies": {
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "rimraf": "^2.6.1",
     "val-loader": "^1.0.2"
   },
   "subschema": {

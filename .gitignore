@@ -38,3 +38,4 @@ dist/*
 */.nyc_output
 */.happypack
 
+*/package-lock.json
