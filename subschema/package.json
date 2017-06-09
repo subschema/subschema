@@ -1,6 +1,6 @@
 {
   "name": "subschema",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Subschema",
   "main": "lib/index.js",
   "browser": "dist/subschema.js",
