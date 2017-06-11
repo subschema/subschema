@@ -1,6 +1,6 @@
 {
   "name": "subschema-project",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Subschema Project Generator",
   "main": "dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "lodash": "*",
     "react": "*",
     "react-dom": "*",
-    "subschema": "^2.0.2"
+    "subschema": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -39,8 +39,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema": "^2.0.2",
-    "subschema-test-samples": "^2.0.2",
+    "subschema": "^2.0.3",
+    "subschema-test-samples": "^2.0.3",
     "subschema-test-support": "^2.0.2",
     "subschema-utils": "^2.0.2",
     "subschema-valuemanager": "^2.0.2"
