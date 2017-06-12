@@ -1,51 +1,50 @@
-import React, {Component} from "react";
-import {noop} from "subschema-utils";
-import Dom from "subschema-component-form/lib/Dom";
-import RenderTemplate from "subschema-core/lib/RenderTemplate";
+import React, { Component } from 'react';
+import Dom from 'subschema-component-form/lib/Dom';
+import RenderTemplate from 'subschema-core/lib/RenderTemplate';
 import PropTypes from 'subschema-prop-types';
 
 export default class Autocomplete extends Component {
 
 
     static propTypes = {
-        inputType: PropTypes.type,
-        onChange: PropTypes.valueEvent,
-        onSelect: PropTypes.event,
-        minLength: PropTypes.number,
+        inputType       : PropTypes.type,
+        onChange        : PropTypes.valueEvent,
+        onSelect        : PropTypes.event,
+        minLength       : PropTypes.number,
         autoSelectSingle: PropTypes.bool,
-        useshowing: PropTypes.bool,
-        maxInputLength: PropTypes.number,
-        itemTemplate: PropTypes.template,
-        processor: PropTypes.processor,
-        showing: PropTypes.content,
-        foundClass: PropTypes.cssClass,
-        notFoundClass: PropTypes.cssClass,
-        options: PropTypes.options,
-        onInputChange: PropTypes.event,
-        style: PropTypes.style,
-        url: PropTypes.expression,
+        useshowing      : PropTypes.bool,
+        maxInputLength  : PropTypes.number,
+        itemTemplate    : PropTypes.template,
+        processor       : PropTypes.processor,
+        showing         : PropTypes.content,
+        foundClass      : PropTypes.cssClass,
+        notFoundClass   : PropTypes.cssClass,
+        options         : PropTypes.options,
+        onInputChange   : PropTypes.event,
+        style           : PropTypes.style,
+        url             : PropTypes.expression,
 
     };
 
     static defaultProps = {
-        country: 'US',
-        locale: 'en_US',
-        useshowing: true,
-        minLength: 1,
+        country       : 'US',
+        locale        : 'en_US',
+        useshowing    : true,
+        minLength     : 1,
         maxInputLength: 200,
-        itemTemplate: "AutocompleteItemTemplate",
-        inputType: {
-            type: 'Text',
-            propTypes: {value: PropTypes.any},
-            defaultProps: {value: ''}
+        itemTemplate  : "AutocompleteItemTemplate",
+        inputType     : {
+            type        : 'Text',
+            propTypes   : { value: PropTypes.any },
+            defaultProps: { value: '' }
         },
-        processor: 'OptionsProcessor',
-        showing: 'Searching...',
-        input: 'input',
-        inputValue: 'input'
+        processor     : 'OptionsProcessor',
+        showing       : 'Searching...',
+        input         : 'input',
+        inputValue    : 'input'
     };
 
-    state = {suggestions: [], showing: false, focus: -1};
+    state = { suggestions: [], showing: false, focus: -1 };
 
     componentWillMount() {
         this._processProps(this.props);
@@ -56,7 +55,8 @@ export default class Autocomplete extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if (nextState && nextState.suggestions && nextState.suggestions.length) {
+        if (nextState && nextState.suggestions
+            && nextState.suggestions.length) {
             this.bindDocument();
         } else {
             this.unbindDocument();
@@ -65,14 +65,14 @@ export default class Autocomplete extends Component {
 
 
     setValue(v) {
-        var p = this.processor();
+        var p     = this.processor();
         var value = p.value(v);
         var input = p.format(v);
         this.setState({
             value,
-            selected: v,
+            selected   : v,
             input,
-            showing: false,
+            showing    : false,
             suggestions: []
         });
     }
@@ -85,7 +85,8 @@ export default class Autocomplete extends Component {
     _processProps(props) {
         var value = props.value;
         if (value && value !== this.state.value) {
-            //see if we can get the formatted value from the value, may not work.
+            //see if we can get the formatted value from the value, may not
+            // work.
             var input = props.processor.format(value);
             if (input == null) {
                 //It didn't format to a value, go fetch it so we can display it.
@@ -95,13 +96,13 @@ export default class Autocomplete extends Component {
                     } else {
                         this.setState({
                             suggestions: o,
-                            showing: true
+                            showing    : true
                         });
                     }
 
                 });
             } else {
-                this.setState({input, value});
+                this.setState({ input, value });
             }
         }
     }
@@ -114,32 +115,34 @@ export default class Autocomplete extends Component {
      * If
      */
     hide = (selectValue) => {
-        var {selected, input, suggestions, focus} = this.state, i = 0, l, options, found = false;
-        suggestions = suggestions || [];
+        let { selected, input, suggestions, focus } = this.state,
+            i                                       = 0, l,
+            options, found                          = false;
+        suggestions                                 = suggestions || [];
         if (selectValue) {
 
 
-            var p = this.getProcessor();
+            const p = this.getProcessor();
             if (selectValue && focus > -1) {
 
                 selected = suggestions[focus];
             } else if (input == null || input.trim() === '') {
                 selected = null;
-                input = null;
+                input    = null;
             } else if (!selected || input !== selected.label) {
                 if (suggestions.length === 1) {
                     selected = suggestions[0];
-                    input = selected.label;
+                    input    = selected.label;
                 } else {
                     selected = null;
-                    options = suggestions;
-                    l = options.length;
+                    options  = suggestions;
+                    l        = options.length;
                     for (; i < l; i++) {
                         var opt = options[i];
                         if (opt.label === input) {
                             selected = opt;
-                            input = opt.label;
-                            found = true;
+                            input    = opt.label;
+                            found    = true;
                             break;
                         }
                     }
@@ -151,12 +154,21 @@ export default class Autocomplete extends Component {
             if (selected !== this.state.selected) {
                 this.onSelect(selected);
             } else {
-                if (this.props.onBlur)
-                    this.props.onBlur(selected && selected.val, this.props.value, this.props.name, this.props.path);
-                this.setState({suggestions: [], selected, input, showing: false, focus: -1});
+                if (this.props.onBlur) {
+                    this.props.onBlur(selected && selected.val,
+                        this.props.value, this.props.name, this.props.path);
+                }
+                this.setState({
+                    suggestions: [],
+                    selected,
+                    input,
+                    showing    : false,
+                    focus      : -1
+                });
             }
         } else {
-            this.setState({showing: false, focus: -1, suggestions: []}, this.un)
+            this.setState({ showing: false, focus: -1, suggestions: [] },
+                this.un)
         }
         //        this.props.onBlur();
     };
@@ -167,7 +179,7 @@ export default class Autocomplete extends Component {
             return;
         }
         this.unbindDocument();
-        this._bound = true;
+        this._bound                   = true;
         this._onDocumentClickListener =
             Dom.listen(this, 'click', this.handleDocumentClick);
 
@@ -199,7 +211,8 @@ export default class Autocomplete extends Component {
 
     handleDocumentEnter = (e) => {
 
-        if (e.keyCode === 13 && this.state.suggestions && this.state.suggestions.length) {
+        if (e.keyCode === 13 && this.state.suggestions
+            && this.state.suggestions.length) {
             e.preventDefault();
             e.stopPropagation();
             this.hide(true);
@@ -238,15 +251,15 @@ export default class Autocomplete extends Component {
         if (this.props.onSelect(o) === false) {
             return;
         }
-        var p = this.processor();
-        var value = p.value(o);
+        const p     = this.processor();
+        const value = p.value(o);
         if (this.props.onChange(value) !== false) {
             var input = p.format(o);
             this.setState({
                 suggestions: [],
-                showing: false,
-                focus: -1,
-                selected: o,
+                showing    : false,
+                focus      : -1,
+                selected   : o,
                 value,
                 input
             });
@@ -263,21 +276,23 @@ export default class Autocomplete extends Component {
             this._fetch.cancel();
         }
         const _this = this;
-        this._fetch = this.processor().fetch(this.props.url, input, this, (err, suggestions) => {
-            if (err) {
-                return;
-            }
-            if (_this.props.autoSelectSingle && suggestions && suggestions.length === 1) {
-                _this.onSelect(suggestions[0]);
-            } else {
-                _this.props.onInputChange(input);
-                _this.setState({
-                    suggestions: suggestions || [],
-                    showing: true,
-                    input
-                });
-            }
-        });
+        this._fetch = this.processor().fetch(this.props.url, input, this,
+            (err, suggestions) => {
+                if (err) {
+                    return;
+                }
+                if (_this.props.autoSelectSingle && suggestions
+                    && suggestions.length === 1) {
+                    _this.onSelect(suggestions[0]);
+                } else {
+                    _this.props.onInputChange(input);
+                    _this.setState({
+                        suggestions: suggestions || [],
+                        showing    : true,
+                        input
+                    });
+                }
+            });
     };
 
 
@@ -292,14 +307,14 @@ export default class Autocomplete extends Component {
                 case 'Up':
                 case 38:
                 case 'ArrowUp': {
-                    focus = Math.max(-1, focus - 1);
+                    focus  = Math.max(-1, focus - 1);
                     update = true;
                     break;
                 }
                 case 40:
                 case 'Down':
                 case 'ArrowDown': {
-                    focus = Math.min(s.length, focus + 1)
+                    focus  = Math.min(s.length, focus + 1)
                     update = true;
                     break;
                 }
@@ -309,8 +324,10 @@ export default class Autocomplete extends Component {
                         e.stopPropagation();
                     }
                     if (s.length) {
-                        this.handleSuggestionClick(s[Math.max(this.state.focus, 0)]);
-                        this.setState({suggestions: [], showing: false, focus: -1});
+                        this.handleSuggestionClick(
+                            s[Math.max(this.state.focus, 0)]);
+                        this.setState(
+                            { suggestions: [], showing: false, focus: -1 });
 
                         return;
                     }
@@ -320,7 +337,7 @@ export default class Autocomplete extends Component {
             }
             if (update) {
                 //e.preventDefault();
-                this.setState({focus});
+                this.setState({ focus });
             }
         }
     };
@@ -334,7 +351,7 @@ export default class Autocomplete extends Component {
         var items = event.clipboardData && event.clipboardData.items;
         items && items[0] && items[0].getAsString((input) => {
 
-            this.setState({input, suggestions: [], showing: false});
+            this.setState({ input, suggestions: [], showing: false });
         });
     };
 
@@ -342,10 +359,12 @@ export default class Autocomplete extends Component {
     handleBlur = (event) => {
         var suggestions = this.state.suggestions || [];
         if (suggestions.length === 1 && !this.state.selected) {
-            this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);
+            this.handleSuggestionClick(
+                suggestions[Math.max(0, this.state.focus)]);
         }
-        if (this.props.onBlur)
+        if (this.props.onBlur) {
             this.props.onBlur(event);
+        }
     };
 
     renderSuggestions() {
@@ -354,35 +373,40 @@ export default class Autocomplete extends Component {
 
             return null;
         }
-        var {focus, input} = this.state;
-        var processor = this.processor();
+        var { focus, input }      = this.state;
+        var processor             = this.processor();
         var handleSuggestionClick = this.handleSuggestionClick;
-        var {itemTemplate} = this.props;
+        var { itemTemplate }      = this.props;
         return <ul className={this.props.listGroupClass}>
-            {suggestions.map((item, i) => <RenderTemplate template={itemTemplate}
-                                                          key={`autocomplete-${i}`}
-                                                          focus={focus === i}
-                                                          value={input}
-                                                          processor={processor}
-                                                          onSelect={handleSuggestionClick}
-                                                          data={item}/>)}</ul>
+            {suggestions.map(
+                (item, i) => <RenderTemplate template={itemTemplate}
+                                             key={`autocomplete-${i}`}
+                                             focus={focus === i}
+                                             value={input}
+                                             processor={processor}
+                                             onSelect={handleSuggestionClick}
+                                             data={item}/>)}</ul>
 
 
     }
 
     render() {
-        const suggestions = this.state.suggestions || [];
-        const {foundClass, namespaceClass, inputType, id, input, notFoundClass} = this.props;
-        const inputProps = {
-            onPaste: this.handlePaste,
+        const suggestions                                                         = this.state.suggestions
+                                                                                    || [];
+        const { foundClass, namespaceClass, inputType, id, input, notFoundClass } = this.props;
+        const inputProps                                                          = {
+            onPaste  : this.handlePaste,
             onKeyDown: this.handleKeyUp,
-            onBlur: this.handleBlur,
-            onChange: this.handleChange,
-            value: this.state.input,
-            id
+            onBlur   : this.handleBlur,
+            onChange : this.handleChange,
+            value    : this.state.input,
+            id,
+            path     : `@${id}`
         };
-        var Input = inputType;
-        return <div className={`${namespaceClass} ${(suggestions.length > 0 ? foundClass : notFoundClass)}`}>
+        var Input                                                                 = inputType;
+        return <div
+            className={`${namespaceClass} ${(suggestions.length > 0 ? foundClass
+                : notFoundClass)}`}>
             <Input {...inputProps} ref="input"/>
             {this.renderSuggestions()}
         </div>
