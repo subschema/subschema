@@ -1,6 +1,6 @@
 {
   "name": "subschema-test-samples",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Subschema samples",
   "main": "lib/index.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema": "^2.0.3",
-    "subschema-component-autocomplete": "^2.0.2",
+    "subschema": "^2.0.4",
+    "subschema-component-autocomplete": "^2.0.4",
     "subschema-component-form": "^2.0.2",
     "subschema-component-list": "^2.0.2",
     "subschema-component-modal": "^2.0.2",
@@ -37,6 +37,6 @@
   "peerDependencies": {
     "react": "*",
     "react-dom": "*",
-    "subschema": "^2.0.3"
+    "subschema": "^2.0.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "SubschemaNativeDemo",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -26,7 +26,7 @@
     "subschema-component-list": "^2.0.2",
     "subschema-core": "^2.0.2",
     "subschema-dev-support": "^2.0.2",
-    "subschema-native": "^2.0.2",
+    "subschema-native": "^2.0.4",
     "subschema-native-dev-support": "^2.0.2",
     "subschema-prop-types": "^2.0.2"
   },

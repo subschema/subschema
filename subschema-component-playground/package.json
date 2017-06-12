@@ -1,6 +1,6 @@
 {
   "name": "subschema-component-playground",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "A tool for editing and playing with subschema components",
   "scripts": {
     "karma": "subschema-karma",
@@ -12,7 +12,7 @@
     "babel-standalone": "^6.24.0",
     "browser-filesaver": "^1.1.1",
     "codemirror": "^5.25.2",
-    "subschema-project": "^2.0.3",
+    "subschema-project": "^2.0.4",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
@@ -21,8 +21,8 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "subschema": "^2.0.3",
-    "subschema-component-autocomplete": "^2.0.2",
+    "subschema": "^2.0.4",
+    "subschema-component-autocomplete": "^2.0.4",
     "subschema-component-form": "^2.0.2",
     "subschema-component-list": "^2.0.2",
     "subschema-component-modal": "^2.0.2",
@@ -30,7 +30,7 @@
     "subschema-css-bootstrap": "^2.0.2",
     "subschema-dev-support": "^2.0.2",
     "subschema-prop-types": "^2.0.2",
-    "subschema-test-samples": "^2.0.3",
+    "subschema-test-samples": "^2.0.4",
     "subschema-test-support": "^2.0.2",
     "subschema-transitions": "^2.0.2",
     "subschema-valuemanager": "^2.0.2"
@@ -40,7 +40,7 @@
     "prop-types": "*",
     "react": "*",
     "react-dom": "*",
-    "subschema": "^2.0.3",
+    "subschema": "^2.0.4",
     "subschema-component-form": "^2.0.2",
     "subschema-css-bootstrap": "^2.0.2",
     "subschema-prop-types": "^2.0.2",
