@@ -3,6 +3,7 @@ import {resolveKey} from "subschema-utils";
 
 function handleErrorListeners(value, key, props, {valueManager, validate}) {
     const resolvedPath = resolveKey(props.path, value);
+
     let errors = valueManager.errorsFor(resolvedPath);
 
     //If we are validate mode and not having errors, we will validate.

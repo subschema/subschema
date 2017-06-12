@@ -65,9 +65,9 @@ export default class Autocomplete extends Component {
 
 
     setValue(v) {
-        var p     = this.processor();
-        var value = p.value(v);
-        var input = p.format(v);
+        const p     = this.processor();
+        const value = p.value(v);
+        const input = p.format(v);
         this.setState({
             value,
             selected   : v,
@@ -83,11 +83,11 @@ export default class Autocomplete extends Component {
      * @private
      */
     _processProps(props) {
-        var value = props.value;
+        let value = props.value;
         if (value && value !== this.state.value) {
             //see if we can get the formatted value from the value, may not
             // work.
-            var input = props.processor.format(value);
+            let input = props.processor.format(value);
             if (input == null) {
                 //It didn't format to a value, go fetch it so we can display it.
                 props.processor.fetch(props.url, value, this, (e, o) => {
@@ -138,7 +138,7 @@ export default class Autocomplete extends Component {
                     options  = suggestions;
                     l        = options.length;
                     for (; i < l; i++) {
-                        var opt = options[i];
+                        const opt = options[i];
                         if (opt.label === input) {
                             selected = opt;
                             input    = opt.label;
@@ -254,7 +254,7 @@ export default class Autocomplete extends Component {
         const p     = this.processor();
         const value = p.value(o);
         if (this.props.onChange(value) !== false) {
-            var input = p.format(o);
+            const input = p.format(o);
             this.setState({
                 suggestions: [],
                 showing    : false,
@@ -300,9 +300,9 @@ export default class Autocomplete extends Component {
         if (this.props.onKeyUp) {
             this.props.onKeyUp.call(this, e);
         }
-        var focus = this.state.focus, s = this.state.suggestions;
+        let focus = this.state.focus, s = this.state.suggestions;
         if (s && s.length) {
-            var update = false;
+            let update = false;
             switch (e.key || e.keyCode) {
                 case 'Up':
                 case 38:
@@ -348,7 +348,7 @@ export default class Autocomplete extends Component {
 
 
     handlePaste = (event) => {
-        var items = event.clipboardData && event.clipboardData.items;
+        const items = event.clipboardData && event.clipboardData.items;
         items && items[0] && items[0].getAsString((input) => {
 
             this.setState({ input, suggestions: [], showing: false });
@@ -357,7 +357,7 @@ export default class Autocomplete extends Component {
 
 
     handleBlur = (event) => {
-        var suggestions = this.state.suggestions || [];
+        const suggestions = this.state.suggestions || [];
         if (suggestions.length === 1 && !this.state.selected) {
             this.handleSuggestionClick(
                 suggestions[Math.max(0, this.state.focus)]);
@@ -368,15 +368,15 @@ export default class Autocomplete extends Component {
     };
 
     renderSuggestions() {
-        var suggestions = this.state.suggestions || [];
+        const suggestions = this.state.suggestions || [];
         if (this.state.showing === false || suggestions.length === 0) {
 
             return null;
         }
-        var { focus, input }      = this.state;
-        var processor             = this.processor();
-        var handleSuggestionClick = this.handleSuggestionClick;
-        var { itemTemplate }      = this.props;
+        const { focus, input }      = this.state;
+        const processor             = this.processor();
+        const handleSuggestionClick = this.handleSuggestionClick;
+        const { itemTemplate }      = this.props;
         return <ul className={this.props.listGroupClass}>
             {suggestions.map(
                 (item, i) => <RenderTemplate template={itemTemplate}
@@ -391,19 +391,23 @@ export default class Autocomplete extends Component {
     }
 
     render() {
-        const suggestions                                                         = this.state.suggestions
-                                                                                    || [];
-        const { foundClass, namespaceClass, inputType, id, input, notFoundClass } = this.props;
-        const inputProps                                                          = {
+        const suggestions = this.state.suggestions
+                            || [];
+        const {
+                  foundClass, namespaceClass, inputType, id,
+                  input, notFoundClass, placeholder
+              }           = this.props;
+        const inputProps  = {
             onPaste  : this.handlePaste,
             onKeyDown: this.handleKeyUp,
             onBlur   : this.handleBlur,
             onChange : this.handleChange,
             value    : this.state.input,
             id,
-            path     : `@${id}`
+            path     : `@${id}`,
+            placeholder
         };
-        var Input                                                                 = inputType;
+        const Input       = inputType;
         return <div
             className={`${namespaceClass} ${(suggestions.length > 0 ? foundClass
                 : notFoundClass)}`}>

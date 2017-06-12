@@ -1,22 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
-import {PropTypes as NavTypes} from 'subschema-component-navigation';
-import {SubschemaPlayground as UninjectedSubschemaPlayground} from 'subschema-component-playground';
+import { PropTypes as NavTypes } from 'subschema-component-navigation';
+import { SubschemaPlayground as UninjectedSubschemaPlayground } from 'subschema-component-playground';
 
 export default class Example extends Component {
 
     static contextTypes = PropTypes.contextTypes;
 
     static propTypes = {
-        example: PropTypes.string,
+        example            : PropTypes.string,
         SubschemaPlayground: PropTypes.injectClass,
-        conf: PropTypes.any,
-        useData: NavTypes.queryExists,
-        useErrors: NavTypes.queryExists
+        conf               : PropTypes.any,
+        useData            : NavTypes.queryExists,
+        useErrors          : NavTypes.queryExists,
+        onSubmit           : PropTypes.valueEvent,
     };
 
     static defaultProps = {
-        SubschemaPlayground: UninjectedSubschemaPlayground
+        SubschemaPlayground: UninjectedSubschemaPlayground,
+        onSubmit           : "submit"
     };
 
     constructor(props, context, ...args) {
@@ -39,13 +41,24 @@ export default class Example extends Component {
         </div>
     }
 
+    handleSubmit = (e, err, value) => {
+        e && e.preventDefault();
+        console.log(err, value);
+        const error = err && Object.keys(err).length;
+        this.props.onSubmit({
+            error: error ? err : null,
+            value
+        });
+    };
 
     renderEdit() {
-        const {SubschemaPlayground} = this.props;
-        const {schema, setupTxt, props, description, data, imports, errors} = this.conf || {};
+        const { SubschemaPlayground }                                         = this.props;
+        const { schema, setupTxt, props, description, data, imports, errors } = this.conf
+                                                                                || {};
         return <div className='sample-example-playground'>
             <SubschemaPlayground key={'form-' + this.props.example}
                                  theme='monokai'
+                                 onSubmit={this.handleSubmit}
                                  expandTxt="Show Example Code"
                                  collapseTxt="Hide Example Code"
                                  filename={`Example ${this.props.example}`}
