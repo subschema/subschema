@@ -34,7 +34,7 @@ describe('subschema-test-samples/Questionaire', function () {
         ButtonTemplate = loader.loadTemplate('ButtonTemplate');
     });
 
-    it('should render a Mixed with data', function () {
+    it.only('should render a Mixed with data', function () {
         const form = into(<Form
             schema={Questionaire.schema}
             value={Questionaire.data}

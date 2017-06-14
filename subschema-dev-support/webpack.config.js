@@ -202,7 +202,4 @@ if (!webpack.resolve.alias.subschema) {
     }
 }
 
-if (process.env.SUBSCHEMA_DEBUG) {
-    console.warn('webpack', JSON.stringify(webpack, null, 2));
-}
 module.exports = webpack;

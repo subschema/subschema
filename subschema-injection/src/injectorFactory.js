@@ -1,5 +1,8 @@
-import React, {Component} from "react";
-import {keyIn, onlyKeys, uniqueKeys, extendPrototype, listener, unmount, prop as property} from "./util";
+import React, { Component } from 'react';
+import {
+    extendPrototype, keyIn, listener, onlyKeys, prop as property, uniqueKeys,
+    unmount
+} from './util';
 
 
 export class BaseInjectComponent extends Component {
@@ -14,14 +17,17 @@ export class BaseInjectComponent extends Component {
     }
 
     render() {
-        const {_copyPropTypeKeys, Clazz} = this.constructor;
-        const props = onlyKeys(_copyPropTypeKeys, this.state, this.props);
+        const { _copyPropTypeKeys, Clazz } = this.constructor;
+        const props                        = onlyKeys(_copyPropTypeKeys,
+            this.state, this.props);
         return <Clazz {...props} {...this.state }>{this.props.children}</Clazz>
     }
 }
 
 function hasAnyKeys(obj) {
-    if (!obj) return false;
+    if (!obj) {
+        return false;
+    }
     return Object.keys(obj).length > 0;
 }
 function isIterable(obj) {
@@ -33,7 +39,9 @@ function isIterable(obj) {
 }
 export default function injector(resolvers = new Map()) {
     let resolveProp = function resolveProp(propType) {
-        if (propType == null) return propType;
+        if (propType == null) {
+            return propType;
+        }
         const resolved = resolvers.get(propType);
         return resolved;
     };
@@ -44,7 +52,8 @@ export default function injector(resolvers = new Map()) {
         } else if (resolvers && typeof resolvers.loadResolver == 'function') {
             resolveProp = resolvers.loadResolver;
         } else {
-            throw new Error('resolvers must be iterable or have a loadResolver function');
+            throw new Error(
+                'resolvers must be iterable or have a loadResolver function');
         }
     }
 
@@ -67,13 +76,13 @@ export default function injector(resolvers = new Map()) {
         extendPrototype,
         createWrapperClass(Clazz, copyPropTypeKeys){
 
-            const {name, displayName} = Clazz;
+            const { name, displayName } = Clazz;
             //BaseInjectComponent is just a marker class.
             class InjectedClass extends BaseInjectComponent {
-                static defaultProps = {};
-                static contextTypes = {};
-                static displayName = `${displayName || name}$Wrapper`;
-                static Clazz = Clazz;
+                static defaultProps      = {};
+                static contextTypes      = {};
+                static displayName       = `${displayName || name}$Wrapper`;
+                static Clazz             = Clazz;
                 static _copyPropTypeKeys = copyPropTypeKeys;
             }
             return InjectedClass
@@ -82,38 +91,48 @@ export default function injector(resolvers = new Map()) {
          * Injects properties based propType.
          *
          * @param Clazz - class to wrap.
-         * @param extraPropTypes - extra prop types if the component does not have the propType than it will use this propType, otherwise the
-         * the class'es default propType will be used.
-         * @param extraProps - If a component has a defaultProp than it will use that otherwise it will use this.
+         * @param extraPropTypes - extra prop types if the component does not
+         *     have the propType than it will use this propType, otherwise the
+         *     the class'es default propType will be used.
+         * @param extraProps - If a component has a defaultProp than it will
+         *     use that otherwise it will use this.
          * @returns {*}
          */
 
         inject(Clazz, extraPropTypes, extraProps){
-            const hasExtra = hasAnyKeys(extraPropTypes) || hasAnyKeys(extraProps);
+            const hasExtra = hasAnyKeys(extraPropTypes) || hasAnyKeys(
+                    extraProps);
 
-            const {defaultProps, propTypes, injectedProps, injectedPropTypes} = Clazz;
+            const { defaultProps, propTypes, injectedProps, injectedPropTypes } = Clazz;
 
-            const propTypeKeys = uniqueKeys(injectedProps, injectedPropTypes, propTypes, defaultProps, extraPropTypes);
+            const propTypeKeys = uniqueKeys(injectedProps, injectedPropTypes,
+                propTypes, defaultProps, extraPropTypes);
 
             const [...copyPropTypeKeys] = propTypeKeys;
 
-            const start = hasExtra ? this.createWrapperClass(Clazz, copyPropTypeKeys) : null;
+            const start = hasExtra ? this.createWrapperClass(Clazz,
+                copyPropTypeKeys) : null;
 
             const injected = propTypeKeys.reduce((injectedClass, key) => {
 
-                const resolver = this.resolveProp(keyIn(key, injectedPropTypes, propTypes, extraPropTypes));
+                const resolver = this.resolveProp(
+                    keyIn(key, injectedPropTypes, propTypes, extraPropTypes));
                 //resolver is null, nothing to do just return.
                 if (resolver == null) {
                     return injectedClass;
                 }
-                //injectedClass may be null if it didn't have any extras.  So we will create if it is.
-                injectedClass = injectedClass || this.createWrapperClass(Clazz, copyPropTypeKeys);
+                //injectedClass may be null if it didn't have any extras.  So
+                // we will create if it is.
+                injectedClass = injectedClass || this.createWrapperClass(Clazz,
+                        copyPropTypeKeys);
 
                 //Add default props to this thing.
-                injectedClass.defaultProps[key] = keyIn(key, injectedProps, defaultProps, extraProps);
+                injectedClass.defaultProps[key] =
+                    keyIn(key, injectedProps, defaultProps, extraProps);
 
                 //Resolver could return a different class.
-                const nextClass = resolver.call(Injector, injectedClass, key, propTypeKeys, Clazz);
+                const nextClass = resolver.call(Injector, injectedClass, key,
+                    propTypeKeys, Clazz);
 
                 //If a different class was null, return the original class.
                 return (nextClass == null) ? injectedClass : nextClass;

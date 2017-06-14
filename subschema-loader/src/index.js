@@ -1,181 +1,148 @@
-import {isArray, isString} from 'subschema-utils';
+import wrapLoader from './loader';
 import warning from 'subschema-utils/lib/warning';
 
-const concat = Function.apply.bind(Array.prototype.concat, []);
-
 const upFirst = (str) => `${str[0].toUpperCase()}${str.substring(1)}`;
-const addResolver = function () {
-    const map = [];
-    const recent = [];
-    const _api = {
-        listResolvers (){
-            return map.map(function ([propType, resolver]) {
-                return {propType, resolver};
-            });
-        },
-        loadResolver(_propType){
-            if (_propType == null) return;
-            for (let i = map.length - 1; i >= 0; --i) {
-                const c = map[i];
-                if (c[0] === _propType || c[0].resolver === _propType) {
-                    return c[1];
-                }
-            }
-        }
-    };
-    Object.assign(this, _api);
-    return function loader$addResolver(propType, resolver) {
-        if (!propType) return;
-        if (Array.isArray(propType) && !resolver) {
-            return loader$addResolver.call(this, propType[0], propType[1]);
-        }
-        const pType = typeof propType, rType = typeof resolver;
-        if (pType === 'function' && rType === 'function') {
-            map[map.length] = [propType, resolver];
-        } else if (pType === 'object' && rType === 'object') {
-            Object.keys(propType).forEach(function (key) {
-                if (propType[key] && resolver[key]) {
-                    if (propType[key].isRequired) {
-                        map[map.length] = [propType[key].isRequired, resolver[key]];
-                    }
-                    map[map.length] = [propType[key], resolver[key]];
-                }
-            });
-        }
-        this.addLoader(_api);
-        return _api;
-    }
-};
 
-export const LOADER_TYPES = [['Resolver', addResolver, null, null], 'Operator', 'Template', 'Processor', 'Type', 'Schema', 'Validator', 'Style', 'Transition'];
+export const LOADER_TYPES = ['Resolver', 'Operator', 'Template',
+    'Processor', 'Type', 'Schema', 'Validator',
+    'Style', 'Transition'];
 
-export const WarningLoader = LOADER_TYPES.reduce(function (ret, key) {
-    if (Array.isArray(key)) {
-        key = key[0];
-    }
-    ret[`load${upFirst(key)}`] = function (type) {
-        warning(false, 'unable to find "%s" named "%s', key, type);
-    };
-    return ret;
-}, {});
-export default function loaderFactory(loaders = []) {
-    const types = {load, list, add},
-        api = {
+/**
+ * Loaders allow for stacked resolution of Types, Template... and more.
+ * It is how subschema gets things from string form to object form.
+ */
+class LoaderFactory {
+    _loaders = new Set();
 
-            addLoader(loader){
-                if (loader == null) return loader;
-                if (isArray(loader)) {
-                    return loader.map(function (v) {
-                        return this.addLoader(v);
-                    }, this)
-                }
-                Object.keys(loader).forEach(function (key) {
-                    const parts = /^(load)(.+?)$/.exec(key);
-                    if (key in this && parts && parts.length > 2 && parts[1] in types) {
-                        this[key] = types[parts[1]](parts[2]);
-                    } else {
-                        //allow for an array of objects to be loaded.
-                        const _add = this[`add${upFirst(key)}`];
-                        if (typeof _add === 'function') {
-                            _add.call(api, loader[key]);
-                            //  warning(false, 'do not understand "%s"', key);
-                        }
-                    }
-                }, this);
+    /**
+     * Sets up the types
+     * @param type
+     */
+    loaderType(type) {
+        const addType    = `add${type}`,
+              listType   = `list${type}s`,
+              removeType = `remove${type}`,
+              loadType   = `load${type}`;
 
-                loaders.unshift(loader);
-                return loader;
-            },
-            removeLoader(loader){
-                var idx = loaders.indexOf(loader);
-                if (0 > idx) {
-                    return;
-                }
-                var ret = loaders.splice(idx, 1)[0];
-                if (ret && ret && ret.removeLoader) {
-                    ret.removeLoader();
-                }
-                return ret;
-            },
-
-            clearLoaders(){
-                var ret = loaders.concat();
-                loaders.length = 0;
-                return ret;
-            },
-            loaderType
+        /**
+         * Add is a little different.  It creates a "fake loader", in
+         * order to preserve order... Imagine if you will..
+         *
+         * EX*
+         *
+         * let l1 = loaderLoaderFactory([{type:{A:0}]);
+         * l1.addType({A:1});
+         * l1.addLoader({types:{A:2}})
+         * l1.loadType('A') === 2;
+         *
+         * @type {(...p1:*[])}
+         */
+        this[addType] = this[`${addType}s`] = (...args) => {
+            const wrapped = wrapLoader(...args);
+            const load    = {
+                [listType]  : wrapped.list,
+                [loadType]  : wrapped.load,
+                [removeType]: wrapped.remove
+            };
+            this._loaders.add(load);
+            return load;
         };
 
+        this[listType]   = () => {
+            const all = [];
+            this._loaders.forEach(function (loader) {
+                if (typeof loader[listType] == 'function') {
+                    all.push(...loader[listType]());
+                }
+            }, all);
+            return Array.from(new Set(all));
+        };
+        this[removeType] = (val) => {
+            this._loaders.forEach(function (loader) {
+                if (typeof loader[removeType] == 'function') {
+                    loader[removeType](val);
+                }
+            });
+        };
 
-    function list(method) {
-        var type = 'list' + method + 's';
-        return function loader$list() {
-            return concat(loaders.filter(function (v) {
-                return typeof v[type] === 'function'
-            }).map(function (v) {
-                return v[type]();
-            }));
-        }
-    }
-
-    function load(method) {
-        method = 'load' + method;
-        return function load$load(load) {
-            var i = 0, l = loaders.length, ret = null;
-            for (; i < l; i++) {
-                ret = loaders[i][method] && loaders[i][method].apply(this, arguments);
-                if (ret != null) {
-                    return ret;
+        this[loadType] = (key) => {
+            const arr = Array.from(this._loaders);
+            for (let i = arr.length; i-- > 0;) {
+                const l = arr[i];
+                if (typeof l[loadType] === 'function') {
+                    const c = l[loadType](key);
+                    if (!(c === void(0))) {
+                        return c;
+                    }
                 }
             }
         }
     }
 
-    function add(type) {
-        var listKey = 'list' + type + 's', loadKey = 'load' + type, lcType = type.toLowerCase();
-        return function loader$add(key, value) {
-            var map, _api = {};
-            warning(key, `key can not be null`);
-            if (isString(key)) {
-                map = {};
-                map[key] = value;
-            } else {
-                map = key;
-            }
-            _api[listKey] = function () {
-                return Object.keys(map).map(function (name) {
-                    var ret = {name};
-                    ret[lcType] = map[name];
-                    return ret;
-                });
-            };
-            _api[loadKey] = function (name) {
-                return map[name];
-            };
-            api.addLoader(_api);
-            return _api;
-        }
+    /**
+     * An array of loaders and loader_types.
+     * @param loaders
+     * @param types
+     */
+    constructor(loaders = [], types = LOADER_TYPES) {
+        warning(Array.isArray(loaders),
+            `subschema-loader requires an array as first argument`);
+
+        types.forEach(this.loaderType, this);
+        this.addLoaders(...loaders);
     }
 
+    /**
+     * Adds a loader.   If a loader is passed, it is just passed on.
+     * if an object is passed the keys are matched to the built in types
+     * and added.
+     *
+     * @param loader
+     * @returns {LoaderFactory}
+     */
+    addLoader = (loader) => {
+        if (loader == null) {
+            return this;
+        }
+        if (loader instanceof LoaderFactory) {
+            this._loaders.add(loader);
+            return loader;
+        }
+        Object.keys(loader).forEach(function (key) {
+            const ukey = `add${upFirst(key)}`;
+            this[ukey] && this[ukey](loader[key]);
+        }, this);
 
-    function loaderType(name, addF = add, loadF = load, listF = list) {
-        if (addF) {
-            this[`add${name}s`] = this[`add${name}`] = this::addF(name);
-        }
-        if (loadF) {
-            this[`load${name}`] = this::loadF(name);
-        }
-        if (listF) {
-            this[`list${name}s`] = this::listF(name);
-        }
         return this;
+    };
+
+    addLoaders   = (...loaders) => {
+        [].concat(...loaders).forEach(this.addLoader, this);
+        return this;
+    };
+    removeLoader = (loader) => {
+        this._loaders.delete(loader);
+        return this;
+    };
+}
+class Warning extends LoaderFactory {
+    constructor() {
+        super();
+        LOADER_TYPES.forEach(function (key) {
+            this[`load${key}`] = function (type) {
+                warning(false, 'unable to find "%s" named "%s', key, type);
+            };
+
+            this[`add${key}`] = this[`remove${key}`] = function () {
+                warning(false, 'add or remove "%s" called on warning loader',
+                    key);
+            }
+        }, this);
     }
+}
 
-    LOADER_TYPES.forEach(v => {
-        if (Array.isArray(v)) api::loaderType(...v);
-        else api::loaderType(v)
-    });
+export const WarningLoader = new Warning();
 
-
-    return api;
+export default function factory(loaders) {
+    return new LoaderFactory(loaders);
 }

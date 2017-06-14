@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
-import DomRadioItemTemplate from 'subschema-component-form/lib/templates/RadioItemTemplate';
 import PropTypes from 'subschema-prop-types';
 import {styleClass} from '../PropTypes';
 
