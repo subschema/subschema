@@ -1,6 +1,6 @@
 {
   "name": "subschema-component-autocomplete",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Subschema Autocomplete",
   "main": "lib/index.js",
   "scripts": {
@@ -14,30 +14,30 @@
     "prop-types": "*",
     "react": "*",
     "react-dom": "*",
-    "subschema-component-form": "^2.0.2",
-    "subschema-core": "^2.0.2",
-    "subschema-processors": "^2.0.2",
-    "subschema-prop-types": "^2.0.2",
-    "subschema-utils": "^2.0.2"
+    "subschema-component-form": "^2.0.5",
+    "subschema-core": "^2.0.5",
+    "subschema-processors": "^2.0.5",
+    "subschema-prop-types": "^2.0.5",
+    "subschema-utils": "^2.0.5"
   },
   "devDependencies": {
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema-component-form": "^2.0.2",
-    "subschema-core": "^2.0.2",
-    "subschema-css-bootstrap": "^2.0.2",
-    "subschema-dev-support": "^2.0.2",
-    "subschema-expression": "^2.0.2",
-    "subschema-injection": "^2.0.2",
-    "subschema-loader": "^2.0.2",
-    "subschema-processors": "^2.0.2",
-    "subschema-prop-types": "^2.0.2",
-    "subschema-test-support": "^2.0.2",
-    "subschema-transitions": "^2.0.2",
-    "subschema-utils": "^2.0.2",
-    "subschema-validators": "^2.0.2",
-    "subschema-valuemanager": "^2.0.2"
+    "subschema-component-form": "^2.0.5",
+    "subschema-core": "^2.0.5",
+    "subschema-css-bootstrap": "^2.0.5",
+    "subschema-dev-support": "^2.0.5",
+    "subschema-expression": "^2.0.5",
+    "subschema-injection": "^2.0.5",
+    "subschema-loader": "^2.0.5",
+    "subschema-processors": "^2.0.5",
+    "subschema-prop-types": "^2.0.5",
+    "subschema-test-support": "^2.0.5",
+    "subschema-transitions": "^2.0.5",
+    "subschema-utils": "^2.0.5",
+    "subschema-validators": "^2.0.5",
+    "subschema-valuemanager": "^2.0.5"
   }
 }
