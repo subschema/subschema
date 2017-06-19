@@ -20,7 +20,10 @@ const contents = (key, value) => {
     //Do propTypes to resolvers name pairing.
     if (typeof key === 'object' && typeof value === 'object') {
         return keys(key).reduce((ret, k) => {
-            ret.push(...contents(key[k], value[k]));
+            if ((k in key) && (k in value)) {
+                ret.push(...contents(key[k], value[k]),
+                    ...contents(k, value[k]));
+            }
             return ret;
         }, []);
     }

@@ -1,13 +1,16 @@
 "use strict";
 
-import PropTypes from "subschema-prop-types";
-import {resolveKey} from "subschema-utils";
+import PropTypes from 'subschema-prop-types';
+import { resolveKey } from 'subschema-utils';
 
-function resolve(value, key, props, {valueManager, noValidate}) {
-    if (typeof value === 'function') {
+function resolve(value, key, props, { valueManager, noValidate }) {
+    const valueIsFunction = typeof value === 'function';
+    if (valueIsFunction && ('defaultProps' in this.constructor)
+        && value !== this.constructor.defaultProps[key]) {
         return value;
     }
-    const resolvedPath = props.name || resolveKey(props.path, value);
+    const resolvedPath = ('name' in props) ? props.name : valueIsFunction
+        ? resolveKey(props.path) : resolveKey(props.path, value);
     return function targetEvent$resolve(e) {
         const value = valueManager.getValue();
         let errors;
@@ -21,7 +24,7 @@ function resolve(value, key, props, {valueManager, noValidate}) {
 export default function submit(Clazz, key) {
 
     Clazz.contextTypes.valueManager = PropTypes.valueManager;
-    Clazz.contextTypes.noValidate = PropTypes.bool;
+    Clazz.contextTypes.noValidate   = PropTypes.bool;
     Clazz::this.property(key, resolve)
 
 }

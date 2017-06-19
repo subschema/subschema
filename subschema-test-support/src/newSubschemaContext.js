@@ -15,10 +15,10 @@ const newSubschemaContext = (opts) => {
         valueManager,
         ValueManager = _ValueManager,
         loader = loaderFactory(),
-        injector = injectorFactory(),
+        _injectorFactory = injectorFactory,
         propTypes = _PropTypes,
         resolvers = _resolvers,
-        _Form = __Form,
+        Form = __Form,
         validators = _validators,
         types = _types,
         templates = _templates,
@@ -26,14 +26,9 @@ const newSubschemaContext = (opts) => {
         styles = {}
     } = opts || {};
 
-    class Form extends _Form {
-        static defaultValueManager = ValueManager;
-    }
-    Object.keys(resolvers).forEach(key => {
-        if (key in propTypes) {
-            injector.resolver(propTypes[key], resolvers[key]);
-        }
-    });
+
+    const injector = _injectorFactory(loader);
+    loader.addResolver(propTypes, resolvers);
     loader.addLoader(bootstrap);
     loader.addTemplate(templates);
     loader.addLoader(validators);
@@ -44,7 +39,8 @@ const newSubschemaContext = (opts) => {
     if (!valueManager) {
         valueManager = ValueManager();
     }
-    Form.defaultProps.injector = injector;
+    Form.defaultValueManager = ValueManager;
+    Form.defaultProps.injector = _injectorFactory;
     Form.defaultProps.loader = loader;
     return {
         Form,

@@ -1,7 +1,7 @@
 import _loaderFactory from 'subschema-loader';
 import _PropTypes from 'subschema-prop-types';
 import _tutils, {warning as _warning} from 'subschema-utils';
-import {injectorFactory, cachedInjector, stringInjector} from 'subschema-injection';
+import {injectorFactory, cachedInjector} from 'subschema-injection';
 
 import _Conditional from './Conditional';
 import _Content from './Content';
@@ -41,7 +41,7 @@ export const resolvers = _resolvers;
 export function newSubschemaContext(defaultLoaders = [],
                                     defaultResolvers = _resolvers,
                                     defaultPropTypes = _PropTypes,
-                                    defaultInjectorFactory = (loader, propTypes) => cachedInjector(stringInjector(injectorFactory(loader), propTypes)),
+                                    defaultInjectorFactory = (loader) => cachedInjector(injectorFactory(loader)),
                                     defaultValueManager,
                                     Subschema = {
                                         Conditional,
@@ -61,15 +61,13 @@ export function newSubschemaContext(defaultLoaders = [],
     const defaultLoader = loaderFactory(defaultLoaders);
     defaultLoader.addResolvers(defaultPropTypes, defaultResolvers);
 
-    //injector can take a loader use it.
-    const defaultInjector = defaultInjectorFactory(defaultLoader, defaultPropTypes);
 
     const formDefaultProps = rest.Form.defaultProps;
 
     //Form needs these to kick off the whole thing.  Its defaults can be overriden with
     // properties.
     rest.loader = formDefaultProps.loader = defaultLoader;
-    rest.injector = formDefaultProps.injector = defaultInjector;
+    rest.injector = formDefaultProps.injector = defaultInjectorFactory;
     rest.valueManager = formDefaultProps.valueManager = defaultValueManager();
     return rest;
 

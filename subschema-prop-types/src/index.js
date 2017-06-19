@@ -1,4 +1,7 @@
-import {string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOf, oneOfType} from "prop-types";
+import {
+    any, arrayOf, bool, func, instanceOf, node, number, object, oneOf,
+    oneOfType, shape, string
+} from 'prop-types';
 
 //we'll re-export these for convenience in the babel6 world.
 
@@ -8,11 +11,13 @@ function customPropType(type, name) {
         return type.apply(api, args);
     }
 
-    customPropType$return.isRequired = function customPropType$return$isRequired(...args) {
-        return type.isRequired.apply(type, args);
-    };
-    if (name)
+    customPropType$return.isRequired =
+        function customPropType$return$isRequired(...args) {
+            return type.isRequired.apply(type, args);
+        };
+    if (name) {
         customPropType$return.propTypeName = name;
+    }
 
     return customPropType$return;
 }
@@ -36,9 +41,11 @@ function propTypesToNames(props) {
         return ret;
     }, {});
 }
-const deprecated = function (message) {
+const deprecated  = function (message) {
     return function deprecated$propType(props, propName, componentName) {
-        return propName in props ? new Error(`DEPRECATED: ${message} in ${componentName}.propTypes.${propName}`) : void(0);
+        return propName in props ? new Error(
+            `DEPRECATED: ${message} in ${componentName}.propTypes.${propName}`)
+            : void(0);
     }
 };
 const conditional = oneOfType([string, shape({
@@ -51,9 +58,10 @@ const fields = customPropType(arrayOf(string), 'fields');
 
 const title = customPropType(oneOfType([string, bool]), 'title');
 
-const injector = shape({
+const injector        = shape({
     inject: func.isRequired
 });
+const injectorFactory = customPropType(func, 'injectorFactory');
 
 const blurValidate = customPropType(func, 'blurValidate');
 
@@ -69,7 +77,7 @@ const error = customPropType(any, 'error');
 
 const errors = customPropType(any, 'errors');
 
-const promise = shape({then: func});
+const promise = shape({ then: func });
 
 const id = customPropType(string, 'id');
 
@@ -137,9 +145,9 @@ const typeDescription = oneOfType([string, shape({
 })]);
 
 const _transitionTypes = oneOf(['appear', 'enter', 'leave']);
-const transition = oneOfType([string, shape({
+const transition       = oneOfType([string, shape({
     transition: string,
-    on: _transitionTypes
+    on        : _transitionTypes
 })]);
 
 /**
@@ -154,12 +162,12 @@ const transition = oneOfType([string, shape({
 const expression = customPropType(string, 'expression');
 
 const loader = shape({
-    loadTemplate: func,
-    loadType: func,
-    loadSchema: func,
+    loadTemplate : func,
+    loadType     : func,
+    loadSchema   : func,
     loadValidator: func,
     loadProcessor: func,
-    loadOperator: func
+    loadOperator : func
 });
 
 const valueManager = shape({
@@ -176,52 +184,53 @@ const valueManager = shape({
 
 let contentShape = {
     className: cssClass,
-    type: string,
-    children: bool
+    type     : string,
+    children : bool
 };
 
 let pContentShape = shape(contentShape);
 
-let contentType = oneOfType([pContentShape, string, bool, func, number, arrayOf(oneOfType([string, string, bool, number, func, pContentShape]))]);
+let contentType = oneOfType([pContentShape, string, bool, func, number, arrayOf(
+    oneOfType([string, string, bool, number, func, pContentShape]))]);
 
 contentShape.content = contentType;
 
 const content = contentType;
 
 const template = oneOfType([string, bool, shape({
-    template: oneOfType([string, bool, func]),
-    content: content,
+    template : oneOfType([string, bool, func]),
+    content  : content,
     className: cssClass
 }), func]);
 
 const button = oneOfType([string, shape({
-    onClick: event,
+    onClick    : event,
     buttonClass: cssClass,
-    action: string,
-    name: string,
-    value: string,
-    iconClass: cssClass
+    action     : string,
+    name       : string,
+    value      : string,
+    iconClass  : cssClass
 })]);
 
 const buttons = oneOfType([
     button,
     arrayOf(button),
     shape({
-        buttonsClass: cssClass,
-        onButtonClick: event,
-        buttons: oneOfType([arrayString, arrayOf(button)]),
-        buttonTemplate: template,
+        buttonsClass   : cssClass,
+        onButtonClick  : event,
+        buttons        : oneOfType([arrayString, arrayOf(button)]),
+        buttonTemplate : template,
         buttonsTemplate: template
     })
 ]);
 
 
 const fieldset = shape({
-    fields: arrayString,
-    legend: content,
+    fields   : arrayString,
+    legend   : content,
     className: cssClass,
-    buttons: buttons,
-    template: template
+    buttons  : buttons,
+    template : template
 });
 
 const literal = oneOfType([string, bool, number, instanceOf(Date)])
@@ -230,25 +239,25 @@ const options = oneOfType([
     arrayString,
     arrayOf(shape({
         label: string,
-        val: literal
+        val  : literal
     }))
 ]);
 
 const optionsGroup = oneOfType([
     arrayString,
     arrayOf(shape({
-        options: options,
-        group: string,
-        label: string,
+        options  : options,
+        group    : string,
+        label    : string,
         labelHTML: string,
-        val: literal
+        val      : literal
     }))
 ])
 
 const schema = oneOfType([string, object, shape({
-    fields: arrayString,
+    fields   : arrayString,
     fieldsets: oneOfType([arrayString, fieldset, arrayOf(fieldset)]),
-    schema: object,
+    schema   : object,
 })]);
 
 const array = arrayOf(any);
@@ -259,26 +268,26 @@ const operator = oneOfType([string, func, instanceOf(RegExp)]);
 
 const events = {
     onValidate: event,
-    onFocus: event,
-    onBlur: event,
-    onValid: event,
-    onChange: oneOfType([targetEvent, valueEvent])
+    onFocus   : event,
+    onBlur    : event,
+    onValid   : event,
+    onChange  : oneOfType([targetEvent, valueEvent])
 };
 
 const field = customPropType(any, 'field');
 
 const mixin = {
     events: events,
-    field: {
+    field : {
         ...events,
-        title: content,
-        help: content,
-        name: string,
+        title      : content,
+        help       : content,
+        name       : string,
         placeholder: placeholder,
-        dataType: dataType,
+        dataType   : dataType,
         editorClass: cssClass,
-        fieldClass: cssClass,
-        field: {}
+        fieldClass : cssClass,
+        field      : {}
     }
 };
 
@@ -290,8 +299,8 @@ const contextTypes = Object.freeze({
 
 
 const processor = oneOfType([string, shape({
-    fetch: func,
-    value: func,
+    fetch : func,
+    value : func,
     format: func
 })]);
 
@@ -299,13 +308,14 @@ const injectClass = oneOfType([
     func,
     shape({
         injectClass: func,
-        propTypes: object,
+        propTypes  : object,
         injectProps: object,
-        strict: bool
+        strict     : bool
     })
 ]);
 
 const api = {
+    injectorFactory,
     conditional,
     deprecated,
     transition,
@@ -360,7 +370,18 @@ const api = {
     contextTypes,
     processor,
     typeClass,
-    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
+    string,
+    bool,
+    number,
+    object,
+    func,
+    any,
+    node,
+    shape,
+    arrayOf,
+    instanceOf,
+    oneOfType,
+    oneOf
 
 };
 
@@ -404,6 +425,7 @@ export default
     fieldset,
     injectedClass,
     injector,
+    injectorFactory,
     literal,
     htmlFor,
     options,
@@ -426,5 +448,16 @@ export default
     style,
     transition,
     deprecated,
-    string, bool, number, object, func, any, node, shape, arrayOf, instanceOf, oneOfType, oneOf
+    string,
+    bool,
+    number,
+    object,
+    func,
+    any,
+    node,
+    shape,
+    arrayOf,
+    instanceOf,
+    oneOfType,
+    oneOf
 });

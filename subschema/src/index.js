@@ -23,7 +23,6 @@ export const injector = Subschema.injector;
 export const valueManager = Subschema.valueManager;
 export const loader = Subschema.loader;
 export const Form = Subschema.Form;
-export const stringInjector = Subschema.stringInjector;
 export const injectorFactory = Subschema.injectorFactory;
 export const RenderTemplate = Subschema.RenderTemplate;
 export const RenderContent = Subschema.RenderContent;

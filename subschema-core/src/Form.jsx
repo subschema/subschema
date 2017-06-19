@@ -1,41 +1,48 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
-import ObjectType from "./Object";
+import ObjectType from './Object';
 
 export default class Form extends Component {
-    static displayName = "Form";
+    static displayName       = "Form";
     static defaultValueManager;
-    static childContextTypes = {validate: PropTypes.bool, noValidate: PropTypes.bool, ...PropTypes.contextTypes};
+    static childContextTypes = {
+        validate  : PropTypes.bool,
+        noValidate: PropTypes.bool, ...PropTypes.contextTypes
+    };
 
     static propTypes = {
-        schema: PropTypes.schema.isRequired,
-        loader: PropTypes.loader,
-        injector: PropTypes.injector,
+        schema      : PropTypes.schema.isRequired,
+        loader      : PropTypes.loader,
+        injector    : PropTypes.injectorFactory,
         valueManager: PropTypes.valueManager,
-        template: PropTypes.string,
-        method: PropTypes.string,
-        action: PropTypes.string,
-        enctype: PropTypes.string,
+        template    : PropTypes.string,
+        method      : PropTypes.string,
+        action      : PropTypes.string,
+        enctype     : PropTypes.string,
         //handy submit handler.
-        onSubmit: PropTypes.event,
+        onSubmit    : PropTypes.event,
         //Set this to true if you don't want validation to run on submit.
-        noValidate: PropTypes.bool,
-        //Set this to true, if you want validators to be called against the current schema.  I.E. after a POST.
-        validate: PropTypes.bool
+        noValidate  : PropTypes.bool,
+        //Set this to true, if you want validators to be called against the
+        // current schema.  I.E. after a POST.
+        validate    : PropTypes.bool
     };
 
     static defaultProps = {
         fallbackTemplate: 'FormTemplate',
-        noValidate: false,
-        validate: false
+        noValidate      : false,
+        validate        : false
     };
 
     constructor(props, context, whatever) {
         super(props, context, whatever);
-        this.loader = props.loader;
-        this.injector = props.injector;
+        this.loader   = props.loader;
+        this.injector =
+            typeof props.injector === 'function' ? props.injector(this.loader)
+                : props.injector;
         if (!props.valueManager) {
-            this.valueManager = this.constructor.defaultValueManager(props.value, props.errors);
+            this.valueManager =
+                this.constructor.defaultValueManager(props.value, props.errors);
         } else {
             this.valueManager = props.valueManager;
             if (props.value) {
@@ -46,17 +53,19 @@ export default class Form extends Component {
             }
         }
         this.ObjectWrapper = this.injector.inject(ObjectType);
-        if (props.onSubmit)
-            this._submitListener = this.valueManager.addSubmitListener(null, props.onSubmit).remove;
+        if (props.onSubmit) {
+            this._submitListener = this.valueManager.addSubmitListener(null,
+                props.onSubmit).remove;
+        }
     }
 
     getChildContext() {
         return {
             valueManager: this.valueManager,
-            loader: this.loader,
-            injector: this.injector,
-            validate: this.props.validate,
-            noValidate: this.props.noValidate
+            loader      : this.loader,
+            injector    : this.injector,
+            validate    : this.props.validate,
+            noValidate  : this.props.noValidate
         };
     }
 
@@ -79,8 +88,13 @@ export default class Form extends Component {
         if (this.props.errors !== newProps.errors) {
             this.valueManager.setErrors(newProps.errors);
         }
-        if (this.props.injector !== newProps.injector) {
-            this.injector = newProps.injector;
+        if (this.props.injector !== newProps.injector || this.props.loader
+                                                         !== newProps.loader) {
+            if (typeof newProps.injector === 'function') {
+                this.injector = newProps.injector(newProps.loader);
+            } else {
+                this.injector = newProps.injector;
+            }
             this.ObjectWrapper = this.injector.inject(ObjectType);
         }
 
@@ -88,7 +102,8 @@ export default class Form extends Component {
             if (this._submitListener) {
                 this._submitListener();
             }
-            this._submitListener = this.valueManager.addSubmitListener(null, newProps.onSubmit).remove;
+            this._submitListener = this.valueManager.addSubmitListener(null,
+                newProps.onSubmit).remove;
         }
     }
 
@@ -107,8 +122,8 @@ export default class Form extends Component {
 
     render() {
 
-        const {valueManager, injector, loader, validate, template, onSubmit, ...props} = this.props;
-        const ObjectWrapper = this.ObjectWrapper;
+        const { valueManager, injector, loader, validate, template, onSubmit, ...props } = this.props;
+        const ObjectWrapper                                                              = this.ObjectWrapper;
         return <ObjectWrapper {...props} objectTemplate={template}/>
     }
 

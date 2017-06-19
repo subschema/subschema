@@ -10,5 +10,8 @@
     "lerna": "^2.0.0-rc.4",
     "lerna-relinker": "^1.4.0",
     "rimraf": "^2.6.1"
+  },
+  "publishConfig":{
+   "registry":"https://registry.npmjs.org/"
   }
 }

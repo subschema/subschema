@@ -1,14 +1,17 @@
 "use strict";
 
-import PropTypes from "subschema-prop-types";
-import {noop, resolveKey} from "subschema-utils";
+import PropTypes from 'subschema-prop-types';
+import { noop, resolveKey } from 'subschema-utils';
 
 function resolve(value, key, props, context) {
-    if (typeof value === 'function') {
+    const valueIsFunction = typeof value === 'function';
+    if (valueIsFunction && ('defaultProps' in this.constructor)
+        && value !== this.constructor.defaultProps[key]) {
         return value;
     }
-    const resolvedPath = resolveKey(props.path, value);
-    if (props.path == null && resolvedPath == null) {
+    const resolvedPath = valueIsFunction ? resolveKey(props.path) : resolveKey(
+        props.path, value);
+    if (resolvedPath == null) {
         return noop;
     }
     return function (v, overridePath) {

@@ -238,7 +238,7 @@ describe('subschema-core/Content', function () {
         };
         const {Form, loader, injector} = newSubschemaContext();
         ;
-        var form = into(<Form schema={schema} injector={injector} valueManager={ValueManager({hello: 'Joe'})}
+        var form = into(<Form schema={schema} valueManager={ValueManager({hello: 'Joe'})}
                               loader={loader}/>, true);
         var node = findNode(form);
         var str = node.innerHTML.replace(/\s?data-reactid=\"[^"]*\"/g, '').replace(/\s+?/g, ' ');

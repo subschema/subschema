@@ -3,11 +3,14 @@
 import PropTypes from 'subschema-prop-types';
 import { resolveKey } from 'subschema-utils';
 
-function resolve(value, key, props, {valueManager}) {
-    if (typeof value === 'function') {
+function resolve(value, key, props, { valueManager }) {
+    const valueIsFunction = typeof value === 'function';
+    if (valueIsFunction && ('defaultProps' in this.constructor)
+        && value !== this.constructor.defaultProps[key]) {
         return value;
     }
-    const resolvedPath = resolveKey(props.path, value);
+    const resolvedPath = valueIsFunction ? resolveKey(props.path) : resolveKey(
+        props.path, value);
     return function targetEvent$resolve(e) {
         valueManager.update(resolvedPath, e.target.value)
     }

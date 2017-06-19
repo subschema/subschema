@@ -149,6 +149,8 @@ describe('loadFactory', function () {
         loader.addResolvers(propTypes, resolvers);
         expect(loader.loadResolver(a)).toBe(c);
         expect(loader.loadResolver(b)).toBe(e);
+        //when mapped as such the type can be resolved via string.
+        expect(loader.loadResolver('b')).toBe(e);
 
     });
 

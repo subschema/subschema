@@ -8,7 +8,8 @@
   "plugins": [
     "transform-function-bind",
     "transform-class-properties",
-    "transform-async-to-generator"
+    "transform-async-to-generator",
+    "transform-export-extensions"
   ],
   "babelrc": false,
   "ignore": "**/lib/**"
