@@ -34,6 +34,12 @@ function propTypeToName(propType) {
         }
     }
 }
+function lazyFunction(f) {
+    return function () {
+        return f.apply(this, arguments);
+    };
+}
+
 
 function propTypesToNames(props) {
     return Object.keys(props).reduce((ret, k) => {
@@ -54,7 +60,7 @@ const conditional = oneOfType([string, shape({
 
 const domType = customPropType(node, 'domType');
 
-const fields = customPropType(arrayOf(string), 'fields');
+const fields = customPropType(oneOfType([string, arrayOf(string)]), 'fields');
 
 const title = customPropType(oneOfType([string, bool]), 'title');
 
@@ -66,6 +72,10 @@ const injectorFactory = customPropType(func, 'injectorFactory');
 const blurValidate = customPropType(func, 'blurValidate');
 
 const changeValidate = customPropType(func, 'changeValidate');
+
+
+const className = customPropType(oneOfType([string, arrayOf(string)]),
+    'className');
 
 const validate = customPropType(func, 'validate');
 
@@ -93,7 +103,7 @@ const typeClass = customPropType(cssClass, 'typeClass');
 
 const templateClass = customPropType(cssClass, 'templateClass');
 
-const injectedClass = customPropType(any, "injectedClass");
+const injectedClass = customPropType(any, 'injectedClass');
 
 const event = customPropType(func, 'event');
 
@@ -104,16 +114,17 @@ const path = customPropType(string, 'path');
 
 const placeholder = customPropType(string, 'placeholder');
 
-const arrayString = oneOfType([string, arrayOf(string)])
+const arrayString = oneOfType([string, arrayOf(string)]);
 
 const submit = customPropType(func, 'submit');
 
 const listener = customPropType(any, 'listener');
 
+const onButtonClick = customPropType(func, 'onButtonClick');
 /**
  * A valueEvent does not expect target.value
  */
-const valueEvent = customPropType(func, 'valueEvent');
+const valueEvent    = customPropType(func, 'valueEvent');
 
 /**
  * A targetEvent expects the first arg to have target.value
@@ -160,6 +171,15 @@ const transition       = oneOfType([string, shape({
  *
  */
 const expression = customPropType(string, 'expression');
+
+const renderedTemplate = customPropType(oneOfType([
+        string,
+        shape({
+            Template: func,
+            template: string
+        })
+    ]),
+    'renderedTemplate');
 
 const loader = shape({
     loadTemplate : func,
@@ -209,6 +229,7 @@ const button = oneOfType([string, shape({
     action     : string,
     name       : string,
     value      : string,
+    path       : path,
     iconClass  : cssClass
 })]);
 
@@ -224,16 +245,29 @@ const buttons = oneOfType([
     })
 ]);
 
+const fieldsets = (...args) => fieldset(...args);
+const fieldset  = oneOfType([
+    string,
+    shape({
+        fields,
+        legend   : content,
+        className: cssClass,
+        buttons  : buttons,
+        template : template,
+        fieldsets
+    }),
+    arrayOf(shape({
+        fields,
+        legend   : content,
+        className: cssClass,
+        buttons,
+        template,
+        fieldsets
+    }))
+]);
 
-const fieldset = shape({
-    fields   : arrayString,
-    legend   : content,
-    className: cssClass,
-    buttons  : buttons,
-    template : template
-});
+const literal = oneOfType([string, bool, number, instanceOf(Date)]);
 
-const literal = oneOfType([string, bool, number, instanceOf(Date)])
 
 const options = oneOfType([
     arrayString,
@@ -315,8 +349,10 @@ const injectClass = oneOfType([
 ]);
 
 const api = {
+    onButtonClick,
     injectorFactory,
     conditional,
+    className,
     deprecated,
     transition,
     injectClass,
@@ -381,7 +417,8 @@ const api = {
     arrayOf,
     instanceOf,
     oneOfType,
-    oneOf
+    oneOf,
+    renderedTemplate
 
 };
 
@@ -390,6 +427,7 @@ export default
     propTypesToNames,
     propTypeToName,
     customPropType,
+    className,
     conditional,
     blurValidate,
     changeValidate,
@@ -430,6 +468,7 @@ export default
     htmlFor,
     options,
     optionsGroup,
+    onButtonClick,
     schema,
     validators,
     operator,
@@ -459,5 +498,6 @@ export default
     arrayOf,
     instanceOf,
     oneOfType,
-    oneOf
+    oneOf,
+    renderedTemplate
 });

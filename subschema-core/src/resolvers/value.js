@@ -1,5 +1,3 @@
-"use strict";
-
 import PropTypes from 'subschema-prop-types';
 import {resolveKey} from 'subschema-utils';
 import isPlainObject from 'lodash/isPlainObject';

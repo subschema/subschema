@@ -30,7 +30,7 @@ describe('types/Checkboxes', function () {
             valueManager
         } = newSubschemaContext();
 
-        var root = into(<Form {...context} schema={{
+        var root = into(<Form valueManager={valueManager} schema={{
             schema: {
                 group1: {
                     options: ['one', 'two', 'three'],
@@ -63,7 +63,7 @@ describe('types/Checkboxes', function () {
             Form
         } = newSubschemaContext();
 
-        var root = into(<Form {...context} valueManager={valueManager} schema={{
+        var root = into(<Form valueManager={valueManager} schema={{
             schema: {
                 groupsOfGroups: {
                     title: 'Group of Groups',

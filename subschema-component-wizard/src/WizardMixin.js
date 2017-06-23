@@ -2,29 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import UninjectedField from 'subschema-core/lib/Field';
 import UninjectedFieldSet from 'subschema-core/lib/FieldSet';
-
+import {flattenFields as fields} from 'subschema-utils';
 function donner(d) {
     d && d();
 }
 
-function fields(feildset) {
-    if (!feildset)return [];
-    if (feildset.fields) {
-        return feildset.fields;
-    }
-    if (Array.isArray(feildset)) {
-        return feildset.reduce(function (ret, fs) {
-            ret.push(...fields(fs));
-            return ret;
-        }, []);
-    }
 
-    if (feildset.fieldsets) {
-        return fields(feildset.fieldsets);
-    }
-    return [];
-
-}
 export default class WizardMixin extends Component {
     static contextTypes = {
         valueManager: PropTypes.valueManager

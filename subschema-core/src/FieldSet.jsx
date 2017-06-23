@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
 import RenderContent from './RenderContent';
 import RenderTemplate from './RenderTemplate';
@@ -9,57 +9,53 @@ import RenderTemplate from './RenderTemplate';
  *
  */
 function cleanField(src) {
-    const {buttons, field, template, legend, transition, content, conditional, fieldsets, ...rest}= src;
+    const { buttons, field, template, legend, transition, content, conditional, fieldsets, ...rest } = src;
     return rest;
 }
+function hasCancel({ action }) {
+    return action === 'cancel' || action === 'close' || action === 'reset';
+}
 export default class FieldSet extends Component {
-    static displayName = "FieldSet";
-    static propTypes = {
-        fieldsets: PropTypes.arrayOf(PropTypes.shape({
-            field: PropTypes.field,
-            fieldsets: PropTypes.arrayOf(PropTypes.shape({
-                field: PropTypes.field
-            }))
-        })),
-        conditional: PropTypes.conditional,
-        buttons: PropTypes.any,
-        onButtonClick: PropTypes.event,
-        onCancel: PropTypes.event,
-        field: PropTypes.any,
-        legend: PropTypes.any,
-        template: PropTypes.template,
-        transition: PropTypes.transition,
+    static contextTypes = {
+        valueManager: PropTypes.valueManager
+    };
+    static displayName  = "FieldSet";
+    static propTypes    = {
+        fieldsets      : PropTypes.fieldset,
+        conditional    : PropTypes.conditional,
+        buttons        : PropTypes.buttons,
+        onButtonClick  : PropTypes.event,
+        onCancel       : PropTypes.event,
+        field          : PropTypes.any,
+        legend         : PropTypes.any,
+        template       : PropTypes.template,
+        transition     : PropTypes.transition,
         buttonsTemplate: PropTypes.template,
-        content: PropTypes.content
+        content        : PropTypes.content,
+        validate       : PropTypes.bool
     };
 
     static defaultProps = {
-        template: 'FieldSetTemplate',
+        template       : 'FieldSetTemplate',
         buttonsTemplate: 'ButtonsTemplate'
     };
 
-
-    renderButtons(buttons) {
-        if (!buttons) {
-            return null;
-        }
-        if (!buttons.buttons) {
-            buttons = {
-                buttons
-            };
-        }
-        return <RenderTemplate template={this.props.buttonsTemplate} key="buttons"
-                               onButtonClick={this.props.onButtonClick}
-                               onClick={this.props.onClick}  {...buttons}/>
-    }
-
-
     renderFieldSet(key) {
 
-        const {template,children, style, buttons, content, field, ...rest}  = this.props;
-        const renderedContent = content ? <RenderContent content={content}  key={`content-${key}`}/> : null;
-        return <RenderTemplate template={template} {...cleanField(field)} key={key}  {...rest} field={field}
-                               buttons={this.renderButtons(buttons)}
+        const { template, children, onButtonClick, buttonsTemplate, style, buttons, content, field, ...rest } = this.props;
+        if (buttons) {
+            if (!buttons.template) {
+                buttons.template = buttonsTemplate;
+            }
+            if (!buttons.onButtonClick) {
+                buttons.onButtonClick = onButtonClick;
+            }
+            rest.buttons = buttons;
+        }
+        const renderedContent = content
+            ? <RenderContent content={content} key={`content-${key}`}/> : null;
+        return <RenderTemplate template={template} {...cleanField(field)}
+                               key={key}  {...rest} field={field}
                                content={renderedContent}>
             {children}
         </RenderTemplate>
@@ -68,13 +64,13 @@ export default class FieldSet extends Component {
 
     render() {
         if (this.props.transition) {
-            const {Transition, ...transition} = this.props.transition;
+            const { Transition, ...transition } = this.props.transition;
             return (<Transition {...transition}>
                 {this.renderFieldSet('transition')}
             </Transition>);
         }
         if (this.props.conditional) {
-            const {Conditional, ...conditional} = this.props.conditional;
+            const { Conditional, ...conditional } = this.props.conditional;
             return (<Conditional {...conditional}>
                 {this.renderFieldSet('conditional')}
             </Conditional>);

@@ -404,10 +404,12 @@ export default class Autocomplete extends Component {
             onChange : this.handleChange,
             value    : this.state.input,
             id,
-            path     : `@${id}`,
             placeholder
         };
         const Input       = inputType;
+        if (Input && Input.Clazz) {
+            inputProps.path = `@${id}`;
+        }
         return <div
             className={`${namespaceClass} ${(suggestions.length > 0 ? foundClass
                 : notFoundClass)}`}>

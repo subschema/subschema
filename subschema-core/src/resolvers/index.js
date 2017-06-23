@@ -33,9 +33,15 @@ import typeClass from './typeClass';
 import validate from './validate';
 import value from './value';
 import valueEvent from './valueEvent';
+import className from './className';
+import buttons from './buttons';
+import renderedTemplate from './renderedTemplate';
+
 export default({
+    buttons,
     blurValidate,
     changeValidate,
+    className,
     conditional,
     content,
     dataType,
@@ -57,6 +63,7 @@ export default({
     operator,
     options,
     processor,
+    renderedTemplate,
     schema,
     style,
     submit,

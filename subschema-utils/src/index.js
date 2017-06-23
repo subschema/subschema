@@ -14,17 +14,37 @@ import each from 'lodash/each';
 import values from 'lodash/values';
 import warning from './warning';
 
-const FREEZE_OBJ = Object.freeze({});
-const FREEZE_ARR = Object.freeze([]);
-const flatten = Function.apply.bind(Array.prototype.concat, []);
-const push = Function.apply.bind(Array.prototype.push);
-const slice = Function.call.bind(Array.prototype.slice);
+export const FREEZE_OBJ = Object.freeze({});
+export const FREEZE_ARR = Object.freeze([]);
+export const flatten    = Function.apply.bind(Array.prototype.concat, []);
+export const push       = Function.apply.bind(Array.prototype.push);
+export const slice      = Function.call.bind(Array.prototype.slice);
 
-function returnFirst(value) {
+export function returnFirst(value) {
     return value;
 }
 
-function resolveKey(path, key) {
+export function flattenFields(feildset) {
+    if (!feildset) {
+        return [];
+    }
+    if (feildset.fields) {
+        return feildset.fields;
+    }
+    if (Array.isArray(feildset)) {
+        return feildset.reduce(function (ret, fs) {
+            ret.push(...flattenFields(fs));
+            return ret;
+        }, []);
+    }
+
+    if (feildset.fieldsets) {
+        return flattenFields(feildset.fieldsets);
+    }
+    return [];
+
+}
+export function resolveKey(path, key) {
     if (!key) {
         return path;
     }
@@ -32,7 +52,7 @@ function resolveKey(path, key) {
         return key;
     }
     var parts = path ? path.split('.') : [];
-    key = key.substring(1);
+    key       = key.substring(1);
     while (key[0] === '.') {
         key = key.substring(1);
         parts.pop();
@@ -43,7 +63,7 @@ function resolveKey(path, key) {
     return parts.length === 0 ? null : parts.join('.');
 }
 
-function result(scope, key) {
+export function result(scope, key) {
     if (!key) {
         return null;
     }
@@ -56,18 +76,20 @@ function result(scope, key) {
     return key;
 }
 
-function path() {
+export function path() {
     var args = slice(arguments), l = args.length, i = 0, j = 0, p;
-    var ret = '';
+    var ret  = '';
     for (; i < l; i++) {
         p = args[i];
-        if (p == null || p === '') continue;
+        if (p == null || p === '') {
+            continue;
+        }
         ret += (j++ === 0) ? p : "." + p;
     }
     return ret;
 }
 
-function toArray(v) {
+export function toArray(v) {
     if (isArray(v)) {
         return v;
     }
@@ -80,11 +102,13 @@ function toArray(v) {
     return [v];
 }
 
-function xtend(dest, args) {
+export function xtend(dest, args) {
     dest = dest || {};
     for (var i = 1, l = arguments.length; i < l; i++) {
         var arg = arguments[1];
-        if (arg == null) continue;
+        if (arg == null) {
+            continue;
+        }
         for (var j in arg) {
             dest[j] = args[j];
         }
@@ -92,10 +116,14 @@ function xtend(dest, args) {
     return dest;
 }
 
-function clone(t) {
-    if (t == null) return t;
+export function clone(t) {
+    if (t == null) {
+        return t;
+    }
     var tt = typeof t;
-    if (tt == 'boolean' || tt === 'number' || tt === 'string' || tt === 'function' || tt === 'symbol') {
+    if (tt == 'boolean' || tt === 'number' || tt === 'string' || tt
+                                                                 === 'function'
+        || tt === 'symbol') {
         return t;
     }
     if (isArray(t)) {
@@ -107,44 +135,49 @@ function clone(t) {
     return extend({}, t);
 }
 
-function debounce(fn, to) {
+export function debounce(fn, to) {
     var ti;
 
     return function f() {
         clearTimeout(ti);
         var args = Array.prototype.slice.call(arguments), self = this;
-        ti = setTimeout(function () {
+        ti       = setTimeout(function () {
             fn.apply(self, args);
         }, to);
     }
 }
 
-function nullCheck(v) {
+export function nullCheck(v) {
     return v != null;
 }
 
-function emptyCheck(v) {
+export function emptyCheck(v) {
     return v != null && v.length > 0;
 }
 
-function uppercase(v) {
-    return v.toUpperCase();
+export function uppercase(v) {
+    return v == null ? null : ('' + v).toUpperCase();
 }
 
-function titlelize(value) {
-    return ((value || '') + '').replace(/([A-Z])/g, ' $1').replace(/^./, uppercase);
+export function titlelize(value) {
+    return ((value || '') + '').replace(/([A-Z])/g, ' $1')
+                               .replace(/^./, uppercase);
 }
 
-function applyFuncs(f1, f2) {
-    if (f1 && !f2) return f1;
-    if (!f1 && f2) return f2;
+export function applyFuncs(f1, f2) {
+    if (f1 && !f2) {
+        return f1;
+    }
+    if (!f1 && f2) {
+        return f2;
+    }
     return function applyFuncs$bothFuncs(...args) {
         f1.apply(this, args);
         f2.apply(this, args);
     };
 }
 
-function inherits(Clazz) {
+export function inherits(Clazz) {
     let Proto = this;
     do {
         if (Proto === Clazz) {
@@ -167,9 +200,13 @@ function inherits(Clazz) {
  * @param f2
  * @returns {function}
  */
-function nextFunc(f1, f2) {
-    if (f1 && !f2) return f1;
-    if (f2 && !f1) return f2;
+export function nextFunc(f1, f2) {
+    if (f1 && !f2) {
+        return f1;
+    }
+    if (f2 && !f1) {
+        return f2;
+    }
     return function nextFunc$wrapper(...args) {
         if (f1.apply(this, args) !== false) {
             return f2.apply(this, args);
@@ -177,9 +214,7 @@ function nextFunc(f1, f2) {
     };
 }
 
-//re-exports
 export {
-    warning,
     extend,
     isFunction,
     isString,
@@ -188,33 +223,15 @@ export {
     isBoolean,
     isArray,
     isNumber,
+    isObject,
     find,
     unique,
     noop,
     each,
     values,
-    isObject,
-    FREEZE_OBJ,
-    FREEZE_ARR,
-    flatten,
-    push,
-    slice,
-    resolveKey,
-    returnFirst,
-    result,
-    path,
-    toArray,
-    xtend,
-    clone,
-    debounce,
-    nullCheck,
-    emptyCheck,
-    uppercase,
-    titlelize,
-    applyFuncs,
-    nextFunc,
-    inherits
-};
+    warning
+}
+
 export default {
     warning,
     extend,
@@ -234,6 +251,7 @@ export default {
     FREEZE_OBJ,
     FREEZE_ARR,
     flatten,
+    flattenFields,
     push,
     resolveKey,
     slice,

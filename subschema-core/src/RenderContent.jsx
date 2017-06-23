@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * This is to be used to render properties with type content.
@@ -10,13 +10,13 @@ import React from "react";
  */
 
 function RenderContent(props) {
-    if (props == null) {
-        return props;
+    if (props == null || props.content == null) {
+        return null;
     }
 
-    const {content, type, ...oprops} = props;
-    const {Content, ...rest} = content;
-    return <Content content={rest} {...oprops}/>
+    const { content: { Content, ...content }, type, ...oprops } = props;
+
+    return <Content content={content} {...oprops}/>
 }
 RenderContent.displayName = 'RenderContent';
 export default RenderContent;

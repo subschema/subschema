@@ -18,9 +18,9 @@ describe('subschema-core/Field', function () {
     }];
 
     it('should render errors and friends', function () {
-        const {injector, valueManager, loader} = newSubschemaContext();
-        const context = {injector, valueManager, loader};
-        const WField = injector.inject(Field);
+        const {context} = newSubschemaContext();
+
+        const WField = context.injector.inject(Field);
         const field = {
             help: 'Hello',
             validators,
@@ -51,8 +51,8 @@ describe('subschema-core/Field', function () {
 
     });
     it('should not render template only field', function () {
-        const {valueManager, injector, loader} = newSubschemaContext();
-        const context = {valueManager, injector, loader};
+        const {context} = newSubschemaContext();
+        const {valueManager, injector, loader} = context ;
 
         loader.addType('TestText', class extends Component {
 
@@ -78,7 +78,8 @@ describe('subschema-core/Field', function () {
     });
 
     it('should render errors and friends with type custom typeTemplate', function () {
-        const {loader, injector,valueManager} = newSubschemaContext();
+        const {context} = newSubschemaContext();
+        const {valueManager, injector, loader} = context ;
         class JoeText extends Component {
             static template = {
                 template: 'JoeTemplate'

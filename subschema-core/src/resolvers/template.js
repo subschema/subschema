@@ -1,7 +1,4 @@
-"use strict";
-
 import PropTypes from 'subschema-prop-types';
-import {inherits, isFunction, FREEZE_OBJ} from 'subschema-utils';
 import warning from 'subschema-utils/lib/warning';
 
 export const settings = {

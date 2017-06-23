@@ -42,17 +42,11 @@ describe('resolvers/field', function () {
         }
     }
     it('should inject default type and template', function () {
-        const Subschema = newSubschemaContext();
-        const {loader, injector} = Subschema;
+        const {context, Form} = newSubschemaContext();
+        const {loader, valueManager, injector} = context;
         const Wrap = injector.inject(ResolverFieldTest);
 
-        const valueManager = ValueManager();
-
-        const inst = intoWithContext(<Wrap/>, {
-            valueManager,
-            loader,
-            injector
-        }, true, PropTypes.contextTypes)
+        const inst = intoWithContext(<Wrap/>, context, true, PropTypes.contextTypes)
 
         const test = byComponent(inst, ResolverFieldTest);
         const f = test.props.field;
@@ -61,8 +55,8 @@ describe('resolvers/field', function () {
 
     });
     it('should inject default type and overriden template', function () {
-        const Subschema = newSubschemaContext();
-        const {loader, injector} = Subschema;
+        const {context, Form} = newSubschemaContext();
+        const {loader, valueManager, injector} = context;
 
         class TestType extends Component {
             static template = {template: 'JoeTemplate', className: 'what'};
@@ -72,7 +66,6 @@ describe('resolvers/field', function () {
             }
         }
         const Wrap = injector.inject(ResolverFieldTest);
-        const valueManager = ValueManager();
 
         loader.addTemplate('JoeTemplate', JoeTemplate);
         loader.addType('TestType', TestType);
@@ -93,7 +86,8 @@ describe('resolvers/field', function () {
     });
     it('should inject default type and template is false', function () {
 
-        const {loader, injector} = newSubschemaContext();
+        const {context, Form} = newSubschemaContext();
+        const {loader, valueManager, injector} = context;
 
         class TestType extends Component {
             static template = false;
@@ -104,7 +98,6 @@ describe('resolvers/field', function () {
         }
         const Wrap = injector.inject(ResolverFieldTest);
 
-        const valueManager = ValueManager();
         loader.addTemplate('JoeTemplate', JoeTemplate);
         loader.addType('TestType', TestType);
 

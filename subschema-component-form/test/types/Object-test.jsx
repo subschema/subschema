@@ -30,8 +30,8 @@ describe('types/Object', function () {
     };
 
     it('should not other objects', function () {
-        const {Form, context} = newSubschemaContext();
-        var form = into(<Form {...context} schema={schema}/>, true);
+        const {Form, context, ...rest} = newSubschemaContext();
+        var form = into(<Form {...rest} schema={schema}/>, true);
 
         var obj = TestUtils.scryRenderedComponentsWithType(form, ObjectType)[0];
         var [n1, n2, n3] = TestUtils.scryRenderedComponentsWithType(obj, TextInput);
@@ -47,7 +47,7 @@ describe('types/Object', function () {
         Simulate.focus(findNode(n2));
     });
     it('should not validate nested objects', function () {
-        const {Form} = newSubschemaContext();
+        const {Form, context} = newSubschemaContext();
 
         var vm = ValueManager({}, {'nested.n2': [{message: 'borked'}]});
         var form = into(<Form schema={schema} valueManager={vm}/>, true);

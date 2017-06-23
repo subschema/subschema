@@ -1,50 +1,44 @@
 import React from 'react';
 import LessStyles from 'subschema-css-bootstrap';
 import {
-    byName,
-    into,
-    findNode,
-    TestUtils,
-    expect,
-    filterProp,
-    byClass,
-    Simulate,
-    click,
-    byTag,
-    byComponent,
-    byComponents
+    byClass, byComponent, byComponents, byName, click, expect, filterProp,
+    findNode, into, Simulate, TestUtils
 } from 'subschema-test-support';
 
-import {templates,types,styles} from 'subschema-component-form';
+import { styles, templates, types } from 'subschema-component-form';
 import newSubschemaContext from 'subschema-test-support/lib/newSubschemaContext';
-import {styles as listStyles, templates as listTemplates, types as listTypes} from 'subschema-component-list';
+import {
+    styles as listStyles, templates as listTemplates, types as listTypes
+} from 'subschema-component-list';
 
-const {ListItemTemplate, CollectionCreateTemplate,} = listTemplates;
-const {ButtonTemplate, EditorTemplate} = templates;
+const { ListItemTemplate, CollectionCreateTemplate, } = listTemplates;
+const { ButtonTemplate, EditorTemplate }              = templates;
 
 function controlBtn(task, action) {
     return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
 }
-function newContext(){
-    const ctx = newSubschemaContext({styles});
+function newContext() {
+    const ctx = newSubschemaContext({ styles });
     ctx.loader.addTemplate(listTemplates);
     ctx.loader.addType(listTypes);
     ctx.loader.addStyle(listStyles);
     ctx.loader.addStyle(LessStyles);
     return ctx;
 }
-describe('types/List', function () {
+describe.only('types/List', function () {
 
     this.timeout(50000);
     function add(root, c) {
-        var allBtns = TestUtils.scryRenderedComponentsWithType(root, ButtonTemplate);
-        var addBtn = findNode(allBtns[0]);
+        var allBtns = TestUtils.scryRenderedComponentsWithType(root,
+            ButtonTemplate);
+        var addBtn  = findNode(allBtns[0]);
 
         click(addBtn);
         var create = byComponent(root, CollectionCreateTemplate);
-        var input = findNode(byComponent(create, types.Text));
-        Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        var buttons = TestUtils.scryRenderedComponentsWithType(create, ButtonTemplate);
+        var input  = findNode(byComponent(create, types.Text));
+        Simulate.change(input, { target: { value: 'Hello, world ' + c } });
+        var buttons = TestUtils.scryRenderedComponentsWithType(create,
+            ButtonTemplate);
         expect(buttons[0]).toExist('buttons[0] does not exist');
         var btn = findNode(filterProp(buttons, 'action', 'submit')[0]);
         Simulate.click(btn);
@@ -57,13 +51,15 @@ describe('types/List', function () {
 
     function edit(root, c) {
         const tasks = byComponents(root, ListItemTemplate);
-        const item = byClass(tasks[c], 'clickable')[0];
+        const item  = byClass(tasks[c], 'clickable')[0];
         click(item);
         const createTemplate = byComponent(root, CollectionCreateTemplate);
-        const input = byName(createTemplate, `@tasks@${c}.value`);
-        Simulate.change(input, {target: {value: 'Hello, world ' + c}});
-        const btns = filterProp(TestUtils.scryRenderedComponentsWithType(createTemplate, ButtonTemplate), 'action', 'submit');
-        const btn = findNode(btns[0]);
+        const input          = byName(createTemplate, `@tasks@${c}.value`);
+        Simulate.change(input, { target: { value: 'Hello, world ' + c } });
+        const btns = filterProp(
+            TestUtils.scryRenderedComponentsWithType(createTemplate,
+                ButtonTemplate), 'action', 'submit');
+        const btn  = findNode(btns[0]);
         Simulate.submit(btn);
         const value = root.getValue();
         expect(input.value).toEqual('Hello, world ' + c);
@@ -72,28 +68,31 @@ describe('types/List', function () {
 
 
     it('should render a list with data without canAdd', function () {
-        const {Form, context} = newContext();
-        const schema = {
+        const { Form, valueManager, context } = newContext();
+        const schema                          = {
             schema: {
                 tasks: {
-                    type: 'List',
-                    itemType: 'Text',
-                    canEdit: true,
+                    type      : 'List',
+                    itemType  : 'Text',
+                    canEdit   : true,
                     canReorder: true,
-                    canDelete: true
+                    canDelete : true
                 }
             }
         };
-        const data = {
+        const data                            = {
             tasks: [
                 'one',
                 'two',
                 'three'
             ]
         };
-        const root = into(<Form {...context} schema={schema} value={data}/>, true);
-        const tasks = byComponents(root, ListItemTemplate);
-        const addBtn = byClass(root, 'btn-add')[0];
+        const root                            = into(<Form schema={schema}
+                                                           value={data}/>,
+            true);
+        const tasks                           = byComponents(root,
+            ListItemTemplate);
+        const addBtn                          = byClass(root, 'btn-add')[0];
 
         expect(addBtn).toNotExist('add button does not exist');
         expect(tasks[0]).toExist('task 1');
@@ -109,23 +108,23 @@ describe('types/List', function () {
 
     });
     it('should render a list with data is not editable', function () {
-        const {Form, context} = newContext();
+        const { Form, context } = newContext();
 
         var schema = {
             schema: {
                 tasks: {
-                    type: 'List',
+                    type    : 'List',
                     itemType: 'Text'
                 }
             }
-        }, data = {
+        }, data    = {
             tasks: [
                 'one',
                 'two',
                 'three'
             ]
         };
-        var root = into(<Form schema={schema} value={data}/>);
+        var root   = into(<Form schema={schema} value={data}/>);
         var addBtn = byClass(root, 'btn-add')[0];
 
         expect(addBtn).toNotExist();
@@ -138,23 +137,24 @@ describe('types/List', function () {
         })
     });
     it('should render a list without data and add values', function () {
-        const {Form, context} = newContext();
-        var schema = {
+        const { Form, context } = newContext();
+        var schema              = {
             schema: {
                 tasks: {
-                    type: 'List',
-                    itemType: 'Text',
-                    canAdd: true,
-                    canEdit: true,
+                    type      : 'List',
+                    itemType  : 'Text',
+                    canAdd    : true,
+                    canEdit   : true,
                     canReorder: true,
-                    canDelete: true
+                    canDelete : true
                 }
             }
-        }, data = {
+        }, data                 = {
             tasks: []
         };
-        var root = into(<Form schema={schema} value={data}/>, true);
-        var tasks = byComponents(root, ListItemTemplate);
+        var root                = into(<Form schema={schema} value={data}/>,
+            true);
+        var tasks               = byComponents(root, ListItemTemplate);
         expect(root).toExist();
         expect(tasks.length).toEqual(0);
 
@@ -189,46 +189,48 @@ describe('types/List', function () {
 
     });
     it('should edit a value', function () {
-        const {Form, context} = newContext();
+        const { Form } = newContext();
 
         var schema = {
             schema: {
                 tasks: {
-                    type: 'List',
-                    itemType: 'Text',
-                    canAdd: true,
-                    canEdit: true,
+                    type      : 'List',
+                    itemType  : 'Text',
+                    canAdd    : true,
+                    canEdit   : true,
                     canReorder: true,
-                    canDelete: true
+                    canDelete : true
                 }
             }
-        }, data = {
+        }, data    = {
             tasks: ['Hello, world 0']
         };
-        var root = into(<Form schema={schema} value={data}/>, true);
+        var root   = into(<Form schema={schema} value={data}/>, true);
         edit(root, 0);
     });
     it('should render edit a value with an error', function () {
-        const {Form, context} = newContext();
+        const { Form, context } = newContext();
 
         var schema = {
             schema: {
                 tasks: {
-                    type: 'List',
-                    itemType: 'Text',
-                    canAdd: true,
-                    canEdit: true,
+                    type      : 'List',
+                    itemType  : 'Text',
+                    canAdd    : true,
+                    canEdit   : true,
                     canReorder: true,
-                    canDelete: true
+                    canDelete : true
                 }
             }
-        }, data = {
+        }, data    = {
             tasks: ['one', 'two']
-        }, errors = {
-            'tasks.1': [{message: 'Can not be 2'}]
+        }, errors  = {
+            'tasks.1': [{ message: 'Can not be 2' }]
         };
-        var root = into(<Form schema={schema} value={data} errors={errors}/>, true);
-        var found = TestUtils.scryRenderedComponentsWithType(root, EditorTemplate);
+        var root   = into(<Form schema={schema} value={data} errors={errors}/>,
+            true);
+        var found  = TestUtils.scryRenderedComponentsWithType(root,
+            EditorTemplate);
         expect(found[0].props.error).toEqual('Can not be 2');
     });
 });

@@ -6,8 +6,8 @@ const {ButtonTemplate, ButtonsTemplate} = templates;
 
 describe('templates/ButtonsTemplate', function () {
     it('should render buttons', function () {
-        const {Form, context} = newSubschemaContext();
-        const form = into(<Form {...context} schema={
+        const {Form, context, ...rest} = newSubschemaContext();
+        const form = into(<Form {...rest} schema={
             {
                 schema: {},
                 fieldsets: [{
@@ -23,9 +23,9 @@ describe('templates/ButtonsTemplate', function () {
         }
     });
     it('should render buttons with actions', function () {
-        const {Form, context} = newSubschemaContext();
+        const {Form, context, ...rest} = newSubschemaContext();
 
-        const form = into(<Form {...context} schema={
+        const form = into(<Form {...rest} schema={
             {
                 schema: {},
                 fieldsets: [{

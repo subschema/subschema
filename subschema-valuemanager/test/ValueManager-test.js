@@ -17,111 +17,120 @@ describe('ValueManager', function () {
             });
 
         });
-        it('should add a listener and fire on change when it is nested', function (done) {
-            var vm = new ValueManager();
-            vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                expect(oldValue).toNotExist();
-                expect(newValue).toEqual(false);
-                expect(path).toEqual('stuff.more');
-                done();
+        it('should add a listener and fire on change when it is nested',
+            function (done) {
+                var vm = new ValueManager();
+                vm.addListener('stuff.more',
+                    function (newValue, oldValue, path) {
+                        expect(oldValue).toNotExist();
+                        expect(newValue).toEqual(false);
+                        expect(path).toEqual('stuff.more');
+                        done();
+
+                    });
+                vm.setValue({
+                    stuff: {
+                        more: false
+                    }
+                });
 
             });
-            vm.setValue({
-                stuff: {
-                    more: false
-                }
-            });
-
-        });
-        it('should add a listener and fire on change when it is nested and changes', function (done) {
-            var vm = new ValueManager();
-            var first = true;
-            vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                if (first) {
-                    expect(oldValue).toNotExist();
-                    expect(newValue).toEqual(false);
-                    expect(path).toEqual('stuff.more');
-                    first = false;
-                } else {
-                    expect(oldValue).toEqual(false);
-                    expect(newValue).toEqual(true);
-                    expect(path).toEqual('stuff.more');
+        it('should add a listener and fire on change when it is nested and changes',
+            function (done) {
+                var vm    = new ValueManager();
+                var first = true;
+                vm.addListener('stuff.more',
+                    function (newValue, oldValue, path) {
+                        if (first) {
+                            expect(oldValue).toNotExist();
+                            expect(newValue).toEqual(false);
+                            expect(path).toEqual('stuff.more');
+                            first = false;
+                        } else {
+                            expect(oldValue).toEqual(false);
+                            expect(newValue).toEqual(true);
+                            expect(path).toEqual('stuff.more');
 
 
-                    done();
-                }
+                            done();
+                        }
 
+                    });
+                vm.setValue({
+                    stuff: {
+                        more: false
+                    }
+                });
+                vm.setValue({
+                    stuff: {
+                        more: true
+                    }
+                });
             });
-            vm.setValue({
-                stuff: {
-                    more: false
-                }
-            });
-            vm.setValue({
-                stuff: {
-                    more: true
-                }
-            });
-        });
 
-        it('should add a listener and fire on change when it is nested and changes to null', function (done) {
-            var vm = new ValueManager();
-            var first = true;
-            vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                if (first) {
-                    expect(oldValue).toNotExist();
-                    expect(newValue).toEqual(false);
-                    expect(path).toEqual('stuff.more');
-                    first = false;
-                } else {
-                    expect(oldValue).toEqual(false);
-                    expect(newValue).toEqual(null);
-                    expect(path).toEqual('stuff.more');
+        it('should add a listener and fire on change when it is nested and changes to null',
+            function (done) {
+                var vm    = new ValueManager();
+                var first = true;
+                vm.addListener('stuff.more',
+                    function (newValue, oldValue, path) {
+                        if (first) {
+                            expect(oldValue).toNotExist();
+                            expect(newValue).toEqual(false);
+                            expect(path).toEqual('stuff.more');
+                            first = false;
+                        } else {
+                            expect(oldValue).toEqual(false);
+                            expect(newValue).toEqual(null);
+                            expect(path).toEqual('stuff.more');
 
-                    done();
-                }
+                            done();
+                        }
 
+                    });
+                vm.setValue({
+                    stuff: {
+                        more: false
+                    }
+                });
+                vm.setValue({
+                    stuff: null
+                });
             });
-            vm.setValue({
-                stuff: {
-                    more: false
-                }
-            });
-            vm.setValue({
-                stuff: null
-            });
-        });
-        it('should add a listener and fire on change when it is nested and changes to all null', function (done) {
-            var vm = new ValueManager();
-            var first = true;
-            vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                if (first) {
-                    expect(oldValue).toNotExist();
-                    expect(newValue).toEqual(false);
-                    expect(path).toEqual('stuff.more');
-                    first = false;
-                } else {
-                    expect(oldValue).toEqual(false);
-                    expect(newValue).toEqual(null);
-                    expect(path).toEqual('stuff.more');
+        it('should add a listener and fire on change when it is nested and changes to all null',
+            function (done) {
+                var vm    = new ValueManager();
+                var first = true;
+                vm.addListener('stuff.more',
+                    function (newValue, oldValue, path) {
+                        if (first) {
+                            expect(oldValue).toNotExist();
+                            expect(newValue).toEqual(false);
+                            expect(path).toEqual('stuff.more');
+                            first = false;
+                        } else {
+                            expect(oldValue).toEqual(false);
+                            expect(newValue).toEqual(null);
+                            expect(path).toEqual('stuff.more');
 
-                    done();
-                }
+                            done();
+                        }
 
+                    });
+                vm.setValue({
+                    stuff: {
+                        more: false
+                    }
+                });
+                vm.setValue(null);
             });
-            vm.setValue({
-                stuff: {
-                    more: false
-                }
-            });
-            vm.setValue(null);
-        });
         it('should add a listener and remove a listener', function (done) {
-            var vm = new ValueManager();
+            var vm    = new ValueManager();
             var fired = 0;
-            var added = vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                fired++;
-            });
+            var added = vm.addListener('stuff.more',
+                function (newValue, oldValue, path) {
+                    fired++;
+                });
             vm.setValue({
                 stuff: {
                     more: false
@@ -134,26 +143,28 @@ describe('ValueManager', function () {
             });
             vm.setValue(null);
         });
-        it('should add a listener and remove a listener by path', function (done) {
-            var vm = new ValueManager();
-            var fired = 0;
-            var added = vm.addListener('stuff.more', function (newValue, oldValue, path) {
-                fired++;
+        it('should add a listener and remove a listener by path',
+            function (done) {
+                var vm    = new ValueManager();
+                var fired = 0;
+                var added = vm.addListener('stuff.more',
+                    function (newValue, oldValue, path) {
+                        fired++;
+                    });
+                vm.setValue({
+                    stuff: {
+                        more: false
+                    }
+                });
+                vm.removeListener('stuff.more');
+                vm.addListener('stuff.more', function () {
+                    expect(fired).toEqual(1);
+                    done();
+                });
+                vm.setValue(null);
             });
-            vm.setValue({
-                stuff: {
-                    more: false
-                }
-            });
-            vm.removeListener('stuff.more');
-            vm.addListener('stuff.more', function () {
-                expect(fired).toEqual(1);
-                done();
-            });
-            vm.setValue(null);
-        });
         it('should update change when it is nested', function (done) {
-            var vm = new ValueManager(
+            var vm    = new ValueManager(
                 {
                     stuff: {
                         more: true
@@ -175,7 +186,7 @@ describe('ValueManager', function () {
             expect(val.other).toEqual(true);
         });
         it('should update change when it is nested and no value', function () {
-            var vm = new ValueManager(
+            var vm    = new ValueManager(
                 {
 
                     other: true
@@ -217,10 +228,10 @@ describe('ValueManager', function () {
                 {
 
                     other: true,
-                    more: 'stuff'
+                    more : 'stuff'
                 }
             );
-            vm.setValue({test: 1, other: false});
+            vm.setValue({ test: 1, other: false });
             var val = vm.getValue();
             expect(val.other).toEqual(false);
             expect(val.more).toNotExist();
@@ -230,16 +241,17 @@ describe('ValueManager', function () {
     describe('error handling', function () {
 
         it('should have errors', function () {
-            var vm = ValueManager({other: true}, {other: [{message: 'Has Error'}]});
+            var vm     = ValueManager({ other: true },
+                { other: [{ message: 'Has Error' }] });
             var errors = vm.errorsFor('other');
             expect(errors.length).toEqual(1);
             expect(errors[0].message).toEqual('Has Error');
 
         });
         it('should have errors nested errors', function () {
-            var vm = ValueManager({other: {more: 'stuff'}}, {
-                other: [{message: 'Has Error'}],
-                'other.more': [{message: 'More'}]
+            var vm     = ValueManager({ other: { more: 'stuff' } }, {
+                other       : [{ message: 'Has Error' }],
+                'other.more': [{ message: 'More' }]
             });
             var errors = vm.errorsFor('other');
             expect(errors.length).toEqual(2);
@@ -248,15 +260,15 @@ describe('ValueManager', function () {
 
         });
         it('should fire error listeners', function () {
-            var vm = ValueManager();
+            var vm     = ValueManager();
             var errors = [];
             vm.addErrorListener('other', function () {
                 errors.push(Array.prototype.slice.call(arguments));
             });
-            vm.updateErrors('other', [{message: 'Has Error'}]);
+            vm.updateErrors('other', [{ message: 'Has Error' }]);
             expect(errors.length).toEqual(1);
 
-            vm.updateErrors('other.more', {message: 'Has More'});
+            vm.updateErrors('other.more', { message: 'Has More' });
             expect(errors.length).toEqual(2);
 
             var e = vm.getErrors();
@@ -268,5 +280,92 @@ describe('ValueManager', function () {
 
         });
     });
+    describe('stash', function () {
+        it('should stash stuff with names, keys and idx', function () {
+            const vm  = ValueManager({
+                hello: {
+                    world: 'Joe'
+                },
+                bob  : ['uncle']
+            })
+            const idx = vm.stash('test1', ['hello']);
 
+            vm.update('hello.world', 'Don');
+
+            expect(vm.path('hello.world')).toBe('Don');
+
+            vm.unstash('test1', idx);
+            expect(vm.path('hello.world')).toBe('Joe');
+
+        })
+
+        it('should stash stuff with names, keys', function () {
+            const vm = ValueManager({
+                hello: {
+                    world: 'Joe'
+                },
+                bob  : ['uncle']
+            });
+            vm.stash('test1', ['hello']);
+
+            vm.update('hello.world', 'Don');
+
+            vm.stash('test1', ['hello']);
+
+            expect(vm.path('hello.world')).toBe('Don');
+
+            vm.unstash('test1');
+            expect(vm.path('hello.world')).toBe('Don');
+            vm.unstash('test1');
+            expect(vm.path('hello.world')).toBe('Joe');
+
+
+        });
+
+        it('should stash stuff with name', function () {
+            const vm = ValueManager({
+                hello: {
+                    world: 'Joe'
+                },
+                bob  : ['uncle']
+            });
+            vm.stash('test1');
+
+            vm.update('hello.world', 'Don');
+
+            vm.stash('test1');
+
+            expect(vm.path('hello.world')).toBe('Don');
+
+            vm.unstash('test1');
+            expect(vm.path('hello.world')).toBe('Don');
+            vm.unstash('test1');
+            expect(vm.path('hello.world')).toBe('Joe');
+
+
+        })
+
+        it('should stash stuff', function () {
+            const vm = ValueManager({
+                hello: {
+                    world: 'Joe'
+                },
+                bob  : ['uncle']
+            })
+            vm.stash();
+
+            vm.update('hello.world', 'Don');
+
+            vm.stash();
+
+            expect(vm.path('hello.world')).toBe('Don');
+
+            vm.unstash();
+            expect(vm.path('hello.world')).toBe('Don');
+            vm.unstash();
+            expect(vm.path('hello.world')).toBe('Joe');
+
+
+        })
+    })
 });

@@ -1,16 +1,8 @@
 import {
-    push,
-    path as tpath,
-    unique,
-    noop,
-    extend,
-    isBoolean,
-    isString,
-    isDate,
-    isArray,
-    isNumber
-} from "subschema-utils";
-import eventable from "./eventable";
+    extend, isArray, isBoolean, isDate, isNumber, isString, noop, path as tpath,
+    push, unique
+} from 'subschema-utils';
+import eventable from './eventable';
 
 function reduceKeys(arr, v, b, c) {
     if (canDescend(v)) {
@@ -20,7 +12,8 @@ function reduceKeys(arr, v, b, c) {
 }
 const has = Function.call.bind(Object.prototype.hasOwnProperty);
 function canDescend(obj) {
-    if (obj == null || isNumber(obj) || isBoolean(obj) || isString(obj) || isDate(obj) || isArray(obj)) {
+    if (obj == null || isNumber(obj) || isBoolean(obj) || isString(obj)
+        || isDate(obj) || isArray(obj)) {
         return false;
     }
     return true;
@@ -34,6 +27,28 @@ function _keys(...args) {
 
 }
 /**
+ * Meant to be used in forEach loops with context of a valueManager.
+ * @private
+ * @param key
+ * @returns {[*,*]}
+ */
+function toStash$this(key) {
+    const val = this.path(key);
+    return [key, val === void(0) ? val : JSON.stringify(val)];
+}
+
+/**
+ * Meant to be used in forEach loops with context of a valueManager.
+ * @private
+ * @param key
+ * @returns {[*,*]}
+ */
+function fromStash$this([key, str]) {
+    this.update(key, str === void(0) ? str : JSON.parse(str));
+}
+
+
+/**
  * Value manager listens and changes values on the objects.
  * It can be passed a property to any subschema type, or form.
  *
@@ -46,10 +61,11 @@ export default function ValueManager(value, errors) {
     if (!(this instanceof ValueManager)) {
         return new ValueManager(value, errors);
     }
-    this.listeners = [];
-    this.errorListeners = [];
+    this.listeners         = [];
+    this.errorListeners    = [];
     this.validateListeners = [];
-    this.stateListeners = [];
+    this.stateListeners    = [];
+    this._stashes          = new Map();
     this.setValue(value || {});
     this.setErrors(errors);
     this.oldValue = extend({}, this.value);
@@ -59,10 +75,12 @@ export default function ValueManager(value, errors) {
 
     /**
      * Adds a value listener
-     * @param {String} [path] - Path to listen to, null or no value will listen to all changes.
+     * @param {String} [path] - Path to listen to, null or no value will listen
+     *     to all changes.
      * @param {ValueManagerListener} listener - The listener to execute.
      * @param {Object} [scope] - The scope to execute the listener in.
-     * @param {boolean|Function}  init - true or a function will execute when the listener is added.
+     * @param {boolean|Function}  init - true or a function will execute when
+     *     the listener is added.
      * */
     this.addListener = eventable(this.listeners, function (prop) {
         return self.path(prop, self.value);
@@ -71,10 +89,12 @@ export default function ValueManager(value, errors) {
     });
     /**
      * Adds an error  listener
-     * @param {String} [path] - Path to listen to, null or no value will listen to all changes.
+     * @param {String} [path] - Path to listen to, null or no value will listen
+     *     to all changes.
      * @param {ValueManagerListener} listener - The listener to execute.
      * @param {Object} [scope] - The scope to execute the listener in.
-     * @param {boolean|Function}  init - true or a function will execute when the listener is added.
+     * @param {boolean|Function}  init - true or a function will execute when
+     *     the listener is added.
      * */
     this.addErrorListener = eventable(this.errorListeners, function (prop) {
         return self.errorsFor(prop);
@@ -82,10 +102,12 @@ export default function ValueManager(value, errors) {
 
     /**
      * Adds a validate  listener
-     * @param {String} [path] - Path to listen to, null or no value will listen to all changes.
+     * @param {String} [path] - Path to listen to, null or no value will listen
+     *     to all changes.
      * @param {ValueManagerListener} listener - The listener to execute.
      * @param {Object} [scope] - The scope to execute the listener in.
-     * @param {boolean|Function}  init - true or a function will execute when the listener is added.
+     * @param {boolean|Function}  init - true or a function will execute when
+     *     the listener is added.
      * */
 
     this.addValidateListener = eventable(this.validateListeners, noop, noop);
@@ -137,11 +159,13 @@ ValueManager.prototype = {
      * When onSubmit is called this is fired
      */
     onSubmit: function (e, errors, value, path) {
-        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
+        var parts = path && path.split('.') || [], i = 0, l = parts.length,
+            pp                                              = null;
         do {
             if (this.submitListeners.some(v => {
                     if (v.path === pp) {
-                        return (v.listener.call(v.scope, e, errors, value, path) === false);
+                        return (v.listener.call(v.scope, e, errors, value, path)
+                                === false);
                     }
                 }, this) === true) {
                 return false
@@ -156,11 +180,14 @@ ValueManager.prototype = {
      */
     onValueChange(path, value, oldValue)
     {
-        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
+        var parts = path && path.split('.') || [], i = 0, l = parts.length,
+            pp                                              = null;
         do {
             if (this.listeners.some(v => {
                     if (v.path === pp) {
-                        return (v.listener.call(v.scope, this.path(pp, this.value), this.path(pp, this.oldValue), path) === false);
+                        return (v.listener.call(v.scope,
+                            this.path(pp, this.value),
+                            this.path(pp, this.oldValue), path) === false);
                     }
                 }, this) === true) {
                 return false
@@ -180,7 +207,9 @@ ValueManager.prototype = {
         if (arguments.length < 2) {
             obj = this.value;
         }
-        if (!p) return obj;
+        if (!p) {
+            return obj;
+        }
 
         var parts = p.split('.');
 
@@ -201,19 +230,23 @@ ValueManager.prototype = {
      */
     update(path, value)
     {
-        var parts = path.split('.'), obj = this.value || (this.value = {}), oobj = this.oldValue,
-            last = parts[parts.length - 1];
+        var parts = path.split('.'), obj = this.value || (this.value = {}),
+            oobj                         = this.oldValue,
+            last                         = parts[parts.length - 1];
 
         for (var i = 0, l = parts.length - 1; i < l; i++) {
             var key = parts[i];
 
             if (has(obj, key)) {
-                //We won't build the oobj tree, we may need to in the case of multiple changes to the object.  The question becomes
-                // are old values the original values or the last change.
+                //We won't build the oobj tree, we may need to in the case of
+                // multiple changes to the object.  The question becomes are
+                // old values the original values or the last change.
                 oobj = oobj && oobj[key];
 
-                //We copy it so that when oldValues and value share a nested object, they do not conflict, but we only need to do it when
-                // they are referencing the same instance, note we are parts -1 levels up, so really only arrays and objects.
+                //We copy it so that when oldValues and value share a nested
+                // object, they do not conflict, but we only need to do it when
+                // they are referencing the same instance, note we are parts -1
+                // levels up, so really only arrays and objects.
                 if (obj[key] == null) {
                     if (/^\d+?$/.test(key)) {
                         obj = obj[key] = []
@@ -221,12 +254,14 @@ ValueManager.prototype = {
                         obj = obj[key] = {}
                     }
                 } else {
-                    obj = obj[key] = (oobj === obj[key]) ? copy(obj[key]) : obj[key];
+                    obj = obj[key] =
+                        (oobj === obj[key]) ? copy(obj[key]) : obj[key];
                 }
             } else {
 
-                //So the object tree isn't reached yet, we will create an array or object. if the key
-                // is an integer we will guess its an array, this will probably be correct 99% of the time, and
+                //So the object tree isn't reached yet, we will create an array
+                // or object. if the key is an integer we will guess its an
+                // array, this will probably be correct 99% of the time, and
                 // horrible wrong 1%, se la vie.
                 if (/^\d+?$/.test(parts[i + 1])) {
                     obj = obj[key] = [];
@@ -240,8 +275,8 @@ ValueManager.prototype = {
         } else {
             obj[last] = value;
         }
-        //We will build a path for the new value, but not for the oldvalue.   This
-        // might break whean a value changes multiple times.
+        //We will build a path for the new value, but not for the oldvalue.
+        // This might break whean a value changes multiple times.
         return this.onValueChange(path, value, oobj && oobj[last]) !== false;
     }
     ,
@@ -260,7 +295,7 @@ ValueManager.prototype = {
     setValue(value)
     {
         this.oldValue = extend({}, this.value);
-        this.value = extend({}, value);
+        this.value    = extend({}, value);
         if (this._setValue(value, this.oldValue) !== false) {
 
         }
@@ -271,7 +306,8 @@ ValueManager.prototype = {
     {
         if (canDescend(value) || canDescend(oldValue)) {
             _keys(value, oldValue).forEach(function (key) {
-                this._setValue(value && value[key], oldValue && oldValue[key], tpath(path, key));
+                this._setValue(value && value[key], oldValue && oldValue[key],
+                    tpath(path, key));
             }, this);
         } else {
             return this.onValueChange(path, value, oldValue);
@@ -288,12 +324,14 @@ ValueManager.prototype = {
      */
     onError(path, errors, value)
     {
-        errors = errors && errors[0] ? errors : null;
+        errors      = errors && errors[0] ? errors : null;
         var oErrors = this.errors || {}, listeners = this.errorListeners;
 
         return listeners.some((v) => {
-            if (path == null || v.path == null || v.path === path || path.indexOf(v.path + '.') === 0) {
-                return (v.listener.call(v.scope, errors, oErrors[path], path, value) === false);
+            if (path == null || v.path == null || v.path === path
+                || path.indexOf(v.path + '.') === 0) {
+                return (v.listener.call(v.scope, errors, oErrors[path], path,
+                    value) === false);
             }
         }, this);
 
@@ -302,12 +340,13 @@ ValueManager.prototype = {
     /**
      * Sets the current errors and triggers the error listeners.
      *
-     * @param {Object} errors - object containing errors. The key is the full qualified path to the value in error
+     * @param {Object} errors - object containing errors. The key is the full
+     *     qualified path to the value in error
      *
      */
     setErrors(errors)
     {
-        var keys = _keys(errors, this.errors);
+        var keys    = _keys(errors, this.errors);
         this.errors = extend({}, errors);
         return keys.some(function (key) {
                 return this.onError(key, this.errors[key]);
@@ -327,17 +366,32 @@ ValueManager.prototype = {
     ,
     updateErrors(path, errors, value)
     {
-        errors = isArray(errors) ? errors : [errors];
-        errors = errors && errors[0] ? errors : null;
+        errors            = isArray(errors) ? errors : [errors];
+        errors            = errors && errors[0] ? errors : null;
         this.errors[path] = errors;
         this.onError(path, errors, value);
     }
     ,
     errorsFor(path)
     {
-        var pathe = path + '.', keys = Object.keys(this.errors).filter(function (key) {
-            return this[key] != null && (path == null || key === path || key.indexOf(pathe) === 0);
-        }, this.errors), errors = [];
+        var pathe  = path
+                     + '.',
+            keys   = Object.keys(
+                this.errors)
+                           .filter(
+                               function (key) {
+                                   return this[key]
+                                          != null
+                                          && (path
+                                              == null
+                                              || key
+                                                 === path
+                                              || key.indexOf(
+                                           pathe)
+                                                 === 0);
+                               },
+                               this.errors),
+            errors = [];
 
         if (keys.length < 2) {
             return this.errors[keys[0]];
@@ -355,10 +409,12 @@ ValueManager.prototype = {
     validate(path, value)
     {
         var pp = path && path + '.';
-        this.validateListeners.forEach(function ValueManager$validate$forEach(v) {
-            if (path == null || v.path === path || pp.indexOf(path) === 0)
-                v.listener.call(v.scope, path, value);
-        });
+        this.validateListeners.forEach(
+            function ValueManager$validate$forEach(v) {
+                if (path == null || v.path === path || pp.indexOf(path) === 0) {
+                    v.listener.call(v.scope, path, value);
+                }
+            });
     },
     /**
      * Trigger Validators And Callback with Errors for paths.
@@ -366,10 +422,11 @@ ValueManager.prototype = {
     validatePaths(paths, callback){
         let errors = null;
         paths.forEach(path => {
-            //validate does not return the error, it just triggers the error handler,
-            // so we add a listener for that path, trigger it and remove the listener.
-            //  so that we can get the listener.  We should probably change validate
-            // to return the error (or a promise) but not today.
+            //validate does not return the error, it just triggers the error
+            // handler, so we add a listener for that path, trigger it and
+            // remove the listener. so that we can get the listener.  We should
+            // probably change validate to return the error (or a promise) but
+            // not today.
             this.addErrorListener(path, (e) => {
                 if (e) {
                     (errors == null ? (errors = {}) : errors)[path] = e;
@@ -391,11 +448,13 @@ ValueManager.prototype = {
         return this.onChangeState(path, value) !== false;
     },
     onChangeState(path, value){
-        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
+        var parts = path && path.split('.') || [], i = 0, l = parts.length,
+            pp                                              = null;
         do {
             if (this.stateListeners.some((v) => {
                     if (v.path === pp) {
-                        return (v.listener.call(v.scope, value, path) === false);
+                        return (v.listener.call(v.scope, value, path)
+                                === false);
                     }
                 }, this) === true) {
                 return false
@@ -406,5 +465,76 @@ ValueManager.prototype = {
     },
     copy(){
         return new ValueManager(this.getValue(), this.getErrors());
+    },
+    /**
+     * Takes a name and optionally keys and stores them, for an eventual
+     * unstash call.
+     *
+     * If no keys are given it uses all the keys of the current value.
+     *
+     * If no name is given it will be null.
+     *
+     * Returns the index to be used by the unstash call.
+     *
+     * @param name
+     * @param keys
+     * @returns {number}
+     */
+    stash(name, keys){
+        if (keys == null) {
+            keys = Object.keys(this.getValue());
+        }
+        let stash = this._stashes.get(name);
+        if (!stash) {
+            this._stashes.set(name, (stash = []));
+        }
+        return stash.push(keys.map(toStash$this, this)) - 1;
+    },
+    /**
+     * Takes a name and optionally an index to the stash.
+     * If no index is given, than the last stashed will be
+     * unstashed.
+     *
+     * Returns -1 if its not found or empty.
+     *
+     * @param name - name of the stash.
+     * @param idx - the index to unstash to.
+     */
+    unstash(name, idx){
+        if (idx == null && typeof name === 'number') {
+            idx  = name;
+            name = null;
+        }
+        if (idx == null) {
+            idx = -1;
+        }
+        const stash = this._stashes.get(name);
+        if (!stash) {
+            return -1;
+        }
+        const current = stash.splice(idx)[0];
+        if (current) {
+            current.forEach(fromStash$this, this);
+            return stash.length - 1;
+        }
+        return -1;
+
+    },
+    clearStash(name, idx){
+        if (name == null) {
+            this._stashes.clear();
+        } else if (idx == null) {
+            this._stashes.delete(name);
+        } else {
+            const stash = this._stashes.get(name);
+            if (stash) {
+                stash.splice(idx);
+
+                if (stash.length == 0) {
+                    this._stashes.delete(name);
+                }
+            }
+        }
     }
-}
+};
+

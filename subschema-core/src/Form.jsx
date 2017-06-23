@@ -122,8 +122,11 @@ export default class Form extends Component {
 
     render() {
 
-        const { valueManager, injector, loader, validate, template, onSubmit, ...props } = this.props;
-        const ObjectWrapper                                                              = this.ObjectWrapper;
+        const {
+                  valueManager, injector, loader, validate,
+                  template, onSubmit, ...props
+              }             = this.props;
+        const ObjectWrapper = this.ObjectWrapper;
         return <ObjectWrapper {...props} objectTemplate={template}/>
     }
 

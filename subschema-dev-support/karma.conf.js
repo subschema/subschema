@@ -1,7 +1,7 @@
 // Karma configuration
 var webpack = require('./webpack.config');
 var path = require('path');
-const test = path.resolve(__dirname, 'test-index.js');
+const test = path.resolve(process.env.SUBSCHEMA_TEST_DIR ||__dirname, 'test-index.js');
 webpack.resolve.alias.test = path.resolve(process.cwd(), 'test');
 webpack.devtool = '#inline-source-map';
 if (!webpack.output) webpack.output = {};
@@ -126,6 +126,9 @@ module.exports = function (config) {
     }
     if (process.env.TRAVIS) {
         karmaConf.browsers = ['Firefox'];
+    }
+    if (process.env.SUBSCHEMA_DEBUG){
+        console.warn('karma-webpack %o', webpack);
     }
     config.set(karmaConf);
 };

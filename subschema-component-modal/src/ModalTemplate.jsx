@@ -1,101 +1,108 @@
-import React, {Component} from "react";
-import PropTypes from "subschema-prop-types";
-import cloneDeep from "lodash/cloneDeep";
-import RenderContent from "subschema-core/lib/RenderContent";
-import RenderTemplate from "subschema-core/lib/RenderTemplate";
+import React from 'react';
+import PropTypes from 'subschema-prop-types';
+import RenderContent from 'subschema-core/lib/RenderContent';
+import warning from 'subschema-utils/lib/warning';
+import StashableMixin from 'subschema-core/lib/StashableMixin';
 
 
-export default class ModalTemplate extends Component {
-    static defaultBtns = {
-        buttonsClass: 'pull-right btn-group',
-        buttons: [
-            {
-                label: "Cancel",
-                action: 'cancel',
-                className: 'btn'
-            },
-            {
-                label: "Save",
-                action: 'submit',
-                className: 'btn btn-primary'
-            }
-        ]
-    };
-
+export default class ModalTemplate extends StashableMixin {
     static propTypes = {
-        style: PropTypes.style,
-        title: PropTypes.content,
-        buttons: PropTypes.buttons,
-        path: PropTypes.path,
-        value: PropTypes.value,
-        onChange: PropTypes.valueEvent,
-        dismiss: PropTypes.valueEvent,
+        ...StashableMixin.propTypes,
+        style          : PropTypes.style,
+        title          : PropTypes.content,
+        //buttons will get an object describing buttons, not a rendered  node
+        buttons        : PropTypes.buttons,
+        path           : PropTypes.path,
+        dismiss        : PropTypes.valueEvent,
         buttonsTemplate: PropTypes.template,
-        legend: PropTypes.content,
-        error: PropTypes.error
-
+        legend         : PropTypes.content,
+        error          : PropTypes.error
     };
 
     static defaultProps = {
+        ...StashableMixin.defaultProps,
         buttonsTemplate: 'ButtonsTemplate',
-        onCancel(){
-        }
-    };
-
-
-    handleCancel() {
-        this.props.onChange(this.value);
-        this.props.dismiss();
-    }
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this.value = !props.value ? null : cloneDeep(props.value);
-    }
-
-
-    handleClose = (e) => {
-        e && e.preventDefault();
-        this.props.dismiss();
-    };
-    handleBtnClose = (e, action) => {
-        switch (action) {
-            case 'submit': {
-                if (this.props.error) {
-                    break;
+        buttons        : {
+            buttonsClass: 'pull-right btn-group',
+            buttons     : [
+                {
+                    label    : "Cancel",
+                    action   : 'cancel',
+                    className: 'btn'
+                },
+                {
+                    label    : "Save",
+                    action   : 'submit',
+                    primary  : true,
+                    className: 'btn btn-primary'
                 }
-                this.props.dismiss();
-                break;
-            }
-            case 'close':
-            case 'cancel':
-                this.props.onChange(this.value);
-                this.handleClose(e);
-                break;
+            ]
+        },
+        dismiss(){
+            warning(false, 'no dismiss path given to modal');
         }
+    };
 
+    handleBtnClose    = (e) => {
+        e && e.preventDefault();
+        this.unstash();
+        this.props.dismiss();
+    };
+    handleButtonClick = (e, action, btn) => {
+        if (!this.props.buttons) {
+            return;
+        }
+        const { onButtonClick } = this.props.buttons;
+        switch (action) {
+            case 'cancel':
+            case 'close':
+                this.handleBtnClose(e);
+                return false;
+            default: {
+                const errors = this.validate();
+                if (errors) {
+                    onButtonClick && onButtonClick(e, action, btn);
+
+                    return;
+                }
+                this.clearStash();
+                this.props.dismiss();
+                onButtonClick && onButtonClick(e, action, btn);
+
+            }
+        }
     };
 
     renderFooter(buttons) {
-        if (buttons == false) return null;
-        if (buttons == null)
-            buttons = <RenderTemplate template={this.props.buttonsTemplate} {...this.constructor.defaultBtns}
-            />
-        return <div
-            className={this.props.footerClass}>{React.cloneElement(buttons, {onButtonClick: this.handleBtnClose})}</div>
+        if (buttons == false || buttons == null) {
+            return null;
+        }
+        const {
+                  template = this.props.buttonsTemplate,
+                  ...rest
+              }                      = buttons;
+        const { Template, ...trest } = template;
+        return <div className={this.props.footerClass}>
+            <Template {...trest} {...rest}
+                      onButtonClick={this.handleButtonClick}/></div>
     }
 
     render() {
-        const {title, legend, buttons, path, value, bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest} = this.props;
+        const { title, legend, buttons, path, value, bodyClass, headerClass, closeClass, contentClass, backdropClass, dialogClass, namespaceClass, overlayClass, children, ...rest } = this.props;
 
-        return (<div className={`${namespaceClass} ${overlayClass}`} style={{display: 'block'}}>
+        return (<div className={`${namespaceClass} ${overlayClass}`}
+                     style={{ display: 'block' }}>
             <div className={backdropClass}></div>
-            <div className={dialogClass} role="document" style={{zIndex: 2000}}>
+            <div className={dialogClass} role="document"
+                 style={{ zIndex: 2000 }}>
                 <div className={contentClass}>
                     <div className={headerClass}>
-                        <button onClick={this.handleClose} className={closeClass} name={this.props.path + '@dismiss'}
+                        <button onClick={this.handleBtnClose}
+                                className={closeClass}
+                                name={this.props.path + '@dismiss'}
                                 value={value}
-                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                         <RenderContent type='h4' content={title || legend}/>
                     </div>
                     <div className={bodyClass}>

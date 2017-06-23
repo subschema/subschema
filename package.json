@@ -1,17 +1,52 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
   "scripts": {
     "rebuild": "lerna clean --yes && lerna bootstrap && lr-link && lr-idea",
     "coverage": "SUBSCHEMA_COVERAGE_USE_GLOBAL=1 lerna --concurrency 1 run test && istanbul report --dir ./docs/coverage --include './coverage/subschema*/cov*.json' html",
     "test": "lerna bootstrap && lerna run test",
-    "bootstrap":"lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "karma": "SUBSCHEMA_DEBUG=1 SUBSCHEMA_TEST_DIR=. ./subschema-dev-support/bin/subschema-karma.js"
+
   },
   "devDependencies": {
     "lerna": "^2.0.0-rc.4",
     "lerna-relinker": "^1.4.0",
     "rimraf": "^2.6.1"
   },
-  "publishConfig":{
-   "registry":"https://registry.npmjs.org/"
+  "peerDependencies": {
+    "subschema": "*",
+    "subschema-component-autocomplete": "*",
+    "subschema-component-demo": "*",
+    "subschema-component-form": "*",
+    "subschema-component-list": "*",
+    "subschema-component-modal": "*",
+    "subschema-component-navigation": "*",
+    "subschema-component-playground": "*",
+    "subschema-component-wizard": "*",
+    "subschema-core": "*",
+    "subschema-css-bootstrap": "*",
+    "subschema-dev-support": "*",
+    "subschema-expression": "*",
+    "subschema-injection": "*",
+    "subschema-loader": "*",
+    "subschema-processors": "*",
+    "subschema-project": "*",
+    "subschema-prop-types": "*",
+    "subschema-test-samples": "*",
+    "subschema-test-support": "*",
+    "subschema-transitions": "*",
+    "subschema-utils": "*",
+    "subschema-validators": "*",
+    "subschema-valuemanager": "*"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "subschema": {
+    "include": "subschema*"
   }
 }
