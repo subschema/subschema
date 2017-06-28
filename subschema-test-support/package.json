@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Subschema Test Support",
   "main": "lib/index.js",
+  "source":"src/index.js",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
     "prepublish": "subschema-babel",

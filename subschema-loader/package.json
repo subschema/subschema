@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Subschema Loader",
   "main": "lib/index.js",
+  "source": "src/index",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
     "prepublish": "subschema-babel",

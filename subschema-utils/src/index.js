@@ -44,9 +44,14 @@ export function flattenFields(feildset) {
     return [];
 
 }
+const keyTestPattern = /\{path\}/g;
+
 export function resolveKey(path, key) {
     if (!key) {
         return path;
+    }
+    if (path && key && keyTestPattern.test(key) ){
+            return resolveKey(path, key.replace(keyTestPattern, path));
     }
     if (key[0] != '.') {
         return key;

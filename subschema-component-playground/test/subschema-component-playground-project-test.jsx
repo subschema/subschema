@@ -5,8 +5,9 @@ import  {TestUtils, Simulate, cleanUp, into, expect} from 'subschema-test-suppor
 import {unmountComponentAtNode, findDOMNode} from 'react-dom';
 import samples from 'subschema-test-samples';
 import {loader} from 'subschema';
+import wizard from 'subschema-component-wizard';
 
-loader.addLoader(playground);
+
 const {DownloadButton} = types;
 const withTag = TestUtils.scryRenderedDOMComponentsWithTag;
 const {click, change} = Simulate;
@@ -17,13 +18,14 @@ schema.template = {
     "transition": false
 };
 
-describe('subschema-component-playground/ProjectWizard', function () {
+describe('subschema-component-playground-project-test', function () {
     this.timeout(50000);
     let b, f, app, select, buttons, options = [];
 
     function sleep(time, value) {
         return new Promise(resolve => setTimeout(resolve, time, value));
     }
+
 
     const oOpen = DownloadButton.open;
 
@@ -34,13 +36,16 @@ describe('subschema-component-playground/ProjectWizard', function () {
         f = filename;
         //     oOpen(blob, filename, callback);
     }
-
+    before(function(){
+        loader.addLoader(playground);
+        loader.addLoader(wizard);
+    });
     beforeEach(function () {
         types.DownloadButton.open = test$open;
         if (app) {
             unmountComponentAtNode(findDOMNode(app).parentElement);
         }
-        app = into(<ProjectWizard/>, true);
+        app = into(<ProjectWizard loader={loader}/>, true);
 
         buttons = withTag(app, 'button');
         select = withTag(app, 'select')[0];

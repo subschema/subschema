@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
 import UninjectedField from 'subschema-core/lib/Field';
 import UninjectedFieldSet from 'subschema-core/lib/FieldSet';
-import {flattenFields as fields} from 'subschema-utils';
+import { flattenFields as fields } from 'subschema-utils';
 function donner(d) {
     d && d();
 }
@@ -15,30 +15,31 @@ export default class WizardMixin extends Component {
 
     static defaultProps = {
         buttonsTemplate: 'ButtonsTemplate',
-        Field: UninjectedField,
-        FieldSet: UninjectedFieldSet
+        Field          : UninjectedField,
+        FieldSet       : UninjectedFieldSet
     };
 
     static propTypes = {
-        schema: PropTypes.any,
+        schema         : PropTypes.any,
+        buttons        : PropTypes.buttons,
         buttonsTemplate: PropTypes.template,
-        onSubmit: PropTypes.submit,
-        FieldSet: PropTypes.injectClass,
-        Field: PropTypes.injectClass
+        onSubmit       : PropTypes.submit,
+        FieldSet       : PropTypes.injectClass,
+        Field          : PropTypes.injectClass
     };
 
-    state = {compState: 0, prevState: 0, maxState: 0, done: false};
+    state = { compState: 0, prevState: 0, maxState: 0, done: false };
 
     handleSubmit(e) {
         //    e && e.preventDefault();
         this._validate(function (errors) {
             if (errors) {
 
-                this.setState({disabled: false, done: false});
+                this.setState({ disabled: false, done: false });
                 return;
             }
 
-            this.setState({done: true});
+            this.setState({ done: true });
             this.props.onSubmit(e);
             return;
         }.bind(this));
@@ -47,16 +48,21 @@ export default class WizardMixin extends Component {
 
     next() {
         const compState = this.state.compState,
-            nextState = compState + 1,
-            current = this.props.schema.fieldsets[compState];
-        this.setState({disabled: true});
+              nextState = compState + 1,
+              current   = this.props.schema.fieldsets[compState];
+        this.setState({ disabled: true });
         this._validate(function (e) {
             if (e) {
-                this.setState({disabled: false, done: false});
+                this.setState({ disabled: false, done: false });
                 return;
             }
-            if (this.props.onNext((resp)=>this.go(nextState, resp), nextState, current) === false) {
-                this.setState({disabled: false, done: false, maxState: Math.max(nextState, this.state.maxState)});
+            if (this.props.onNext((resp) => this.go(nextState, resp), nextState,
+                    current) === false) {
+                this.setState({
+                    disabled: false,
+                    done    : false,
+                    maxState: Math.max(nextState, this.state.maxState)
+                });
                 return;
             }
         }.bind(this));
@@ -64,12 +70,13 @@ export default class WizardMixin extends Component {
 
     previous() {
         const compState = this.state.compState,
-            nextState = compState - 1,
-            current = this.props.schema.fieldsets[compState];
+              nextState = compState - 1,
+              current   = this.props.schema.fieldsets[compState];
 
-        this.setState({disabled: true});
-        if (this.props.onPrevious((resp)=>this.go(nextState, resp), nextState, current) === false) {
-            this.setState({disabled: false, done: false});
+        this.setState({ disabled: true });
+        if (this.props.onPrevious((resp) => this.go(nextState, resp), nextState,
+                current) === false) {
+            this.setState({ disabled: false, done: false });
             return;
         }
     };
@@ -77,7 +84,7 @@ export default class WizardMixin extends Component {
 
     go(pos, resp) {
         if (resp === false) {
-            this.setState({disabled: false, done: false});
+            this.setState({ disabled: false, done: false });
             return;
         }
         this.setNavState(resp == null ? pos : resp);
@@ -89,8 +96,9 @@ export default class WizardMixin extends Component {
     }
 
 
-    handleOnClick = (evt)=> {
-        const steps = this.props.schema.fieldsets.length, value = evt.target.value;
+    handleOnClick = (evt) => {
+        const steps = this.props.schema.fieldsets.length,
+              value = evt.target.value;
         if (value < steps && value <= this.state.maxState) {
             this.setNavState(value, true);
         }
@@ -98,7 +106,7 @@ export default class WizardMixin extends Component {
     };
 
 
-    handleKeyDown = (e)=> {
+    handleKeyDown = (e) => {
         if (e.which === 13) {
             if (this.state.compState < this.props.schema.fieldsets.length - 1) {
                 return this.handleBtn(e, 'next');
@@ -114,32 +122,44 @@ export default class WizardMixin extends Component {
 
 
     createButtons(state) {
-        let {buttons} = this.props.schema.fieldsets[state];
-        let rest = {};
+        let { buttons } = this.props.schema.fieldsets[state];
+        let rest        = {};
         if (buttons) {
             if (buttons.buttons) {
-                ({buttons, ...rest} = buttons);
+                ({ buttons, ...rest } = buttons);
             }
             if (!Array.isArray(buttons)) {
                 buttons = [buttons];
             }
         }
         else {
-            buttons = [];
-            const {next, previous, last, ...restBtns} = this.props.buttons;
-            rest = restBtns;
-            const isFirst = state == 0,
-                isLast = (state + 1 === this.props.schema.fieldsets.length);
+            buttons                                     = [];
+            const { next, previous, last, ...restBtns } = this.props.buttons;
+            rest                                        = restBtns;
+            const isFirst                               = state == 0,
+                  isLast                                = (state + 1
+                                                           === this.props.schema.fieldsets.length);
 
             if (isLast) {
                 if (!isFirst) {
-                    buttons.push({buttonClass: this.props.previousClass, ...previous});
+                    buttons.push(
+                        { buttonClass: this.props.previousClass, ...previous });
                 }
-                buttons.push({buttonClass: this.props.lastClass, primary:true, ...last});
+                buttons.push({
+                    buttonClass: this.props.lastClass,
+                    primary    : true, ...last
+                });
             } else if (isFirst) {
-                buttons.push({buttonClass: this.props.nextClass, primary:true, ...next});
+                buttons.push({
+                    buttonClass: this.props.nextClass,
+                    primary    : true, ...next
+                });
             } else {
-                buttons.push({buttonClass: this.props.previousClass, ...previous}, {buttonClass: this.props.nextClass, primary:true,  ...next});
+                buttons.push(
+                    { buttonClass: this.props.previousClass, ...previous }, {
+                        buttonClass: this.props.nextClass,
+                        primary: true, ...next
+                    });
             }
 
         }
@@ -160,23 +180,19 @@ export default class WizardMixin extends Component {
         e && e.preventDefault();
         switch (action) {
 
-            case 'previous':
-            {
+            case 'previous': {
                 this.previous();
                 break;
             }
-            case 'next':
-            {
+            case 'next': {
                 this.next();
                 break;
             }
-            case 'submit':
-            {
+            case 'submit': {
                 this.handleSubmit(e);
                 break;
             }
-            default:
-            {
+            default: {
                 this.props.onAction(this.state.compState, action, this);
             }
         }
@@ -184,13 +200,13 @@ export default class WizardMixin extends Component {
     };
 
 
-    handleEnter = ()=> {
-        this.setState({animating: true})
+    handleEnter = () => {
+        this.setState({ animating: true })
     };
 
 
-    handleLeave = (done)=> {
-        this.setState({animating: false})
+    handleLeave = (done) => {
+        this.setState({ animating: false })
         done();
     };
 

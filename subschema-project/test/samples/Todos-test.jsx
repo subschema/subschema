@@ -24,7 +24,7 @@ describe('subschema-test-samples/Todos', function () {
         return filterProp(byComponents(task, ButtonTemplate), 'action', action)[0];
     }
 
-    before(function () {
+    beforeEach(function () {
         Subschema = newSubschemaContext();
         loader = Subschema.loader;
         Form = Subschema.Form;

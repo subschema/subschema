@@ -1,28 +1,33 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'subschema-prop-types';
 import RenderContent from 'subschema-core/lib/RenderContent';
 import warning from 'subschema-utils/lib/warning';
 import StashableMixin from 'subschema-core/lib/StashableMixin';
 
 
-export default class ModalTemplate extends StashableMixin {
+export default class ModalTemplate extends Component {
     static propTypes = {
-        ...StashableMixin.propTypes,
-        style          : PropTypes.style,
-        title          : PropTypes.content,
+        path            : PropTypes.path,
+        stash           : PropTypes.stash,
+        unstashOnUnmount: PropTypes.unstash,
+        clearStash      : PropTypes.clearStash,
+        validate        : PropTypes.validateFields,
+        style           : PropTypes.style,
+        title           : PropTypes.content,
         //buttons will get an object describing buttons, not a rendered  node
-        buttons        : PropTypes.buttons,
-        path           : PropTypes.path,
-        dismiss        : PropTypes.valueEvent,
-        buttonsTemplate: PropTypes.template,
-        legend         : PropTypes.content,
-        error          : PropTypes.error
+        buttons         : PropTypes.buttons,
+        path            : PropTypes.path,
+        dismiss         : PropTypes.valueEvent,
+        buttonsTemplate : PropTypes.template,
+        legend          : PropTypes.content,
+        error           : PropTypes.error
     };
 
     static defaultProps = {
         ...StashableMixin.defaultProps,
-        buttonsTemplate: 'ButtonsTemplate',
-        buttons        : {
+        buttonsTemplate : 'ButtonsTemplate',
+        unstashOnUnmount: true,
+        buttons         : {
             buttonsClass: 'pull-right btn-group',
             buttons     : [
                 {
@@ -45,10 +50,10 @@ export default class ModalTemplate extends StashableMixin {
 
     handleBtnClose    = (e) => {
         e && e.preventDefault();
-        this.unstash();
         this.props.dismiss();
     };
     handleButtonClick = (e, action, btn) => {
+        e && e.preventDefault();
         if (!this.props.buttons) {
             return;
         }
@@ -58,14 +63,17 @@ export default class ModalTemplate extends StashableMixin {
             case 'close':
                 this.handleBtnClose(e);
                 return false;
+            //handle submits and such
             default: {
-                const errors = this.validate();
+                const errors = this.props.validate();
                 if (errors) {
                     onButtonClick && onButtonClick(e, action, btn);
 
                     return;
                 }
-                this.clearStash();
+                //clear the stashes so that they won't reapply when
+                //component comes back.
+                this.props.clearStash();
                 this.props.dismiss();
                 onButtonClick && onButtonClick(e, action, btn);
 

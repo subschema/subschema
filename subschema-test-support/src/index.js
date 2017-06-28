@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
 import ValueManager from 'subschema-valuemanager';
 import loader from 'subschema-loader';
@@ -12,16 +12,23 @@ const Simulate = TestUtils.Simulate;
 function prettyLog(result) {
     console.log(JSON.stringify(result, null, '\t'));
 }
-
 function cleanUp() {
     const nodes = document.getElementsByClassName('__test__inserted__');
-    while(nodes[0]){
-        nodes[0].parentNode.removeChild(nodes[0]);
+    let node;
+    while ((node = nodes[0])) {
+        try {
+            const ret = ReactDOM.unmountComponentAtNode(node);
+        } catch (e) {
+            console.trace(e);
+        }
+        nodes[0].parentNode.removeChild(node);
     }
 }
+let __id =0;
 function into(node, debug) {
-    const ele = document.createElement('div');
+    const ele     = document.createElement('div');
     ele.className = `__test__inserted__`;
+    ele.id = `__test_${__id++}`;
     if (debug === true) {
         document.body.appendChild(ele);
     }
@@ -42,7 +49,8 @@ function expected(nodes, length) {
     return nodes;
 }
 function byTypes(node, type, length) {
-    return expected(TestUtils.scryRenderedComponentsWithType(node, type), length);
+    return expected(TestUtils.scryRenderedComponentsWithType(node, type),
+        length);
 }
 function byType(node, type) {
     return TestUtils.findRenderedComponentWithType(node, type);
@@ -53,7 +61,8 @@ function byTag(node, tag) {
 }
 
 function byTags(node, tag, length) {
-    return expected(TestUtils.scryRenderedDOMComponentsWithTag(node, tag), length);
+    return expected(TestUtils.scryRenderedDOMComponentsWithTag(node, tag),
+        length);
 }
 function onlyOne(node) {
     if (node.length != 1) {
@@ -77,7 +86,9 @@ function filterProp(node, property, value) {
     return node.filter((n) => {
         var props = (n instanceof Element) ? n.attributes : n.props;
         if (property in props) {
-            if (value === null) return true;
+            if (value === null) {
+                return true;
+            }
 
             return props[property] === value;
         }
@@ -101,11 +112,11 @@ function click(node) {
 }
 
 function change(node, value) {
-    Simulate.change(findNode(node), {target: {value}});
+    Simulate.change(findNode(node), { target: { value } });
     return node;
 }
 function check(node, checked, value) {
-    Simulate.change(findNode(node), {target: {checked, value}});
+    Simulate.change(findNode(node), { target: { checked, value } });
     return node;
 }
 function blur(node) {
@@ -119,14 +130,17 @@ function focus(node) {
 }
 
 function byComponent(node, comp) {
-    return onlyOne(TestUtils.scryRenderedComponentsWithType(asNode(node), comp));
+    return onlyOne(
+        TestUtils.scryRenderedComponentsWithType(asNode(node), comp));
 }
 
 function byComponents(node, comp, length) {
-    return expected(TestUtils.scryRenderedComponentsWithType(asNode(node), comp), length);
+    return expected(
+        TestUtils.scryRenderedComponentsWithType(asNode(node), comp), length);
 }
 function byClass(node, className) {
-    return TestUtils.scryRenderedDOMComponentsWithClass(asNode(node), className);
+    return TestUtils.scryRenderedDOMComponentsWithClass(asNode(node),
+        className);
 }
 function asNode(node) {
     if (Array.isArray(node)) {
@@ -140,19 +154,20 @@ function findNode(n) {
 function defChildContext() {
     return {
         valueManager: ValueManager(),
-        loader: loader,
-        injector: injector
+        loader      : loader,
+        injector    : injector
     };
 }
 function context(childContext = defChildContext, childContextTypes = {
     valueManager: PropTypes.valueManager,
-    loader: PropTypes.loader,
-    injector: PropTypes.injector
+    loader      : PropTypes.loader,
+    injector    : PropTypes.injector
 }) {
 
-    const getChildContext = typeof childContext === 'function' ? childContext : function () {
-        return childContext;
-    };
+    const getChildContext = typeof childContext === 'function' ? childContext
+        : function () {
+            return childContext;
+        };
 
     class Context extends Component {
         static childContextTypes = childContextTypes;
@@ -172,7 +187,7 @@ function intoWithContext(child, ctx, debug, contextTypes) {
 
 
 function select(composit, index) {
-    var node = findNode(composit);
+    var node     = findNode(composit);
     var multiple = node.multiple;
 
     var options = byTags(composit, 'option')
@@ -201,7 +216,9 @@ class StateWrapper extends Component {
 
 function intoWithState(child, state, debug) {
     var s = into(<StateWrapper>{child}</StateWrapper>, debug);
-    if (state != null) s.setState(state);
+    if (state != null) {
+        s.setState(state);
+    }
     var schild = byType(s, child.type);
     return {
         state: s,

@@ -2,7 +2,7 @@
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
   },
   "scripts": {
     "rebuild": "lerna clean --yes && lerna bootstrap && lr-link && lr-idea",

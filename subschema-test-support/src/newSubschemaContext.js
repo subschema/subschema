@@ -17,8 +17,8 @@ const newSubschemaContext = (opts) => {
             valueManager,
             ValueManager     = _ValueManager,
             loader           = loaderFactory(),
-            _injectorFactory = (loader) => cachedInjector(
-                injectorFactory(loader)),
+            _injectorFactory = (loader) =>
+                injectorFactory(loader),
             propTypes        = _PropTypes,
             resolvers        = _resolvers,
             Form             = __Form,
@@ -41,6 +41,7 @@ const newSubschemaContext = (opts) => {
     if (!valueManager) {
         valueManager = ValueManager();
     }
+
     Form.defaultValueManager   = ValueManager;
     Form.defaultProps.injector = _injectorFactory;
     Form.defaultProps.loader   = loader;

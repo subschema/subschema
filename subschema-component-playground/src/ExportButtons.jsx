@@ -3,7 +3,7 @@ import {Basic} from 'subschema-test-samples';
 import PropTypes from 'subschema-prop-types';
 import DownloadButton from './DownloadButton.jsx';
 import capitalize from 'lodash/capitalize';
-
+import camelCase from 'lodash/camelCase'
 export default class ExportButtons extends Component {
     static propTypes = {
         filename: PropTypes.value,

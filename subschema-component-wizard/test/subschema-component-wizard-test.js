@@ -25,13 +25,13 @@ describe('subschema-component-wizard', function () {
     };
 
     it('should create a new form with a wizard and stuff', function (done) {
-        const {Form, valueManager} = newContext();
+        const {Form, loader, valueManager} = newContext();
 
         function onSubmit(...args) {
             done();
         }
 
-        var root = into(<Form template="WizardTemplate" valueManager={valueManager} onSubmit={onSubmit} schema={{
+        var root = into(<Form template="WizardTemplate" loader={loader} valueManager={valueManager} onSubmit={onSubmit} schema={{
             schema: {
                 c1: {type: 'Checkbox', validators: ['required']},
                 c2: {type: 'Checkbox', validators: ['required']},

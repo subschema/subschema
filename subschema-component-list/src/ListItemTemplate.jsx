@@ -1,49 +1,50 @@
-import React, {Component} from 'react';
-import {path, noop} from 'subschema-utils';
+import React, { Component } from 'react';
+import { noop } from 'subschema-utils';
 import UninjectedButtons from 'subschema-component-form/lib/templates/ButtonsTemplate';
 import PropTypes from 'subschema-prop-types';
 
 export default class ListItemTemplate extends Component {
     static propTypes = {
-        style: PropTypes.style,
-        Buttons: PropTypes.injectClass
+        style  : PropTypes.style,
+        Buttons: PropTypes.injectClass,
+        pid    : PropTypes.any
     };
 
     static defaultProps = {
-        type: 'Text',
-        onMoveUp: noop,
-        onMoveDown: noop,
-        onDelete: noop,
-        onValidate: noop,
+        type         : 'Text',
+        onMoveUp     : noop,
+        onMoveDown   : noop,
+        onDelete     : noop,
+        onValidate   : noop,
         onValueChange: noop,
-        onEdit: noop,
-        canAdd: false,
-        canReorder: false,
-        canEdit: false,
-        canDelete: false,
-        last: false,
-        errors: null,
-        pos: 0,
-        style: "ListItemTemplate",
-        Buttons: UninjectedButtons
+        onEdit       : noop,
+        canAdd       : false,
+        canReorder   : false,
+        canEdit      : false,
+        canDelete    : false,
+        last         : false,
+        errors       : null,
+        pos          : 0,
+        style        : "ListItemTemplate",
+        Buttons      : UninjectedButtons
     };
 
-    handleMoveUp = (e)=> {
+    handleMoveUp = (e) => {
         e.preventDefault();
         this.props.onMoveUp(this.props.pos, this.props.value, this.props.pid);
     };
 
-    handleMoveDown = (e)=> {
+    handleMoveDown = (e) => {
         e.preventDefault();
         this.props.onMoveDown(this.props.pos, this.props.value, this.props.pid);
     };
 
-    handleDelete = (e)=> {
+    handleDelete = (e) => {
         e.preventDefault();
         this.props.onDelete(this.props.pos, this.props.value, this.props.pid);
     };
 
-    handleEdit = (e)=> {
+    handleEdit = (e) => {
         e.preventDefault();
         var val = this.props.value;
 
@@ -51,27 +52,27 @@ export default class ListItemTemplate extends Component {
     };
 
     buttons(pos, last, canReorder, canDelete) {
-        var buttons = [];
+        var buttons     = [];
         var buttonClass = this.props.buttonClass;
         if (canReorder) {
             if (pos > 0) {
                 buttons.push({
-                    onClick: this.handleMoveUp,
-                    title: 'Move Up',
-                    action:'up',
-                    label: '',
+                    onClick  : this.handleMoveUp,
+                    title    : 'Move Up',
+                    action   : 'up',
+                    label    : '',
                     iconClass: this.props.moveUpClass,
                     buttonClass
                 });
             }
             if (!last) {
                 buttons.push({
-                    onClick: this.handleMoveDown,
-                    title: 'Move Down',
-                    action:'down',
+                    onClick  : this.handleMoveDown,
+                    title    : 'Move Down',
+                    action   : 'down',
                     iconClass: this.props.moveDownClass,
                     buttonClass,
-                    label: ''
+                    label    : ''
                 });
 
             }
@@ -79,24 +80,31 @@ export default class ListItemTemplate extends Component {
         }
         if (canDelete) {
             buttons.push({
-                onClick: this.handleDelete,
-                title: 'Delete',
-                action:'delete',
+                onClick  : this.handleDelete,
+                title    : 'Delete',
+                action   : 'delete',
                 iconClass: this.props.deleteClass,
                 buttonClass,
-                label: ''
+                label    : ''
             });
         }
         return buttons
     }
 
     render() {
-        var {pos, Buttons, value, errors, path, ctrlButtonsClass, listGroupItemClass,helpClass, onValidate,type, name, hasErrorClass, canReorder, canDelete, last, onValueChange} = this.props;
-        var error = errors && errors[0] && errors[0].message;
-        return <li className={`${listGroupItemClass} ${(error ? hasErrorClass : '')}`}>
-            { error ? <p ref="error" key="error" className={helpClass}>{error}</p> : null }
-            <Buttons key="buttons" buttons={this.buttons(pos, last, canReorder, canDelete)} ref="buttons"
-                     buttonsClass={ctrlButtonsClass} />
+        var { pos, Buttons, value, errors, path, ctrlButtonsClass, listGroupItemClass, helpClass, onValidate, type, name, hasErrorClass, canReorder, canDelete, last, onValueChange } = this.props;
+        var error                                                                                                                                                                     = errors
+                                                                                                                                                                                        && errors[0]
+                                                                                                                                                                                        && errors[0].message;
+        return <li
+            className={`${listGroupItemClass} ${(error ? hasErrorClass : '')}`}>
+            { error ?
+              <p ref="error" key="error" className={helpClass}>{error}</p>
+                : null }
+            <Buttons key="buttons"
+                     buttons={this.buttons(pos, last, canReorder, canDelete)}
+                     ref="buttons"
+                     buttonsClass={ctrlButtonsClass}/>
             {this.props.children}
         </li>
 

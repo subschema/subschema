@@ -6,7 +6,7 @@ function buttonNormalizer(value) {
     let buttons;
     let hasPrimary = false;
     if (value == null) {
-        return null;
+        return value;
     }
     if (typeof value === 'string') {
         buttons = value.split(/,\s*/).map(function (btn) {

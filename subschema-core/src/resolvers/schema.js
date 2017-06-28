@@ -143,6 +143,7 @@ export function normalizeSchema(oschema, key, props, context) {
 
 function schema(Clazz, key) {
     Clazz.contextTypes.loader = PropTypes.loader;
+    Clazz.contextTypes.injector = PropTypes.injector;
     Clazz::this.property(key, normalizeSchema);
 }
 

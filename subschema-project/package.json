@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Subschema Project Generator",
   "main": "dist/index.js",
+  "source":"src/index",
   "scripts": {
     "karma": "subschema-karma",
     "test": "subschema-karma",

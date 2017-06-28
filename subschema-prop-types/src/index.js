@@ -73,6 +73,14 @@ const blurValidate = customPropType(func, 'blurValidate');
 
 const changeValidate = customPropType(func, 'changeValidate');
 
+const stash = customPropType(func, 'stash');
+
+const unstash = customPropType(func, 'unstash');
+
+const validateFields = customPropType(oneOfType([arrayOf(string), func]),
+    'validateFields');
+
+const clearStash = customPropType(func, 'clearStash');
 
 const className = customPropType(oneOfType([string, arrayOf(string)]),
     'className');
@@ -418,7 +426,11 @@ const api = {
     instanceOf,
     oneOfType,
     oneOf,
-    renderedTemplate
+    renderedTemplate,
+    stash,
+    unstash,
+    clearStash,
+    validateFields
 
 };
 
@@ -499,5 +511,9 @@ export default
     instanceOf,
     oneOfType,
     oneOf,
-    renderedTemplate
+    renderedTemplate,
+    stash,
+    unstash,
+    clearStash,
+    validateFields
 });

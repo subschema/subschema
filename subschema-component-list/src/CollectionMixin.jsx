@@ -1,288 +1,256 @@
-import React, {Component} from "react";
-import {path, noop, clone} from "subschema-utils";
-import UninjectedObjectType from "subschema-core/lib/Object";
-import PropTypes from "subschema-prop-types";
-import defaults from "lodash/defaults";
-import RenderTemplate from "subschema-core/lib/RenderTemplate";
+import React, { PureComponent } from 'react';
+import { clone, noop, resolveKey } from 'subschema-utils';
+import UninjectedObjectType from 'subschema-core/lib/Object';
+import PropTypes from 'subschema-prop-types';
+import defaults from 'lodash/defaults';
+import renderTemplate from 'subschema-core/lib/RenderTemplate';
 
-function makeEditPid(path, pid) {
-    return '@' + path.replace(/\./g, '@') + (pid != null ? `@${pid}` : '');
-}
+export const settings = {
+    //configure the path that nested editing happens at.
+    editPath: `@edit@{path}`
+};
 
-function remove(obj, key) {
-    if (!obj) return;
-    if (Array.isArray(obj)) {
-        obj.splice(key, 1);
-
-    } else {
-        delete obj[key];
+const isEmpty = (v) => {
+    if (v == null || v === false || v === true || v === '') {
+        return true;
     }
-    return obj;
-}
 
-export default class CollectionMixin extends Component {
+    if ('length' in v) {
+        return v.length == 0;
+    }
 
+
+    return false;
+};
+export default class CollectionMixin extends PureComponent {
 
     static inputClassName = 'list-editor';
-
-    static contextTypes = {valueManager: PropTypes.valueManager};
-
-    static propTypes = {
-        onChange: PropTypes.valueEvent,
-        path: PropTypes.path,
-        showAdd: PropTypes.bool,
-        canEdit: PropTypes.bool,
-        canReorder: PropTypes.bool,
-        canDelete: PropTypes.bool,
-        canAdd: PropTypes.bool,
-        showKey: PropTypes.bool,
-        inline: PropTypes.bool,
-        labelKey: PropTypes.string,
-        itemType: PropTypes.typeDescription,
-        editType: PropTypes.typeDescription,
-        createType: PropTypes.typeDescription,
-        editTemplate: PropTypes.template,
-        createTemplate: PropTypes.template,
-        buttonTemplate: PropTypes.template,
-        itemTemplate: PropTypes.template,
-        contentTemplate: PropTypes.template,
-        buttons: PropTypes.buttons,
-        addButton: PropTypes.button,
+    static contextTypes   = {
+        valueManager: PropTypes.valueManager,
+        injector    : PropTypes.injector
+    };
+    static propTypes      = {
+        onChange          : PropTypes.valueEvent,
+        path              : PropTypes.path,
+        canEdit           : PropTypes.bool,
+        canDelete         : PropTypes.bool,
+        canAdd            : PropTypes.bool,
+        inline            : PropTypes.bool,
+        labelKey          : PropTypes.string,
+        itemType          : PropTypes.typeDescription,
+        editType          : PropTypes.typeDescription,
+        createType        : PropTypes.typeDescription,
+        editPath          : PropTypes.value,
+        onEdit            : PropTypes.valueEvent,
+        editTemplate      : PropTypes.template,
+        createTemplate    : PropTypes.template,
+        buttonTemplate    : PropTypes.template,
+        itemTemplate      : PropTypes.template,
+        contentTemplate   : PropTypes.template,
+        buttons           : PropTypes.buttons,
+        addButton         : PropTypes.button,
         listContainerClass: PropTypes.cssClass,
-        ObjectType: PropTypes.injectClass,
-        value: PropTypes.value,
-        title: PropTypes.title
+        ObjectType        : PropTypes.injectClass,
+        value             : PropTypes.value,
+        title             : PropTypes.string,
+        errors            : PropTypes.errors
     };
 
     static defaultProps = {
-        onWillReorder: noop,
-        onWillChange: noop,
-        onWillAdd: noop,
-        onWillDelete: noop,
-        createTemplate: 'CollectionCreateTemplate',
-        editTemplate: 'CollectionCreateTemplate',
-        buttonTemplate: 'ButtonTemplate',
-        itemTemplate: 'ListItemTemplate',
+        onWillReorder  : noop,
+        onWillChange   : noop,
+        onWillAdd      : noop,
+        onWillDelete   : noop,
+        createTemplate : 'CollectionCreateTemplate',
+        editTemplate   : 'CollectionCreateTemplate',
+        buttonTemplate : 'ButtonTemplate',
+        itemTemplate   : 'ListItemTemplate',
         contentTemplate: "ContentItemTemplate",
-        showKey: false,
-        showAdd: false,
-        itemType: {
+        editPath       : settings.editPath,
+        onEdit         : settings.editPath,
+        itemType       : {
             type: 'Text'
         },
-        addButton: {
-            "label": "Add",
+        addButton      : {
+            "label"    : "Add",
             "className": "btn btn-default btn-add"
         },
-        buttons: {
+        buttons        : {
             buttonsClass: 'btn-group pull-right',
-            buttons: [{label: 'Cancel', action: 'cancel', buttonClass: 'btn btn-default'}
-                , {label: 'Save', type: 'submit', action: 'submit', primary:true, buttonClass: 'btn-primary btn'}]
+            buttons     : [{
+                label      : 'Cancel',
+                action     : 'cancel',
+                buttonClass: 'btn btn-default'
+            }, {
+                label      : 'Save',
+                type       : 'submit',
+                action     : 'submit',
+                primary    : true,
+                buttonClass: 'btn-primary btn'
+            }]
         },
-        ObjectType: UninjectedObjectType
+        ObjectType     : UninjectedObjectType
     };
-    state = {
-        showAdd: this.props.showAdd
-    };
-
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this._length = this.count(props.value);
-    }
-
-    componentWillReceiveProps(props) {
-        const {showAdd} = props;
-        if (showAdd !== this.props.showAdd) {
-            this.setState({showAdd});
-        }
-        this._length = this.count(props.value);
-    }
-
-    count(value) {
-        return value ? value.length : 0;
-    }
 
     getValue() {
         return this.props.value;
     }
 
 
-    setErrors(errors) {
-        this.setState({errors});
-    }
-
-    handleMoveUp = (pos, val) => {
-        this.reorder(pos, val, -1);
-    };
-
-    handleMoveDown = (pos, val) => {
-        this.reorder(pos, val, 1);
-    };
-
-    reorder(pos, val, direction) {
-        const values = this.props.value, oval = values && values.concat();
-        const newPos = direction > 0 ? Math.min(pos + direction, values.length) : Math.max(pos + direction, 0);
-        if (this.props.onWillReorder(pos, val, direction) !== false) {
-            values.splice(newPos, 0, values.splice(pos, 1)[0]);
-            this.changeValue(values, oval);
-        }
-    }
-
     handleDelete = (pos, val, pid) => {
-        const values = this.props.value, oval = values && values.concat();
+        const values = clone(this.props.value);
         if (this.props.onWillDelete(pos, val) !== false) {
-            values.splice(pos, 1);
-            this.changeValue(values, oval);
-        }
-    };
-
-
-    changeValue = (newValue, oldValue) => {
-        if (this.props.onChange(newValue) !== false) {
-            this.setState({
-                showAdd: this.props.showAdd,
-                showEdit: false
-            });
+            if (Array.isArray(values)) {
+                values.splice(pos, 1);
+            } else {
+                delete values[pid];
+            }
+            this.props.onChange(values);
         }
     };
 
     handleAddBtn = (e) => {
         e && e.preventDefault();
-        const key = this.createPid();
-        this.context.valueManager.update(makeEditPid(this.props.path, key), {
-            key
-        });
-        this.setState({showAdd: true, editPid: key});
+        const key      = this.createPid();
+        const editPath = {
+            mode   : 'add',
+            origKey: key,
+            schema : this.createItemSchema(false),
+            path   : resolveKey(this.props.path, settings.editPath),
+            pos    : this.count(),
+            key,
+
+        };
+        this.props.onEdit(editPath);
+
     };
 
-    handleEdit = (pos, val, pid) => {
-        this.context.valueManager.update(makeEditPid(this.props.path, pid), {
-            value: clone(val),
-            key: pid
-        });
-        this.setState({
-            showAdd: false,
-            showEdit: true,
-            editPid: pid
-        });
-    };
-
-
-    handleCancelAdd = (e) => {
-        e && e.preventDefault();
-        this.setState({showAdd: this.props.showAdd, showEdit: false});
+    handleEdit = (pos, value, key) => {
+        const editPath = {
+            value  : clone(value),
+            mode   : 'edit',
+            origKey: key,
+            schema : this.createItemSchema(true),
+            path   : resolveKey(this.props.path, settings.editPath),
+            pos,
+            key,
+        };
+        this.props.onEdit(editPath);
     };
 
     handleBtnClick = (e, action) => {
         e && e.preventDefault();
-
-        if (action == 'submit') {
-            this.handleSubmit(e);
-
-        } else {
-            this.context.valueManager.update(makeEditPid(this.props.path, this.state.editPid));
-            this.setState({
-                showAdd: this.props.showAdd,
-                showEdit: false,
-                editPid: null
-            });
-        }
-    };
-
-    handleSubmit = (e) => {
-        e && e.preventDefault();
-        var {valueManager} = this.context;
-        var origKey = makeEditPid(this.props.path, this.state.editPid);
-        const origValue = valueManager.path(origKey) || {};
-        var {
-            key,
-            value
-        } = origValue;
-        const errors = valueManager.getErrors();
-
-        if (errors == null || Object.keys(errors).length === 0) {
-            var currentPath = path(this.props.path, key);
-            //value fix.
-            var clonedValue = !this.props.value ? this.createDefValue() : clone(this.props.value);
-            if (!this.props.onSubmit || this.props.onSubmit(e, errors, value, currentPath) !== false) {
-                if (key != null) {
-                    clonedValue[key] = value;
-                    //if the key changed, remove the original.
-                    if (origKey !== makeEditPid(currentPath)) {
-                        remove(clonedValue, this.state.editPid);
-                    }
-                } else {
-                    clonedValue.unshift(value);
-                }
-                valueManager.update(origKey);
-
-                this.props.onChange(clonedValue);
+        switch (action) {
+            case 'close':
+            case 'cancel':
+                this.props.onEdit();
+                return;
+            default: {
+                this.handleSubmit();
             }
-
-            //return false;
-        } else {
-            return false;
         }
+    };
 
-        this.setState({
-            showAdd: this.props.showAdd,
-            showEdit: false,
-            editPid: null
-        });
+    handleSubmit() {
+        const editPath = this.props.editPath;//this.context.valueManager.path(resolveKey(this.props.path,
+                                             // settings.editPath));
+        if (!editPath) {
+            return;
+        }
+        const {
+                  value,
+                  key,
+                  origKey,
+                  mode
+              }           = editPath;
+        //value fix.
+        const clonedValue = isEmpty(this.props.value) ? this.createDefValue()
+            : clone(this.props.value);
+        if (mode == 'edit' && origKey != key) {
+            if (clonedValue) {
+                if (Array.isArray(clonedValue)) {
+                    clonedValue.splice(key, 1);
+                } else {
+                    delete clonedValue[origKey];
+                }
+            }
+        }
+        clonedValue[key] = value;
+        this.props.onChange(clonedValue);
+        this.props.onEdit();
     };
 
 
-    renderAddEditTemplate(edit, create) {
-        if (!(edit || create)) {
+    renderAddEditTemplate() {
+        if (!this.props.editPath) {
             return null;
         }
-        const childPath = path(this.props.path, this.state.editPid);
-        const {ObjectType, editTemplate, createTemplate} = this.props;
-        return (
-            <RenderTemplate template={edit ? editTemplate : createTemplate} inline={edit ? this.props.inline : false}
-                            create={edit ? false : create}
-                            onButtonClick={this.handleBtnClick}
-                            title={this.props.title} key="addEditTemplate">
-                <ObjectType key="addEdit"
-                            onButtonClick={this.handleBtnClick}
-                            schema={this.createItemSchema(childPath, edit)}
-                            path={makeEditPid(this.props.path, this.state.editPid)}
-                />
-            </RenderTemplate>);
+
+        const {
+                  editTemplate, createTemplate,
+                  editPath: { mode, path, schema },
+                  ObjectType,
+                  inline,
+                  title,
+              }      = this.props;
+        const isEdit = mode === 'edit';
+
+        const children = <ObjectType
+            key={`editForm-${path}`}
+            onButtonClick={this.handleBtnClick}
+            schema={schema}
+            path={path}
+        />;
+        return renderTemplate({
+            key          : `addEditTemplate-${path}`,
+            template     : isEdit ? editTemplate : createTemplate,
+            create       : isEdit ? false : true,
+            onButtonClick: this.handleBtnClick,
+            inline,
+            title,
+            children,
+        });
     }
 
     renderAddBtn() {
         if (!this.props.canAdd) {
             return null;
         }
-        const btn = defaults({}, this.props.addButton, CollectionMixin.defaultProps.addButton);
-        return <RenderTemplate template={this.props.buttonTemplate} key="addBtn"  {...btn}
-                               onClick={this.handleAddBtn}
-                               iconClass={this.props.iconAddClass}/>
+
+        const btn = defaults({}, this.props.addButton,
+            CollectionMixin.defaultProps.addButton);
+
+        return renderTemplate({
+            template : this.props.buttonTemplate,
+            key      : "addBtn",
+            onClick  : this.handleAddBtn,
+            iconClass: this.props.iconAddClass,
+            ...btn,
+        });
 
     }
 
     renderAdd() {
-        if (!(this.props.canAdd || this.props.canEdit)) {
-            return null;
-        }
-        const {showAdd, showEdit} = this.state;
-        if (this.props.inline) {
-            if (showAdd) {
-                return this.renderAddEditTemplate(false, true);
-            } else {
-                return this.renderAddBtn();
-            }
-        } else if (!(showAdd || showEdit)) {
+        if (!this.props.editPath) {
             return this.renderAddBtn();
         }
-        return this.renderAddEditTemplate(showEdit, showAdd);
+        const { mode } = this.props.editPath;
+        if (mode) {
+            if (this.props.inline) {
+                if (mode === 'edit') {
+                    return null;
+                }
+            }
+            return this.renderAddEditTemplate()
+        }
+        return this.renderAddBtn()
     }
 
     createItemSchema(edit) {
         const schema = {
-            schema: this.getTemplateItem(edit),
+            schema   : this.getTemplateItem(edit),
             fieldsets: [{
-                fields: ['key', 'value'],
+                fields : ['key', 'value'],
                 buttons: this.props.buttons
             }]
 
@@ -294,47 +262,64 @@ export default class CollectionMixin extends Component {
         return this.renderRow(data, null, rowId, rowId);
     }
 
-    renderRows() {
-        if (this.props.value) {
-            return this.props.value.map(this.renderRowEach, this);
-        }
-        return null;
-    }
+    renderRow(value, sectionId, pos, pid) {
+        pid     = pid || pos;
+        value   = { value };
+        const {
+                  itemTemplate,
+                  contentTemplate,
+                  editPath,
+                  showKey,
+                  labelKey,
+              } = this.props;
 
-    renderRow(value, sectionId, pos, key) {
-        const {itemTemplate, contentTemplate} = this.props;
-        const v = {value};
-        return <RenderTemplate template={itemTemplate}
-                               key={this.props.path + '.' + pos}
-                               pos={pos}
-                               sectionId={sectionId}
-                               path={ path(this.props.path, key)}
-                               onMoveUp={this.handleMoveUp}
-                               onMoveDown={this.handleMoveDown}
-                               onDelete={this.handleDelete}
-                               onEdit={this.handleEdit}
-                               canReorder={this.props.canReorder}
-                               canDelete={this.props.canDelete}
-                               canEdit={this.props.canEdit}
-                               value={v}
-                               last={pos + 1 === this._length}
-                               errors={this.props.errors}>
-            {this.props.inline && this.state.editPid === pos ? this.renderAddEditTemplate(v, false) :
-                <RenderTemplate template={contentTemplate}
-                                labelKey={this.props.labelKey}
-                                pos={pos}
-                                pid={key}
-                                value={v}
-                                showKey={this.props.showKey}
-                                onClick={this.props.canEdit ? this.handleEdit : null}/> }
-        </RenderTemplate>
+        const last       = (this.count() === pos + 1);
+        const path       = resolveKey(this.props.path, pid);
+        const isEditItem = this.props.inline && pid == editPath.key;
+        const key        = `${path}.${pid}`;
+
+        const children = isEditItem ? this.renderAddEditTemplate(value, false)
+            : renderTemplate({
+                template: contentTemplate,
+                key     : `render-inline-${key}`,
+                onClick : this.props.canEdit ? this.handleEdit : null,
+                labelKey,
+                showKey,
+                pos,
+                pid,
+                value,
+                last,
+
+            });
+
+        return renderTemplate({
+            template  : itemTemplate,
+            onMoveUp  : this.handleMoveUp,
+            onMoveDown: this.handleMoveDown,
+            onDelete  : this.handleDelete,
+            onEdit    : this.handleEdit,
+            canReorder: this.props.canReorder,
+            canDelete : this.props.canDelete,
+            canEdit   : this.props.canEdit,
+            canAdd    : this.props.canAdd,
+            errors    : this.props.errors,
+            path,
+            labelKey,
+            showKey,
+            key,
+            pos,
+            pid,
+            value,
+            last,
+            children,
+        })
     }
 
     render() {
-        var {className, listContainerClass} = this.props;
+        const { className, listContainerClass } = this.props;
         return (<div className={className}>
             {this.renderAdd()}
-            <ul className={listContainerClass}>
+            <ul key='container' className={listContainerClass}>
                 {this.renderRows()}
             </ul>
         </div>);

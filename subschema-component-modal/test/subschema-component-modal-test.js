@@ -1,6 +1,5 @@
 import React from 'react';
 import { templates } from 'subschema-component-modal';
-import { Simulate } from 'react-dom/test-utils';
 import {
     byClass, byComponent, byComponents, change, check, click, expect, into
 } from 'subschema-test-support';
@@ -29,13 +28,13 @@ describe('subschema-component-modal', function () {
                     buttons : ['close', 'cancel', 'submit']
                 }
             ]
-        }} {...context}/>, true);
+        }}/>, true);
         expect(form).toExist();
     });
 
     it('should render template with and submit validate', function () {
         //loader, schema, Subschema, React`
-        const { context, loader, Form, ValueManager } = newSubschemaContext();
+        const { loader, valueManager, Form, ValueManager } = newSubschemaContext();
         loader.addTemplate(templates);
         const onSubmit = (e, err, value) => {
             e && e.preventDefault();
@@ -76,7 +75,7 @@ describe('subschema-component-modal', function () {
                     }]
                 }
             ]
-        }} {...context}/>, true);
+        }} loader={loader} valueManager={valueManager}/>, true);
 
 
         expect(form).toExist();
@@ -88,7 +87,7 @@ describe('subschema-component-modal', function () {
         const close    = () => click(byClass(form, 'close'));
         const text     = (value) => change(byComponent(form, Text), value);
         const value    = (path, expected) => {
-            const v = context.valueManager.path(path);
+            const v = valueManager.path(path);
             if (expected != null) {
                 return expect(v).toBe(expected);
             }
@@ -97,8 +96,7 @@ describe('subschema-component-modal', function () {
         };
         checkbox();
         submit();
-        expect(context.valueManager.getErrors().test.length).toBe(1);
-
+        expect(valueManager.getErrors().test.length).toBe(1);
         cancel();
 
         value('test', null);
@@ -114,6 +112,7 @@ describe('subschema-component-modal', function () {
         checkbox();
 
         text('goodbye world');
+
 
         value('test', 'goodbye world');
 
@@ -142,7 +141,7 @@ describe('subschema-component-modal', function () {
     it('should render template with and submit validate minimal',
         function () {
             //loader, schema, Subschema, React
-            const { context, loader, Form, ValueManager } = newSubschemaContext();
+            const { valueManager, loader, Form, ValueManager } = newSubschemaContext();
             loader.addTemplate(templates);
             const onSubmit = (e, err, value) => {
                 e && e.preventDefault();
@@ -179,7 +178,7 @@ describe('subschema-component-modal', function () {
                         }]
                     }
                 ]
-            }} {...context}/>, true);
+            }} valueManager={valueManager} loader={loader}/>, true);
 
 
             expect(form).toExist();
@@ -191,7 +190,7 @@ describe('subschema-component-modal', function () {
             const close    = () => click(byClass(form, 'close'));
             const text     = (value) => change(byComponent(form, Text), value);
             const value    = (path, expected) => {
-                const v = context.valueManager.path(path);
+                const v = valueManager.path(path);
                 if (expected != null) {
                     return expect(v).toBe(expected);
                 }
@@ -200,7 +199,7 @@ describe('subschema-component-modal', function () {
             };
             checkbox();
             submit();
-            expect(context.valueManager.getErrors().test.length).toBe(1);
+            expect(valueManager.getErrors().test.length).toBe(1);
 
             cancel();
 
@@ -245,7 +244,7 @@ describe('subschema-component-modal', function () {
     it('should render template with and submit very minimal',
         function () {
             //loader, schema, Subschema, React
-            const { context, loader, Form, ValueManager } = newSubschemaContext();
+            const { valueManager, loader, Form, ValueManager } = newSubschemaContext();
             loader.addTemplate(templates);
             const onSubmit = (e, err, value) => {
                 e && e.preventDefault();
@@ -266,12 +265,12 @@ describe('subschema-component-modal', function () {
                     },
                     'other'
                 ]
-            }} {...context}/>, true);
+            }} loader={loader} valueManager={valueManager}/>, true);
 
 
             expect(form).toExist();
 
-            const checkbox = (checked = true) => context.valueManager.update(
+            const checkbox = (checked = true) => valueManager.update(
                 'showModal', checked);
             const cancel   = () => click(byComponents(form, ButtonTemplate)[0]);
             const submit   = () => click(byComponents(form, ButtonTemplate)[1]);
@@ -279,7 +278,7 @@ describe('subschema-component-modal', function () {
             const text     = (value) => change(byComponents(form, Text)[0],
                 value);
             const value    = (path, expected) => {
-                const v = context.valueManager.path(path);
+                const v = valueManager.path(path);
                 if (expected != null) {
                     return expect(v).toBe(expected);
                 }
@@ -288,7 +287,7 @@ describe('subschema-component-modal', function () {
             };
             checkbox();
             submit();
-            expect(context.valueManager.getErrors().test.length).toBe(1);
+            expect(valueManager.getErrors().test.length).toBe(1);
 
             cancel();
 
@@ -334,7 +333,7 @@ describe('subschema-component-modal', function () {
     it('should render as a field template',
         function () {
             //loader, schema, Subschema, React
-            const { context, loader, Form, ValueManager } = newSubschemaContext();
+            const { valueManager, loader, Form, ValueManager } = newSubschemaContext();
             loader.addTemplate(templates);
             const onSubmit = (e, err, value) => {
                 e && e.preventDefault();
@@ -363,12 +362,12 @@ describe('subschema-component-modal', function () {
                     'hello',
                     'showModal'
                 ]
-            }} {...context}/>, true);
+            }} valueManager={valueManager} loader={loader}/>, true);
 
 
             expect(form).toExist();
 
-            const checkbox = (checked = true) => context.valueManager.update(
+            const checkbox = (checked = true) => valueManager.update(
                 'showModal', checked);
             const cancel   = () => click(byComponents(form, ButtonTemplate)[0]);
             const submit   = () => click(byComponents(form, ButtonTemplate)[1]);
@@ -376,7 +375,7 @@ describe('subschema-component-modal', function () {
             const text     = (value) => change(byComponents(form, Text)[0],
                 value);
             const value    = (path, expected) => {
-                const v = context.valueManager.path(path);
+                const v = valueManager.path(path);
                 if (expected != null) {
                     return expect(v).toBe(expected);
                 }

@@ -36,6 +36,10 @@ import valueEvent from './valueEvent';
 import className from './className';
 import buttons from './buttons';
 import renderedTemplate from './renderedTemplate';
+import stash from './stash';
+import unstash from './unstash';
+import clearStash from './clearStash';
+import validateFields from './validateFields';
 
 export default({
     buttons,
@@ -75,5 +79,9 @@ export default({
     typeClass,
     validate,
     value,
-    valueEvent
+    valueEvent,
+    stash,
+    unstash,
+    clearStash,
+    validateFields
 });

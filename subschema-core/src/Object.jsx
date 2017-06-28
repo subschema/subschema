@@ -92,9 +92,10 @@ export default class ObjectType extends Component {
     }
 
     handleButtonClick = (e, action, ...rest)=> {
-        if (this.props.onButtonClick(e, action, ...rest) !== false) {
+        const {onSubmit, onButtonClick} = this.props;
+        if (onButtonClick(e, action, ...rest) !== false) {
             if (action === 'submit') {
-                this.props.onSubmit(e, ...rest);
+               onSubmit(e, ...rest);
             }
         }
     };

@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Expressions for subschema",
   "main": "lib/index.js",
+  "source":"src/index",
   "scripts": {
     "compile": "subschema-babel",
     "test": "subschema-babel && subschema-mocha",

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
 import RenderContent from './RenderContent';
-import RenderTemplate from './RenderTemplate';
-
+import renderTemplate from './RenderTemplate';
 /**
  * Manages the the fieldset.  It  uses FieldSetTemplate or similar, but now
  * it renders the buttons, so the Template does not have to handle that.
@@ -52,13 +51,18 @@ export default class FieldSet extends Component {
             }
             rest.buttons = buttons;
         }
-        const renderedContent = content
-            ? <RenderContent content={content} key={`content-${key}`}/> : null;
-        return <RenderTemplate template={template} {...cleanField(field)}
-                               key={key}  {...rest} field={field}
-                               content={renderedContent}>
-            {children}
-        </RenderTemplate>
+        const renderedContent = content ? <RenderContent content={content}
+                                                         key={`content-${key}`}/>
+            : null;
+        return renderTemplate({
+            template: template,
+            ...cleanField(field),
+            ...rest,
+            key     : key,
+            field   : field,
+            content : renderedContent,
+            children
+        });
 
     }
 

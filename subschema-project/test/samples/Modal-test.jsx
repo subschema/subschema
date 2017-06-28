@@ -63,6 +63,13 @@ describe('subschema-test-samples/Modal', function () {
         buttons = byTags(modal, 'button');
         click(buttons[2]);
         modal = byComponents(form, ModalTemplate)[0];
+        expect(modal).toExist('hide');
+        //change to validate.
+        change(byId(form, 'address.zip'), '95130');
+        click( byTags(modal, 'button')[2]);
+
+
+        modal = byComponents(form, ModalTemplate)[0];
         expect(modal).toNotExist('hide');
         expect(valueManager.path('address.street')).toBe('hello2', 'should commit change on save');
 
