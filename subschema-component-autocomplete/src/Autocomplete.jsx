@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dom from 'subschema-component-form/lib/Dom';
-import RenderTemplate from 'subschema-core/lib/RenderTemplate';
 import PropTypes from 'subschema-prop-types';
+import { RenderTemplate as renderTemplate } from 'subschema-core';
 
 export default class Autocomplete extends Component {
 
@@ -378,14 +378,15 @@ export default class Autocomplete extends Component {
         const handleSuggestionClick = this.handleSuggestionClick;
         const { itemTemplate }      = this.props;
         return <ul className={this.props.listGroupClass}>
-            {suggestions.map(
-                (item, i) => <RenderTemplate template={itemTemplate}
-                                             key={`autocomplete-${i}`}
-                                             focus={focus === i}
-                                             value={input}
-                                             processor={processor}
-                                             onSelect={handleSuggestionClick}
-                                             data={item}/>)}</ul>
+            {suggestions.map((data, i) => renderTemplate({
+                template: itemTemplate,
+                key     : `autocomplete-${i}`,
+                focus   : focus === i,
+                value   : input,
+                onSelect: handleSuggestionClick,
+                data,
+                processor,
+            }))}</ul>
 
 
     }

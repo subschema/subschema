@@ -1,17 +1,22 @@
-import React, {PureComponent} from "react";
-import {Text, View} from "react-native";
-import RenderTemplate from "subschema-core/lib/RenderTemplate";
-import PropTypes from "subschema-prop-types";
-import {styleClass} from "../PropTypes";
+import React, { PureComponent } from 'react';
+import { Text, View } from 'react-native';
+import { RenderTemplate as renderTemplate } from 'subschema-core';
+import PropTypes from 'subschema-prop-types';
+import { styleClass } from '../PropTypes';
 
 
 class Suggestions extends PureComponent {
     renderItem(data, index) {
-        return <RenderTemplate key={`suggestions-${index}`} {...this} data={data} focus={this.focus === index}/>
+        return renderTemplate({
+            key  : `suggestions-${index}`,
+            ...this,
+            data,
+            focus: this.focus === index
+        })
     };
 
     render() {
-        const {suggestions, style, ...props} = this.props;
+        const { suggestions, style, ...props } = this.props;
 
         return <View style={[style]}>
             {suggestions.map(this.renderItem, props)}
@@ -21,20 +26,20 @@ class Suggestions extends PureComponent {
 
 class AutocompleteItemTemplate extends PureComponent {
     static displayName = 'AutocompleteItemTemplate';
-    static propTypes = {
-        onSelect: PropTypes.event,
-        itemClass: styleClass,
-        focusedClass: styleClass,
-        data: PropTypes.any,
-        value: PropTypes.any,
+    static propTypes   = {
+        onSelect     : PropTypes.event,
+        itemClass    : styleClass,
+        focusedClass : styleClass,
+        data         : PropTypes.any,
+        value        : PropTypes.any,
         underlayColor: PropTypes.any
     };
 
     static defaultProps = {
-        data: null,
-        value: null,
-        focus: false,
-        processor: null,
+        data         : null,
+        value        : null,
+        focus        : false,
+        processor    : null,
         underlayColor: '#bbb'
     };
 
@@ -43,14 +48,16 @@ class AutocompleteItemTemplate extends PureComponent {
     };
 
     render() {
-        const {data, focus, itemClass, focusedClass, value, processor} = this.props;
-        const __html = processor.format(data, value, true);
+        const { data, focus, itemClass, focusedClass, value, processor } = this.props;
+        const __html                                                     = processor.format(
+            data, value, true);
         if (!__html) {
             return null;
         }
-        return (<View style={itemClass} underlayColor={this.props.underlayColor}>
-            <Text onPress={this.handleClick}>{__html}</Text>
-        </View>)
+        return (
+            <View style={itemClass} underlayColor={this.props.underlayColor}>
+                <Text onPress={this.handleClick}>{__html}</Text>
+            </View>)
     }
 }
 
@@ -58,47 +65,47 @@ export default class Autocomplete extends PureComponent {
 
 
     static propTypes = {
-        inputType: PropTypes.type,
-        onChange: PropTypes.valueEvent,
-        onSelect: PropTypes.event,
-        minLength: PropTypes.number,
+        inputType       : PropTypes.type,
+        onChange        : PropTypes.valueEvent,
+        onSelect        : PropTypes.event,
+        minLength       : PropTypes.number,
         autoSelectSingle: PropTypes.bool,
-        useshowing: PropTypes.bool,
-        maxInputLength: PropTypes.number,
-        itemTemplate: PropTypes.template,
-        processor: PropTypes.processor,
-        showing: PropTypes.content,
-        options: PropTypes.options,
-        onInputChange: PropTypes.event,
-        style: PropTypes.style,
-        url: PropTypes.expression,
-        foundClass: styleClass,
-        notFoundClass: styleClass,
+        useshowing      : PropTypes.bool,
+        maxInputLength  : PropTypes.number,
+        itemTemplate    : PropTypes.template,
+        processor       : PropTypes.processor,
+        showing         : PropTypes.content,
+        options         : PropTypes.options,
+        onInputChange   : PropTypes.event,
+        style           : PropTypes.style,
+        url             : PropTypes.expression,
+        foundClass      : styleClass,
+        notFoundClass   : styleClass,
         suggestionsClass: styleClass,
-        itemClass: styleClass,
+        itemClass       : styleClass,
 
 
     };
 
     static defaultProps = {
-        country: 'US',
-        locale: 'en_US',
-        useshowing: true,
-        minLength: 1,
+        country       : 'US',
+        locale        : 'en_US',
+        useshowing    : true,
+        minLength     : 1,
         maxInputLength: 200,
-        itemTemplate: AutocompleteItemTemplate,
-        inputType: {
-            type: 'Text',
-            propTypes: {value: PropTypes.any},
-            defaultProps: {value: ''}
+        itemTemplate  : AutocompleteItemTemplate,
+        inputType     : {
+            type        : 'Text',
+            propTypes   : { value: PropTypes.any },
+            defaultProps: { value: '' }
         },
-        processor: 'OptionsProcessor',
-        showing: 'Searching...',
-        input: 'input',
-        inputValue: 'input'
+        processor     : 'OptionsProcessor',
+        showing       : 'Searching...',
+        input         : 'input',
+        inputValue    : 'input'
     };
 
-    state = {suggestions: [], showing: false, focus: -1};
+    state = { suggestions: [], showing: false, focus: -1 };
 
     componentWillMount() {
         this._processProps(this.props);
@@ -109,14 +116,14 @@ export default class Autocomplete extends PureComponent {
     }
 
     setValue(v) {
-        const p = this.processor();
+        const p     = this.processor();
         const value = p.value(v);
         const input = p.format(v);
         this.setState({
             value,
-            selected: v,
+            selected   : v,
             input,
-            showing: false,
+            showing    : false,
             suggestions: []
         });
     }
@@ -129,7 +136,8 @@ export default class Autocomplete extends PureComponent {
     _processProps(props) {
         let value = props.value;
         if (value && value !== this.state.value) {
-            //see if we can get the formatted value from the value, may not work.
+            //see if we can get the formatted value from the value, may not
+            // work.
             var input = props.processor.format(value);
             if (input == null) {
                 //It didn't format to a value, go fetch it so we can display it.
@@ -139,13 +147,13 @@ export default class Autocomplete extends PureComponent {
                     } else {
                         this.setState({
                             suggestions: o,
-                            showing: true
+                            showing    : true
                         });
                     }
 
                 });
             } else {
-                this.setState({input, value});
+                this.setState({ input, value });
             }
         }
     }
@@ -158,8 +166,9 @@ export default class Autocomplete extends PureComponent {
      * If
      */
     hide = (selectValue) => {
-        let {selected, input, suggestions, focus} = this.state, i = 0, l, options, found = false;
-        suggestions = suggestions || [];
+        let { selected, input, suggestions, focus } = this.state, i = 0, l,
+            options, found                                          = false;
+        suggestions                                                 = suggestions || [];
         if (selectValue) {
 
 
@@ -169,21 +178,21 @@ export default class Autocomplete extends PureComponent {
                 selected = suggestions[focus];
             } else if (input == null || input.trim() === '') {
                 selected = null;
-                input = null;
+                input    = null;
             } else if (!selected || input !== selected.label) {
                 if (suggestions.length === 1) {
                     selected = suggestions[0];
-                    input = selected.label;
+                    input    = selected.label;
                 } else {
                     selected = null;
-                    options = suggestions;
-                    l = options.length;
+                    options  = suggestions;
+                    l        = options.length;
                     for (; i < l; i++) {
                         var opt = options[i];
                         if (opt.label === input) {
                             selected = opt;
-                            input = opt.label;
-                            found = true;
+                            input    = opt.label;
+                            found    = true;
                             break;
                         }
                     }
@@ -195,12 +204,21 @@ export default class Autocomplete extends PureComponent {
             if (selected !== this.state.selected) {
                 this.onSelect(selected);
             } else {
-                if (this.props.onBlur)
-                    this.props.onBlur(selected && selected.val, this.props.value, this.props.name, this.props.path);
-                this.setState({suggestions: [], selected, input, showing: false, focus: -1});
+                if (this.props.onBlur) {
+                    this.props.onBlur(selected && selected.val,
+                        this.props.value, this.props.name, this.props.path);
+                }
+                this.setState({
+                    suggestions: [],
+                    selected,
+                    input,
+                    showing    : false,
+                    focus      : -1
+                });
             }
         } else {
-            this.setState({showing: false, focus: -1, suggestions: []}, this.un)
+            this.setState({ showing: false, focus: -1, suggestions: [] },
+                this.un)
         }
         //        this.props.onBlur();
     };
@@ -218,15 +236,15 @@ export default class Autocomplete extends PureComponent {
         if (this.props.onSelect(o) === false) {
             return;
         }
-        const p = this.processor();
+        const p     = this.processor();
         const value = p.value(o);
         if (this.props.onChange(value) !== false) {
             var input = p.format(o);
             this.setState({
                 suggestions: [],
-                showing: false,
-                focus: -1,
-                selected: o,
+                showing    : false,
+                focus      : -1,
+                selected   : o,
                 value,
                 input
             });
@@ -243,25 +261,27 @@ export default class Autocomplete extends PureComponent {
             this._fetch.cancel();
         }
         const _this = this;
-        this._fetch = this.processor().fetch(this.props.url, input, this, (err, suggestions) => {
-            if (err) {
-                return;
-            }
-            if (_this.props.autoSelectSingle && suggestions && suggestions.length === 1) {
-                _this.onSelect(suggestions[0]);
-            } else {
-                _this.props.onInputChange(input);
-                _this.setState({
-                    suggestions: suggestions || [],
-                    showing: true,
-                    input
-                });
-            }
-        });
+        this._fetch = this.processor().fetch(this.props.url, input, this,
+            (err, suggestions) => {
+                if (err) {
+                    return;
+                }
+                if (_this.props.autoSelectSingle && suggestions
+                    && suggestions.length === 1) {
+                    _this.onSelect(suggestions[0]);
+                } else {
+                    _this.props.onInputChange(input);
+                    _this.setState({
+                        suggestions: suggestions || [],
+                        showing    : true,
+                        input
+                    });
+                }
+            });
     };
 
 
-    handleKeyUp = ({nativeEvent}) => {
+    handleKeyUp = ({ nativeEvent }) => {
         const e = nativeEvent;
         if (this.props.onKeyUp) {
             this.props.onKeyUp.call(this, e);
@@ -273,14 +293,14 @@ export default class Autocomplete extends PureComponent {
                 case 'Up':
                 case 38:
                 case 'ArrowUp': {
-                    focus = Math.max(-1, focus - 1);
+                    focus  = Math.max(-1, focus - 1);
                     update = true;
                     break;
                 }
                 case 40:
                 case 'Down':
                 case 'ArrowDown': {
-                    focus = Math.min(s.length, focus + 1)
+                    focus  = Math.min(s.length, focus + 1)
                     update = true;
                     break;
                 }
@@ -290,8 +310,10 @@ export default class Autocomplete extends PureComponent {
                         e.stopPropagation();
                     }
                     if (s.length) {
-                        this.handleSuggestionClick(s[Math.max(this.state.focus, 0)]);
-                        this.setState({suggestions: [], showing: false, focus: -1});
+                        this.handleSuggestionClick(
+                            s[Math.max(this.state.focus, 0)]);
+                        this.setState(
+                            { suggestions: [], showing: false, focus: -1 });
 
                         return;
                     }
@@ -301,7 +323,7 @@ export default class Autocomplete extends PureComponent {
             }
             if (update) {
                 //e.preventDefault();
-                this.setState({focus});
+                this.setState({ focus });
             }
         }
     };
@@ -312,16 +334,18 @@ export default class Autocomplete extends PureComponent {
 
 
     handleBlur = (event) => {
-        const {suggestions = []} = this.state;
+        const { suggestions = [] } = this.state;
         if (suggestions.length === 1 && !this.state.selected) {
-            this.handleSuggestionClick(suggestions[Math.max(0, this.state.focus)]);
+            this.handleSuggestionClick(
+                suggestions[Math.max(0, this.state.focus)]);
         }
-        if (this.props.onBlur)
+        if (this.props.onBlur) {
             this.props.onBlur(event);
+        }
     };
 
     renderSuggestions() {
-        const {suggestions = []} = this.state;
+        const { suggestions = [] } = this.state;
         if (this.state.showing === false) {
             return null;
         }
@@ -339,23 +363,24 @@ export default class Autocomplete extends PureComponent {
 
     }
 
-    _layout = ({nativeEvent: {layout: {height}}}) => {
+    _layout = ({ nativeEvent: { layout: { height } } }) => {
         console.log('layout', height);
         this._height = height;
     };
 
     render() {
-        const suggestions = this.state.suggestions || [];
-        const {foundClass, namespaceClass, inputType, id, input, notFoundClass} = this.props;
-        const inputProps = {
-            onPaste: this.handlePaste,
+        const suggestions                                                         = this.state.suggestions
+                                                                                    || [];
+        const { foundClass, namespaceClass, inputType, id, input, notFoundClass } = this.props;
+        const inputProps                                                          = {
+            onPaste  : this.handlePaste,
             onKeyDown: this.handleKeyUp,
-            onBlur: this.handleBlur,
-            onChange: this.handleChange,
-            value: this.state.input,
+            onBlur   : this.handleBlur,
+            onChange : this.handleChange,
+            value    : this.state.input,
             id
         };
-        const Input = inputType;
+        const Input                                                               = inputType;
         return <View style={namespaceClass} collapsable={false}
                      onLayout={this._layout}>
             <Input {...inputProps} key="input"/>

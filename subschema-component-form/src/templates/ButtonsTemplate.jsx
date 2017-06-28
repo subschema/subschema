@@ -1,17 +1,17 @@
-import React, {Component} from "react";
-import {isString, extend} from "subschema-utils";
-import PropTypes from "subschema-prop-types";
-import RenderTemplate from "subschema-core/lib/RenderTemplate";
+import React, { Component } from 'react';
+import { extend, isString } from 'subschema-utils';
+import PropTypes from 'subschema-prop-types';
+import { RenderTemplate as renderTemplate } from 'subschema-core';
 
 export default class ButtonsTemplate extends Component {
     static defaultProps = {
         buttonTemplate: 'ButtonTemplate',
-        buttons: [{
-            action: 'submit',
-            label: 'Submit',
-            type: 'submit',
+        buttons       : [{
+            action  : 'submit',
+            label   : 'Submit',
+            type    : 'submit',
             template: 'Button',
-            primary: true
+            primary : true
         }],
         onButtonClick (event, action, btn, value) {
 
@@ -20,41 +20,44 @@ export default class ButtonsTemplate extends Component {
 
     static propTypes = {
         buttonTemplate: PropTypes.template,
-        buttonClass: PropTypes.cssClass,
-        style: PropTypes.style
+        buttonClass   : PropTypes.cssClass,
+        style         : PropTypes.style
     };
 
     makeButtons(buttons) {
-        let onClick = this.props.onButtonClick || this.props.onClick, buttonTemplate = this.props.buttonTemplate;
+        let onClick        = this.props.onButtonClick || this.props.onClick,
+            buttonTemplate = this.props.buttonTemplate;
         return buttons.map(b => {
-            onClick = b.onClick || onClick;
+            onClick   = b.onClick || onClick;
             const btn = isString(b) ? {
                 action: b,
-                label: b,
+                label : b,
                 onClick
-            } : extend({}, b, {onClick, template: buttonTemplate});
+            } : extend({}, b, { onClick, template: buttonTemplate });
             if (this.props.buttonClass) {
-                btn.buttonClass = `${btn.buttonClass || ''} ${this.props.buttonClass || ''}`;
+                btn.buttonClass =
+                    `${btn.buttonClass || ''} ${this.props.buttonClass || ''}`;
             }
             if (btn.primary) {
-                btn.buttonClass = `${btn.buttonClass} ${this.props.primaryClass}`;
+                btn.buttonClass =
+                    `${btn.buttonClass} ${this.props.primaryClass}`;
             }
             return btn;
         });
     }
 
     render() {
-        let {buttons, buttonTemplate, buttonsClass, buttonContainerClass} = this.props;
+        let { buttons, buttonTemplate, buttonsClass, buttonContainerClass } = this.props;
         if (buttons.buttons) {
             buttonsClass = buttons.buttonsClass || buttonsClass;
-            buttons = buttons.buttons
+            buttons      = buttons.buttons
         }
         return (<div className={buttonContainerClass}>
             <div className={buttonsClass}>
                 {this.makeButtons(buttons).map(
-                    (b, i) => <RenderTemplate template={buttonTemplate} key={"btn-"+i} {...b}/>)
-                }
-
+                    (b, i) => renderTemplate(
+                        { template: buttonTemplate, key: `btn-${i}`, ...b })
+                )}
             </div>
         </div>);
     }

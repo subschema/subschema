@@ -1,8 +1,7 @@
 import React from 'react';
-import ObjectType from 'subschema-core/lib/Object';
 import WizardMixin from './WizardMixin';
 import PropTypes from 'subschema-prop-types';
-import RenderTemplate from 'subschema-core/lib/RenderTemplate';
+import { ObjectType, RenderTemplate as renderTemplate } from 'subschema-core';
 
 function donner(done) {
     done();
@@ -56,7 +55,8 @@ export default class WizardTemplate extends WizardMixin {
     setNavState(next) {
         const len       = this.props.schema.fieldsets.length,
               compState = this.state.compState;
-        next            = Math.max(Math.min(len - 1, next), 0);
+
+        next = Math.max(Math.min(len - 1, next), 0);
         if (this.props.onNavChange(next, compState,
                 this.props.schema.fieldsets[next]) !== false) {
             this.setState({
@@ -68,13 +68,15 @@ export default class WizardTemplate extends WizardMixin {
     }
 
     renderProgress(fieldsets) {
+        return renderTemplate({
+            key     : 'progress-template-key',
+            template: this.props.wizardProgressTemplate,
+            fieldsets,
+            index   : this.state.done ? fieldsets.length
+                : this.state.compState,
+            onClick : this.handleOnClick
+        })
 
-        return <RenderTemplate key="progress-template-key"
-                               template={this.props.wizardProgressTemplate}
-                               fieldsets={fieldsets}
-                               index={this.state.done ? fieldsets.length
-                                   : this.state.compState}
-                               onClick={this.handleOnClick}/>;
     }
 
     makeTransition(compState) {
