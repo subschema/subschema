@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import NavigationTypes from './PropTypes';
+import React, { Component } from 'react';
+import PropTypes from 'subschema-prop-types';
 import qs from 'querystring';
 function parse(value) {
     return (value === 'true');
@@ -7,38 +7,38 @@ function parse(value) {
 export default class ToggleLink extends Component {
 
     static propTypes = {
-        "location": NavigationTypes.location,
-        "query": NavigationTypes.query
+        "pathname": PropTypes.value,
+        "query"   : PropTypes.value
     };
 
     static defaultProps = {
-        "label": "{.}",
-        "name": "",
-        "search": "",
-        "className": "",
-        "activeClass": "active"
-    };
-    state = {
-        current: (this.props.name in this.props.query)
+        "label"      : "{.}",
+        "name"       : "",
+        "search"     : "",
+        "className"  : "",
+        "activeClass": "active",
+        "pathname"   : "@pathname",
+        "query"      : "@query"
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.query[this.props.name] != nextProps.query[nextProps.name]) {
-            this.setState({current: (nextProps.name in nextProps.query)});
-        }
-    }
 
     render() {
-        const {className, activeClass, value, anchorClass, location: {pathname}, name, query = {}, label} = this.props;
-        const {...copy} = query;
-        if (this.state.current) {
+        const {
+                  className, activeClass, value, anchorClass,
+                  pathname, name, query = {}, label
+              } = this.props;
+
+        const { ...copy } = query == '' ? {} : query;
+        const active      = (name in copy);
+        if (active) {
             delete copy[name];
         } else {
             copy[name] = void(0);
         }
-        const search = qs.stringify(copy).replace(/=(&)|(=$)/g, '$1');
+        const search = qs.stringify(copy).replace(/=(&)|(=$)|=true/g, '$1');
 
-        return <li className={`${className} ${this.state.current ? activeClass : '' }`}>
+        return <li className={`${className} ${active ? activeClass
+            : '' }`}>
             <a href={`#${pathname}${search ? `?${search}` : ''}`}
                className={anchorClass}>{label}</a>
         </li>

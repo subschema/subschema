@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
-import { PropTypes as NavTypes } from 'subschema-component-navigation';
 import { SubschemaPlayground as UninjectedSubschemaPlayground } from 'subschema-component-playground';
 
 export default class Example extends Component {
@@ -11,14 +10,16 @@ export default class Example extends Component {
         example            : PropTypes.string,
         SubschemaPlayground: PropTypes.injectClass,
         conf               : PropTypes.any,
-        useData            : NavTypes.queryExists,
-        useErrors          : NavTypes.queryExists,
+        useData            : PropTypes.value,
+        useErrors          : PropTypes.value,
         onSubmit           : PropTypes.valueEvent,
     };
 
     static defaultProps = {
         SubschemaPlayground: UninjectedSubschemaPlayground,
-        onSubmit           : "submit"
+        onSubmit           : "submit",
+        useData            : "@query.useData",
+        useErrors          : "@query.useErrors"
     };
 
     constructor(props, context, ...args) {

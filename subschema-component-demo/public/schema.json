@@ -14,6 +14,14 @@
       "name": "useErrors",
       "template": false
     },
+    "edit": {
+      "type": "ToggleLink",
+      "label": "Edit",
+      "name": "edit",
+      "value": true,
+      "className": "no-class",
+      "template": false
+    },
     "samples": {
       "type": "Navigate",
       "template": false,
@@ -37,10 +45,19 @@
       "fieldsets": [
         {
           "template": "NavTemplate",
+          "content": "Subschema v{subschemaVersion}",
           "fields": [
             "useData",
-            "useErrors"
+            "useErrors",
+            "edit"
           ]
+        },
+        {
+          "template": "ModalTemplate",
+          "content": "Edit the app",
+          "legend": "Edit",
+          "buttons": [],
+          "conditional": "@query.edit"
         },
         {
           "template": "ModalTemplate",

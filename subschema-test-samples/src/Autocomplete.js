@@ -7,7 +7,8 @@ module.exports = {
         schema: {
             'simple': {
                 type: 'Autocomplete',
-                options: ['aaaa', 'aaab', 'aba', 'baaa', 'caaa']
+                options: ['aaaa', 'aaab', 'aba', 'baaa', 'caaa'],
+                placeholder:'Please type "a"'
             },
             'ajax': {
                 type: 'Autocomplete',

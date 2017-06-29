@@ -2,6 +2,7 @@ var path                = require('path');
 var fs                  = require('fs');
 var babel               = require('./babel-helper');
 var webpackUtils        = require('./webpack-utils');
+var webpackObject       = require('webpack');
 var deps                = webpackUtils.deps,
     useAlias            = webpackUtils.useAlias,
     useExternals        = webpackUtils.useExternals,
@@ -117,15 +118,18 @@ var webpack = {
                 test: /\.css$/,
                 use : opts.useStyle('css-loader')
             },
-            { test : /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=10000&mimetype=application/font-woff'
+            {
+                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+                use : 'url-loader?limit=10000&mimetype=application/font-woff'
             },
-            { test : /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=10000&mimetype=application/octet-stream'
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                use : 'url-loader?limit=10000&mimetype=application/octet-stream'
             },
             { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: 'file-loader' },
-            { test : /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=10000&mimetype=image/svg+xml'
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use : 'url-loader?limit=10000&mimetype=image/svg+xml'
             },
             {
                 test: /\.less$/,
@@ -206,9 +210,11 @@ if ((idx = process.argv.indexOf('--target')) != -1) {
 }
 
 var customConf = useCustomConf();
+opts.webpack   = webpackObject;
 if (customConf) {
     webpack = customConf(opts, webpack);
 }
+
 //Think hard if this should be the default.
 if (!webpack.resolve.alias.subschema) {
     try {

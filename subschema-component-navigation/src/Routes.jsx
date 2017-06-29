@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'subschema-prop-types';
 import route from '@funjs/route-parser/dist/index.umd';
-import {location as locationPropType} from './PropTypes';
 
 function matcher(obj) {
     const arr = Object.keys(obj).map(function makeMatch(key) {
-        return {match: route(key).match, component: obj[key]};
+        return { match: route(key).match, component: obj[key] };
     });
 
     return function (path, resolve) {
@@ -28,14 +27,18 @@ export default class Routes extends React.Component {
     static matcher = matcher;
 
     static contextTypes = {
-        loader: PropTypes.loader.isRequired,
+        loader  : PropTypes.loader,
         injector: PropTypes.injector
     };
 
-    static propTypes = {
+    static propTypes    = {
         notFound: PropTypes.type,
-        routes: PropTypes.object,
-        location: locationPropType
+        routes  : PropTypes.object,
+        pathname: PropTypes.value
+    };
+    static defaultProps = {
+        pathname: "@pathname",
+        notFound: "NotFound"
     };
 
     componentWillMount() {
@@ -48,9 +51,6 @@ export default class Routes extends React.Component {
         }
     }
 
-    static defaultProps = {
-        notFound: "NotFound"
-    };
     resolve = (component) => {
         if (typeof component == 'string') {
             const Component = this.context.loader.loadType(component);
@@ -62,15 +62,16 @@ export default class Routes extends React.Component {
     };
 
     render() {
-        const {pathname} = this.props.location;
-        let to = this.matches(pathname, this.resolve);
+        const { pathname } = this.props;
+        let to             = this.matches(pathname, this.resolve);
         if (to) {
             const [props, Component] = to;
-            if (Component)
+            if (Component) {
                 return <Component {...props}/>
+            }
         }
         const Component = this.resolve(this.props.notFound);
-        return <Component location={this.props.location}/>
+        return <Component location={this.props.pathname}/>
 
     }
 }

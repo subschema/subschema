@@ -57,14 +57,15 @@ export default (props)=><NavigationForm  history={history} {...props}/>
 
 
 ```
+## State
+Components can interact with the location state through
+@query
+and
+@location
 
+These will be in sync with the browser url, weather updated by the valueManager
+or the history (url);
 
-## Resolver/PropTypes Usage
-This module provides 3 resolvers/proptypes for managing query properties.
-
-- location - Its value will be the location it listens to.
-- query - Will listen to changes to the key if provided.
-- queryExists - Will listen if a key exists, useful if you use a query param that does not have a value.
 
 ## Components
 This provides a few basic components for managing list of links and Links.
