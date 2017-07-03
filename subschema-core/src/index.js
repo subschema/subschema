@@ -31,11 +31,6 @@ export const resolvers = _resolvers;
 /**
  * Used to initialize new subschema for testing.  But also to override behaviours if necessary.
  *
- * @param defaultLoaders
- * @param defaultResolvers
- * @param defaultPropTypes
- * @param defaultInjectorFactory
- * @param Subschema
  */
 
 export function newSubschemaContext(defaultLoaders = [],

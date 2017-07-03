@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'subschema-prop-types';
 import { FREEZE_ARR as options, path } from 'subschema-utils';
 import renderTemplate from 'subschema-core/lib/RenderTemplate';
 
-export default class Checkboxes extends Component {
+export default class Checkboxes extends PureComponent {
     //override added input Class Names.
     static inputClassName = ' ';
 
     static propTypes = {
+
         onChange     : PropTypes.valueEvent,
         options      : PropTypes.options,
         item         : PropTypes.type,

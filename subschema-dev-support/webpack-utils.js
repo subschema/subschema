@@ -207,9 +207,7 @@ function useAlias(alias = {}) {
         process.env.SUBSCHEMA_USE_ALIASES.split(/,\s*/)
                .forEach(parseAlias, alias);
     }
-    if (process.env.SUBSCHEA_DEBUG) {
-        console.warn('using aliases', alias);
-    }
+    debug('using aliases', alias);
     return alias;
 }
 function useExternalizePeers(externals = {}) {
@@ -218,7 +216,7 @@ function useExternalizePeers(externals = {}) {
         var localPkg = project('package.json');
         var peers    = require(localPkg).peerDependencies;
         if (!peers) {
-            console.warn(
+            info(
                 `using --externalize-peers however there are no peerDependencies in ${localPkg}`);
         } else {
             Object.keys(peers).reduce(function (ret, key) {
@@ -287,7 +285,6 @@ function useDepAlias(alias = {}, deps = pkg()) {
         }
         return ret;
     }, alias);
-    console.log('env %O', r);
     return r;
 }
 

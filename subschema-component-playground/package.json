@@ -33,17 +33,24 @@
     "subschema-test-samples": "^2.0.5",
     "subschema-test-support": "^2.0.5",
     "subschema-transitions": "^2.0.5",
-    "subschema-valuemanager": "^2.0.5"
+    "subschema-core": "^2.0.5",
+    "subschema-validators": "^2.0.5",
+    "subschema-processors": "^2.0.5"
+
   },
   "peerDependencies": {
     "lodash": "*",
     "prop-types": "*",
     "react": "*",
     "react-dom": "*",
-    "subschema": "^2.0.5",
-    "subschema-component-form": "^2.0.5",
-    "subschema-css-bootstrap": "^2.0.5",
-    "subschema-prop-types": "^2.0.5",
-    "subschema-valuemanager": "^2.0.5"
+    "subschema": "*",
+    "subschema-core": "*",
+    "subschema-component-form": "*",
+    "subschema-css-bootstrap": "*",
+    "subschema-prop-types": "*",
+    "subschema-valuemanager": "*"
+  },
+  "subschema": {
+    "includes": "*subschema*"
   }
 }

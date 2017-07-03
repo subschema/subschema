@@ -12,7 +12,8 @@ module.exports = {
             },
             'ajax': {
                 type: 'Autocomplete',
-                processor: 'fakeAjax'
+                processor: 'fakeAjax',
+                help:'Uses a fake ajax call to demonstrate different value than label'
             }
         }
     },

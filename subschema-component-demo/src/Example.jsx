@@ -63,8 +63,8 @@ export default class Example extends Component {
                                  expandTxt="Show Example Code"
                                  collapseTxt="Hide Example Code"
                                  filename={`Example ${this.props.example}`}
-                                 useData={this.props.useData}
-                                 useErrors={this.props.useErrors}
+                                 useData={!!this.props.useData}
+                                 useErrors={!!this.props.useErrors}
                                  collapsableCode={true}
                                  setupTxt={setupTxt}
                                  value={data}

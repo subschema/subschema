@@ -4,6 +4,7 @@ var path                   = require('path');
 const test                 = path.resolve(
     process.env.SUBSCHEMA_TEST_DIR || __dirname, 'test-index.js');
 webpack.resolve.alias.test = path.resolve(process.cwd(), 'test');
+
 webpack.devtool            = '#inline-source-map';
 if (!webpack.output) {
     webpack.output = {};
@@ -14,7 +15,6 @@ if (process.env.SUBSCHEMA_COVERAGE) {
     console.warn(`enabling code coverage for karma`);
     useCoverage = true;
 }
-webpack.resolve.mainFields = ['source', 'main'];
 console.warn('running tests in ', webpack.resolve.alias.test);
 module.exports = function (config) {
     const karmaConf = {

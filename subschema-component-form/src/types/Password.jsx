@@ -1,12 +1,14 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
+import Text from './Text';
 
-export default class Password extends Component {
+export default class Password extends Text {
     static defaultProps = {
+        ...Text.defaultProps,
         type: 'password'
     };
 
     render() {
-        return <input {...this.props}/>
+        return <Text {...this.props}/>
     }
 
 }

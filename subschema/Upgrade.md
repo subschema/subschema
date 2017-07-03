@@ -1,3 +1,7 @@
+Subschema 2.1.0->2.0.x
+## Api Changes
+* ModalTemplate now uses smarter storing and recieving.
+
 Subschema 1.3.0 ->2.0.0-rc1
 ## Api Changes
 * Changed the layout of the samples configuration, imports get imported and props are passed to the Form in the demo

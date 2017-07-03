@@ -5,7 +5,7 @@ const settings = {
 function buttonNormalizer(value) {
     let buttons;
     let hasPrimary = false;
-    if (value == null) {
+    if (value == null || buttons == false) {
         return value;
     }
     if (typeof value === 'string') {
@@ -66,6 +66,22 @@ function buttonNormalizer(value) {
         //change anything.
         value.buttons = buttonNormalizer(value.buttons).buttons;
         return value;
+    } else {
+        return {
+            buttons: buttonNormalizer(Object.keys(value).map(function (action) {
+                if (typeof value[action] === 'string') {
+                    return {
+                        action,
+                        label: value[action]
+                    }
+                }
+                return {
+                    ...value[action],
+                    action
+                };
+                return ret;
+            })).buttons
+        }
     }
     if (!hasPrimary && settings.primary) {
         const p = buttons.slice(settings.primary)[0];

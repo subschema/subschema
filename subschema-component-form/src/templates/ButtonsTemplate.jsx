@@ -21,29 +21,58 @@ export default class ButtonsTemplate extends Component {
     static propTypes = {
         buttonTemplate: PropTypes.template,
         buttonClass   : PropTypes.cssClass,
-        style         : PropTypes.style
+        style         : PropTypes.style,
     };
+
 
     makeButtons(buttons) {
         let onClick        = this.props.onButtonClick || this.props.onClick,
             buttonTemplate = this.props.buttonTemplate;
-        return buttons.map(b => {
-            onClick   = b.onClick || onClick;
-            const btn = isString(b) ? {
+        if (buttons == null || buttons === false) {
+            return null;
+        }
+        if (Array.isArray(buttons)) {
+            return buttons.map(b => {
+                onClick   = b.onClick || onClick;
+                const btn = isString(b) ? {
+                    action: b,
+                    label : b,
+                    onClick
+                } : extend({}, b, { onClick, template: buttonTemplate });
+                if (this.props.buttonClass) {
+                    btn.buttonClass =
+                        `${btn.buttonClass || ''} ${this.props.buttonClass
+                                                    || ''}`;
+                }
+                if (btn.primary) {
+                    btn.buttonClass =
+                        `${btn.buttonClass} ${this.props.primaryClass}`;
+                }
+                return btn;
+            });
+        }
+        return Object.keys(buttons).map(function (b) {
+            const v   = buttons[b];
+            onClick   = v.onClick || onClick;
+            const btn = isString(v) ? {
                 action: b,
-                label : b,
+                label : v,
                 onClick
-            } : extend({}, b, { onClick, template: buttonTemplate });
+            } : { ...v, onClick, template: buttonTemplate };
             if (this.props.buttonClass) {
                 btn.buttonClass =
-                    `${btn.buttonClass || ''} ${this.props.buttonClass || ''}`;
+                    `${btn.buttonClass || ''} ${this.props.buttonClass
+                                                || ''}`;
             }
             if (btn.primary) {
                 btn.buttonClass =
                     `${btn.buttonClass} ${this.props.primaryClass}`;
             }
+            if (!btn.action){
+                btn.action = b;
+            }
             return btn;
-        });
+        }, this)
     }
 
     render() {

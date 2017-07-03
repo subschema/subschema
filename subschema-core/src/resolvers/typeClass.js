@@ -1,9 +1,7 @@
-"use strict";
-
-import {isString,isArray, slice, isFunction, push} from 'subschema-utils';
+import { isArray, isFunction, isString } from 'subschema-utils';
 
 export const settings = {
-    inputClassName:'form-control'
+    inputClassName: 'form-control'
 };
 
 export function addClasses(classes, ...rest) {
@@ -13,7 +11,9 @@ export function addClasses(classes, ...rest) {
     for (let i = 0, l = rest.length; i < l; i++) {
         const str = rest[i];
 
-        if (str == null) continue;
+        if (str == null) {
+            continue;
+        }
 
         if (isString(str)) {
             const parts = str.split(/\s+?/);
@@ -41,11 +41,12 @@ export function addClasses(classes, ...rest) {
 /**
  * Determines the classes for a type.
  * Takes a react node as the first argument.
- * @param {Reactnode} node - node to create for.
- * @param {String|Function|Array<String|Function|Array>} [clases] -classes to add.
+ * @param {Reactnode} OrigClazz - node to create for.
+ * @param {String|Function|Array<String|Function|Array>} value -classes to add.
  */
 export function forType(OrigClazz, value) {
-    return addClasses([], value || OrigClazz.inputClassName || settings.inputClassName).join(' ');
+    return addClasses([],
+        value || OrigClazz.inputClassName || settings.inputClassName).join(' ');
 }
 
 export default function typeClass(Clazz, key, propList, OrigClazz) {

@@ -109,14 +109,14 @@ export default class Conditional extends Component {
 
 
     render() {
-        const { TransitionGroup } = this.constructor;
 
-        if (!this.props.transition || !TransitionGroup) {
+        if (!this.props.transition ) {
             return this.renderContent();
         }
+        const { Transition, ...tprops } = this.props.transition;
 
-        return <TransitionGroup {...this.props.transition}>
+        return <Transition {...tprops}>
             {this.renderContent()}
-        </TransitionGroup>
+        </Transition>
     }
 }

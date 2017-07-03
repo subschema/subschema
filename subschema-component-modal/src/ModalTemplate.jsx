@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'subschema-prop-types';
 import RenderContent from 'subschema-core/lib/RenderContent';
 import warning from 'subschema-utils/lib/warning';
-import StashableMixin from 'subschema-core/lib/StashableMixin';
 
 
 export default class ModalTemplate extends Component {
@@ -24,7 +23,6 @@ export default class ModalTemplate extends Component {
     };
 
     static defaultProps = {
-        ...StashableMixin.defaultProps,
         buttonsTemplate : 'ButtonsTemplate',
         unstashOnUnmount: true,
         buttons         : {
@@ -65,7 +63,7 @@ export default class ModalTemplate extends Component {
                 return false;
             //handle submits and such
             default: {
-                const errors = this.props.validate();
+                const errors = this.props.validate && this.props.validate();
                 if (errors) {
                     onButtonClick && onButtonClick(e, action, btn);
 

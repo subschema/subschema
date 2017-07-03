@@ -1,23 +1,28 @@
-import React, {Component} from "react";
-import PropTypes from "subschema-prop-types";
-import {isArray} from "subschema-utils";
+import React, { PureComponent } from 'react';
+import PropTypes from 'subschema-prop-types';
+import { isArray } from 'subschema-utils';
 
-export default class Select extends Component {
+export default class Select extends PureComponent {
 
 
     static propTypes = {
-        options: PropTypes.options,
-        multiple: PropTypes.bool,
-        onChange: PropTypes.valueEvent,
+        onBlur     : PropTypes.blurValidate,
+        value      : PropTypes.value,
+        id         : PropTypes.id,
+        name       : PropTypes.htmlFor,
+        className  : PropTypes.typeClass,
+        fieldAttrs : PropTypes.fieldAttrs,
+        options    : PropTypes.options,
+        multiple   : PropTypes.bool,
+        onChange   : PropTypes.valueEvent,
         placeholder: PropTypes.placeholder,
-        onValidate: PropTypes.changeValidate
-
+        onValidate : PropTypes.changeValidate
     };
 
     static defaultProps = {
-        options: [],
+        options : [],
         multiple: false,
-        value: ''
+        value   : ''
     };
 
     static injectedProps = {
@@ -25,15 +30,17 @@ export default class Select extends Component {
     };
 
     handleSelect = (e) => {
-        let {multiple, placeholder} = this.props;
+        let { multiple, placeholder } = this.props;
         if (multiple) {
             //normalize multiple  selection
-            var values = [], options = e.target.options, i = 0, l = options.length, option;
+            var values = [], options = e.target.options, i = 0,
+                l                                          = options.length, option;
             for (; i < l; i++) {
                 option = options[i];
                 if (option.selected) {
-                    if (option.label != placeholder)
+                    if (option.label != placeholder) {
                         values.push(option.value);
+                    }
                 }
             }
             this.props.onChange(values);
@@ -47,13 +54,15 @@ export default class Select extends Component {
     };
 
     renderOptions(value) {
-        let {multiple, options, placeholder} = this.props;
+        let { multiple, options, placeholder } = this.props;
 
-        options = options || [];
+        options      = options || [];
         let hasValue = false, ret = options.map(multiple ? (o, i) => {
             return <option key={'s' + i} value={o.val}>{o.label}</option>;
         } : (o, i) => {
-            if (!hasValue && o.val + '' == value + '') hasValue = true;
+            if (!hasValue && o.val + '' == value + '') {
+                hasValue = true;
+            }
             return <option key={'s' + i} value={o.val}>{o.label}</option>
         });
 
@@ -65,11 +74,12 @@ export default class Select extends Component {
     }
 
     render() {
-        let {onValidate, onChange, value, path, fieldAttrs={}, options, ...props} = this.props;
+        let { onValidate, onChange, value, path, fieldAttrs = {}, options, ...props } = this.props;
         if (props.multiple && !isArray(value)) {
             value = value ? [value] : [];
         }
-        return <select {...props} value={value} {...fieldAttrs} onChange={this.handleSelect}>
+        return <select {...props} value={value} {...fieldAttrs}
+                       onChange={this.handleSelect}>
             {this.renderOptions(value)}
         </select>
     }

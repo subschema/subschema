@@ -25,13 +25,15 @@ export default class Form extends Component {
         noValidate  : PropTypes.bool,
         //Set this to true, if you want validators to be called against the
         // current schema.  I.E. after a POST.
-        validate    : PropTypes.bool
+        validate    : PropTypes.bool,
+        ObjectType  : PropTypes.any
     };
 
     static defaultProps = {
         fallbackTemplate: 'FormTemplate',
         noValidate      : false,
-        validate        : false
+        validate        : false,
+        ObjectType
     };
 
     constructor(props, context, whatever) {
@@ -52,7 +54,7 @@ export default class Form extends Component {
                 this.valueManager.setErrors(props.errors);
             }
         }
-        this.ObjectWrapper = this.injector.inject(ObjectType);
+        this.ObjectWrapper = this.injector.inject(this.props.ObjectType);
         if (props.onSubmit) {
             this._submitListener = this.valueManager.addSubmitListener(null,
                 props.onSubmit).remove;
@@ -95,7 +97,7 @@ export default class Form extends Component {
             } else {
                 this.injector = newProps.injector;
             }
-            this.ObjectWrapper = this.injector.inject(ObjectType);
+            this.ObjectWrapper = this.injector.inject(this.props.ObjectType);
         }
 
         if (newProps.onSubmit) {

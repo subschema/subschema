@@ -43,7 +43,7 @@ export default function fieldAttrs(Clazz, key, propKeys) {
 
     ClazzP.componentWillReceiveProps = applyFuncs(function (newProps) {
         if (this.props[key] !== newProps[key]) {
-            this::handleAttrs(newProps[key], key);
+            this::handleAttrs(newProps[key], key, propKeys);
         }
     }, ClazzP.componentWillReceiveProps);
 

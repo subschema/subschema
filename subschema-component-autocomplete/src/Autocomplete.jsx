@@ -12,7 +12,6 @@ export default class Autocomplete extends Component {
         onSelect        : PropTypes.event,
         minLength       : PropTypes.number,
         autoSelectSingle: PropTypes.bool,
-        useshowing      : PropTypes.bool,
         maxInputLength  : PropTypes.number,
         itemTemplate    : PropTypes.template,
         processor       : PropTypes.processor,
@@ -23,20 +22,22 @@ export default class Autocomplete extends Component {
         onInputChange   : PropTypes.event,
         style           : PropTypes.style,
         url             : PropTypes.expression,
+        placeholder     : PropTypes.string,
+        showAllOnFocus  : PropTypes.bool
 
     };
 
     static defaultProps = {
-        country       : 'US',
-        locale        : 'en_US',
-        useshowing    : true,
         minLength     : 1,
         maxInputLength: 200,
         itemTemplate  : "AutocompleteItemTemplate",
         inputType     : {
             type        : 'Text',
-            propTypes   : { value: PropTypes.any },
-            defaultProps: { value: '' }
+            propTypes   : {
+                value       : PropTypes.any,
+                autoComplete: PropTypes.string
+            },
+            defaultProps: { value: '', autoComplete: 'off' }
         },
         processor     : 'OptionsProcessor',
         showing       : 'Searching...',
@@ -345,7 +346,13 @@ export default class Autocomplete extends Component {
     handleChange = (e) => {
         this._handleDispatch(e.target.value);
     };
+    handleFocus  = (e) => {
+        if (!this.props.showAllOnFocus) {
+            return this.props.onFocus && this.props.onFocus(e);
+        }
+        this._handleDispatch(this.state.input)
 
+    };
 
     handlePaste = (event) => {
         const items = event.clipboardData && event.clipboardData.items;
@@ -399,11 +406,13 @@ export default class Autocomplete extends Component {
                   input, notFoundClass, placeholder
               }           = this.props;
         const inputProps  = {
-            onPaste  : this.handlePaste,
-            onKeyDown: this.handleKeyUp,
-            onBlur   : this.handleBlur,
-            onChange : this.handleChange,
-            value    : this.state.input,
+            onPaste     : this.handlePaste,
+            onKeyDown   : this.handleKeyUp,
+            onBlur      : this.handleBlur,
+            onFocus     : this.handleFocus,
+            onChange    : this.handleChange,
+            value       : this.state.input,
+            autoComplete: 'off',
             id,
             placeholder
         };

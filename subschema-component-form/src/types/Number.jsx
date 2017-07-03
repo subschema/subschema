@@ -1,29 +1,41 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'subschema-prop-types';
 
-var noRe = /^(-|\+)?([0-9]*\.)?$/, numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
+var noRe  = /^(-|\+)?([0-9]*\.)?$/,
+    numRe = /^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/;
 
 
-export default class NumberInput extends Component {
+export default class NumberInput extends PureComponent {
 
     static propTypes = {
-        onChange: PropTypes.valueEvent
+        onBlur     : PropTypes.blurValidate,
+        onKeyDown  : PropTypes.event,
+        onKeyUp    : PropTypes.event,
+        onFocus    : PropTypes.event,
+        onPaste    : PropTypes.event,
+        value      : PropTypes.value,
+        id         : PropTypes.id,
+        name       : PropTypes.htmlFor,
+        className  : PropTypes.typeClass,
+        placeholder: PropTypes.string,
+        fieldAttrs : PropTypes.fieldAttrs,
+        onChange   : PropTypes.valueEvent
     };
 
     constructor(props, ...rest) {
         super(props, ...rest);
-        var state = this.state || (this.state = {});
+        var state   = this.state || (this.state = {});
         state.value = props.value;
 
     }
 
     componentWillReceiveProps(newProps) {
         if (newProps.value !== this.props.value) {
-            this.setState({value: newProps.value});
+            this.setState({ value: newProps.value });
         }
     }
 
-    handleDateChange = (e)=> {
+    handleDateChange = (e) => {
 
         var value = e.target.value;
         //Not a valid number but valid to become a number
@@ -47,7 +59,8 @@ export default class NumberInput extends Component {
     };
 
     render() {
-        var {onChange, value, ...props} = this.props
-        return <input {...props} value={this.state.value} onChange={this.handleDateChange}/>
+        var { onChange, value, ...props } = this.props
+        return <input {...props} value={this.state.value}
+                      onChange={this.handleDateChange}/>
     }
 }

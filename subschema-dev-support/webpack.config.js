@@ -146,6 +146,24 @@ var webpack = {
     }
 };
 
+if (process.env.SUBSCHEMA_MAIN_FIELDS) {
+    switch ('' + process.env.SUBSCHEMA_MAIN_FIELDS) {
+        case '0':
+        case '':
+        case 'false':
+            break;
+        case '1':
+        case 'true':
+            webpack.resolve.mainFields = ['source', 'main'];
+            console.warn(`using mainFields`, webpack.resolve.mainFields);
+            break;
+        default:
+            webpack.resolve.mainFields =
+                process.env.SUBSCHEMA_MAIN_FIELDS.split(/,\s*/);
+            console.warn(`using mainFields`, webpack.resolve.mainFields);
+            break;
+    }
+}
 
 if (process.env.SUBSCHEMA_USE_HTML) {
     opts.useHtml = true;

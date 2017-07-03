@@ -29,12 +29,16 @@ import _ReactCSSReplaceTransition from './ReactCSSReplaceTransition';
 import _ReactCSSTransitionGroupChild from './ReactCSSTransitionGroupChild';
 import _resolvers from 'subschema-core/lib/resolvers';
 import _Conditional from 'subschema-core/lib/Conditional';
+import { settings as transitionSettings } from 'subschema-core/lib/resolvers/transition';
 
 export const Conditional = _Conditional;
 
-export const resolvers = _resolvers;
+export const resolvers        = _resolvers;
+transitionSettings.Transition = _ReactCSSReplaceTransition;
 
-export const ReactCSSReplaceTransition = Conditional.Transition = resolvers.transition.Transition = _ReactCSSReplaceTransition;
+export const ReactCSSReplaceTransition = Conditional.Transition =
+    transitionSettings.Transition;
+
 
 export const ReactCSSTransitionGroupChild = _ReactCSSTransitionGroupChild;
 
@@ -43,6 +47,7 @@ export const RestrictedMixin = _RestrictedMixin;
 export const Dom = _Dom;
 
 export const css = _css;
+
 
 export const templates = {
     ButtonTemplate,
@@ -56,7 +61,7 @@ export const templates = {
     ObjectTemplate,
     RadioItemTemplate,
 };
-export const types = {
+export const types     = {
     Content,
     Checkbox,
     Checkboxes,

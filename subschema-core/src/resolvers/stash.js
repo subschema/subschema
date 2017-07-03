@@ -1,19 +1,6 @@
 import PropTypes from 'subschema-prop-types';
 import { flattenFields, warning } from 'subschema-utils';
-/**
- *  static propTypes    = {
-        fields          : PropTypes.fields,
-        path            : PropTypes.path,
-        //If the component goes away do we unstash (restore values) or
-        // clearStash
-        unstashOnUnmount: PropTypes.bool
-    };
- * @param value
- * @param key
- * @param props
- * @param valueManager
- * @param loader
- */
+
 export function resolveFieldKey(key) {
     return (this.path && key != null) ? `${this.path}.${key}` : key;
 }

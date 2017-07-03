@@ -1,7 +1,24 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'subschema-prop-types';
 
-export default class TextArea extends Component {
+export default class TextArea extends PureComponent {
+    static propTypes = {
+        onChange   : PropTypes.targetEvent,
+        onBlur     : PropTypes.blurValidate,
+        onKeyDown  : PropTypes.event,
+        onKeyUp    : PropTypes.event,
+        onFocus    : PropTypes.event,
+        onPaste    : PropTypes.event,
+        value      : PropTypes.value,
+        id         : PropTypes.id,
+        name       : PropTypes.htmlFor,
+        className  : PropTypes.typeClass,
+        placeholder: PropTypes.string,
+        fieldAttrs : PropTypes.fieldAttrs
+    };
+
     render() {
-        return <textarea {...this.props} />
+        const { fieldAttrs, ...props } = this.props;
+        return <textarea {...fieldAttrs} {...props}/>
     }
 }

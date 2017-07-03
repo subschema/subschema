@@ -6,6 +6,11 @@ import { ObjectType, RenderTemplate as renderTemplate } from 'subschema-core';
 function donner(done) {
     done();
 }
+const fakeTransition = {
+    Transition(props){
+        return <span {...props}/>
+    },
+};
 
 export default class WizardTemplate extends WizardMixin {
     static defaultProps = {
@@ -81,9 +86,9 @@ export default class WizardTemplate extends WizardMixin {
 
     makeTransition(compState) {
         if (compState < this.state.prevState) {
-            return this.props.transitionForward;
+            return this.props.transitionForward || fakeTransition;
         } else {
-            return this.props.transitionBackward;
+            return this.props.transitionBackward || fakeTransition;
         }
     }
 

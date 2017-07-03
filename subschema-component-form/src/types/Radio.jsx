@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { path as tpath } from 'subschema-utils';
 import { RenderTemplate as renderTemplate } from 'subschema-core';
 import PropTypes from 'subschema-prop-types';
@@ -13,7 +13,7 @@ function compare(val, val2) {
     return ('' + val === '' + val2);
 }
 
-export default class RadioInput extends Component {
+export default class RadioInput extends PureComponent {
     static inputClassName = '  ';
 
 
@@ -29,7 +29,12 @@ export default class RadioInput extends Component {
         forceSelection: PropTypes.bool,
         checkedClass  : PropTypes.cssClass,
         options       : PropTypes.options.isRequired,
-        path          : PropTypes.path
+        path          : PropTypes.path,
+        value         : PropTypes.value,
+        id            : PropTypes.id,
+        name          : PropTypes.htmlFor,
+        className     : PropTypes.typeClass,
+        fieldAttrs    : PropTypes.fieldAttrs
     };
 
     renderInput(onChange, ret, val) {

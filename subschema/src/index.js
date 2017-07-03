@@ -44,6 +44,6 @@ export const processors                = Subschema.processors;
 export const styles                    = Subschema.styles;
 export const resolvers                 = Subschema.resolvers;
 export const ReactCSSReplaceTransition = Subschema.ReactCSSReplaceTransition;
-export const SUBSCHEMA_VERSION = SUBSCHEMA_VERSION;
+export const SUBSCHEMA_VERSION         = SUBSCHEMA_VERSION;
 
 export default Subschema;

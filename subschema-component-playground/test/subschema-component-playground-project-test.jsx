@@ -1,20 +1,21 @@
 import React from 'react';
-import playground, {types} from 'subschema-component-playground';
-import ProjectWizard, {schema} from 'subschema-component-playground/lib/ProjectWizard';
-import  {TestUtils, Simulate, cleanUp, into, expect} from 'subschema-test-support';
-import {unmountComponentAtNode, findDOMNode} from 'react-dom';
+import playground, { types } from 'subschema-component-playground';
+import ProjectWizard, { schema } from 'subschema-component-playground/lib/ProjectWizard';
+import { expect, into, Simulate, TestUtils } from 'subschema-test-support';
+import { findDOMNode, unmountComponentAtNode } from 'react-dom';
 import samples from 'subschema-test-samples';
-import {loader} from 'subschema';
+import { loader } from 'subschema';
 import wizard from 'subschema-component-wizard';
 
 
-const {DownloadButton} = types;
-const withTag = TestUtils.scryRenderedDOMComponentsWithTag;
-const {click, change} = Simulate;
+const { DownloadButton } = types;
+const withTag            = TestUtils.scryRenderedDOMComponentsWithTag;
+const { click, change }  = Simulate;
 
-//disables transitions so tests run faster (10x faster), by not waiting for transitions.
+//disables transitions so tests run faster (10x faster), by not waiting for
+// transitions.
 schema.template = {
-    "template": "WizardTemplate",
+    "template"  : "WizardTemplate",
     "transition": false
 };
 
@@ -36,9 +37,12 @@ describe('subschema-component-playground-project-test', function () {
         f = filename;
         //     oOpen(blob, filename, callback);
     }
-    before(function(){
+
+    before(function () {
         loader.addLoader(playground);
         loader.addLoader(wizard);
+        wizard.templates.WizardTemplate.defaultProps.transitionForward  = false;
+        wizard.templates.WizardTemplate.defaultProps.transitionBackward = false;
     });
     beforeEach(function () {
         types.DownloadButton.open = test$open;
@@ -48,11 +52,10 @@ describe('subschema-component-playground-project-test', function () {
         app = into(<ProjectWizard loader={loader}/>, true);
 
         buttons = withTag(app, 'button');
-        select = withTag(app, 'select')[0];
+        select  = withTag(app, 'select')[0];
         options = withTag(app, 'option');
         options.shift();
     });
-
 
 
     Object.keys(samples).forEach(function (value) {
@@ -80,9 +83,9 @@ describe('subschema-component-playground-project-test', function () {
 
 
             return new Promise((resolve, reject) => {
-                const url = URL.createObjectURL(b);
-                const other = window.open(url);
-                let hasError = false;
+                const url     = URL.createObjectURL(b);
+                const other   = window.open(url);
+                let hasError  = false;
                 other.onerror = function (e) {
                     console.log('errror for ', value, e);
                     hasError = e;

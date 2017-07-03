@@ -19,7 +19,11 @@ const api = {
     fetch(url, value, component, cb) {
         value = lc(value);
         if (!value) {
-            return cb(null, EMPTY);
+            if (component && component.props.showAllOnFocus) {
+                return cb(null, component.props.options);
+            } else {
+                return cb(null, EMPTY)
+            }
         }
         const data = (component.props.options || []).filter(function (v) {
             return lccontains(value, v.label) || lccontains(value, v.val);

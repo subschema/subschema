@@ -4,10 +4,14 @@ import PropTypes from 'subschema-prop-types';
 class NavigateItem extends Component {
 
     static propTypes = {
-        href   : PropTypes.expression,
-        label  : PropTypes.expression,
-        path   : PropTypes.path,
-        onClick: PropTypes.valueEvent
+        onBlur   : PropTypes.blurValidate,
+        value    : PropTypes.value,
+        id       : PropTypes.id,
+        className: PropTypes.typeClass,
+        href     : PropTypes.expression,
+        label    : PropTypes.expression,
+        path     : PropTypes.path,
+        onClick  : PropTypes.valueEvent,
     };
 
     static defaultProps = {
