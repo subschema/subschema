@@ -1,9 +1,9 @@
 {
   "name": "subschema-test-support",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Subschema Test Support",
   "main": "lib/index.js",
-  "source":"src/index.js",
+  "source": "src/index.js",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
     "prepublish": "subschema-babel",
@@ -18,10 +18,10 @@
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
-    "subschema-dev-support": "^2.0.5",
-    "subschema-injection": "^2.0.5",
-    "subschema-loader": "^2.0.5",
-    "subschema-prop-types": "^2.0.5",
-    "subschema-valuemanager": "^2.0.5"
+    "subschema-dev-support": "^2.1.0",
+    "subschema-injection": "^2.1.0",
+    "subschema-loader": "^2.1.0",
+    "subschema-prop-types": "^2.1.0",
+    "subschema-valuemanager": "^2.1.0"
   }
 }

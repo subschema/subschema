@@ -1,6 +1,6 @@
 {
   "name": "subschema-dev-support",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Tools for developing with subschema",
   "scripts": {
     "test": "echo 'No Tests for subschema-dev-support'",
@@ -15,7 +15,6 @@
     "subschema-webpack-dev-server": "bin/subschema-webpack-dev-server.js"
   },
   "dependencies": {
-    "react-docgen": "3.0.0-beta5",
     "autoprefixer": "^6.7.7",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
@@ -23,8 +22,8 @@
     "babel-plugin-istanbul": "^4.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1 ",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -59,14 +58,15 @@
     "prop-types": "^15.5.4",
     "raw-loader": "^0.5.1",
     "react": "^15.5.4",
+    "react-docgen": "3.0.0-beta5",
     "react-dom": "^15.5.4",
     "react-hot-loader": "^3.0.0-beta.6",
     "rimraf": "^2.6.1",
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
+    "webpack-bundle-analyzer": "^2.8.2",
     "webpack-dev-server": "^2.4.2",
-    "webpack-stats-plugin": "^0.1.5",
-    "webpack-bundle-analyzer": "^2.8.2"
+    "webpack-stats-plugin": "^0.1.5"
   }
 }

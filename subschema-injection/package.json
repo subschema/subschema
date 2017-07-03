@@ -1,9 +1,9 @@
 {
   "name": "subschema-injection",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Subschema Injection System.",
   "main": "lib/index",
-  "source":"src/index",
+  "source": "src/index",
   "scripts": {
     "test": "subschema-babel && subschema-mocha",
     "prepublish": "subschema-babel",
@@ -18,6 +18,6 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "rimraf": "^2.6.1",
-    "subschema-dev-support": "^2.0.5"
+    "subschema-dev-support": "^2.1.0"
   }
 }
