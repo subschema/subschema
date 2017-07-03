@@ -1,9 +1,0 @@
-var ctx = require.context('.',  true)
-
-module.exports = ctx.keys().reduce(function(obj, key){
-    var path = key.replace(/^\.\//, '').replace(/\.tmpl$/, '').replace(/^_/, '.');
-    if (path !== 'index'){
-       obj[path] = ctx(key);
-    }
-    return obj;
-}, {});
