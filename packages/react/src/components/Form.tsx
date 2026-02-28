@@ -24,6 +24,8 @@ export interface FormProps {
   /** Additional className */
   className?: string;
   children?: React.ReactNode;
+  /** When true, renders a <div> instead of <form> to avoid nested form elements */
+  nested?: boolean;
 }
 
 /**
@@ -49,6 +51,7 @@ export function Form({
   validators: validatorOverrides,
   className,
   children,
+  nested,
 }: FormProps) {
   const parentCtx = useContext(FormContainerContext);
 
@@ -79,6 +82,7 @@ export function Form({
         onSubmit={onSubmit}
         initialValues={initialValues}
         className={className}
+        nested={nested}
       >
         {children}
       </FormInner>
@@ -92,9 +96,10 @@ interface FormInnerProps {
   initialValues?: Record<string, unknown>;
   className?: string;
   children?: React.ReactNode;
+  nested?: boolean;
 }
 
-function FormInner({ schema, onSubmit, initialValues, className, children }: FormInnerProps) {
+function FormInner({ schema, onSubmit, initialValues, className, children, nested }: FormInnerProps) {
   const formState = useForm(schema, initialValues);
   const handler = formState.handleSubmit(onSubmit ?? (() => {}));
 
@@ -106,9 +111,12 @@ function FormInner({ schema, onSubmit, initialValues, className, children }: For
     (name) => !fieldsetFieldNames.has(name),
   );
 
+  const Wrapper = nested ? 'div' : 'form';
+  const wrapperProps = nested ? {} : { onSubmit: handler, noValidate: true };
+
   return (
     <FormStateContext.Provider value={formState}>
-      <form onSubmit={handler} className={cn('space-y-4', className)} noValidate>
+      <Wrapper {...wrapperProps} className={cn('space-y-4', className)}>
         {/* Render fieldsets */}
         {schema.fieldsets?.map((fs, i) => (
           <FieldSet key={`fieldset-${i}`} config={fs} schema={schema.schema} />
@@ -118,7 +126,7 @@ function FormInner({ schema, onSubmit, initialValues, className, children }: For
           <Field key={name} name={name} fieldSchema={schema.schema[name]} />
         ))}
         {children}
-      </form>
+      </Wrapper>
     </FormStateContext.Provider>
   );
 }

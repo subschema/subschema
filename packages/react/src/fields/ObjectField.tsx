@@ -52,6 +52,7 @@ export function ObjectField({ name, value, onChange, fieldSchema }: FieldCompone
             schema={subSchema}
             values={objectValue}
             onSubmit={handleSubmit}
+            nested
           />
         </FormProvider>
       </CardContent>
