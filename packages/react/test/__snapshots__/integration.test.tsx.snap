@@ -1,0 +1,436 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Integration: Conditional Form > snapshot: renders correct HTML structure 1`] = `
+<form
+  class="space-y-4"
+  novalidate=""
+>
+  <fieldset
+    class="space-y-4 rounded-lg border p-4"
+  >
+    <legend
+      class="px-2 text-lg font-semibold"
+    >
+      Personal Information
+    </legend>
+    <div
+      class="space-y-2"
+      data-field="firstName"
+    >
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        for="firstName"
+      >
+        First Name
+      </label>
+      <input
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        id="firstName"
+        name="firstName"
+        placeholder="First name"
+        value=""
+      />
+    </div>
+    <div
+      class="space-y-2"
+      data-field="lastName"
+    >
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        for="lastName"
+      >
+        Last Name
+      </label>
+      <input
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        id="lastName"
+        name="lastName"
+        placeholder="Last name"
+        value=""
+      />
+    </div>
+  </fieldset>
+  <fieldset
+    class="space-y-4 rounded-lg border p-4"
+  >
+    <legend
+      class="px-2 text-lg font-semibold"
+    >
+      Preferences
+    </legend>
+    <div
+      class="space-y-2"
+      data-field="contactMethod"
+    >
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        for="contactMethod"
+      >
+        Contact Method
+      </label>
+      <button
+        aria-autocomplete="none"
+        aria-controls="radix-_r_1g_"
+        aria-expanded="false"
+        class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        data-placeholder=""
+        data-state="closed"
+        dir="ltr"
+        id="contactMethod"
+        role="combobox"
+        type="button"
+      >
+        <span
+          style="pointer-events: none;"
+        >
+          Select...
+        </span>
+        <span
+          aria-hidden="true"
+        >
+          ▼
+        </span>
+      </button>
+      <select
+        aria-hidden="true"
+        style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"
+        tabindex="-1"
+      >
+        <option
+          value="Email"
+        >
+          Email
+        </option>
+        <option
+          value="Phone"
+        >
+          Phone
+        </option>
+        <option
+          value="Mail"
+        >
+          Mail
+        </option>
+      </select>
+    </div>
+    <div
+      class="space-y-2"
+      data-field="newsletter"
+    >
+      <label
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        for="newsletter"
+      >
+        Newsletter
+      </label>
+      <button
+        aria-checked="false"
+        class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+        data-state="unchecked"
+        id="newsletter"
+        role="checkbox"
+        type="button"
+        value="on"
+      />
+      <input
+        aria-hidden="true"
+        style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;"
+        tabindex="-1"
+        type="checkbox"
+        value="on"
+      />
+    </div>
+  </fieldset>
+</form>
+`;
+
+exports[`Integration: Contact Form > snapshot: renders correct HTML structure 1`] = `
+<form
+  class="space-y-4"
+  novalidate=""
+>
+  <div
+    class="space-y-2"
+    data-field="name"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="name"
+    >
+      Name
+    </label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      id="name"
+      name="name"
+      placeholder="Enter your full name"
+      value=""
+    />
+  </div>
+  <div
+    class="space-y-2"
+    data-field="email"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="email"
+    >
+      Email
+    </label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      id="email"
+      name="email"
+      placeholder="you@example.com"
+      value=""
+    />
+  </div>
+  <div
+    class="space-y-2"
+    data-field="subject"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="subject"
+    >
+      Subject
+    </label>
+    <button
+      aria-autocomplete="none"
+      aria-controls="radix-_r_k_"
+      aria-expanded="false"
+      class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      data-placeholder=""
+      data-state="closed"
+      dir="ltr"
+      id="subject"
+      role="combobox"
+      type="button"
+    >
+      <span
+        style="pointer-events: none;"
+      >
+        Select...
+      </span>
+      <span
+        aria-hidden="true"
+      >
+        ▼
+      </span>
+    </button>
+    <select
+      aria-hidden="true"
+      style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"
+      tabindex="-1"
+    >
+      <option
+        value="General Inquiry"
+      >
+        General Inquiry
+      </option>
+      <option
+        value="Bug Report"
+      >
+        Bug Report
+      </option>
+      <option
+        value="Feature Request"
+      >
+        Feature Request
+      </option>
+    </select>
+  </div>
+  <div
+    class="space-y-2"
+    data-field="message"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="message"
+    >
+      Message
+    </label>
+    <textarea
+      class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      id="message"
+      name="message"
+      placeholder="Tell us more..."
+    />
+  </div>
+</form>
+`;
+
+exports[`Integration: User Profile > snapshot: renders correct HTML structure 1`] = `
+<form
+  class="space-y-4"
+  novalidate=""
+>
+  <div
+    class="space-y-2"
+    data-field="username"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="username"
+    >
+      Username
+    </label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      id="username"
+      name="username"
+      placeholder="Username"
+      value=""
+    />
+  </div>
+  <div
+    class="space-y-2"
+    data-field="email"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="email"
+    >
+      Email
+    </label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      id="email"
+      name="email"
+      placeholder="you@example.com"
+      value=""
+    />
+  </div>
+  <div
+    class="space-y-2"
+    data-field="address"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="address"
+    >
+      Address
+    </label>
+    <div
+      class="rounded-lg border bg-card text-card-foreground shadow-sm"
+    >
+      <div
+        class="flex flex-col space-y-1.5 p-6"
+      >
+        <h3
+          class="text-2xl font-semibold leading-none tracking-tight"
+        >
+          Address
+        </h3>
+      </div>
+      <div
+        class="p-6 pt-0"
+      >
+        <div
+          class="space-y-4"
+        >
+          <div
+            class="space-y-2"
+            data-field="street"
+          >
+            <label
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              for="street"
+            >
+              Street
+            </label>
+            <input
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              id="street"
+              name="street"
+              placeholder="123 Main St"
+              value=""
+            />
+          </div>
+          <div
+            class="space-y-2"
+            data-field="city"
+          >
+            <label
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              for="city"
+            >
+              City
+            </label>
+            <input
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              id="city"
+              name="city"
+              placeholder="City"
+              value=""
+            />
+          </div>
+          <div
+            class="space-y-2"
+            data-field="state"
+          >
+            <label
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              for="state"
+            >
+              State
+            </label>
+            <input
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              id="state"
+              name="state"
+              placeholder="State"
+              value=""
+            />
+          </div>
+          <div
+            class="space-y-2"
+            data-field="zip"
+          >
+            <label
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              for="zip"
+            >
+              Zip
+            </label>
+            <input
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              id="zip"
+              name="zip"
+              placeholder="12345"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="space-y-2"
+    data-field="hasPhone"
+  >
+    <label
+      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      for="hasPhone"
+    >
+      Has Phone
+    </label>
+    <button
+      aria-checked="false"
+      class="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+      data-state="unchecked"
+      id="hasPhone"
+      role="checkbox"
+      type="button"
+      value="on"
+    />
+    <input
+      aria-hidden="true"
+      style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;"
+      tabindex="-1"
+      type="checkbox"
+      value="on"
+    />
+  </div>
+</form>
+`;
