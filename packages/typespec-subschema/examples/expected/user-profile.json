@@ -1,0 +1,63 @@
+{
+  "schema": {
+    "username": {
+      "type": "Text",
+      "title": "Username",
+      "placeholder": "Username",
+      "validators": [
+        { "type": "required", "message": "Username is required" },
+        { "type": "minLength", "value": 3, "message": "At least 3 characters" }
+      ]
+    },
+    "email": {
+      "type": "Text",
+      "title": "Email",
+      "placeholder": "you@example.com",
+      "validators": [
+        { "type": "required", "message": "Email is required" }
+      ]
+    },
+    "address": {
+      "type": "Object",
+      "title": "Address",
+      "subSchema": {
+        "schema": {
+          "street": {
+            "type": "Text",
+            "title": "Street",
+            "placeholder": "123 Main St"
+          },
+          "city": {
+            "type": "Text",
+            "title": "City",
+            "placeholder": "City"
+          },
+          "state": {
+            "type": "Text",
+            "title": "State",
+            "placeholder": "State"
+          },
+          "zip": {
+            "type": "Text",
+            "title": "Zip",
+            "placeholder": "12345"
+          }
+        }
+      }
+    },
+    "hasPhone": {
+      "type": "Checkbox",
+      "title": "Has Phone"
+    },
+    "phone": {
+      "type": "Text",
+      "title": "Phone",
+      "placeholder": "555-0100",
+      "conditional": {
+        "listen": "hasPhone",
+        "operator": "truthy"
+      }
+    }
+  }
+}
+
