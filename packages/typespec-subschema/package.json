@@ -13,8 +13,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist"
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "test": "node --test dist/test/**/*.test.js"
   },
   "peerDependencies": {
     "@typespec/compiler": "~1.9.0"
