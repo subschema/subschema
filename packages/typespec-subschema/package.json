@@ -1,0 +1,33 @@
+{
+  "name": "@subschema/typespec",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "TypeSpec library for Subschema form definitions",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "typespecMain": "lib/main.tsp",
+  "exports": {
+    ".": {
+      "typespec": "./lib/main.tsp",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist"
+  },
+  "peerDependencies": {
+    "@typespec/compiler": "~1.9.0"
+  },
+  "devDependencies": {
+    "@typespec/compiler": "~1.9.0",
+    "typescript": "~5.7.0",
+    "rimraf": "^6.0.0"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "license": "MIT"
+}
+
