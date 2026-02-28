@@ -16,12 +16,14 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^25.3.2",
     "rimraf": "^6.0.0",
-    "typescript": "~5.7.0"
+    "typescript": "~5.7.0",
+    "vitest": "^3.0.0"
   },
   "files": [
     "dist"
