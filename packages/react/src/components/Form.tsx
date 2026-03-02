@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import type { FormSchema, FieldTypeRegistry, TemplateRegistry, ValidatorRegistry, FieldComponent, TemplateComponent, ValidatorFn } from '../types.js';
 import { FormContainerContext } from './FormProvider.js';
 import { FormStateContext } from './FormStateContext.js';
@@ -26,6 +26,8 @@ export interface FormProps {
   children?: React.ReactNode;
   /** When true, renders a <div> instead of <form> to avoid nested form elements */
   nested?: boolean;
+  /** Called whenever form values change */
+  onChange?: (values: Record<string, unknown>) => void;
 }
 
 /**
@@ -52,6 +54,7 @@ export function Form({
   className,
   children,
   nested,
+  onChange,
 }: FormProps) {
   const parentCtx = useContext(FormContainerContext);
 
@@ -83,6 +86,7 @@ export function Form({
         initialValues={initialValues}
         className={className}
         nested={nested}
+        onChange={onChange}
       >
         {children}
       </FormInner>
@@ -97,11 +101,16 @@ interface FormInnerProps {
   className?: string;
   children?: React.ReactNode;
   nested?: boolean;
+  onChange?: (values: Record<string, unknown>) => void;
 }
 
-function FormInner({ schema, onSubmit, initialValues, className, children, nested }: FormInnerProps) {
+function FormInner({ schema, onSubmit, initialValues, className, children, nested, onChange }: FormInnerProps) {
   const formState = useForm(schema, initialValues);
   const handler = formState.handleSubmit(onSubmit ?? (() => {}));
+
+  useEffect(() => {
+    onChange?.(formState.values);
+  }, [formState.values, onChange]);
 
   // Determine field rendering order
   const fieldsetFieldNames = new Set(

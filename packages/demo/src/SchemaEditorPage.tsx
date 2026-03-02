@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { Form, Button, cn } from '@subschema/react';
 import type { FormSchema } from '@subschema/react';
 import type { ExampleDef } from './examples';
-import { FormValuesWrapper } from './FormValuesWrapper';
 
 export function SchemaEditorPage({ example }: { example: ExampleDef }) {
   const [schemaText, setSchemaText] = useState(() => JSON.stringify(example.schema, null, 2));
@@ -73,13 +72,11 @@ export function SchemaEditorPage({ example }: { example: ExampleDef }) {
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Live Preview</h3>
           <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-white dark:bg-gray-900 min-h-80">
             {!parseError && (
-              <FormValuesWrapper onValuesChange={setValues}>
-                <Form key={formKey} schema={parsedSchema} onSubmit={handleSubmit}>
+                <Form key={formKey} schema={parsedSchema} onSubmit={handleSubmit} onChange={setValues}>
                   <div className="pt-4">
                     <Button type="submit">Submit</Button>
                   </div>
                 </Form>
-              </FormValuesWrapper>
             )}
           </div>
         </div>

@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { Form, FormProvider, Button, cn, createDefaultContainer, createFormContainer } from '@subschema/react';
 import type { FieldComponentProps } from '@subschema/react';
 import type { ExampleDef } from './examples';
-import { FormValuesWrapper } from './FormValuesWrapper';
 
 /** A custom "UpperCase" text field that converts input to uppercase — registered via preset */
 function UpperCaseTextField({ name, value, onChange, onBlur, placeholder, error }: FieldComponentProps) {
@@ -60,15 +59,13 @@ export function PresetPage({ example }: { example: ExampleDef }) {
       )}
 
       <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 bg-white dark:bg-gray-900">
-        <FormValuesWrapper onValuesChange={setValues}>
           <FormProvider container={presetContainer}>
-            <Form schema={example.schema} onSubmit={handleSubmit}>
+            <Form schema={example.schema} onSubmit={handleSubmit} onChange={setValues}>
               <div className="pt-4">
                 <Button type="submit">Submit</Button>
               </div>
             </Form>
           </FormProvider>
-        </FormValuesWrapper>
       </div>
 
       {/* Tabs */}

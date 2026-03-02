@@ -50,6 +50,7 @@ export { useValidation } from './hooks/useValidation.js';
 // ── Components ──
 export { FormProvider, FormContainerContext } from './components/FormProvider.js';
 export { Form } from './components/Form.js';
+export { useFormState, FormStateContext } from './components/FormStateContext.js';
 export { Field } from './components/Field.js';
 export { FieldSet } from './components/FieldSet.js';
 export { Conditional } from './components/Conditional.js';

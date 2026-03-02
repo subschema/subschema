@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { Form, Button, cn } from '@subschema/react';
 import type { FieldComponentProps } from '@subschema/react';
 import type { ExampleDef } from './examples';
-import { FormValuesWrapper } from './FormValuesWrapper';
 
 /** Custom star rating field component implementing FieldComponentProps */
 function RatingField({ value, onChange, title, error }: FieldComponentProps) {
@@ -69,13 +68,11 @@ export function CustomTypePage({ example }: { example: ExampleDef }) {
       )}
 
       <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 bg-white dark:bg-gray-900">
-        <FormValuesWrapper onValuesChange={setValues}>
-          <Form schema={example.schema} types={{ Rating: RatingField }} onSubmit={handleSubmit}>
+          <Form schema={example.schema} types={{ Rating: RatingField }} onSubmit={handleSubmit} onChange={setValues}>
             <div className="pt-4">
               <Button type="submit">Submit</Button>
             </div>
           </Form>
-        </FormValuesWrapper>
       </div>
 
       {/* Tabs */}

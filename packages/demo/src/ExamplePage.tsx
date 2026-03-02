@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Form, Button, cn } from '@subschema/react';
 import type { ExampleDef } from './examples';
-import { FormValuesWrapper } from './FormValuesWrapper';
 
 type Tab = 'schema' | 'typespec' | 'values';
 
@@ -45,13 +44,11 @@ export function ExamplePage({ example }: { example: ExampleDef }) {
 
       {/* Rendered Form */}
       <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 bg-white dark:bg-gray-900">
-        <FormValuesWrapper onValuesChange={setValues}>
-          <Form schema={example.schema} onSubmit={handleSubmit}>
+          <Form schema={example.schema} onSubmit={handleSubmit} onChange={setValues}>
             <div className="pt-4">
               <Button type="submit">Submit</Button>
             </div>
           </Form>
-        </FormValuesWrapper>
       </div>
 
       {/* Tabs */}
