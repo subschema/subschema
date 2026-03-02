@@ -11,8 +11,10 @@ function getInitialValues(schema: FormSchema, provided?: Record<string, unknown>
       values[name] = field.default;
     } else if (field.type === 'Object') {
       values[name] = {};
-    } else if (field.type === 'List') {
+    } else if (field.type === 'List' || field.type === 'Checkboxes') {
       values[name] = [];
+    } else if (field.type === 'Checkbox') {
+      values[name] = false;
     } else {
       values[name] = '';
     }
