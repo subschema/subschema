@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../react/src/**/*.tsx";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
