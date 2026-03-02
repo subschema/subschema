@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/react" },
+    { "path": "packages/typespec-subschema" },
+    { "path": "packages/create" },
+    { "path": "packages/demo" }
+  ]
+}
+
