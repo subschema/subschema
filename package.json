@@ -9,5 +9,23 @@
   },
   "author": "Justin Spears",
   "license": "MIT",
-  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "pnpm -r --filter '!@subschema/demo' build",
+    "test": "pnpm -r --filter '!@subschema/demo' test",
+    "clean": "pnpm -r run clean",
+    "lint:packages": "pnpm -r --filter '@subschema/react' --filter '@subschema/typespec' --filter '@subschema/create' exec publint && pnpm -r --filter '@subschema/react' --filter '@subschema/typespec' --filter '@subschema/create' exec attw --pack . --ignore-rules cjs-resolves-to-esm",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c",
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@changesets/cli": "^2.29.8",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "publint": "^0.3.18"
+  }
 }
