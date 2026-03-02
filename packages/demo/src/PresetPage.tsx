@@ -22,12 +22,12 @@ function UpperCaseTextField({ name, value, onChange, onBlur, placeholder, error 
   );
 }
 
-type Tab = 'schema' | 'values';
+import { StepPanel } from './ExamplePage';
 
 export function PresetPage({ example }: { example: ExampleDef }) {
-  const [tab, setTab] = useState<Tab>('schema');
   const [submitted, setSubmitted] = useState<Record<string, unknown> | null>(null);
   const [values, setValues] = useState<Record<string, unknown>>({});
+  const [copied, setCopied] = useState(false);
 
   // Create a preset container that overrides Text field with UpperCaseTextField
   const presetContainer = useMemo(() => {
@@ -40,8 +40,14 @@ export function PresetPage({ example }: { example: ExampleDef }) {
     setTimeout(() => setSubmitted(null), 5000);
   }, []);
 
+  const copySchema = useCallback(() => {
+    navigator.clipboard.writeText(JSON.stringify(example.schema, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [example.schema]);
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">{example.title}</h2>
         <p className="text-gray-600 dark:text-gray-400 mt-1">{example.description}</p>
@@ -51,40 +57,60 @@ export function PresetPage({ example }: { example: ExampleDef }) {
         </p>
       </div>
 
-      {submitted && (
-        <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
-          <p className="font-medium text-green-800 dark:text-green-200 mb-2">✅ Form submitted!</p>
-          <pre className="text-xs overflow-auto text-green-700 dark:text-green-300">{JSON.stringify(submitted, null, 2)}</pre>
-        </div>
-      )}
+      {/* Pipeline */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-4 items-start">
+        {/* Step 1: TypeSpec */}
+        <StepPanel step={1} title="TypeSpec" subtitle="Author your schema" color="blue">
+          {example.typespec ? (
+            <pre className="text-sm overflow-auto max-h-96 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">
+              {example.typespec}
+            </pre>
+          ) : (
+            <p className="text-sm text-gray-400 dark:text-gray-500 italic py-4">No TypeSpec source</p>
+          )}
+        </StepPanel>
 
-      <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 bg-white dark:bg-gray-900">
-          <FormProvider container={presetContainer}>
-            <Form schema={example.schema} onSubmit={handleSubmit} onChange={setValues}>
-              <div className="pt-4">
-                <Button type="submit">Submit</Button>
-              </div>
-            </Form>
-          </FormProvider>
-      </div>
+        <div className="hidden lg:flex items-center justify-center text-gray-400 text-2xl pt-12">→</div>
+        <div className="lg:hidden flex justify-center text-gray-400 text-xl">↓</div>
 
-      {/* Tabs */}
-      <div className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
-        <div className="flex border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-          {[{ id: 'schema' as Tab, label: 'JSON Schema' }, { id: 'values' as Tab, label: 'Form Values' }].map((t) => (
-            <button key={t.id} onClick={() => setTab(t.id)}
-              className={cn('px-4 py-2 text-sm font-medium transition border-b-2 -mb-px',
-                tab === t.id ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-              )}>{t.label}</button>
-          ))}
-        </div>
-        <div className="p-4 bg-white dark:bg-gray-950">
-          {tab === 'schema' && (
+        {/* Step 2: JSON Schema */}
+        <StepPanel step={2} title="JSON Schema" subtitle="Compiled output" color="indigo">
+          <div className="relative">
+            <button onClick={copySchema} className="absolute top-2 right-2 text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+              {copied ? '✓ Copied' : 'Copy'}
+            </button>
             <pre className="text-sm overflow-auto max-h-96 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">{JSON.stringify(example.schema, null, 2)}</pre>
-          )}
-          {tab === 'values' && (
+          </div>
+        </StepPanel>
+
+        <div className="hidden lg:flex items-center justify-center text-gray-400 text-2xl pt-12">→</div>
+        <div className="lg:hidden flex justify-center text-gray-400 text-xl">↓</div>
+
+        {/* Steps 3+4: Form + Values stacked */}
+        <div className="space-y-4">
+          <StepPanel step={3} title="Live Form" subtitle="Rendered from schema" color="violet">
+            <div className="bg-white dark:bg-gray-950 rounded p-2">
+              <FormProvider container={presetContainer}>
+                <Form schema={example.schema} onSubmit={handleSubmit} onChange={setValues}>
+                  <div className="pt-4">
+                    <Button type="submit">Submit</Button>
+                  </div>
+                </Form>
+              </FormProvider>
+              {submitted && (
+                <div className="mt-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                  <p className="font-medium text-green-800 dark:text-green-200 mb-1 text-sm">✅ Form submitted!</p>
+                  <pre className="text-xs overflow-auto text-green-700 dark:text-green-300">{JSON.stringify(submitted, null, 2)}</pre>
+                </div>
+              )}
+            </div>
+          </StepPanel>
+
+          <div className="flex justify-center text-gray-400 text-xl">↓</div>
+
+          <StepPanel step={4} title="Form Values" subtitle="Live state as you type" color="emerald">
             <pre className="text-sm overflow-auto max-h-96 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">{JSON.stringify(values, null, 2)}</pre>
-          )}
+          </StepPanel>
         </div>
       </div>
     </div>
