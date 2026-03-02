@@ -23,4 +23,3 @@ export async function aggregateLlmsTxt(packageDirs: string[]): Promise<string> {
 
   return `# Subschema Components\n\n${sections.join('\n\n')}\n`;
 }
-

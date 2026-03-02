@@ -34,4 +34,3 @@ export interface PropDef {
   default?: unknown;
   hasDefault: boolean;
 }
-

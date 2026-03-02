@@ -1,11 +1,23 @@
 import React, { useContext, useEffect, useMemo } from 'react';
-import type { FormSchema, FieldTypeRegistry, TemplateRegistry, ValidatorRegistry, FieldComponent, TemplateComponent, ValidatorFn } from '../types.js';
+import type {
+  FormSchema,
+  FieldTypeRegistry,
+  TemplateRegistry,
+  ValidatorRegistry,
+  FieldComponent,
+  TemplateComponent,
+  ValidatorFn,
+} from '../types.js';
 import { FormContainerContext } from './FormProvider.js';
 import { FormStateContext } from './FormStateContext.js';
 import { Field } from './Field.js';
 import { FieldSet } from './FieldSet.js';
 import { useForm } from '../hooks/useForm.js';
-import { createDefaultContainer, createFormContainer, resolveRegistries } from '../registry/container.js';
+import {
+  createDefaultContainer,
+  createFormContainer,
+  resolveRegistries,
+} from '../registry/container.js';
 import { cn } from '../ui/utils.js';
 
 export interface FormProps {
@@ -104,7 +116,15 @@ interface FormInnerProps {
   onChange?: (values: Record<string, unknown>) => void;
 }
 
-function FormInner({ schema, onSubmit, initialValues, className, children, nested, onChange }: FormInnerProps) {
+function FormInner({
+  schema,
+  onSubmit,
+  initialValues,
+  className,
+  children,
+  nested,
+  onChange,
+}: FormInnerProps) {
   const formState = useForm(schema, initialValues);
   const handler = formState.handleSubmit(onSubmit ?? (() => {}));
 
@@ -113,9 +133,7 @@ function FormInner({ schema, onSubmit, initialValues, className, children, neste
   }, [formState.values, onChange]);
 
   // Determine field rendering order
-  const fieldsetFieldNames = new Set(
-    (schema.fieldsets ?? []).flatMap((fs) => fs.fields),
-  );
+  const fieldsetFieldNames = new Set((schema.fieldsets ?? []).flatMap((fs) => fs.fields));
   const ungroupedFields = Object.keys(schema.schema).filter(
     (name) => !fieldsetFieldNames.has(name),
   );
@@ -139,4 +157,3 @@ function FormInner({ schema, onSubmit, initialValues, className, children, neste
     </FormStateContext.Provider>
   );
 }
-

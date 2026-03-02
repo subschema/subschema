@@ -1,7 +1,12 @@
 import type { ValidatorFn, ValidatorConfig } from '../types.js';
 
 export const requiredValidator: ValidatorFn = (value: unknown, config: ValidatorConfig) => {
-  if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+  if (
+    value === undefined ||
+    value === null ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0)
+  ) {
     return config.message ?? 'This field is required';
   }
   return undefined;
@@ -60,4 +65,3 @@ export const defaultValidators = {
   minValue: minValueValidator,
   maxValue: maxValueValidator,
 };
-

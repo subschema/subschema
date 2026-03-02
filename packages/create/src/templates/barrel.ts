@@ -6,4 +6,3 @@ export function generateBarrel(data: TemplateData): string {
   }
   return `export { ${data.fullName} } from './${data.fullName}.js';\nexport type { ${data.name}Config } from './types.js';\n`;
 }
-

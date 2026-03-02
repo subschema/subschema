@@ -18,4 +18,3 @@ export const templates = createBlob<TemplateRegistry>();
  * Maps validator names (e.g. "required", "minLength") to validator functions.
  */
 export const validators = createBlob<ValidatorRegistry>();
-

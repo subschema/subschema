@@ -15,18 +15,25 @@ interface FormStateRef {
  * Hook for individual field state.
  * Provides value, error, touched, onChange, and onBlur for a named field.
  */
-export function useField(name: string, _fieldSchema: FieldSchema, formState: FormStateRef): UseFieldReturn {
+export function useField(
+  name: string,
+  _fieldSchema: FieldSchema,
+  formState: FormStateRef,
+): UseFieldReturn {
   const value = formState.values[name] ?? '';
   const error = formState.errors[name];
   const touched = formState.touched[name] ?? false;
 
-  const onChange = useCallback((newValue: unknown) => {
-    formState.setValue(name, newValue);
-    // Clear error on change
-    if (formState.errors[name]) {
-      formState.setError(name, '');
-    }
-  }, [name, formState]);
+  const onChange = useCallback(
+    (newValue: unknown) => {
+      formState.setValue(name, newValue);
+      // Clear error on change
+      if (formState.errors[name]) {
+        formState.setError(name, '');
+      }
+    },
+    [name, formState],
+  );
 
   const onBlur = useCallback(() => {
     formState.setTouched(name);
@@ -41,4 +48,3 @@ export function useField(name: string, _fieldSchema: FieldSchema, formState: For
 
   return { value, error: error || undefined, touched, onChange, onBlur };
 }
-

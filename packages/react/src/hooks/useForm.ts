@@ -2,7 +2,10 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import type { FormSchema, FormState, UseFormReturn, ValidatorConfig } from '../types.js';
 import { useFormContainer } from './useFormContainer.js';
 
-function getInitialValues(schema: FormSchema, provided?: Record<string, unknown>): Record<string, unknown> {
+function getInitialValues(
+  schema: FormSchema,
+  provided?: Record<string, unknown>,
+): Record<string, unknown> {
   const values: Record<string, unknown> = {};
   for (const [name, field] of Object.entries(schema.schema)) {
     if (provided && name in provided) {
@@ -26,7 +29,10 @@ function getInitialValues(schema: FormSchema, provided?: Record<string, unknown>
  * Form state management hook.
  * Manages values, errors, touched state, validation, and submission.
  */
-export function useForm(schema: FormSchema, initialValues?: Record<string, unknown>): UseFormReturn {
+export function useForm(
+  schema: FormSchema,
+  initialValues?: Record<string, unknown>,
+): UseFormReturn {
   const { validators: validatorRegistry } = useFormContainer();
 
   const [state, setState] = useState<FormState>(() => ({
@@ -39,39 +45,42 @@ export function useForm(schema: FormSchema, initialValues?: Record<string, unkno
   schemaRef.current = schema;
 
   const setValue = useCallback((name: string, value: unknown) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       values: { ...prev.values, [name]: value },
     }));
   }, []);
 
   const setError = useCallback((name: string, error: string) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       errors: { ...prev.errors, [name]: error },
     }));
   }, []);
 
   const setTouched = useCallback((name: string) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       touched: { ...prev.touched, [name]: true },
     }));
   }, []);
 
-  const validateField = useCallback((name: string, value: unknown): string | undefined => {
-    const fieldSchema = schemaRef.current.schema[name];
-    if (!fieldSchema?.validators) return undefined;
+  const validateField = useCallback(
+    (name: string, value: unknown): string | undefined => {
+      const fieldSchema = schemaRef.current.schema[name];
+      if (!fieldSchema?.validators) return undefined;
 
-    for (const validatorConfig of fieldSchema.validators) {
-      const validatorFn = validatorRegistry[validatorConfig.type];
-      if (validatorFn) {
-        const error = validatorFn(value, validatorConfig);
-        if (error) return error;
+      for (const validatorConfig of fieldSchema.validators) {
+        const validatorFn = validatorRegistry[validatorConfig.type];
+        if (validatorFn) {
+          const error = validatorFn(value, validatorConfig);
+          if (error) return error;
+        }
       }
-    }
-    return undefined;
-  }, [validatorRegistry]);
+      return undefined;
+    },
+    [validatorRegistry],
+  );
 
   const validate = useCallback((): Record<string, string> => {
     const errors: Record<string, string> = {};
@@ -80,17 +89,20 @@ export function useForm(schema: FormSchema, initialValues?: Record<string, unkno
       const error = validateField(name, state.values[name]);
       if (error) errors[name] = error;
     }
-    setState(prev => ({ ...prev, errors }));
+    setState((prev) => ({ ...prev, errors }));
     return errors;
   }, [state.values, validateField]);
 
-  const reset = useCallback((values?: Record<string, unknown>) => {
-    setState({
-      values: values ?? getInitialValues(schemaRef.current, initialValues),
-      errors: {},
-      touched: {},
-    });
-  }, [initialValues]);
+  const reset = useCallback(
+    (values?: Record<string, unknown>) => {
+      setState({
+        values: values ?? getInitialValues(schemaRef.current, initialValues),
+        errors: {},
+        touched: {},
+      });
+    },
+    [initialValues],
+  );
 
   const handleSubmit = useCallback(
     (onSubmit: (values: Record<string, unknown>) => void) => {
@@ -119,4 +131,3 @@ export function useForm(schema: FormSchema, initialValues?: Record<string, unkno
     validateField,
   };
 }
-

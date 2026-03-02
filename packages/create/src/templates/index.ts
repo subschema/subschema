@@ -62,4 +62,3 @@ export function generateFiles(data: TemplateData): GeneratedFile[] {
 
   return files;
 }
-

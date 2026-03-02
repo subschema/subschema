@@ -2,7 +2,14 @@ import React from 'react';
 import type { FieldComponentProps } from '../types.js';
 import { Textarea } from '../ui/Textarea.js';
 
-export function TextAreaField({ name, value, onChange, onBlur, placeholder, disabled }: FieldComponentProps) {
+export function TextAreaField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
   return (
     <Textarea
       id={name}
@@ -15,4 +22,3 @@ export function TextAreaField({ name, value, onChange, onBlur, placeholder, disa
     />
   );
 }
-

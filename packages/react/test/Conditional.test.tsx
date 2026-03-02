@@ -65,4 +65,3 @@ describe('Conditional field show/hide', () => {
     expect(screen.queryByPlaceholderText('Enter email')).not.toBeInTheDocument();
   });
 });
-

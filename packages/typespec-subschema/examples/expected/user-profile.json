@@ -13,9 +13,7 @@
       "type": "Text",
       "title": "Email",
       "placeholder": "you@example.com",
-      "validators": [
-        { "type": "required", "message": "Email is required" }
-      ]
+      "validators": [{ "type": "required", "message": "Email is required" }]
     },
     "address": {
       "type": "Object",
@@ -60,4 +58,3 @@
     }
   }
 }
-

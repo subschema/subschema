@@ -45,28 +45,45 @@ export function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       {/* Header */}
-      <header className="border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between shrink-0">
+      <header className="flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-800">
         <div className="flex items-center gap-3">
           <button
-            className="md:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="rounded p-1 hover:bg-gray-100 md:hidden dark:hover:bg-gray-800"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
           </button>
           <h1 className="text-lg font-bold">Subschema Modern Demo</h1>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setDark(!dark)}
-            className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            className="rounded-md p-2 transition hover:bg-gray-100 dark:hover:bg-gray-800"
             title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {dark ? '☀️' : '🌙'}
           </button>
-          <a href="https://github.com/subschema/subschema" target="_blank" rel="noopener noreferrer"
-            className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm">
+          <a
+            href="https://github.com/subschema/subschema"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md p-2 text-sm transition hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             GitHub
           </a>
         </div>
@@ -75,28 +92,35 @@ export function App() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar overlay on mobile */}
         {sidebarOpen && (
-          <div className="fixed inset-0 bg-black/40 z-30 md:hidden" onClick={() => setSidebarOpen(false)} />
+          <div
+            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
         )}
 
         {/* Sidebar */}
-        <nav className={cn(
-          'w-64 border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-y-auto shrink-0 z-40',
-          'fixed md:static inset-y-0 left-0 transform transition-transform md:translate-x-0',
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          'top-0 md:top-auto pt-14 md:pt-0'
-        )}>
+        <nav
+          className={cn(
+            'z-40 w-64 shrink-0 overflow-y-auto border-r border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900',
+            'fixed inset-y-0 left-0 transform transition-transform md:static md:translate-x-0',
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full',
+            'top-0 pt-14 md:top-auto md:pt-0',
+          )}
+        >
           <div className="p-3">
-            <h2 className="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-2 px-2">Examples</h2>
+            <h2 className="mb-2 px-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+              Examples
+            </h2>
             <ul className="space-y-0.5">
               {examples.map((ex) => (
                 <li key={ex.id}>
                   <button
                     onClick={() => navigate(ex.id)}
                     className={cn(
-                      'w-full text-left px-3 py-2 rounded-md text-sm transition',
+                      'w-full rounded-md px-3 py-2 text-left text-sm transition',
                       currentId === ex.id
-                        ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-200 font-medium'
-                        : 'hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                        ? 'bg-blue-100 font-medium text-blue-900 dark:bg-blue-900/40 dark:text-blue-200'
+                        : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800',
                     )}
                   >
                     {ex.title}
@@ -123,4 +147,3 @@ export function App() {
     </div>
   );
 }
-

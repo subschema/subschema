@@ -1,12 +1,12 @@
-import type { DecoratorContext, Model, ModelProperty, Program, Type } from "@typespec/compiler";
-import { setTypeSpecNamespace } from "@typespec/compiler";
-import { StateKeys, reportDiagnostic } from "./lib.js";
+import type { DecoratorContext, Model, ModelProperty, Program, Type } from '@typespec/compiler';
+import { setTypeSpecNamespace } from '@typespec/compiler';
+import { StateKeys, reportDiagnostic } from './lib.js';
 
 // ── @field(type: string) ──────────────────────────────────────────────
 export function $field(context: DecoratorContext, target: ModelProperty, fieldType: string) {
   if (!fieldType) {
     reportDiagnostic(context.program, {
-      code: "invalid-field-type",
+      code: 'invalid-field-type',
       target: context.getArgumentTarget(0)!,
     });
     return;
@@ -22,7 +22,7 @@ export function getFieldType(program: Program, target: Type): string | undefined
 export function $template(context: DecoratorContext, target: ModelProperty | Model, name: string) {
   if (!name) {
     reportDiagnostic(context.program, {
-      code: "invalid-template-name",
+      code: 'invalid-template-name',
       target: context.getArgumentTarget(0)!,
     });
     return;
@@ -36,7 +36,7 @@ export function getTemplate(program: Program, target: Type): string | undefined 
 
 // ── @fieldset(legend?: string) ───────────────────────────────────────
 export function $fieldset(context: DecoratorContext, target: Model, legend?: string) {
-  context.program.stateMap(StateKeys.fieldset).set(target, legend ?? "");
+  context.program.stateMap(StateKeys.fieldset).set(target, legend ?? '');
 }
 
 export function getFieldset(program: Program, target: Type): string | undefined {
@@ -61,7 +61,7 @@ export function $conditional(
 ) {
   if (!expression) {
     reportDiagnostic(context.program, {
-      code: "invalid-conditional",
+      code: 'invalid-conditional',
       target: context.getArgumentTarget(0)!,
     });
     return;
@@ -81,7 +81,7 @@ export function getConditional(program: Program, target: Type): ConditionalMetad
 export function $options(context: DecoratorContext, target: ModelProperty, ...values: string[]) {
   if (values.length === 0) {
     reportDiagnostic(context.program, {
-      code: "invalid-options",
+      code: 'invalid-options',
       target: context.getArgumentTarget(0)!,
     });
     return;
@@ -97,7 +97,7 @@ export function getOptions(program: Program, target: Type): string[] | undefined
 export function $placeholder(context: DecoratorContext, target: ModelProperty, text: string) {
   if (!text) {
     reportDiagnostic(context.program, {
-      code: "invalid-placeholder",
+      code: 'invalid-placeholder',
       target: context.getArgumentTarget(0)!,
     });
     return;
@@ -130,7 +130,14 @@ export function isFormConfig(program: Program, target: Type): boolean {
   return program.stateMap(StateKeys.formConfig).has(target);
 }
 
-
-
 // Bind all decorator implementations to the Subschema namespace
-setTypeSpecNamespace("Subschema", $field, $template, $fieldset, $conditional, $options, $placeholder, $formConfig);
+setTypeSpecNamespace(
+  'Subschema',
+  $field,
+  $template,
+  $fieldset,
+  $conditional,
+  $options,
+  $placeholder,
+  $formConfig,
+);

@@ -57,4 +57,3 @@ ${formatRegistration(data)}
 MIT
 `;
 }
-

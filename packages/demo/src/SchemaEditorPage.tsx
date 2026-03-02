@@ -37,35 +37,35 @@ export function SchemaEditorPage({ example }: { example: ExampleDef }) {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold">{example.title}</h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">{example.description}</p>
+        <p className="mt-1 text-gray-600 dark:text-gray-400">{example.description}</p>
       </div>
 
       {/* Hero: Editor + Live Form side by side */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-start">
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_auto_1fr]">
         {/* Edit Schema */}
         <StepPanel step={1} title="Edit Schema" subtitle="Modify JSON directly" color="blue">
           <textarea
             value={schemaText}
             onChange={(e) => handleSchemaChange(e.target.value)}
             className={cn(
-              'w-full h-80 font-mono text-sm p-4 rounded-lg border resize-none',
+              'h-80 w-full resize-none rounded-lg border p-4 font-mono text-sm',
               'bg-gray-50 dark:bg-gray-900',
               parseError
                 ? 'border-red-400 dark:border-red-600'
-                : 'border-gray-200 dark:border-gray-800'
+                : 'border-gray-200 dark:border-gray-800',
             )}
             spellCheck={false}
           />
-          {parseError && (
-            <p className="text-sm text-red-500 mt-1">Parse error: {parseError}</p>
-          )}
+          {parseError && <p className="mt-1 text-sm text-red-500">Parse error: {parseError}</p>}
         </StepPanel>
 
-        <div className="hidden lg:flex items-center justify-center text-gray-400 text-2xl pt-12">→</div>
-        <div className="lg:hidden flex justify-center text-gray-400 text-xl">↓</div>
+        <div className="hidden items-center justify-center pt-12 text-2xl text-gray-400 lg:flex">
+          →
+        </div>
+        <div className="flex justify-center text-xl text-gray-400 lg:hidden">↓</div>
 
         {/* Live Form */}
-        <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-950 shadow-sm p-6 min-h-80">
+        <div className="min-h-80 rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-950">
           {!parseError && (
             <Form key={formKey} schema={parsedSchema} onSubmit={handleSubmit} onChange={setValues}>
               <div className="pt-4">
@@ -74,9 +74,13 @@ export function SchemaEditorPage({ example }: { example: ExampleDef }) {
             </Form>
           )}
           {submitted && (
-            <div className="mt-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3">
-              <p className="font-medium text-green-800 dark:text-green-200 mb-1 text-sm">✅ Form submitted!</p>
-              <pre className="text-xs overflow-auto text-green-700 dark:text-green-300">{JSON.stringify(submitted, null, 2)}</pre>
+            <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-900/30">
+              <p className="mb-1 text-sm font-medium text-green-800 dark:text-green-200">
+                ✅ Form submitted!
+              </p>
+              <pre className="overflow-auto text-xs text-green-700 dark:text-green-300">
+                {JSON.stringify(submitted, null, 2)}
+              </pre>
             </div>
           )}
         </div>
@@ -84,14 +88,16 @@ export function SchemaEditorPage({ example }: { example: ExampleDef }) {
 
       {/* Under the Hood */}
       <div>
-        <div className="flex items-center gap-3 mb-4">
+        <div className="mb-4 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-          <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Under the Hood</span>
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Under the Hood
+          </span>
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
         </div>
 
         <StepPanel step={2} title="Form Values" subtitle="Live state as you type" color="emerald">
-          <pre className="text-sm overflow-auto max-h-80 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">
+          <pre className="max-h-80 overflow-auto rounded bg-gray-50 p-4 text-sm text-gray-800 dark:bg-gray-900 dark:text-gray-200">
             {JSON.stringify(values, null, 2)}
           </pre>
         </StepPanel>
@@ -99,4 +105,3 @@ export function SchemaEditorPage({ example }: { example: ExampleDef }) {
     </div>
   );
 }
-

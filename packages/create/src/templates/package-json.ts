@@ -38,4 +38,3 @@ export function generatePackageJson(data: TemplateData): string {
   };
   return JSON.stringify(pkg, null, 2) + '\n';
 }
-

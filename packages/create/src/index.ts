@@ -25,4 +25,3 @@ export async function createComponentSkeleton(options: CreateOptions): Promise<v
     await writeFile(fullPath, file.content, 'utf-8');
   }
 }
-

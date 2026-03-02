@@ -4,7 +4,14 @@ import type { FieldComponentProps } from '../types.js';
 import { Label } from '../ui/Label.js';
 import { cn } from '../ui/utils.js';
 
-export function RadioField({ name, value, onChange, onBlur, options, disabled }: FieldComponentProps) {
+export function RadioField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  options,
+  disabled,
+}: FieldComponentProps) {
   return (
     <RadioGroupPrimitive.Root
       value={String(value ?? '')}
@@ -19,7 +26,7 @@ export function RadioField({ name, value, onChange, onBlur, options, disabled }:
             value={opt.value}
             onBlur={onBlur}
             className={cn(
-              'aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+              'border-primary text-primary ring-offset-background focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
             )}
           >
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
@@ -32,4 +39,3 @@ export function RadioField({ name, value, onChange, onBlur, options, disabled }:
     </RadioGroupPrimitive.Root>
   );
 }
-

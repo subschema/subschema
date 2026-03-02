@@ -14,9 +14,7 @@ export interface FieldSetProps {
 export function FieldSet({ config, schema }: FieldSetProps) {
   return (
     <fieldset className={cn('space-y-4 rounded-lg border p-4')}>
-      {config.legend && (
-        <legend className="px-2 text-lg font-semibold">{config.legend}</legend>
-      )}
+      {config.legend && <legend className="px-2 text-lg font-semibold">{config.legend}</legend>}
       {config.fields.map((fieldName) => {
         const fieldSchema = schema[fieldName];
         if (!fieldSchema) return null;
@@ -25,4 +23,3 @@ export function FieldSet({ config, schema }: FieldSetProps) {
     </fieldset>
   );
 }
-

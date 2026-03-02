@@ -9,7 +9,14 @@ import { cn } from '../ui/utils.js';
  * Uses Radix Popover for the dropdown calendar feel.
  * For a full calendar, integrate react-day-picker; this is a functional baseline.
  */
-export function DateField({ name, value, onChange, onBlur, placeholder, disabled }: FieldComponentProps) {
+export function DateField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
   const [open, setOpen] = useState(false);
   const dateStr = value ? String(value) : '';
 
@@ -32,7 +39,7 @@ export function DateField({ name, value, onChange, onBlur, placeholder, disabled
       </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
-          className="z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md"
+          className="bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-md"
           align="start"
         >
           <input
@@ -49,4 +56,3 @@ export function DateField({ name, value, onChange, onBlur, placeholder, disabled
     </PopoverPrimitive.Root>
   );
 }
-

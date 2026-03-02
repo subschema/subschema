@@ -20,4 +20,3 @@ export function generateTsconfig(): string {
   };
   return JSON.stringify(config, null, 2) + '\n';
 }
-

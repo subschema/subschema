@@ -85,7 +85,13 @@ describe('Form rendering from schema', () => {
 describe('Form submission', () => {
   it('calls onSubmit with values', () => {
     const onSubmit = vi.fn();
-    render(<Form schema={simpleSchema} values={{ name: 'Bob', email: 'bob@test.com' }} onSubmit={onSubmit} />);
+    render(
+      <Form
+        schema={simpleSchema}
+        values={{ name: 'Bob', email: 'bob@test.com' }}
+        onSubmit={onSubmit}
+      />,
+    );
 
     const form = document.querySelector('form')!;
     fireEvent.submit(form);
@@ -160,4 +166,3 @@ describe('Validation on blur and submit', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('At least 3 chars');
   });
 });
-

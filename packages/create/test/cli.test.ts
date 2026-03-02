@@ -29,10 +29,14 @@ describe('CLI parseArgs', () => {
 
   it('should parse all flags together', () => {
     const args = parseArgs([
-      '--name', 'Rating',
-      '--kind', 'field',
-      '--props', 'max:number=5,color:string',
-      '-o', './output',
+      '--name',
+      'Rating',
+      '--kind',
+      'field',
+      '--props',
+      'max:number=5,color:string',
+      '-o',
+      './output',
     ]);
     expect(args.name).toBe('Rating');
     expect(args.kind).toBe('field');
@@ -46,4 +50,3 @@ describe('CLI parseArgs', () => {
     expect(args.kind).toBeUndefined();
   });
 });
-

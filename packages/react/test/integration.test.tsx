@@ -53,7 +53,12 @@ describe('Integration: Contact Form', () => {
     render(
       <Form
         schema={schema}
-        values={{ name: 'Alice', email: 'alice@test.com', subject: 'General Inquiry', message: 'Hello' }}
+        values={{
+          name: 'Alice',
+          email: 'alice@test.com',
+          subject: 'General Inquiry',
+          message: 'Hello',
+        }}
         onSubmit={onSubmit}
       />,
     );
@@ -189,7 +194,9 @@ describe('Integration: Conditional Form', () => {
 describe('Integration: Custom type registration (Option B)', () => {
   it('renders a custom field type passed via types prop', () => {
     const StarRating = ({ name, value, onChange }: FieldComponentProps) => (
-      <div data-testid="star-rating">Stars: {value === undefined || value === '' ? 'none' : String(value)}</div>
+      <div data-testid="star-rating">
+        Stars: {value === undefined || value === '' ? 'none' : String(value)}
+      </div>
     );
 
     const schema: FormSchema = {
@@ -252,9 +259,7 @@ describe('Integration: Preset composition (Option C)', () => {
     const ProviderText = ({ name }: FieldComponentProps) => (
       <div data-testid="provider-text">provider</div>
     );
-    const FormText = ({ name }: FieldComponentProps) => (
-      <div data-testid="form-text">form</div>
-    );
+    const FormText = ({ name }: FieldComponentProps) => <div data-testid="form-text">form</div>;
 
     const container = createDefaultContainer();
     const child = createFormContainer(container, { types: { Text: ProviderText } });

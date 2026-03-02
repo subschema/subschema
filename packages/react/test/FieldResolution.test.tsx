@@ -13,12 +13,8 @@ describe('Field resolution errors with "did you mean?" suggestions', () => {
     // Suppress React error boundary noise
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    expect(() => render(<Form schema={schema} />)).toThrow(
-      /Field type "Textt" not found/,
-    );
-    expect(() => render(<Form schema={schema} />)).toThrow(
-      /Did you mean: "Text"\?/,
-    );
+    expect(() => render(<Form schema={schema} />)).toThrow(/Field type "Textt" not found/);
+    expect(() => render(<Form schema={schema} />)).toThrow(/Did you mean: "Text"\?/);
 
     spy.mockRestore();
   });
@@ -30,11 +26,8 @@ describe('Field resolution errors with "did you mean?" suggestions', () => {
 
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    expect(() => render(<Form schema={schema} />)).toThrow(
-      /Available: .*Text.*Select.*Checkbox/,
-    );
+    expect(() => render(<Form schema={schema} />)).toThrow(/Available: .*Text.*Select.*Checkbox/);
 
     spy.mockRestore();
   });
 });
-

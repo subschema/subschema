@@ -17,14 +17,12 @@ export function toKebabCase(s: string): string {
 export function resolveTemplateData(options: CreateOptions): TemplateData {
   const suffix = KIND_SUFFIX[options.kind];
   const fullName = `${options.name}${suffix}`;
-  const props: PropDef[] = Object.entries(options.props ?? {}).map(
-    ([name, def]) => ({
-      name,
-      type: def.type,
-      default: def.default,
-      hasDefault: def.default !== undefined,
-    }),
-  );
+  const props: PropDef[] = Object.entries(options.props ?? {}).map(([name, def]) => ({
+    name,
+    type: def.type,
+    default: def.default,
+    hasDefault: def.default !== undefined,
+  }));
 
   return {
     name: options.name,
@@ -78,4 +76,3 @@ function parseDefaultValue(raw: string): unknown {
   if (!isNaN(num) && raw.trim() !== '') return num;
   return raw;
 }
-

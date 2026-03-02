@@ -18,15 +18,15 @@ function RatingField({ value, onChange, title, error }: FieldComponentProps) {
             onClick={() => onChange(star)}
             className={cn(
               'text-2xl transition-colors',
-              star <= rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'
+              star <= rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600',
             )}
           >
             ★
           </button>
         ))}
       </div>
-      {rating > 0 && <span className="text-sm text-gray-500 ml-1">{rating}/5</span>}
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+      {rating > 0 && <span className="ml-1 text-sm text-gray-500">{rating}/5</span>}
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 }
@@ -51,71 +51,97 @@ export function CustomTypePage({ example }: { example: ExampleDef }) {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold">{example.title}</h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">{example.description}</p>
-        <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-          The <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">Rating</code> field is a custom component passed via{' '}
-          <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{'<Form types={{ Rating: RatingField }}>'}</code>
+        <p className="mt-1 text-gray-600 dark:text-gray-400">{example.description}</p>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">
+          The <code className="rounded bg-gray-100 px-1 dark:bg-gray-800">Rating</code> field is a
+          custom component passed via{' '}
+          <code className="rounded bg-gray-100 px-1 dark:bg-gray-800">
+            {'<Form types={{ Rating: RatingField }}>'}
+          </code>
         </p>
       </div>
 
       {/* Hero: Live Form */}
-      <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-950 shadow-sm p-6">
-        <Form schema={example.schema} types={{ Rating: RatingField }} onSubmit={handleSubmit} onChange={setValues}>
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-950">
+        <Form
+          schema={example.schema}
+          types={{ Rating: RatingField }}
+          onSubmit={handleSubmit}
+          onChange={setValues}
+        >
           <div className="pt-4">
             <Button type="submit">Submit</Button>
           </div>
         </Form>
         {submitted && (
-          <div className="mt-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-3">
-            <p className="font-medium text-green-800 dark:text-green-200 mb-1 text-sm">✅ Form submitted!</p>
-            <pre className="text-xs overflow-auto text-green-700 dark:text-green-300">{JSON.stringify(submitted, null, 2)}</pre>
+          <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-900/30">
+            <p className="mb-1 text-sm font-medium text-green-800 dark:text-green-200">
+              ✅ Form submitted!
+            </p>
+            <pre className="overflow-auto text-xs text-green-700 dark:text-green-300">
+              {JSON.stringify(submitted, null, 2)}
+            </pre>
           </div>
         )}
       </div>
 
       {/* Under the Hood */}
       <div>
-        <div className="flex items-center gap-3 mb-4">
+        <div className="mb-4 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-          <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Under the Hood</span>
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Under the Hood
+          </span>
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-4 items-start">
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr]">
           {/* Step 1: TypeSpec */}
           <StepPanel step={1} title="TypeSpec" subtitle=".tsp source" color="blue">
             {example.typespec ? (
-              <pre className="text-sm overflow-auto max-h-80 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">
+              <pre className="max-h-80 overflow-auto rounded bg-gray-50 p-4 text-sm text-gray-800 dark:bg-gray-900 dark:text-gray-200">
                 {example.typespec}
               </pre>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500 italic py-4">No TypeSpec source</p>
+              <p className="py-4 text-sm text-gray-400 italic dark:text-gray-500">
+                No TypeSpec source
+              </p>
             )}
           </StepPanel>
 
-          <div className="hidden lg:flex items-center justify-center text-gray-400 text-2xl pt-12">→</div>
-          <div className="lg:hidden flex justify-center text-gray-400 text-xl">↓</div>
+          <div className="hidden items-center justify-center pt-12 text-2xl text-gray-400 lg:flex">
+            →
+          </div>
+          <div className="flex justify-center text-xl text-gray-400 lg:hidden">↓</div>
 
           {/* Step 2: JSON Schema */}
           <StepPanel step={2} title="JSON Schema" subtitle="Compiled output" color="indigo">
             <div className="relative">
-              <button onClick={copySchema} className="absolute top-2 right-2 text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+              <button
+                onClick={copySchema}
+                className="absolute top-2 right-2 rounded bg-gray-100 px-2 py-1 text-xs transition hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+              >
                 {copied ? '✓ Copied' : 'Copy'}
               </button>
-              <pre className="text-sm overflow-auto max-h-80 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">{JSON.stringify(example.schema, null, 2)}</pre>
+              <pre className="max-h-80 overflow-auto rounded bg-gray-50 p-4 text-sm text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                {JSON.stringify(example.schema, null, 2)}
+              </pre>
             </div>
           </StepPanel>
 
-          <div className="hidden lg:flex items-center justify-center text-gray-400 text-2xl pt-12">→</div>
-          <div className="lg:hidden flex justify-center text-gray-400 text-xl">↓</div>
+          <div className="hidden items-center justify-center pt-12 text-2xl text-gray-400 lg:flex">
+            →
+          </div>
+          <div className="flex justify-center text-xl text-gray-400 lg:hidden">↓</div>
 
           {/* Step 3: Form Values */}
           <StepPanel step={3} title="Form Values" subtitle="Live state as you type" color="emerald">
-            <pre className="text-sm overflow-auto max-h-80 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900 p-4 rounded">{JSON.stringify(values, null, 2)}</pre>
+            <pre className="max-h-80 overflow-auto rounded bg-gray-50 p-4 text-sm text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+              {JSON.stringify(values, null, 2)}
+            </pre>
           </StepPanel>
         </div>
       </div>
     </div>
   );
 }
-

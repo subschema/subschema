@@ -17,7 +17,7 @@ export function ListField({ name, fieldSchema }: FieldComponentProps) {
       {fields.map((item, index) => (
         <div key={index} className="flex items-center gap-2">
           <input
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            className="border-input bg-background flex h-10 w-full rounded-md border px-3 py-2 text-sm"
             value={String(item ?? '')}
             onChange={(e) => {
               const newFields = [...fields];
@@ -25,25 +25,14 @@ export function ListField({ name, fieldSchema }: FieldComponentProps) {
               formState.setValue(name, newFields);
             }}
           />
-          <Button
-            type="button"
-            variant="destructive"
-            size="sm"
-            onClick={() => remove(index)}
-          >
+          <Button type="button" variant="destructive" size="sm" onClick={() => remove(index)}>
             Remove
           </Button>
         </div>
       ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() => push('')}
-      >
+      <Button type="button" variant="outline" size="sm" onClick={() => push('')}>
         Add Item
       </Button>
     </div>
   );
 }
-

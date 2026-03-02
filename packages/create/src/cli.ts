@@ -48,7 +48,9 @@ async function main(): Promise<void> {
 
   if (!args.name) {
     console.error('Error: --name is required');
-    console.error('Usage: create-subschema --name Rating --kind field [--props "max:number=5"] [-o ./output]');
+    console.error(
+      'Usage: create-subschema --name Rating --kind field [--props "max:number=5"] [-o ./output]',
+    );
     process.exit(1);
   }
 
@@ -59,9 +61,7 @@ async function main(): Promise<void> {
   }
 
   const props = args.props ? parsePropsString(args.props) : undefined;
-  const outputDir = resolve(
-    args.outputDir ?? `./${toKebabCase(args.name)}-${kind}`,
-  );
+  const outputDir = resolve(args.outputDir ?? `./${toKebabCase(args.name)}-${kind}`);
 
   console.log(`Creating ${kind} component: ${args.name}`);
   console.log(`Output: ${outputDir}`);
@@ -87,4 +87,3 @@ if (isDirectRun) {
     process.exit(1);
   });
 }
-

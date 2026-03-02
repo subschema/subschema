@@ -11,9 +11,8 @@ export function useTemplate(templateName?: string): TemplateComponent {
   const component = templates[name];
   if (!component) {
     throw new Error(
-      `Template "${name}" not found. Available: ${Object.keys(templates).join(', ')}`
+      `Template "${name}" not found. Available: ${Object.keys(templates).join(', ')}`,
     );
   }
   return component;
 }
-

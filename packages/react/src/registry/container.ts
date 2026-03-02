@@ -2,7 +2,11 @@ import { createContainer } from '@speajus/diblob';
 import type { Container } from '@speajus/diblob';
 import type { FieldTypeRegistry, TemplateRegistry, ValidatorRegistry } from '../types.js';
 import { fieldTypes, templates, validators } from './blobs.js';
-import { createDefaultFieldTypes, createDefaultTemplates, createDefaultValidators } from './defaults.js';
+import {
+  createDefaultFieldTypes,
+  createDefaultTemplates,
+  createDefaultValidators,
+} from './defaults.js';
 
 /**
  * Creates a default diblob container with all built-in field types,
@@ -61,4 +65,3 @@ export function resolveRegistries(container: Container) {
     validators: container.resolve(validators) as ValidatorRegistry,
   };
 }
-

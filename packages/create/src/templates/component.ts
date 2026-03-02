@@ -1,14 +1,21 @@
 import type { TemplateData } from '../types.js';
 
 export function generateFieldComponent(data: TemplateData): string {
-  const propsInterface = data.props.length > 0
-    ? data.props.map(p => `  ${p.name}?: ${p.type};`).join('\n')
-    : '  // Add custom props here';
+  const propsInterface =
+    data.props.length > 0
+      ? data.props.map((p) => `  ${p.name}?: ${p.type};`).join('\n')
+      : '  // Add custom props here';
 
-  const defaultProps = data.props.filter(p => p.hasDefault);
-  const defaults = defaultProps.length > 0
-    ? defaultProps.map(p => `  const ${p.name} = fieldSchema.${p.name} as ${p.type} ?? ${JSON.stringify(p.default)};`).join('\n')
-    : '';
+  const defaultProps = data.props.filter((p) => p.hasDefault);
+  const defaults =
+    defaultProps.length > 0
+      ? defaultProps
+          .map(
+            (p) =>
+              `  const ${p.name} = fieldSchema.${p.name} as ${p.type} ?? ${JSON.stringify(p.default)};`,
+          )
+          .join('\n')
+      : '';
 
   return `import type { FieldComponentProps } from '@subschema/react';
 
@@ -68,9 +75,10 @@ export const ${data.fullName} = ({
 }
 
 export function generateValidatorFunction(data: TemplateData): string {
-  const configProps = data.props.length > 0
-    ? data.props.map(p => `  // const ${p.name} = config.value as ${p.type};`).join('\n')
-    : '  // Access config.value for validator parameters';
+  const configProps =
+    data.props.length > 0
+      ? data.props.map((p) => `  // const ${p.name} = config.value as ${p.type};`).join('\n')
+      : '  // Access config.value for validator parameters';
 
   return `import type { ValidatorConfig } from '@subschema/react';
 
@@ -91,4 +99,3 @@ ${configProps}
 };
 `;
 }
-

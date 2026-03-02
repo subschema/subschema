@@ -4,12 +4,20 @@ import type { TemplateData } from '../types.js';
 export function formatPropsLine(data: TemplateData): string {
   if (data.kind === 'validator') {
     return data.props.length > 0
-      ? data.props.map(p => `${p.name} (${p.type}${p.hasDefault ? `, default: ${JSON.stringify(p.default)}` : ''})`).join(', ')
+      ? data.props
+          .map(
+            (p) =>
+              `${p.name} (${p.type}${p.hasDefault ? `, default: ${JSON.stringify(p.default)}` : ''})`,
+          )
+          .join(', ')
       : 'value (unknown)';
   }
   const allProps = [
     'value (unknown)',
-    ...data.props.map(p => `${p.name} (${p.type}${p.hasDefault ? `, default: ${JSON.stringify(p.default)}` : ''})`),
+    ...data.props.map(
+      (p) =>
+        `${p.name} (${p.type}${p.hasDefault ? `, default: ${JSON.stringify(p.default)}` : ''})`,
+    ),
   ];
   return allProps.join(', ');
 }
@@ -23,10 +31,11 @@ export function formatSchemaExample(data: TemplateData): string {
 }
 
 export function formatTypeSpecExample(data: TemplateData): string {
-  const decorators = data.props.filter(p => p.hasDefault);
-  const decoStr = decorators.length > 0
-    ? ` @${data.nameCamel}(${decorators.map(p => JSON.stringify(p.default)).join(', ')})`
-    : '';
+  const decorators = data.props.filter((p) => p.hasDefault);
+  const decoStr =
+    decorators.length > 0
+      ? ` @${data.nameCamel}(${decorators.map((p) => JSON.stringify(p.default)).join(', ')})`
+      : '';
   return `@field("${data.name}")${decoStr} ${data.nameCamel}: string;`;
 }
 
@@ -57,4 +66,3 @@ export function generateLlmsTxt(data: TemplateData): string {
   ];
   return lines.join('\n') + '\n';
 }
-

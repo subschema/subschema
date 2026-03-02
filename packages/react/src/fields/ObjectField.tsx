@@ -28,7 +28,10 @@ export function ObjectField({ name, value, onChange, fieldSchema }: FieldCompone
     return <div>ObjectField: missing subSchema for &quot;{name}&quot;</div>;
   }
 
-  const objectValue = (typeof value === 'object' && value !== null ? value : {}) as Record<string, unknown>;
+  const objectValue = (typeof value === 'object' && value !== null ? value : {}) as Record<
+    string,
+    unknown
+  >;
 
   const handleSubmit = (childValues: Record<string, unknown>) => {
     onChange(childValues);
@@ -60,4 +63,3 @@ export function ObjectField({ name, value, onChange, fieldSchema }: FieldCompone
     </Card>
   );
 }
-

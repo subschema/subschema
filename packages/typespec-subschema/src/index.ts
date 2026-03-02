@@ -1,6 +1,6 @@
-export { $lib } from "./lib.js";
-export { StateKeys } from "./lib.js";
-export { $onEmit } from "./emitter.js";
+export { $lib } from './lib.js';
+export { StateKeys } from './lib.js';
+export { $onEmit } from './emitter.js';
 
 export {
   $field,
@@ -19,7 +19,6 @@ export {
   $formConfig,
   getFormConfig,
   isFormConfig,
-} from "./decorators.js";
+} from './decorators.js';
 
-export type { ConditionalMetadata, FormConfigMetadata } from "./decorators.js";
-
+export type { ConditionalMetadata, FormConfigMetadata } from './decorators.js';

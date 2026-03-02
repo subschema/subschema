@@ -4,9 +4,7 @@
       "type": "Text",
       "title": "Name",
       "placeholder": "Enter your full name",
-      "validators": [
-        { "type": "required", "message": "Name is required" }
-      ]
+      "validators": [{ "type": "required", "message": "Name is required" }]
     },
     "email": {
       "type": "Text",
@@ -33,4 +31,3 @@
     }
   }
 }
-

@@ -3,7 +3,15 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import type { FieldComponentProps } from '../types.js';
 import { cn } from '../ui/utils.js';
 
-export function SelectField({ name, value, onChange, onBlur, options, placeholder, disabled }: FieldComponentProps) {
+export function SelectField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  options,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
   return (
     <SelectPrimitive.Root
       value={String(value ?? '')}
@@ -13,7 +21,7 @@ export function SelectField({ name, value, onChange, onBlur, options, placeholde
       <SelectPrimitive.Trigger
         id={name}
         className={cn(
-          'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
         )}
         onBlur={onBlur}
       >
@@ -23,7 +31,7 @@ export function SelectField({ name, value, onChange, onBlur, options, placeholde
       <SelectPrimitive.Portal>
         <SelectPrimitive.Content
           className={cn(
-            'relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md',
+            'bg-popover text-popover-foreground relative z-50 min-w-[8rem] overflow-hidden rounded-md border shadow-md',
           )}
         >
           <SelectPrimitive.Viewport className="p-1">
@@ -32,7 +40,7 @@ export function SelectField({ name, value, onChange, onBlur, options, placeholde
                 key={opt.value}
                 value={opt.value}
                 className={cn(
-                  'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground',
+                  'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none',
                 )}
               >
                 <SelectPrimitive.ItemText>{opt.label}</SelectPrimitive.ItemText>
@@ -44,4 +52,3 @@ export function SelectField({ name, value, onChange, onBlur, options, placeholde
     </SelectPrimitive.Root>
   );
 }
-

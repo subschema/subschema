@@ -38,9 +38,6 @@ export function FormProvider({ container, children }: FormProviderProps) {
   }, [container]);
 
   return (
-    <FormContainerContext.Provider value={contextValue}>
-      {children}
-    </FormContainerContext.Provider>
+    <FormContainerContext.Provider value={contextValue}>{children}</FormContainerContext.Provider>
   );
 }
-

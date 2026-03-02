@@ -54,4 +54,3 @@ describe('toCamelCase', () => {
     expect(toCamelCase('MyComponent')).toBe('myComponent');
   });
 });
-

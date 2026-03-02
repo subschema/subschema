@@ -112,7 +112,9 @@ export interface FormActions {
 }
 
 export interface UseFormReturn extends FormState, FormActions {
-  handleSubmit: (onSubmit: (values: Record<string, unknown>) => void) => (e?: React.FormEvent) => void;
+  handleSubmit: (
+    onSubmit: (values: Record<string, unknown>) => void,
+  ) => (e?: React.FormEvent) => void;
   isValid: boolean;
   validateField: (name: string, value: unknown) => string | undefined;
 }
@@ -142,4 +144,3 @@ export interface FormContextValue {
   validators: ValidatorRegistry;
   containerRef: unknown; // diblob Container
 }
-

@@ -1,9 +1,9 @@
-import { describe, it } from "node:test";
-import assert from "node:assert/strict";
-import { fileURLToPath } from "node:url";
-import { resolve, dirname } from "node:path";
-import type { Model, ModelProperty, Program } from "@typespec/compiler";
-import { createTestHost, createTestLibrary } from "@typespec/compiler/testing";
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
+import type { Model, ModelProperty, Program } from '@typespec/compiler';
+import { createTestHost, createTestLibrary } from '@typespec/compiler/testing';
 import {
   getFieldType,
   getTemplate,
@@ -14,26 +14,23 @@ import {
   getPlaceholder,
   getFormConfig,
   isFormConfig,
-} from "../src/decorators.js";
+} from '../src/decorators.js';
 
 // Resolve package root (works from both src/ and dist/test/)
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const pkgRoot = resolve(__dirname, "..", "..");
+const pkgRoot = resolve(__dirname, '..', '..');
 
 const SubschemaTestLibrary = createTestLibrary({
-  name: "@subschema/typespec",
+  name: '@subschema/typespec',
   packageRoot: pkgRoot,
-  jsFileFolder: "dist/src",
-  typespecFileFolder: "lib",
+  jsFileFolder: 'dist/src',
+  typespecFileFolder: 'lib',
 });
 
 async function compileWithSubschema(code: string) {
   const host = await createTestHost({ libraries: [SubschemaTestLibrary] });
-  host.addTypeSpecFile(
-    "main.tsp",
-    `import "@subschema/typespec";\nusing Subschema;\n${code}`,
-  );
-  await host.compile("main.tsp");
+  host.addTypeSpecFile('main.tsp', `import "@subschema/typespec";\nusing Subschema;\n${code}`);
+  await host.compile('main.tsp');
   return host.program;
 }
 
@@ -56,132 +53,131 @@ function getProp(model: Model, name: string): ModelProperty {
   return prop;
 }
 
-describe("@field decorator", () => {
-  it("stores field type on a property", async () => {
+describe('@field decorator', () => {
+  it('stores field type on a property', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @field("Text")
         name: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    assert.equal(getFieldType(program, getProp(model, "name")), "Text");
+    const model = findModel(program, 'TestForm');
+    assert.equal(getFieldType(program, getProp(model, 'name')), 'Text');
   });
 
-  it("supports Select field type", async () => {
+  it('supports Select field type', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @field("Select")
         country: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    assert.equal(getFieldType(program, getProp(model, "country")), "Select");
+    const model = findModel(program, 'TestForm');
+    assert.equal(getFieldType(program, getProp(model, 'country')), 'Select');
   });
 });
 
-describe("@template decorator", () => {
-  it("stores template name on a property", async () => {
+describe('@template decorator', () => {
+  it('stores template name on a property', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @template("FloatingLabel")
         email: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    assert.equal(getTemplate(program, getProp(model, "email")), "FloatingLabel");
+    const model = findModel(program, 'TestForm');
+    assert.equal(getTemplate(program, getProp(model, 'email')), 'FloatingLabel');
   });
 });
 
-describe("@fieldset decorator", () => {
-  it("marks model as fieldset with legend", async () => {
+describe('@fieldset decorator', () => {
+  it('marks model as fieldset with legend', async () => {
     const program = await compileWithSubschema(`
       @fieldset("Address Info")
       model Address {
         street: string;
       }
     `);
-    const model = findModel(program, "Address");
+    const model = findModel(program, 'Address');
     assert.equal(isFieldset(program, model), true);
-    assert.equal(getFieldset(program, model), "Address Info");
+    assert.equal(getFieldset(program, model), 'Address Info');
   });
 
-  it("marks model as fieldset without legend", async () => {
+  it('marks model as fieldset without legend', async () => {
     const program = await compileWithSubschema(`
       @fieldset
       model Address {
         street: string;
       }
     `);
-    const model = findModel(program, "Address");
+    const model = findModel(program, 'Address');
     assert.equal(isFieldset(program, model), true);
-    assert.equal(getFieldset(program, model), "");
+    assert.equal(getFieldset(program, model), '');
   });
 });
 
-describe("@conditional decorator", () => {
-  it("stores conditional metadata", async () => {
+describe('@conditional decorator', () => {
+  it('stores conditional metadata', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @conditional("status", "==")
         details: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    const cond = getConditional(program, getProp(model, "details"));
-    assert.deepEqual(cond, { expression: "status", operator: "==" });
+    const model = findModel(program, 'TestForm');
+    const cond = getConditional(program, getProp(model, 'details'));
+    assert.deepEqual(cond, { expression: 'status', operator: '==' });
   });
 });
 
-describe("@options decorator", () => {
-  it("stores option values", async () => {
+describe('@options decorator', () => {
+  it('stores option values', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @options("red", "green", "blue")
         color: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    assert.deepEqual(getOptions(program, getProp(model, "color")), ["red", "green", "blue"]);
+    const model = findModel(program, 'TestForm');
+    assert.deepEqual(getOptions(program, getProp(model, 'color')), ['red', 'green', 'blue']);
   });
 });
 
-describe("@placeholder decorator", () => {
-  it("stores placeholder text", async () => {
+describe('@placeholder decorator', () => {
+  it('stores placeholder text', async () => {
     const program = await compileWithSubschema(`
       model TestForm {
         @placeholder("Enter your name")
         name: string;
       }
     `);
-    const model = findModel(program, "TestForm");
-    assert.equal(getPlaceholder(program, getProp(model, "name")), "Enter your name");
+    const model = findModel(program, 'TestForm');
+    assert.equal(getPlaceholder(program, getProp(model, 'name')), 'Enter your name');
   });
 });
 
-describe("@formConfig decorator", () => {
-  it("marks model as form with template", async () => {
+describe('@formConfig decorator', () => {
+  it('marks model as form with template', async () => {
     const program = await compileWithSubschema(`
       @formConfig("WizardTemplate")
       model MyForm {
         name: string;
       }
     `);
-    const model = findModel(program, "MyForm");
+    const model = findModel(program, 'MyForm');
     assert.equal(isFormConfig(program, model), true);
-    assert.deepEqual(getFormConfig(program, model), { template: "WizardTemplate" });
+    assert.deepEqual(getFormConfig(program, model), { template: 'WizardTemplate' });
   });
 
-  it("marks model as form without template", async () => {
+  it('marks model as form without template', async () => {
     const program = await compileWithSubschema(`
       @formConfig
       model MyForm {
         name: string;
       }
     `);
-    const model = findModel(program, "MyForm");
+    const model = findModel(program, 'MyForm');
     assert.equal(isFormConfig(program, model), true);
     assert.deepEqual(getFormConfig(program, model), {});
   });
 });
-

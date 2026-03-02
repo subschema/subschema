@@ -11,9 +11,8 @@ export function useFormContainer(): FormContextValue {
   if (!ctx) {
     throw new Error(
       'useFormContainer must be used within a <FormProvider> or <Form>. ' +
-      'Wrap your form in <FormProvider container={container}> or use <Form schema={...}>.'
+        'Wrap your form in <FormProvider container={container}> or use <Form schema={...}>.',
     );
   }
   return ctx;
 }
-

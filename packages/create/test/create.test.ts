@@ -116,4 +116,3 @@ describe('createComponentSkeleton', () => {
     expect(barrel).toContain('minLengthValidator');
   });
 });
-

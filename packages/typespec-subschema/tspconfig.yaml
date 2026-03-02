@@ -1,3 +1,2 @@
 emit:
-  - "@subschema/typespec"
-
+  - '@subschema/typespec'

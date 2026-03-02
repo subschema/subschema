@@ -8,7 +8,15 @@ import { cn } from '../ui/utils.js';
  * Autocomplete field using Radix Popover for the dropdown.
  * Filters options based on text input.
  */
-export function AutocompleteField({ name, value, onChange, onBlur, options, placeholder, disabled }: FieldComponentProps) {
+export function AutocompleteField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  options,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(String(value ?? ''));
 
@@ -43,7 +51,7 @@ export function AutocompleteField({ name, value, onChange, onBlur, options, plac
       {open && filtered.length > 0 && (
         <PopoverPrimitive.Content
           className={cn(
-            'z-50 max-h-48 overflow-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md',
+            'bg-popover text-popover-foreground z-50 max-h-48 overflow-auto rounded-md border p-1 shadow-md',
           )}
           align="start"
           onOpenAutoFocus={(e) => e.preventDefault()}
@@ -53,7 +61,7 @@ export function AutocompleteField({ name, value, onChange, onBlur, options, plac
               key={opt.value}
               type="button"
               className={cn(
-                'w-full cursor-default rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground',
+                'hover:bg-accent hover:text-accent-foreground w-full cursor-default rounded-sm px-2 py-1.5 text-left text-sm',
                 value === opt.value && 'bg-accent',
               )}
               onMouseDown={(e) => {
@@ -71,4 +79,3 @@ export function AutocompleteField({ name, value, onChange, onBlur, options, plac
     </PopoverPrimitive.Root>
   );
 }
-
