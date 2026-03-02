@@ -29,6 +29,18 @@ model ContactForm {
   @field("TextArea") @placeholder("Tell us more...") message: string;
 }`;
 
+const loginTypespec = `import "@subschema/typespec";
+using Subschema;
+
+@formConfig
+model LoginForm {
+  @field("Text") @placeholder("you@example.com")
+  email: string;
+
+  @field("Password")
+  password: string;
+}`;
+
 // ── Login Form ──
 const loginSchema: FormSchema = {
   schema: {
@@ -36,6 +48,27 @@ const loginSchema: FormSchema = {
     password: { type: 'Password', title: 'Password', validators: [{ type: 'required', message: 'Password is required' }] },
   },
 };
+
+const signupTypespec = `import "@subschema/typespec";
+using Subschema;
+
+@formConfig
+model SignupForm {
+  @field("Text") @placeholder("Jane Doe")
+  name: string;
+
+  @field("Text") @placeholder("you@example.com")
+  email: string;
+
+  @field("Password")
+  password: string;
+
+  @field("Password")
+  confirmPassword: string;
+
+  @field("Checkbox")
+  terms: boolean;
+}`;
 
 // ── Signup Form ──
 const signupSchema: FormSchema = {
@@ -116,6 +149,49 @@ model Preferences {
 @formConfig
 model ConditionalForm { ...PersonalInfo; ...Preferences; }`;
 
+const fieldTypesTypespec = `import "@subschema/typespec";
+using Subschema;
+
+/** Showcase of every built-in field type. */
+@formConfig
+model AllFieldTypes {
+  // Basic text input
+  @field("Text") @placeholder("A text field") textField: string;
+
+  // Numeric input
+  @field("Number") @placeholder("42") numberField: int32;
+
+  // Masked password input
+  @field("Password") @placeholder("••••••••") passwordField: string;
+
+  // Multi-line text
+  @field("TextArea") @placeholder("A longer text...") textAreaField: string;
+
+  // Dropdown select
+  @field("Select") @options("Option A", "Option B", "Option C") selectField: string;
+
+  // Single boolean checkbox
+  @field("Checkbox") checkboxField: boolean;
+
+  // Multi-select checkboxes
+  @field("Checkboxes") @options("Red", "Green", "Blue") checkboxesField: string[];
+
+  // Radio button group
+  @field("Radio") @options("Small", "Medium", "Large") radioField: string;
+
+  // Date picker
+  @field("Date") dateField: string;
+
+  // Autocomplete / combobox
+  @field("Autocomplete") @options("Apple", "Banana", "Cherry", "Grape") autocompleteField: string;
+
+  // Hidden field (not rendered)
+  @field("Hidden") hiddenField: string;
+
+  // Repeatable list of items
+  @field("List") listField: string[];
+}`;
+
 // ── All Field Types ──
 const fieldTypesSchema: FormSchema = {
   schema: {
@@ -134,6 +210,20 @@ const fieldTypesSchema: FormSchema = {
   },
 };
 
+const validationTypespec = `import "@subschema/typespec";
+using Subschema;
+
+/** Showcase of all validator types. */
+@formConfig
+model ValidationShowcase {
+  @field("Text") required: string;
+  @field("Text") minLength: string;
+  @field("Text") maxLength: string;
+  @field("Text") @placeholder("you@example.com") pattern: string;
+  @field("Number") minValue: int32;
+  @field("Number") maxValue: int32;
+}`;
+
 // ── Validation Showcase ──
 const validationSchema: FormSchema = {
   schema: {
@@ -146,6 +236,22 @@ const validationSchema: FormSchema = {
   },
 };
 
+const customTypeTypespec = `import "@subschema/typespec";
+using Subschema;
+
+/** Custom star rating component registered via types prop. */
+@formConfig
+model MovieReview {
+  @field("Text") @placeholder("Enter movie name")
+  name: string;
+
+  @field("Rating")
+  rating: int32;
+
+  @field("TextArea") @placeholder("What did you think?")
+  review: string;
+}`;
+
 // ── Custom Type (Rating) ──
 const customTypeSchema: FormSchema = {
   schema: {
@@ -155,6 +261,22 @@ const customTypeSchema: FormSchema = {
   },
 };
 
+const presetTypespec = `import "@subschema/typespec";
+using Subschema;
+
+/** Simple form demonstrating preset container overrides. */
+@formConfig
+model TaskForm {
+  @field("Text")
+  title: string;
+
+  @field("TextArea")
+  description: string;
+
+  @field("Select") @options("Low", "Medium", "High")
+  priority: string;
+}`;
+
 // ── Preset Demo ──
 const presetSchema: FormSchema = {
   schema: {
@@ -163,6 +285,18 @@ const presetSchema: FormSchema = {
     priority: { type: 'Select', title: 'Priority', options: [{ label: 'Low', value: 'low' }, { label: 'Medium', value: 'medium' }, { label: 'High', value: 'high' }] },
   },
 };
+
+const editorTypespec = `import "@subschema/typespec";
+using Subschema;
+
+@formConfig
+model SimpleForm {
+  @field("Text") @placeholder("Your name")
+  name: string;
+
+  @field("Text") @placeholder("you@example.com")
+  email: string;
+}`;
 
 // ── Schema Editor ──
 const editorDefaultSchema: FormSchema = {
@@ -174,14 +308,14 @@ const editorDefaultSchema: FormSchema = {
 
 export const examples: ExampleDef[] = [
   { id: 'contact', title: 'Contact Form', description: 'Simple contact form with Text, Select, TextArea and validation.', schema: contactSchema, typespec: contactTypespec },
-  { id: 'login', title: 'Login', description: 'Email + password login form with required validation.', schema: loginSchema },
-  { id: 'signup', title: 'Signup', description: 'Registration form with password confirmation and terms checkbox.', schema: signupSchema },
+  { id: 'login', title: 'Login', description: 'Email + password login form with required validation.', schema: loginSchema, typespec: loginTypespec },
+  { id: 'signup', title: 'Signup', description: 'Registration form with password confirmation and terms checkbox.', schema: signupSchema, typespec: signupTypespec },
   { id: 'profile', title: 'User Profile', description: 'Nested ObjectField for address with conditional phone field.', schema: profileSchema, typespec: profileTypespec },
   { id: 'conditional', title: 'Conditional Fields', description: 'Show/hide fields based on select and checkbox values.', schema: conditionalSchema, typespec: conditionalTypespec },
-  { id: 'field-types', title: 'All Field Types', description: 'Showcase of every built-in field type.', schema: fieldTypesSchema },
-  { id: 'validation', title: 'Validation', description: 'All validator types: required, minLength, maxLength, pattern, minValue, maxValue.', schema: validationSchema },
-  { id: 'custom-type', title: 'Custom Type', description: 'Custom star rating component registered via types prop (Option B).', schema: customTypeSchema },
-  { id: 'preset', title: 'Preset', description: 'FormProvider with a custom preset container (Option C).', schema: presetSchema },
-  { id: 'editor', title: 'Schema Editor', description: 'Live JSON schema editor — edit the schema and see the form update.', schema: editorDefaultSchema },
+  { id: 'field-types', title: 'All Field Types', description: 'Showcase of every built-in field type.', schema: fieldTypesSchema, typespec: fieldTypesTypespec },
+  { id: 'validation', title: 'Validation', description: 'All validator types: required, minLength, maxLength, pattern, minValue, maxValue.', schema: validationSchema, typespec: validationTypespec },
+  { id: 'custom-type', title: 'Custom Type', description: 'Custom star rating component registered via types prop (Option B).', schema: customTypeSchema, typespec: customTypeTypespec },
+  { id: 'preset', title: 'Preset', description: 'FormProvider with a custom preset container (Option C).', schema: presetSchema, typespec: presetTypespec },
+  { id: 'editor', title: 'Schema Editor', description: 'Live JSON schema editor — edit the schema and see the form update.', schema: editorDefaultSchema, typespec: editorTypespec },
 ];
 
