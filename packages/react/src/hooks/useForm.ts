@@ -9,6 +9,10 @@ function getInitialValues(schema: FormSchema, provided?: Record<string, unknown>
       values[name] = provided[name];
     } else if (field.default !== undefined) {
       values[name] = field.default;
+    } else if (field.type === 'Object') {
+      values[name] = {};
+    } else if (field.type === 'List') {
+      values[name] = [];
     } else {
       values[name] = '';
     }
