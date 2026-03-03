@@ -7,7 +7,7 @@
     createFormContainer,
     resolveRegistries,
     createDefaultContainer,
-  } from '@subschema/core';
+  } from '../registry/container.js';
   import {
     getFormContainerContextOptional,
     setFormContainerContext,
@@ -86,9 +86,14 @@
 
   const handler = formState.handleSubmit(onSubmit ?? (() => {}));
 
-  // Watch for value changes
+  // Watch for value changes — guard against infinite loops with nested ObjectField
+  let prevValuesJson = $state(JSON.stringify(formState.values));
   $effect(() => {
-    onChange?.(formState.values);
+    const currentJson = JSON.stringify(formState.values);
+    if (currentJson !== prevValuesJson) {
+      prevValuesJson = currentJson;
+      onChange?.(formState.values);
+    }
   });
 
   // Determine field rendering order
