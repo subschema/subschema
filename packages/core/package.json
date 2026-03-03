@@ -1,0 +1,32 @@
+{
+  "name": "@subschema/core",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Framework-agnostic core logic for Subschema form engine",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@speajus/diblob": "^1.0.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.0",
+    "rimraf": "^6.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
+
