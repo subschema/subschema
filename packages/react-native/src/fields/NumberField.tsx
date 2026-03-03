@@ -1,9 +1,27 @@
 import React from 'react';
-import { Text } from 'react-native';
 import type { FieldComponentProps } from '../types.js';
+import { Input } from '../ui/Input.js';
 
-/** Stub: NumberField — will be implemented in Task 2 */
-export function NumberField(_props: FieldComponentProps) {
-  return <Text>TODO: NumberField</Text>;
+export function NumberField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
+  return (
+    <Input
+      testID={name}
+      value={value === '' || value === undefined || value === null ? '' : String(value)}
+      onChangeText={(text) => {
+        onChange(text === '' ? '' : Number(text));
+      }}
+      onBlur={onBlur}
+      placeholder={placeholder}
+      editable={!disabled}
+      keyboardType="numeric"
+    />
+  );
 }
 

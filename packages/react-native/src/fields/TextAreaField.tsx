@@ -1,9 +1,24 @@
 import React from 'react';
-import { Text } from 'react-native';
 import type { FieldComponentProps } from '../types.js';
+import { Textarea } from '../ui/Textarea.js';
 
-/** Stub: TextAreaField — will be implemented in Task 2 */
-export function TextAreaField(_props: FieldComponentProps) {
-  return <Text>TODO: TextAreaField</Text>;
+export function TextAreaField({
+  name,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  disabled,
+}: FieldComponentProps) {
+  return (
+    <Textarea
+      testID={name}
+      value={String(value ?? '')}
+      onChangeText={(text) => onChange(text)}
+      onBlur={onBlur}
+      placeholder={placeholder}
+      editable={!disabled}
+    />
+  );
 }
 
