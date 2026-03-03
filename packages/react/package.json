@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
-    "test": "vitest run"
+    "test": "node test/run-vitest.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.0",

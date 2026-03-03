@@ -34,6 +34,7 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+        timeout-minutes: 5
 
       - name: Lint packages
         run: pnpm lint:packages
