@@ -1,0 +1,43 @@
+{
+  "name": "@subschema/react-native",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "React Native form engine for Subschema with diblob DI and NativeWind styling",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@speajus/diblob": "^1.0.0",
+    "@subschema/core": "workspace:*",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-native": ">=0.72.0",
+    "nativewind": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~18.2.0",
+    "react": "^18.2.0",
+    "react-native": "^0.76.0",
+    "nativewind": "^4.0.0",
+    "rimraf": "^6.0.0",
+    "typescript": "~5.7.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
+
