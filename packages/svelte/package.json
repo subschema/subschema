@@ -1,0 +1,41 @@
+{
+  "name": "@subschema/svelte",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Modern Svelte 5 form engine for Subschema with diblob DI",
+  "svelte": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "svelte-package -i src",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@speajus/diblob": "^1.0.0",
+    "@subschema/core": "workspace:*",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.0.0"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^2.0.0",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
+    "typescript": "~5.7.0",
+    "rimraf": "^6.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
+
