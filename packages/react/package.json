@@ -24,6 +24,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@speajus/diblob": "^1.0.0",
+    "@subschema/core": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^4.1.0",

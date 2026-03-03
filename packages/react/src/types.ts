@@ -1,58 +1,25 @@
 import type { ComponentType, ReactNode } from 'react';
 
 // ──────────────────────────────────────────────
-// Schema types
+// Re-export schema types from @subschema/core
 // ──────────────────────────────────────────────
 
-export interface FormSchema {
-  schema: Record<string, FieldSchema>;
-  fieldsets?: FieldsetConfig[];
-}
+export type {
+  FormSchema,
+  FieldSchema,
+  OptionItem,
+  ValidatorConfig,
+  ConditionalConfig,
+  FieldsetConfig,
+  ValidatorFn,
+  FormState,
+  FormActions,
+} from '@subschema/core';
 
-export interface FieldSchema {
-  type: string;
-  title?: string;
-  description?: string;
-  placeholder?: string;
-  options?: OptionItem[];
-  validators?: ValidatorConfig[];
-  conditional?: ConditionalConfig;
-  subSchema?: FormSchema;
-  /** Default value */
-  default?: unknown;
-  /** For array/list fields: item schema */
-  itemSchema?: FieldSchema;
-  /** Additional field-specific props */
-  [key: string]: unknown;
-}
-
-export interface OptionItem {
-  label: string;
-  value: string;
-}
-
-export interface ValidatorConfig {
-  type: string;
-  message?: string;
-  value?: unknown;
-}
-
-export interface ConditionalConfig {
-  /** Field name to listen to */
-  listen: string;
-  /** Operator for comparison */
-  operator: 'equals' | 'notEquals' | 'truthy' | 'falsy' | 'regex' | 'contains';
-  /** Value to compare against (for equals/notEquals/regex/contains) */
-  value?: unknown;
-}
-
-export interface FieldsetConfig {
-  legend?: string;
-  fields: string[];
-}
+import type { FieldSchema, OptionItem, ValidatorConfig } from '@subschema/core';
 
 // ──────────────────────────────────────────────
-// Registry types
+// React-specific registry & component types
 // ──────────────────────────────────────────────
 
 /** Props passed to every field component */
@@ -85,31 +52,16 @@ export interface TemplateComponentProps {
 /** A React component that wraps a field with label, error, etc. */
 export type TemplateComponent = ComponentType<TemplateComponentProps>;
 
-/** Validator function: returns error string or undefined */
-export type ValidatorFn = (value: unknown, config: ValidatorConfig) => string | undefined;
-
-/** Registry maps */
+/** Registry maps (React-specific: uses React ComponentType) */
 export type FieldTypeRegistry = Record<string, FieldComponent>;
 export type TemplateRegistry = Record<string, TemplateComponent>;
-export type ValidatorRegistry = Record<string, ValidatorFn>;
+export type ValidatorRegistry = Record<string, (value: unknown, config: ValidatorConfig) => string | undefined>;
 
 // ──────────────────────────────────────────────
-// Form state types
+// React-specific hook return types
 // ──────────────────────────────────────────────
 
-export interface FormState {
-  values: Record<string, unknown>;
-  errors: Record<string, string>;
-  touched: Record<string, boolean>;
-}
-
-export interface FormActions {
-  setValue: (name: string, value: unknown) => void;
-  setError: (name: string, error: string) => void;
-  setTouched: (name: string) => void;
-  validate: () => Record<string, string>;
-  reset: (values?: Record<string, unknown>) => void;
-}
+import type { FormState, FormActions } from '@subschema/core';
 
 export interface UseFormReturn extends FormState, FormActions {
   handleSubmit: (

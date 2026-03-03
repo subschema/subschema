@@ -1,5 +1,9 @@
 import { createContainer } from '@speajus/diblob';
 import type { Container } from '@speajus/diblob';
+import {
+  createFormContainer as coreCreateFormContainer,
+  resolveRegistries as coreResolveRegistries,
+} from '@subschema/core';
 import type { FieldTypeRegistry, TemplateRegistry, ValidatorRegistry } from '../types.js';
 import { fieldTypes, templates, validators } from './blobs.js';
 import {
@@ -28,40 +32,24 @@ export interface FormContainerOverrides {
 
 /**
  * Creates a child container from a parent, merging in overrides.
- * Used by <Form> when types/templates/validators props are provided.
+ * Delegates to @subschema/core's createFormContainer.
  */
 export function createFormContainer(
   parent: Container,
   overrides: FormContainerOverrides,
 ): Container {
-  const child = createContainer(parent);
-
-  if (overrides.types) {
-    const parentTypes = parent.resolve(fieldTypes) as FieldTypeRegistry;
-    child.register(fieldTypes, () => ({ ...parentTypes, ...overrides.types }));
-  }
-
-  if (overrides.templates) {
-    const parentTemplates = parent.resolve(templates) as TemplateRegistry;
-    child.register(templates, () => ({ ...parentTemplates, ...overrides.templates }));
-  }
-
-  if (overrides.validators) {
-    const parentValidators = parent.resolve(validators) as ValidatorRegistry;
-    child.register(validators, () => ({ ...parentValidators, ...overrides.validators }));
-  }
-
-  return child;
+  return coreCreateFormContainer(parent, overrides);
 }
 
 /**
  * Resolve registry values from a container synchronously.
- * All our factories are sync, so resolve returns T directly.
+ * Delegates to @subschema/core's resolveRegistries with React-specific type casting.
  */
 export function resolveRegistries(container: Container) {
+  const resolved = coreResolveRegistries(container);
   return {
-    fieldTypes: container.resolve(fieldTypes) as FieldTypeRegistry,
-    templates: container.resolve(templates) as TemplateRegistry,
-    validators: container.resolve(validators) as ValidatorRegistry,
+    fieldTypes: resolved.fieldTypes as unknown as FieldTypeRegistry,
+    templates: resolved.templates as unknown as TemplateRegistry,
+    validators: resolved.validators as ValidatorRegistry,
   };
 }

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { ConditionalConfig } from '../types.js';
+import { evaluateCondition } from '@subschema/core';
 
 /**
  * Evaluate a conditional configuration against current form values.
@@ -15,35 +16,4 @@ export function useConditional(
   }, [config, values]);
 }
 
-export function evaluateCondition(
-  config: ConditionalConfig,
-  values: Record<string, unknown>,
-): boolean {
-  const fieldValue = values[config.listen];
-
-  switch (config.operator) {
-    case 'equals':
-      return fieldValue === config.value;
-    case 'notEquals':
-      return fieldValue !== config.value;
-    case 'truthy':
-      return !!fieldValue;
-    case 'falsy':
-      return !fieldValue;
-    case 'regex':
-      if (typeof fieldValue === 'string' && typeof config.value === 'string') {
-        return new RegExp(config.value).test(fieldValue);
-      }
-      return false;
-    case 'contains':
-      if (typeof fieldValue === 'string' && typeof config.value === 'string') {
-        return fieldValue.includes(config.value);
-      }
-      if (Array.isArray(fieldValue)) {
-        return fieldValue.includes(config.value);
-      }
-      return false;
-    default:
-      return true;
-  }
-}
+export { evaluateCondition } from '@subschema/core';
