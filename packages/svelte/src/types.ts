@@ -56,7 +56,10 @@ export type TemplateComponent = Component<TemplateComponentProps>;
 /** Registry maps (Svelte-specific: uses Svelte Component) */
 export type FieldTypeRegistry = Record<string, FieldComponent>;
 export type TemplateRegistry = Record<string, TemplateComponent>;
-export type ValidatorRegistry = Record<string, (value: unknown, config: ValidatorConfig) => string | undefined>;
+export type ValidatorRegistry = Record<
+  string,
+  (value: unknown, config: ValidatorConfig) => string | undefined
+>;
 
 // ──────────────────────────────────────────────
 // Svelte-specific return types
@@ -65,9 +68,7 @@ export type ValidatorRegistry = Record<string, (value: unknown, config: Validato
 import type { FormState, FormActions } from '@subschema/core';
 
 export interface UseFormReturn extends FormState, FormActions {
-  handleSubmit: (
-    onSubmit: (values: Record<string, unknown>) => void,
-  ) => (e?: Event) => void;
+  handleSubmit: (onSubmit: (values: Record<string, unknown>) => void) => (e?: Event) => void;
   isValid: boolean;
   validateField: (name: string, value: unknown) => string | undefined;
 }
@@ -97,4 +98,3 @@ export interface FormContextValue {
   validators: ValidatorRegistry;
   containerRef: unknown; // diblob Container
 }
-

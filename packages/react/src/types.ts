@@ -55,7 +55,10 @@ export type TemplateComponent = ComponentType<TemplateComponentProps>;
 /** Registry maps (React-specific: uses React ComponentType) */
 export type FieldTypeRegistry = Record<string, FieldComponent>;
 export type TemplateRegistry = Record<string, TemplateComponent>;
-export type ValidatorRegistry = Record<string, (value: unknown, config: ValidatorConfig) => string | undefined>;
+export type ValidatorRegistry = Record<
+  string,
+  (value: unknown, config: ValidatorConfig) => string | undefined
+>;
 
 // ──────────────────────────────────────────────
 // React-specific hook return types

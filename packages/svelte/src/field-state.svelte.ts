@@ -33,11 +33,16 @@ export function createFieldState(
   }
 
   return {
-    get value() { return value; },
-    get error() { return error; },
-    get touched() { return touched; },
+    get value() {
+      return value;
+    },
+    get error() {
+      return error;
+    },
+    get touched() {
+      return touched;
+    },
     onChange,
     onBlur,
   };
 }
-

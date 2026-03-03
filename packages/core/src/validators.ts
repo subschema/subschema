@@ -65,4 +65,3 @@ export const defaultValidators: Record<string, ValidatorFn> = {
   minValue: minValueValidator,
   maxValue: maxValueValidator,
 };
-

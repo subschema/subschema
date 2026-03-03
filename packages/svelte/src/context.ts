@@ -16,7 +16,7 @@ export function getFormContainerContext(): FormContextValue {
   if (!ctx) {
     throw new Error(
       'Form container context not found. ' +
-      'Wrap your form in <FormProvider> or use <Form schema={...}>.',
+        'Wrap your form in <FormProvider> or use <Form schema={...}>.',
     );
   }
   return ctx;
@@ -43,10 +43,7 @@ export function setFormStateContext(value: UseFormReturn): void {
 export function getFormStateContext(): UseFormReturn {
   const ctx = getContext<UseFormReturn | undefined>(FORM_STATE_KEY);
   if (!ctx) {
-    throw new Error(
-      'Form state context not found. Must be used within a <Form> component.',
-    );
+    throw new Error('Form state context not found. Must be used within a <Form> component.');
   }
   return ctx;
 }
-

@@ -277,4 +277,3 @@ describe('Integration: Preset composition (Option C)', () => {
     expect(screen.queryByTestId('provider-text')).not.toBeInTheDocument();
   });
 });
-

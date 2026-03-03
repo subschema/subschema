@@ -1,6 +1,11 @@
 import { createBlob, createContainer } from '@speajus/diblob';
 import type { Container } from '@speajus/diblob';
-import type { FieldTypeRegistry, TemplateRegistry, ValidatorRegistry, ValidatorFn } from './types.js';
+import type {
+  FieldTypeRegistry,
+  TemplateRegistry,
+  ValidatorRegistry,
+  ValidatorFn,
+} from './types.js';
 
 // ──────────────────────────────────────────────
 // Blobs (diblob registry tokens)
@@ -88,4 +93,3 @@ export function resolveRegistries(container: Container) {
     validators: container.resolve(validators) as ValidatorRegistry,
   };
 }
-

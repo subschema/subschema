@@ -4,10 +4,7 @@ import type { UseFieldArrayReturn, UseFormReturn } from './types.js';
  * Creates array field operations.
  * Equivalent to React's useFieldArray hook.
  */
-export function createFieldArray(
-  name: string,
-  formState: UseFormReturn,
-): UseFieldArrayReturn {
+export function createFieldArray(name: string, formState: UseFormReturn): UseFieldArrayReturn {
   const fields = $derived(
     Array.isArray(formState.values[name]) ? (formState.values[name] as unknown[]) : [],
   );
@@ -31,10 +28,11 @@ export function createFieldArray(
   }
 
   return {
-    get fields() { return fields; },
+    get fields() {
+      return fields;
+    },
     push,
     remove,
     move,
   };
 }
-

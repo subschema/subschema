@@ -45,4 +45,3 @@ export function createDefaultTemplates(): TemplateRegistry {
 export function createDefaultValidators(): ValidatorRegistry {
   return { ...defaultValidators };
 }
-

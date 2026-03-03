@@ -35,4 +35,3 @@ export function findClosestMatch(name: string, available: string[]): string | un
   }
   return best;
 }
-

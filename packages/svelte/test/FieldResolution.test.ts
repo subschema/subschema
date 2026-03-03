@@ -25,9 +25,10 @@ describe('Field resolution errors with "did you mean?" suggestions', () => {
 
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    expect(() => render(Form, { props: { schema } })).toThrow(/Available: .*Text.*Select.*Checkbox/);
+    expect(() => render(Form, { props: { schema } })).toThrow(
+      /Available: .*Text.*Select.*Checkbox/,
+    );
 
     spy.mockRestore();
   });
 });
-

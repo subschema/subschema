@@ -42,4 +42,3 @@ export function createFormContainer(
 export function resolveRegistries(container: Container) {
   return coreResolveRegistries(container);
 }
-

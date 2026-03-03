@@ -59,9 +59,7 @@ export function createFormState(
     touched = {};
   }
 
-  function handleSubmit(
-    onSubmit: (values: Record<string, unknown>) => void,
-  ): (e?: Event) => void {
+  function handleSubmit(onSubmit: (values: Record<string, unknown>) => void): (e?: Event) => void {
     return (e?: Event) => {
       e?.preventDefault();
       const errs = validate();
@@ -72,10 +70,18 @@ export function createFormState(
   }
 
   return {
-    get values() { return values; },
-    get errors() { return errors; },
-    get touched() { return touched; },
-    get isValid() { return isValid; },
+    get values() {
+      return values;
+    },
+    get errors() {
+      return errors;
+    },
+    get touched() {
+      return touched;
+    },
+    get isValid() {
+      return isValid;
+    },
     setValue,
     setError,
     setTouched,
@@ -85,4 +91,3 @@ export function createFormState(
     validateField,
   };
 }
-
