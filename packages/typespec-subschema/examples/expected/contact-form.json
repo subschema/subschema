@@ -1,0 +1,33 @@
+{
+  "schema": {
+    "name": {
+      "type": "Text",
+      "title": "Name",
+      "placeholder": "Enter your full name",
+      "validators": [{ "type": "required", "message": "Name is required" }]
+    },
+    "email": {
+      "type": "Text",
+      "title": "Email",
+      "placeholder": "you@example.com",
+      "validators": [
+        { "type": "required", "message": "Email is required" },
+        { "type": "pattern", "value": "^[^@]+@[^@]+\\.[^@]+$", "message": "Invalid email format" }
+      ]
+    },
+    "subject": {
+      "type": "Select",
+      "title": "Subject",
+      "options": [
+        { "label": "General Inquiry", "value": "General Inquiry" },
+        { "label": "Bug Report", "value": "Bug Report" },
+        { "label": "Feature Request", "value": "Feature Request" }
+      ]
+    },
+    "message": {
+      "type": "TextArea",
+      "title": "Message",
+      "placeholder": "Tell us more..."
+    }
+  }
+}

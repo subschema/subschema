@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [master, modernize-subschema-framework]
+  pull_request:
+    branches: [master]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build demo
+        run: pnpm --filter @subschema/demo build
+
+      - name: Run tests
+        run: pnpm test
+        timeout-minutes: 5
+
+      - name: Lint packages
+        run: pnpm lint:packages

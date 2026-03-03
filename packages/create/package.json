@@ -1,0 +1,32 @@
+{
+  "name": "@subschema/create",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "CLI and programmatic API to scaffold Subschema components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "create-subschema": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.2",
+    "rimraf": "^6.0.0",
+    "typescript": "~5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}

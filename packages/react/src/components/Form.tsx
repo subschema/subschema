@@ -1,0 +1,159 @@
+import React, { useContext, useEffect, useMemo } from 'react';
+import type {
+  FormSchema,
+  FieldTypeRegistry,
+  TemplateRegistry,
+  ValidatorRegistry,
+  FieldComponent,
+  TemplateComponent,
+  ValidatorFn,
+} from '../types.js';
+import { FormContainerContext } from './FormProvider.js';
+import { FormStateContext } from './FormStateContext.js';
+import { Field } from './Field.js';
+import { FieldSet } from './FieldSet.js';
+import { useForm } from '../hooks/useForm.js';
+import {
+  createDefaultContainer,
+  createFormContainer,
+  resolveRegistries,
+} from '../registry/container.js';
+import { cn } from '../ui/utils.js';
+
+export interface FormProps {
+  /** Form schema definition */
+  schema: FormSchema;
+  /** Form submission handler */
+  onSubmit?: (values: Record<string, unknown>) => void;
+  /** Initial form values */
+  values?: Record<string, unknown>;
+  /** Custom field type overrides (Option B) */
+  types?: Record<string, FieldComponent>;
+  /** Custom template overrides */
+  templates?: Record<string, TemplateComponent>;
+  /** Custom validator overrides */
+  validators?: Record<string, ValidatorFn>;
+  /** Additional className */
+  className?: string;
+  children?: React.ReactNode;
+  /** When true, renders a <div> instead of <form> to avoid nested form elements */
+  nested?: boolean;
+  /** Called whenever form values change */
+  onChange?: (values: Record<string, unknown>) => void;
+}
+
+/**
+ * Top-level Form component.
+ *
+ * Creates or inherits a diblob container. When types/templates/validators
+ * props are provided, creates a child container with those overrides (Option B).
+ *
+ * @example
+ * ```tsx
+ * <Form schema={mySchema} onSubmit={handleSubmit} />
+ *
+ * // With custom types (Option B)
+ * <Form schema={mySchema} types={{ Rating: RatingField }} onSubmit={handleSubmit} />
+ * ```
+ */
+export function Form({
+  schema,
+  onSubmit,
+  values: initialValues,
+  types,
+  templates: templateOverrides,
+  validators: validatorOverrides,
+  className,
+  children,
+  nested,
+  onChange,
+}: FormProps) {
+  const parentCtx = useContext(FormContainerContext);
+
+  // Build container context: inherit from parent or create default,
+  // then apply prop overrides
+  const ctxValue = useMemo(() => {
+    const parentContainer = parentCtx
+      ? (parentCtx.containerRef as import('@speajus/diblob').Container)
+      : createDefaultContainer();
+
+    const hasOverrides = types || templateOverrides || validatorOverrides;
+    const container = hasOverrides
+      ? createFormContainer(parentContainer, {
+          types,
+          templates: templateOverrides,
+          validators: validatorOverrides,
+        })
+      : parentContainer;
+
+    const registries = resolveRegistries(container);
+    return { ...registries, containerRef: container };
+  }, [parentCtx, types, templateOverrides, validatorOverrides]);
+
+  return (
+    <FormContainerContext.Provider value={ctxValue}>
+      <FormInner
+        schema={schema}
+        onSubmit={onSubmit}
+        initialValues={initialValues}
+        className={className}
+        nested={nested}
+        onChange={onChange}
+      >
+        {children}
+      </FormInner>
+    </FormContainerContext.Provider>
+  );
+}
+
+interface FormInnerProps {
+  schema: FormSchema;
+  onSubmit?: (values: Record<string, unknown>) => void;
+  initialValues?: Record<string, unknown>;
+  className?: string;
+  children?: React.ReactNode;
+  nested?: boolean;
+  onChange?: (values: Record<string, unknown>) => void;
+}
+
+function FormInner({
+  schema,
+  onSubmit,
+  initialValues,
+  className,
+  children,
+  nested,
+  onChange,
+}: FormInnerProps) {
+  const formState = useForm(schema, initialValues);
+  const handler = formState.handleSubmit(onSubmit ?? (() => {}));
+
+  useEffect(() => {
+    onChange?.(formState.values);
+  }, [formState.values, onChange]);
+
+  // Determine field rendering order
+  const fieldsetFieldNames = new Set((schema.fieldsets ?? []).flatMap((fs) => fs.fields));
+  const ungroupedFields = Object.keys(schema.schema).filter(
+    (name) => !fieldsetFieldNames.has(name),
+  );
+
+  const Wrapper = nested ? 'div' : 'form';
+  const wrapperProps = nested ? {} : { onSubmit: handler, noValidate: true };
+
+  return (
+    <FormStateContext.Provider value={formState}>
+      <Wrapper {...wrapperProps} className={cn('space-y-4', className)}>
+        {/* Render fieldsets */}
+        {schema.fieldsets?.map((fs, i) => (
+          <FieldSet key={`fieldset-${i}`} config={fs} schema={schema.schema} />
+        ))}
+        {/* Render ungrouped fields */}
+        {ungroupedFields.map((name) => (
+          <Field key={name} name={name} fieldSchema={schema.schema[name]} />
+        ))}
+        {children}
+      </Wrapper>
+    </FormStateContext.Provider>
+  );
+}

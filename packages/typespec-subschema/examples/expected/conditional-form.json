@@ -1,0 +1,70 @@
+{
+  "schema": {
+    "firstName": {
+      "type": "Text",
+      "title": "First Name",
+      "placeholder": "First name"
+    },
+    "lastName": {
+      "type": "Text",
+      "title": "Last Name",
+      "placeholder": "Last name"
+    },
+    "contactMethod": {
+      "type": "Select",
+      "title": "Contact Method",
+      "options": [
+        { "label": "Email", "value": "Email" },
+        { "label": "Phone", "value": "Phone" },
+        { "label": "Mail", "value": "Mail" }
+      ]
+    },
+    "contactEmail": {
+      "type": "Text",
+      "title": "Contact Email",
+      "placeholder": "you@example.com",
+      "conditional": {
+        "listen": "contactMethod",
+        "operator": "equals",
+        "value": "Email"
+      }
+    },
+    "contactPhone": {
+      "type": "Text",
+      "title": "Contact Phone",
+      "placeholder": "555-0100",
+      "conditional": {
+        "listen": "contactMethod",
+        "operator": "equals",
+        "value": "Phone"
+      }
+    },
+    "newsletter": {
+      "type": "Checkbox",
+      "title": "Newsletter"
+    },
+    "frequency": {
+      "type": "Select",
+      "title": "Frequency",
+      "options": [
+        { "label": "Daily", "value": "Daily" },
+        { "label": "Weekly", "value": "Weekly" },
+        { "label": "Monthly", "value": "Monthly" }
+      ],
+      "conditional": {
+        "listen": "newsletter",
+        "operator": "truthy"
+      }
+    }
+  },
+  "fieldsets": [
+    {
+      "legend": "Personal Information",
+      "fields": ["firstName", "lastName"]
+    },
+    {
+      "legend": "Preferences",
+      "fields": ["contactMethod", "contactEmail", "contactPhone", "newsletter", "frequency"]
+    }
+  ]
+}
