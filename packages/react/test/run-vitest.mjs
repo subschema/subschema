@@ -49,4 +49,3 @@ if (!vitest) {
 const failed = vitest.state.getCountOfFailedTests() > 0;
 await vitest.close();
 process.exit(failed ? 1 : 0);
-
