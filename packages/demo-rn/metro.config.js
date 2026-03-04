@@ -20,7 +20,9 @@ const config = {
     ],
     // Block the library's own node_modules to prevent duplicate React
     blockList: [
-      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/(.*)').replace(/[/\\]/g, '[/\\\\]')),
+      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react/(.*)').replace(/[/\\]/g, '[/\\\\]')),
+      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react-native/(.*)').replace(/[/\\]/g, '[/\\\\]')),
+      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react-dom/(.*)').replace(/[/\\]/g, '[/\\\\]')),
     ],
     // Force single copies of these packages to avoid duplicate React errors
     extraNodeModules: {
