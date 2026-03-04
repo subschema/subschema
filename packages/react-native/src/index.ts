@@ -22,63 +22,63 @@ export type {
   UseFieldReturn,
   UseFieldArrayReturn,
   FormContextValue,
-} from './types.js';
+} from './types';
 
 // ── Registry (diblob blobs & container factories) ──
-export { fieldTypes, templates, validators } from './registry/blobs.js';
+export { fieldTypes, templates, validators } from './registry/blobs';
 export {
   createDefaultContainer,
   createFormContainer,
   resolveRegistries,
-} from './registry/container.js';
+} from './registry/container';
 export {
   createDefaultFieldTypes,
   createDefaultTemplates,
   createDefaultValidators,
-} from './registry/defaults.js';
+} from './registry/defaults';
 
 // ── Hooks ──
-export { useFormContainer } from './hooks/useFormContainer.js';
-export { useFieldType } from './hooks/useFieldType.js';
-export { useTemplate } from './hooks/useTemplate.js';
-export { useForm } from './hooks/useForm.js';
-export { useField } from './hooks/useField.js';
-export { useFieldArray } from './hooks/useFieldArray.js';
-export { useConditional } from './hooks/useConditional.js';
-export { useValidation } from './hooks/useValidation.js';
+export { useFormContainer } from './hooks/useFormContainer';
+export { useFieldType } from './hooks/useFieldType';
+export { useTemplate } from './hooks/useTemplate';
+export { useForm } from './hooks/useForm';
+export { useField } from './hooks/useField';
+export { useFieldArray } from './hooks/useFieldArray';
+export { useConditional } from './hooks/useConditional';
+export { useValidation } from './hooks/useValidation';
 
 // ── Components ──
-export { FormProvider, FormContainerContext } from './components/FormProvider.js';
-export { Form } from './components/Form.js';
-export { useFormState, FormStateContext } from './components/FormStateContext.js';
-export { Field } from './components/Field.js';
-export { FieldSet } from './components/FieldSet.js';
-export { Conditional } from './components/Conditional.js';
-export { DefaultTemplate } from './components/DefaultTemplate.js';
+export { FormProvider, FormContainerContext } from './components/FormProvider';
+export { Form } from './components/Form';
+export { useFormState, FormStateContext } from './components/FormStateContext';
+export { Field } from './components/Field';
+export { FieldSet } from './components/FieldSet';
+export { Conditional } from './components/Conditional';
+export { DefaultTemplate } from './components/DefaultTemplate';
 
 // ── Built-in field types ──
-export { TextField } from './fields/TextField.js';
-export { NumberField } from './fields/NumberField.js';
-export { PasswordField } from './fields/PasswordField.js';
-export { TextAreaField } from './fields/TextAreaField.js';
-export { SelectField } from './fields/SelectField.js';
-export { CheckboxField } from './fields/CheckboxField.js';
-export { CheckboxesField } from './fields/CheckboxesField.js';
-export { RadioField } from './fields/RadioField.js';
-export { DateField } from './fields/DateField.js';
-export { AutocompleteField } from './fields/AutocompleteField.js';
-export { HiddenField } from './fields/HiddenField.js';
-export { ListField } from './fields/ListField.js';
-export { ObjectField } from './fields/ObjectField.js';
+export { TextField } from './fields/TextField';
+export { NumberField } from './fields/NumberField';
+export { PasswordField } from './fields/PasswordField';
+export { TextAreaField } from './fields/TextAreaField';
+export { SelectField } from './fields/SelectField';
+export { CheckboxField } from './fields/CheckboxField';
+export { CheckboxesField } from './fields/CheckboxesField';
+export { RadioField } from './fields/RadioField';
+export { DateField } from './fields/DateField';
+export { AutocompleteField } from './fields/AutocompleteField';
+export { HiddenField } from './fields/HiddenField';
+export { ListField } from './fields/ListField';
+export { ObjectField } from './fields/ObjectField';
 
 // ── Validators ──
-export { defaultValidators } from './validation/validators.js';
+export { defaultValidators } from './validation/validators';
 
 // ── UI primitives (re-export for consumers) ──
-export { Input } from './ui/Input.js';
-export { Textarea } from './ui/Textarea.js';
-export { Button } from './ui/Button.js';
-export { Label } from './ui/Label.js';
-export { Card, CardHeader, CardTitle, CardContent } from './ui/Card.js';
-export { cn } from './ui/utils.js';
+export { Input } from './ui/Input';
+export { Textarea } from './ui/Textarea';
+export { Button } from './ui/Button';
+export { Label } from './ui/Label';
+export { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
+export { cn } from './ui/utils';
 

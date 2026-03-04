@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { FieldSchema, UseFieldReturn } from '../types.js';
+import type { FieldSchema, UseFieldReturn } from '../types';
 
 interface FormStateRef {
   values: Record<string, unknown>;

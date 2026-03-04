@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { FormContainerContext } from '../components/FormProvider.js';
-import type { FormContextValue } from '../types.js';
+import { FormContainerContext } from '../components/FormProvider';
+import type { FormContextValue } from '../types';
 
 /**
  * Access the current form container context.

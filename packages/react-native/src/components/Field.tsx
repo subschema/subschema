@@ -1,10 +1,10 @@
 import React from 'react';
-import type { FieldSchema } from '../types.js';
-import { useFieldType } from '../hooks/useFieldType.js';
-import { useTemplate } from '../hooks/useTemplate.js';
-import { useField } from '../hooks/useField.js';
-import { useConditional } from '../hooks/useConditional.js';
-import { useFormState } from './FormStateContext.js';
+import type { FieldSchema } from '../types';
+import { useFieldType } from '../hooks/useFieldType';
+import { useTemplate } from '../hooks/useTemplate';
+import { useField } from '../hooks/useField';
+import { useConditional } from '../hooks/useConditional';
+import { useFormState } from './FormStateContext';
 
 export interface FieldProps {
   name: string;

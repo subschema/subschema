@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useFormContainer } from './useFormContainer.js';
-import type { ValidatorConfig } from '../types.js';
+import { useFormContainer } from './useFormContainer';
+import type { ValidatorConfig } from '../types';
 
 /**
  * Run a chain of validators against a value.

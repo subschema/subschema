@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { TextInput } from 'react-native';
 import type { TextInput as TextInputType } from 'react-native';
-import { cn } from './utils.js';
+import { cn } from './utils';
 
 export interface TextareaProps {
   className?: string;

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { UseFormReturn } from '../types.js';
+import type { UseFormReturn } from '../types';
 
 /**
  * React context for sharing form state (values, errors, touched) down the tree.

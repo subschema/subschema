@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 import { createContainer } from '@speajus/diblob';
 import type { Container } from '@speajus/diblob';
-import type { FieldComponentProps, FormSchema } from '../types.js';
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card.js';
-import { FormProvider } from '../components/FormProvider.js';
-import { Form } from '../components/Form.js';
-import { useFormContainer } from '../hooks/useFormContainer.js';
+import type { FieldComponentProps, FormSchema } from '../types';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { FormProvider } from '../components/FormProvider';
+import { Form } from '../components/Form';
+import { useFormContainer } from '../hooks/useFormContainer';
 
 /**
  * ObjectField renders a nested form inside a Card.

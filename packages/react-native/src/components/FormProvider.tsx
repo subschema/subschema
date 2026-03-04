@@ -1,7 +1,7 @@
 import React, { createContext, useMemo } from 'react';
 import type { Container } from '@speajus/diblob';
-import type { FormContextValue } from '../types.js';
-import { resolveRegistries } from '../registry/container.js';
+import type { FormContextValue } from '../types';
+import { resolveRegistries } from '../registry/container';
 
 /**
  * React context holding the diblob container and resolved registries.

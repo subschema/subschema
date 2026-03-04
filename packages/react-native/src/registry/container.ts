@@ -4,13 +4,13 @@ import {
   createFormContainer as coreCreateFormContainer,
   resolveRegistries as coreResolveRegistries,
 } from '@subschema/core';
-import type { FieldTypeRegistry, TemplateRegistry, ValidatorRegistry } from '../types.js';
-import { fieldTypes, templates, validators } from './blobs.js';
+import type { FieldTypeRegistry, TemplateRegistry, ValidatorRegistry } from '../types';
+import { fieldTypes, templates, validators } from './blobs';
 import {
   createDefaultFieldTypes,
   createDefaultTemplates,
   createDefaultValidators,
-} from './defaults.js';
+} from './defaults';
 
 /**
  * Creates a default diblob container with all built-in field types,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, FlatList } from 'react-native';
-import type { FieldComponentProps } from '../types.js';
-import { Input } from '../ui/Input.js';
-import { cn } from '../ui/utils.js';
+import type { FieldComponentProps } from '../types';
+import { Input } from '../ui/Input';
+import { cn } from '../ui/utils';
 
 /**
  * Autocomplete field using TextInput + filtered FlatList dropdown.

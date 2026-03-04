@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import type { FieldSchema, FieldsetConfig } from '../types.js';
-import { Field } from './Field.js';
-import { cn } from '../ui/utils.js';
+import type { FieldSchema, FieldsetConfig } from '../types';
+import { Field } from './Field';
+import { cn } from '../ui/utils';
 
 export interface FieldSetProps {
   config: FieldsetConfig;

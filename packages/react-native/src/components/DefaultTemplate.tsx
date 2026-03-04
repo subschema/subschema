@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import type { TemplateComponentProps } from '../types.js';
-import { Label } from '../ui/Label.js';
-import { cn } from '../ui/utils.js';
+import type { TemplateComponentProps } from '../types';
+import { Label } from '../ui/Label';
+import { cn } from '../ui/utils';
 
 /**
  * Default template wrapper for form fields.

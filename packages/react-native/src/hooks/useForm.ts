@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import type { FormSchema, FormState, UseFormReturn, ValidatorConfig } from '../types.js';
-import { useFormContainer } from './useFormContainer.js';
+import type { FormSchema, FormState, UseFormReturn, ValidatorConfig } from '../types';
+import { useFormContainer } from './useFormContainer';
 import { getInitialValues } from '@subschema/core';
 
 /**

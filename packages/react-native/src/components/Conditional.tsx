@@ -1,7 +1,7 @@
 import React from 'react';
-import type { ConditionalConfig } from '../types.js';
-import { useConditional } from '../hooks/useConditional.js';
-import { useFormState } from './FormStateContext.js';
+import type { ConditionalConfig } from '../types';
+import { useConditional } from '../hooks/useConditional';
+import { useFormState } from './FormStateContext';
 
 export interface ConditionalProps {
   /** Field name to listen to */

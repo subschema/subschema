@@ -1,6 +1,6 @@
 import React from 'react';
-import type { FieldComponentProps } from '../types.js';
-import { Textarea } from '../ui/Textarea.js';
+import type { FieldComponentProps } from '../types';
+import { Textarea } from '../ui/Textarea';
 
 export function TextAreaField({
   name,

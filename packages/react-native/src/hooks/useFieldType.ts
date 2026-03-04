@@ -1,5 +1,5 @@
-import { useFormContainer } from './useFormContainer.js';
-import type { FieldComponent } from '../types.js';
+import { useFormContainer } from './useFormContainer';
+import type { FieldComponent } from '../types';
 import { findClosestMatch } from '@subschema/core';
 
 /**

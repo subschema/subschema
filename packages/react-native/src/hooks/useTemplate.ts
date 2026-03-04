@@ -1,5 +1,5 @@
-import { useFormContainer } from './useFormContainer.js';
-import type { TemplateComponent } from '../types.js';
+import { useFormContainer } from './useFormContainer';
+import type { TemplateComponent } from '../types';
 
 /**
  * Resolve a template component by name from the diblob container.

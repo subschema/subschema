@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { ConditionalConfig } from '../types.js';
+import type { ConditionalConfig } from '../types';
 import { evaluateCondition } from '@subschema/core';
 
 /**

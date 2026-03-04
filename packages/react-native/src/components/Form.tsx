@@ -5,18 +5,18 @@ import type {
   FieldComponent,
   TemplateComponent,
   ValidatorFn,
-} from '../types.js';
-import { FormContainerContext } from './FormProvider.js';
-import { FormStateContext } from './FormStateContext.js';
-import { Field } from './Field.js';
-import { FieldSet } from './FieldSet.js';
-import { useForm } from '../hooks/useForm.js';
+} from '../types';
+import { FormContainerContext } from './FormProvider';
+import { FormStateContext } from './FormStateContext';
+import { Field } from './Field';
+import { FieldSet } from './FieldSet';
+import { useForm } from '../hooks/useForm';
 import {
   createDefaultContainer,
   createFormContainer,
   resolveRegistries,
-} from '../registry/container.js';
-import { cn } from '../ui/utils.js';
+} from '../registry/container';
+import { cn } from '../ui/utils';
 
 export interface FormProps {
   /** Form schema definition */

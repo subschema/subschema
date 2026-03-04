@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import type { FieldComponentProps } from '../types.js';
-import { Input } from '../ui/Input.js';
-import { Button } from '../ui/Button.js';
-import { useFieldArray } from '../hooks/useFieldArray.js';
-import { useFormState } from '../components/FormStateContext.js';
+import type { FieldComponentProps } from '../types';
+import { Input } from '../ui/Input';
+import { Button } from '../ui/Button';
+import { useFieldArray } from '../hooks/useFieldArray';
+import { useFormState } from '../components/FormStateContext';
 
 /**
  * List/array field. Allows adding and removing items.

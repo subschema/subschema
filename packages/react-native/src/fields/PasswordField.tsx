@@ -1,6 +1,6 @@
 import React from 'react';
-import type { FieldComponentProps } from '../types.js';
-import { Input } from '../ui/Input.js';
+import type { FieldComponentProps } from '../types';
+import { Input } from '../ui/Input';
 
 export function PasswordField({
   name,

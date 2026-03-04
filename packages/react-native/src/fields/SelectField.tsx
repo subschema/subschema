@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, Modal, FlatList } from 'react-native';
-import type { FieldComponentProps } from '../types.js';
-import { cn } from '../ui/utils.js';
+import type { FieldComponentProps } from '../types';
+import { cn } from '../ui/utils';
 
 export function SelectField({
   name,

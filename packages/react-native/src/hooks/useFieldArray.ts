@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import type { UseFieldArrayReturn } from '../types.js';
+import type { UseFieldArrayReturn } from '../types';
 
 interface FormStateRef {
   values: Record<string, unknown>;

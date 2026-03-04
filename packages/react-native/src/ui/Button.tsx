@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text } from 'react-native';
-import { cn } from './utils.js';
+import { cn } from './utils';
 
 export interface ButtonProps {
   className?: string;
