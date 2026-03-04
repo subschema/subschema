@@ -3,4 +3,6 @@ node_modules/
 pnpm-lock.yaml
 *.tsbuildinfo
 .svelte-kit/
+.cxx/
+build/
 
