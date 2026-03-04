@@ -18,6 +18,10 @@ const config = {
       path.resolve(__dirname, 'node_modules'),
       path.resolve(workspaceRoot, 'node_modules'),
     ],
+    // Block the library's own node_modules to prevent duplicate React
+    blockList: [
+      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/(.*)').replace(/[/\\]/g, '[/\\\\]')),
+    ],
     // Force single copies of these packages to avoid duplicate React errors
     extraNodeModules: {
       'react': path.resolve(__dirname, 'node_modules/react'),
