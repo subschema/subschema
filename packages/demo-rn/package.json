@@ -10,13 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native/new-app-screen": "0.84.1",
+    "@subschema/core": "workspace:*",
+    "@subschema/react-native": "workspace:*",
+    "nativewind": "^4.0.0",
     "react": "19.2.3",
     "react-native": "0.84.1",
-    "@react-native/new-app-screen": "0.84.1",
     "react-native-safe-area-context": "^5.5.2",
-    "@subschema/react-native": "workspace:*",
-    "@subschema/core": "workspace:*",
-    "nativewind": "^4.0.0",
     "tailwindcss": "^3.4.0"
   },
   "devDependencies": {
@@ -27,7 +27,9 @@
     "@react-native-community/cli-platform-android": "20.1.0",
     "@react-native-community/cli-platform-ios": "20.1.0",
     "@react-native/babel-preset": "0.84.1",
+    "@react-native/codegen": "0.84.1",
     "@react-native/eslint-config": "0.84.1",
+    "@react-native/gradle-plugin": "0.84.1",
     "@react-native/metro-config": "0.84.1",
     "@react-native/typescript-config": "0.84.1",
     "@types/jest": "^29.5.13",
