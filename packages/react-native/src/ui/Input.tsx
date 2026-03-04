@@ -35,4 +35,3 @@ const Input = forwardRef<TextInputType, InputProps>(
 Input.displayName = 'Input';
 
 export { Input };
-

@@ -38,4 +38,3 @@ export function ListField({ name }: FieldComponentProps) {
     </View>
   );
 }
-

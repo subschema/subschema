@@ -120,4 +120,3 @@ describe('Validation on blur', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('At least 3 chars');
   });
 });
-

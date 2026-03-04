@@ -25,11 +25,7 @@ export interface CardHeaderProps {
 }
 
 export function CardHeader({ className, children }: CardHeaderProps) {
-  return (
-    <View className={cn('flex flex-col space-y-1.5 p-6', className)}>
-      {children}
-    </View>
-  );
+  return <View className={cn('flex flex-col space-y-1.5 p-6', className)}>{children}</View>;
 }
 
 export interface CardTitleProps {
@@ -39,7 +35,7 @@ export interface CardTitleProps {
 
 export function CardTitle({ className, children }: CardTitleProps) {
   return (
-    <Text className={cn('text-2xl font-semibold leading-none tracking-tight', className)}>
+    <Text className={cn('text-2xl leading-none font-semibold tracking-tight', className)}>
       {children}
     </Text>
   );
@@ -51,10 +47,5 @@ export interface CardContentProps {
 }
 
 export function CardContent({ className, children }: CardContentProps) {
-  return (
-    <View className={cn('p-6 pt-0', className)}>
-      {children}
-    </View>
-  );
+  return <View className={cn('p-6 pt-0', className)}>{children}</View>;
 }
-

@@ -16,4 +16,3 @@ export function useTemplate(templateName?: string): TemplateComponent {
   }
   return component;
 }
-

@@ -59,13 +59,7 @@ export function Button({
       testID={testID}
     >
       {typeof children === 'string' ? (
-        <Text
-          className={cn(
-            'text-sm font-medium',
-            variantTextClasses[variant],
-            textClassName,
-          )}
-        >
+        <Text className={cn('text-sm font-medium', variantTextClasses[variant], textClassName)}>
           {children}
         </Text>
       ) : (
@@ -74,4 +68,3 @@ export function Button({
     </Pressable>
   );
 }
-

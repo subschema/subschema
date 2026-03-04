@@ -3,13 +3,7 @@ import { View, Text, Pressable } from 'react-native';
 import type { FieldComponentProps } from '../types';
 import { cn } from '../ui/utils';
 
-export function CheckboxField({
-  name,
-  value,
-  onChange,
-  onBlur,
-  disabled,
-}: FieldComponentProps) {
+export function CheckboxField({ name, value, onChange, onBlur, disabled }: FieldComponentProps) {
   const checked = Boolean(value);
 
   return (
@@ -34,4 +28,3 @@ export function CheckboxField({
     </Pressable>
   );
 }
-

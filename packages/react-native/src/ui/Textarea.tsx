@@ -36,4 +36,3 @@ const Textarea = forwardRef<TextInputType, TextareaProps>(
 Textarea.displayName = 'Textarea';
 
 export { Textarea };
-

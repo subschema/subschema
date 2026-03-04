@@ -34,7 +34,7 @@ export function SelectField({
       </Pressable>
 
       {open && (
-        <View className="absolute top-11 left-0 right-0 z-50 max-h-60 rounded-md border border-gray-200 bg-white shadow-lg">
+        <View className="absolute top-11 right-0 left-0 z-50 max-h-60 rounded-md border border-gray-200 bg-white shadow-lg">
           <ScrollView nestedScrollEnabled>
             {items.map((item) => (
               <Pressable
@@ -44,10 +44,7 @@ export function SelectField({
                   setOpen(false);
                   onBlur();
                 }}
-                className={cn(
-                  'px-4 py-3',
-                  value === item.value && 'bg-blue-50',
-                )}
+                className={cn('px-4 py-3', value === item.value && 'bg-blue-50')}
               >
                 <Text
                   className={cn(
@@ -65,4 +62,3 @@ export function SelectField({
     </View>
   );
 }
-

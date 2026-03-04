@@ -11,11 +11,10 @@ export interface LabelProps {
 export function Label({ className, children, testID }: LabelProps) {
   return (
     <Text
-      className={cn('text-sm font-medium leading-none text-gray-900', className)}
+      className={cn('text-sm leading-none font-medium text-gray-900', className)}
       testID={testID}
     >
       {children}
     </Text>
   );
 }
-

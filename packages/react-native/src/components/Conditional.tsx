@@ -24,4 +24,3 @@ export function Conditional({ listen, operator, value, children }: ConditionalPr
   if (!isVisible) return null;
   return <>{children}</>;
 }
-

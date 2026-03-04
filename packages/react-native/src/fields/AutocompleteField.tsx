@@ -55,10 +55,7 @@ export function AutocompleteField({
                   setSearch(item.label);
                   setOpen(false);
                 }}
-                className={cn(
-                  'px-3 py-2',
-                  value === item.value && 'bg-blue-50',
-                )}
+                className={cn('px-3 py-2', value === item.value && 'bg-blue-50')}
               >
                 <Text className="text-sm text-gray-900">{item.label}</Text>
               </Pressable>
@@ -69,4 +66,3 @@ export function AutocompleteField({
     </View>
   );
 }
-

@@ -53,4 +53,3 @@ export function resolveRegistries(container: Container) {
     validators: resolved.validators as ValidatorRegistry,
   };
 }
-

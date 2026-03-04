@@ -31,4 +31,3 @@ describe('Field resolution errors with "did you mean?" suggestions', () => {
     spy.mockRestore();
   });
 });
-

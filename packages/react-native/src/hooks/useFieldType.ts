@@ -22,4 +22,3 @@ export function useFieldType(typeName: string): FieldComponent {
 
   throw new Error(message);
 }
-

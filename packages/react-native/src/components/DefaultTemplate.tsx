@@ -18,15 +18,9 @@ export function DefaultTemplate({
 }: TemplateComponentProps) {
   return (
     <View className={cn('gap-2')} testID={`field-${name}`}>
-      {label && (
-        <Label className={cn(error && 'text-red-500')}>
-          {label}
-        </Label>
-      )}
+      {label && <Label className={cn(error && 'text-red-500')}>{label}</Label>}
       {children}
-      {description && (
-        <Text className="text-sm text-gray-500">{description}</Text>
-      )}
+      {description && <Text className="text-sm text-gray-500">{description}</Text>}
       {error && (
         <Text className="text-sm font-medium text-red-500" accessibilityRole="alert">
           {error}
@@ -35,4 +29,3 @@ export function DefaultTemplate({
     </View>
   );
 }
-

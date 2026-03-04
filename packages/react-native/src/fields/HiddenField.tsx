@@ -4,4 +4,3 @@ import type { FieldComponentProps } from '../types';
 export function HiddenField(_props: FieldComponentProps) {
   return null;
 }
-

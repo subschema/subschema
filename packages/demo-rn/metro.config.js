@@ -20,20 +20,50 @@ const config = {
     ],
     // Block the library's own node_modules to prevent duplicate React
     blockList: [
-      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react/(.*)').replace(/[/\\]/g, '[/\\\\]')),
-      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react-native/(.*)').replace(/[/\\]/g, '[/\\\\]')),
-      new RegExp(path.resolve(workspaceRoot, 'packages/react-native/node_modules/react-dom/(.*)').replace(/[/\\]/g, '[/\\\\]')),
+      new RegExp(
+        path
+          .resolve(
+            workspaceRoot,
+            'packages/react-native/node_modules/react/(.*)',
+          )
+          .replace(/[/\\]/g, '[/\\\\]'),
+      ),
+      new RegExp(
+        path
+          .resolve(
+            workspaceRoot,
+            'packages/react-native/node_modules/react-native/(.*)',
+          )
+          .replace(/[/\\]/g, '[/\\\\]'),
+      ),
+      new RegExp(
+        path
+          .resolve(
+            workspaceRoot,
+            'packages/react-native/node_modules/react-dom/(.*)',
+          )
+          .replace(/[/\\]/g, '[/\\\\]'),
+      ),
     ],
     // Force single copies of these packages to avoid duplicate React errors
     extraNodeModules: {
-      'react': path.resolve(__dirname, 'node_modules/react'),
+      react: path.resolve(__dirname, 'node_modules/react'),
       'react-native': path.resolve(__dirname, 'node_modules/react-native'),
-      'react/jsx-runtime': path.resolve(__dirname, 'node_modules/react/jsx-runtime'),
-      'react/jsx-dev-runtime': path.resolve(__dirname, 'node_modules/react/jsx-dev-runtime'),
+      'react/jsx-runtime': path.resolve(
+        __dirname,
+        'node_modules/react/jsx-runtime',
+      ),
+      'react/jsx-dev-runtime': path.resolve(
+        __dirname,
+        'node_modules/react/jsx-dev-runtime',
+      ),
     },
   },
 };
 
-module.exports = withNativeWind(mergeConfig(getDefaultConfig(__dirname), config), {
-  input: './global.css',
-});
+module.exports = withNativeWind(
+  mergeConfig(getDefaultConfig(__dirname), config),
+  {
+    input: './global.css',
+  },
+);

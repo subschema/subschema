@@ -10,4 +10,3 @@ export default defineConfig({
     include: ['test/**/*.test.{ts,tsx}'],
   },
 });
-

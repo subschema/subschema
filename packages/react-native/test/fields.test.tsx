@@ -114,4 +114,3 @@ describe('SelectField', () => {
     expect(screen.getByText('Green')).toBeInTheDocument();
   });
 });
-

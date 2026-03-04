@@ -67,9 +67,7 @@ export type ValidatorRegistry = Record<
 import type { FormState, FormActions } from '@subschema/core';
 
 export interface UseFormReturn extends FormState, FormActions {
-  handleSubmit: (
-    onSubmit: (values: Record<string, unknown>) => void,
-  ) => () => void;
+  handleSubmit: (onSubmit: (values: Record<string, unknown>) => void) => () => void;
   isValid: boolean;
   validateField: (name: string, value: unknown) => string | undefined;
 }
@@ -99,4 +97,3 @@ export interface FormContextValue {
   validators: ValidatorRegistry;
   containerRef: unknown; // diblob Container
 }
-

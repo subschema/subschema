@@ -1,11 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 import { View } from 'react-native';
-import type {
-  FormSchema,
-  FieldComponent,
-  TemplateComponent,
-  ValidatorFn,
-} from '../types';
+import type { FormSchema, FieldComponent, TemplateComponent, ValidatorFn } from '../types';
 import { FormContainerContext } from './FormProvider';
 import { FormStateContext } from './FormStateContext';
 import { Field } from './Field';
@@ -135,4 +130,3 @@ function FormInner({
     </FormStateContext.Provider>
   );
 }
-

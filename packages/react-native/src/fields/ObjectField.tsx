@@ -58,4 +58,3 @@ export function ObjectField({ name, value, onChange, fieldSchema }: FieldCompone
     </Card>
   );
 }
-

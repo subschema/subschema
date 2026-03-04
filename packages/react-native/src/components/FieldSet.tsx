@@ -16,9 +16,7 @@ export interface FieldSetProps {
 export function FieldSet({ config, schema }: FieldSetProps) {
   return (
     <View className={cn('gap-4 rounded-lg border border-gray-200 p-4')}>
-      {config.legend && (
-        <Text className="px-2 text-lg font-semibold">{config.legend}</Text>
-      )}
+      {config.legend && <Text className="px-2 text-lg font-semibold">{config.legend}</Text>}
       {config.fields.map((fieldName) => {
         const fieldSchema = schema[fieldName];
         if (!fieldSchema) return null;
@@ -27,4 +25,3 @@ export function FieldSet({ config, schema }: FieldSetProps) {
     </View>
   );
 }
-

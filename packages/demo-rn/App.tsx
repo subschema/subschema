@@ -26,7 +26,11 @@ const schema: FormSchema = {
       placeholder: 'you@example.com',
       validators: [
         { type: 'required', message: 'Email is required' },
-        { type: 'pattern', value: '^[^@]+@[^@]+\\.[^@]+$', message: 'Invalid email' },
+        {
+          type: 'pattern',
+          value: '^[^@]+@[^@]+\\.[^@]+$',
+          message: 'Invalid email',
+        },
       ],
     },
     age: {
@@ -82,7 +86,10 @@ const schema: FormSchema = {
     },
   },
   fieldsets: [
-    { legend: 'Personal Information', fields: ['firstName', 'lastName', 'email', 'age'] },
+    {
+      legend: 'Personal Information',
+      fields: ['firstName', 'lastName', 'email', 'age'],
+    },
     { legend: 'Security', fields: ['password'] },
     { legend: 'About You', fields: ['bio', 'country'] },
     { legend: 'Preferences', fields: ['newsletter', 'gender'] },
