@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "type": "module",
   "description": "React Native form engine for Subschema with diblob DI and NativeWind styling",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     }
   },
   "scripts": {
