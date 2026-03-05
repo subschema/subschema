@@ -1,6 +1,6 @@
 {
   "name": "@subschema/react",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Modern React 19 form engine for Subschema with diblob DI",
   "main": "dist/index.js",

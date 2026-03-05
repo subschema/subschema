@@ -1,6 +1,6 @@
 {
   "name": "@subschema/typespec",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "TypeSpec library for Subschema form definitions",
   "main": "dist/src/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@subschema/svelte",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Modern Svelte 5 form engine for Subschema with diblob DI",
   "svelte": "./dist/index.js",
